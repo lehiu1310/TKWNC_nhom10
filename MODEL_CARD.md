@@ -4,7 +4,7 @@
 
 Ứng dụng hiện phân loại ảnh trên **103 nhãn** của bộ Oxford Flowers 102 kết hợp TF Flowers, tổng cộng **11.859 ảnh** theo thống kê trong workspace. Phân bố không đồng đều: 76 nhãn có dưới 100 ảnh; số ảnh thấp nhất là 40. Năm loài được giới thiệu nổi bật trên giao diện là tập con của bộ phân loại: cúc (daisy) 700, bồ công anh 947, hoa hồng (roses) 761, hướng dương 792 và tulip 799 ảnh theo thống kê hiện có. Nguồn là hai bộ dữ liệu công khai trên; cần giữ điều khoản/ghi công của từng bộ khi phân phối.
 
-Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hiện có 8 tệp Markdown tiếng Việt trong `data/kb/`, chưa phải bộ tài liệu 20 trang hay tập đánh giá 30 câu.
+Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 8 tệp Markdown tiếng Việt trong `data/kb/` và dùng BM25 để truy xuất, chưa phải bộ tài liệu 20 trang hay tập đánh giá 30 câu.
 
 ## 2. Chỉ số đã đo
 
@@ -19,15 +19,16 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 | API phân loại | Process peak RSS | 423,3 MB | Dòng `API_PERF` trong log Render sau khi nạp classifier; RSS cực đại process, không phải RAM toàn container. Instance giới hạn 512 MB. |
 | API phát hiện | p50 / p95 | 38,74 s / 55,45 s | Locust 2.46.6, 51 request qua ba lượt một người dùng, 0 lỗi; nearest-rank tính từ history tích lũy của Locust. Chi tiết từng mẫu: [`reports/render-detect_samples.csv`](reports/render-detect_samples.csv); tổng hợp lượt: [`reports/render-detect_runs.csv`](reports/render-detect_runs.csv). |
 | API phát hiện | Process peak RSS | 506,2 MB | Cao nhất trong log `API_PERF` Render khi classifier và YOLO cùng nạp; giới hạn container Render Free 512 MB. Sau lần khởi động lại, riêng detector ghi 457,1 MB. |
-| API tìm ảnh / chatbot | p50 / p95 và RAM riêng | Chưa đo được | Chưa benchmark; instance Render Free đã dùng peak RSS 506,2 MB khi chạy classifier và YOLO. |
+| API tìm ảnh | Độ trễ / lỗi | Chưa đo được | Một request ảnh hoa hồng tới Render Free làm instance vượt 512 MB và bị OOM (Render Events, 01/10/2026 00:42). Chưa có mẫu latency thành công; cần giảm RAM CLIP hoặc tăng bộ nhớ trước khi benchmark. |
+| API chatbot | Độ trễ / lỗi | Chưa đo được | Một request `POST /api/chat/sync` trả 503 vì Render chưa có `GOOGLE_API_KEY`; log xác nhận `Thiếu GOOGLE_API_KEY (hoặc GEMINI_API_KEY) để dùng Gemini.` Chưa có mẫu thành công; cần thêm key vào Render Secret rồi benchmark. |
 
 ## 3. Giới hạn
 
 - Bộ phân loại chỉ học các nhãn trong 103 lớp; năm loài trên giao diện không đại diện cho toàn bộ phạm vi. Ảnh ngoài phân phối vẫn có thể bị gán nhãn gần nhất.
 - Detector YOLO11n pretrained COCO không có lớp hoa chuyên biệt; có thể không phát hiện hoa hoặc chỉ nhận diện vật thể nền thuộc COCO.
 - CLIP/FAISS trả ảnh tương tự trong index, không xác nhận danh tính thực vật.
-- RAG giới hạn bởi 8 tệp tri thức. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
-- Số đo API mới có classifier (102 request) và detector (51 request); chưa đo CLIP/FAISS và chatbot Gemini. Render Free có 0,15 CPU và 512 MB RAM, process peak đã đạt 506,2 MB khi classifier cùng YOLO được nạp. Cold start detector có thể mất hơn 2 phút.
+- RAG giới hạn bởi 8 tệp tri thức và xếp hạng từ khóa BM25; câu hỏi dùng cách diễn đạt xa nội dung tài liệu có thể không truy xuất đúng đoạn. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
+- Đo thành công hiện có classifier (102 request) và detector (51 request). CLIP/FAISS làm Render Free OOM ở giới hạn 512 MB; chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.
 
 ## 4. Rủi ro
 
@@ -44,4 +45,4 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 
 ## Cấu hình chatbot
 
-Provider mặc định là Gemini (`LLM_PROVIDER=gemini`, model `gemini-2.5-flash`). Cần đặt `GOOGLE_API_KEY` hoặc `GEMINI_API_KEY` trong backend/secret của nền tảng deploy. Có thể chọn `LLM_PROVIDER=hf_local` để dùng Qwen cục bộ, cần tải trọng số lớn hơn. Không commit khóa API vào Git.
+Provider mặc định là Gemini (`LLM_PROVIDER=gemini`, model được cấu hình qua `GEMINI_MODEL`). Cần đặt `GOOGLE_API_KEY` hoặc `GEMINI_API_KEY` trong backend/secret của nền tảng deploy. Có thể chọn `LLM_PROVIDER=hf_local` để dùng Qwen cục bộ, cần tải trọng số lớn hơn. Không commit khóa API vào Git.
