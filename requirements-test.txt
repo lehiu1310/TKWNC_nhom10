@@ -3,3 +3,5 @@ httpx>=0.27
 pytest>=8.0
 python-multipart
 pillow
+numpy
+python-dotenv>=1.0.0
