@@ -13,5 +13,7 @@ services:
         value: gemini
       - key: GEMINI_MODEL
         value: gemini-3.5-flash
+      - key: CORS_ORIGINS
+        value: https://tkwnc-nhom10.vercel.app,https://tkwnc-nhom10-aq7ahbp1b-tkwnc-nhom10.vercel.app
       - key: GOOGLE_API_KEY
         sync: false

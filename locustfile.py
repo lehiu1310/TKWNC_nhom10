@@ -7,7 +7,7 @@ Set FLOWER_TEST_IMAGE to a representative image file. Use a small user count on 
 import os
 from pathlib import Path
 
-from locust import HttpUser, between, task
+from locust import HttpUser, between, tag, task
 
 IMAGE_PATH = Path(os.environ.get("FLOWER_TEST_IMAGE", ""))
 
@@ -21,21 +21,25 @@ class FlowerApiUser(HttpUser):
         self.image = IMAGE_PATH.read_bytes()
 
     @task(1)
+    @tag("classify")
     def classify(self):
         self.client.post("/api/classify", files={"file": (IMAGE_PATH.name, self.image, "image/jpeg")},
                          data={"top_k": "5"}, name="/api/classify")
 
     @task(1)
+    @tag("detect")
     def detect(self):
         self.client.post("/api/detect", files={"file": (IMAGE_PATH.name, self.image, "image/jpeg")},
                          name="/api/detect")
 
     @task(1)
+    @tag("search-image")
     def image_search(self):
         self.client.post("/api/search/image", files={"file": (IMAGE_PATH.name, self.image, "image/jpeg")},
                          data={"k": "8"}, name="/api/search/image")
 
     @task(1)
+    @tag("chat")
     def rag_chat(self):
         self.client.post("/api/chat/sync", json={"message": "Hoa hồng thường nở vào mùa nào?"},
                          name="/api/chat/sync")

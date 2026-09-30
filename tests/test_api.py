@@ -62,6 +62,20 @@ def test_health(client):
     assert r.status_code == 200 and r.json()["status"] == "ok"
 
 
+def test_health_unknown_component_is_400(client):
+    assert client.get("/api/health", params={"model": "not-a-component"}).status_code == 400
+
+
+def test_health_invalid_component_length_is_422(client):
+    assert client.get("/api/health", params={"model": "x" * 33}).status_code == 422
+
+
+def test_species_list_query_validation(client):
+    assert client.get("/api/species").status_code == 200
+    assert client.get("/api/species", params={"limit": 0}).status_code == 400
+    assert client.get("/api/species", params={"limit": "many"}).status_code == 422
+
+
 def test_classify_ok(client):
     r = client.post("/api/classify", files={"file": ("a.png", png_bytes(), "image/png")}, data={"top_k": 1})
     assert r.status_code == 200
@@ -113,6 +127,14 @@ def test_species_image_unknown_is_404(client):
     assert client.get("/api/species/not-a-species/image").status_code == 404
 
 
+def test_species_image_invalid_id_is_400(client):
+    assert client.get("/api/species/not_a_species/image").status_code == 400
+
+
+def test_species_image_long_id_is_422(client):
+    assert client.get(f"/api/species/{'x' * 129}/image").status_code == 422
+
+
 def test_classify_missing_file_is_422(client):
     assert client.post("/api/classify").status_code == 422
 
@@ -130,6 +152,14 @@ def test_search_text_ok(client, monkeypatch):
     monkeypatch.setattr(main, "_require", lambda name: FakeSearch())
     r = client.post("/api/search/text", json={"query": "hoa hồng", "k": 2})
     assert r.status_code == 200 and r.json()["results"][0]["score"] == 0.9
+
+
+def test_search_text_blank_query_is_400(client):
+    assert client.post("/api/search/text", json={"query": "   "}).status_code == 400
+
+
+def test_search_text_invalid_k_is_422(client):
+    assert client.post("/api/search/text", json={"query": "hoa", "k": 0}).status_code == 422
 
 
 def test_search_image_ok(client, monkeypatch):
@@ -160,6 +190,10 @@ def test_gallery_invalid_id_is_422(client):
     assert client.get("/api/gallery/not-an-integer").status_code == 422
 
 
+def test_gallery_negative_id_is_400(client):
+    assert client.get("/api/gallery/-1").status_code == 400
+
+
 def test_chat_sync_ok(client):
     r = client.post("/api/chat/sync", json={"message": "Hoa cần tưới không?"})
     assert r.status_code == 200 and r.json()["answer"]
@@ -168,3 +202,14 @@ def test_chat_sync_ok(client):
 def test_chat_and_sync_missing_message_are_422(client):
     assert client.post("/api/chat", json={}).status_code == 422
     assert client.post("/api/chat/sync", json={}).status_code == 422
+
+
+def test_chat_and_sync_blank_message_are_400(client):
+    assert client.post("/api/chat", json={"message": "   "}).status_code == 400
+    assert client.post("/api/chat/sync", json={"message": "   "}).status_code == 400
+
+
+def test_chat_message_too_long_is_422(client):
+    payload = {"message": "hoa " * 251}
+    assert client.post("/api/chat", json=payload).status_code == 422
+    assert client.post("/api/chat/sync", json=payload).status_code == 422

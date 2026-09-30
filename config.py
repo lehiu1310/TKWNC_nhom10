@@ -2,8 +2,12 @@
 import os
 from pathlib import Path
 
-import torch
 from dotenv import load_dotenv
+
+try:
+    import torch
+except ImportError:  # API schema tests do not need the inference runtime.
+    torch = None
 
 ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent))
 # Read local secrets from the ignored project-root .env without overriding shell/host secrets.
@@ -15,7 +19,7 @@ ART_DIR = ROOT / "artifacts"
 # để backend vẫn nạp detector được ở máy bị giới hạn quyền ghi profile Windows.
 os.environ.setdefault("YOLO_CONFIG_DIR", str(ROOT))
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = "cuda" if torch is not None and torch.cuda.is_available() else "cpu"
 
 # Mô hình (đổi tên model = đổi biến môi trường, không sửa code)
 YOLO_WEIGHTS = os.environ.get("YOLO_WEIGHTS", str(ART_DIR / "detector" / "yolo11n.pt"))
@@ -39,7 +43,7 @@ CORS_ORIGINS = [
     origin.strip()
     for origin in os.environ.get(
         "CORS_ORIGINS",
-        "http://localhost:5173,http://localhost:5175,http://127.0.0.1:5173,http://127.0.0.1:5175,http://localhost:8501",
+        "http://localhost:5173,http://localhost:5175,http://127.0.0.1:5173,http://127.0.0.1:5175,http://localhost:8501,https://tkwnc-nhom10.vercel.app,https://tkwnc-nhom10-aq7ahbp1b-tkwnc-nhom10.vercel.app",
     ).split(",")
     if origin.strip()
 ]

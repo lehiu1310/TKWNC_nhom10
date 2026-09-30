@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # để import config, core khi chạy uvicorn
 
-from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Path as ApiPath, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -53,7 +53,16 @@ app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*
 async def timing(request: Request, call_next):
     t0 = time.perf_counter()
     response = await call_next(request)
-    response.headers["X-Process-Time-ms"] = f"{(time.perf_counter() - t0) * 1000:.1f}"
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    response.headers["X-Process-Time-ms"] = f"{elapsed_ms:.1f}"
+    if request.url.path in {
+        "/api/classify", "/api/detect", "/api/search/text", "/api/search/image",
+        "/api/chat", "/api/chat/sync",
+    }:
+        log.info(
+            "API_PERF route=%s status=%s latency_ms=%.1f process_peak_rss_mb=%s",
+            request.url.path, response.status_code, elapsed_ms, _process_peak_rss_mb(),
+        )
     return response
 
 
@@ -77,6 +86,17 @@ def _require(name: str):
     return MODELS[name]
 
 
+def _process_peak_rss_mb() -> float | None:
+    """Return process high-water RSS in MiB where the host exposes resource usage."""
+    try:
+        import resource
+        peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    except (ImportError, AttributeError, OSError):
+        return None
+    # Linux reports KiB; macOS reports bytes.
+    return round(peak / (1024 * 1024 if sys.platform == "darwin" else 1024), 1)
+
+
 async def _read_image(file: UploadFile) -> Image.Image:
     data = await file.read()
     if len(data) > MAX_UPLOAD_MB * 1024 * 1024:
@@ -97,21 +117,29 @@ def _to_base64(image: Image.Image) -> str:
 
 # ---------- Hệ thống ----------
 @app.get("/api/health")
-def health():
+def health(model: str | None = Query(None, max_length=32, description="Optional model component to inspect")):
+    if model is not None and model not in LOADERS:
+        raise HTTPException(400, f"Unknown model component: {model}")
+    enabled = sorted(ENABLED_MODELS if model is None else ENABLED_MODELS & {model})
     return {
         "status": "ok", "device": DEVICE,
-        "models": {m: m in MODELS for m in sorted(ENABLED_MODELS)},
-        "model_states": {m: ("ready" if m in MODELS else "failed" if m in MODEL_ERRORS else "not_loaded") for m in sorted(ENABLED_MODELS)},
+        "models": {m: m in MODELS for m in enabled},
+        "model_states": {m: ("ready" if m in MODELS else "failed" if m in MODEL_ERRORS else "not_loaded") for m in enabled},
     }
 
 
 @app.get("/api/species")
-def species():
-    return json.loads((ROOT / "data" / "species.json").read_text(encoding="utf-8"))
+def species(limit: int = 103, offset: int = 0):
+    if limit < 1 or offset < 0:
+        raise HTTPException(400, "limit must be positive and offset cannot be negative")
+    entries = json.loads((ROOT / "data" / "species.json").read_text(encoding="utf-8"))
+    return entries[offset:offset + limit]
 
 
 @app.get("/api/species/{species_id}/image")
-def species_image(species_id: str):
+def species_image(species_id: str = ApiPath(..., max_length=128)):
+    if not species_id or any(not (char.isalnum() or char == "-") for char in species_id):
+        raise HTTPException(400, "Mã loài chỉ được gồm chữ, số và dấu gạch ngang")
     entries = species()
     entry = next((item for item in entries if item["id"] == species_id), None)
     if entry is None:
@@ -154,6 +182,8 @@ def _with_urls(results: list[dict]) -> list[dict]:
 
 @app.post("/api/search/text")
 def search_text(q: TextQuery):
+    if not q.query.strip():
+        raise HTTPException(400, "Câu tìm kiếm không được chỉ chứa khoảng trắng")
     return {"results": _with_urls(_require("retrieval").search_text(q.query, q.k))}
 
 
@@ -165,6 +195,8 @@ async def search_image(file: UploadFile = File(...), k: int = Form(8)):
 
 @app.get("/api/gallery/{item_id}")
 def gallery(item_id: int):
+    if item_id < 0:
+        raise HTTPException(400, "Mã ảnh phải là số không âm")
     engine = _require("retrieval")
     if not 0 <= item_id < len(engine.meta):
         raise HTTPException(404, "Không có ảnh này")
@@ -180,6 +212,8 @@ class ChatRequest(BaseModel):
 @app.post("/api/chat")
 def chat(req: ChatRequest):
     """Server-Sent Events: sự kiện 'sources' trước, sau đó từng 'token', cuối cùng 'done'."""
+    if not req.message.strip():
+        raise HTTPException(400, "Câu hỏi không được chỉ chứa khoảng trắng")
     bot = _require("llm")
     contexts, tokens = bot.stream(req.message, req.history)
 
@@ -194,6 +228,8 @@ def chat(req: ChatRequest):
 
 @app.post("/api/chat/sync")
 def chat_sync(req: ChatRequest):
+    if not req.message.strip():
+        raise HTTPException(400, "Câu hỏi không được chỉ chứa khoảng trắng")
     return _require("llm").answer(req.message, req.history)
 
 
