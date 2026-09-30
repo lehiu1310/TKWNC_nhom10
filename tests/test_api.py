@@ -31,6 +31,17 @@ class FakeBot:
         return {"answer": "Được 7 ngày.", "sources": []}
 
 
+class FakeSearch:
+    def __init__(self, image_path=None):
+        self.meta = [{"id": 0, "path": str(image_path or __file__)}]
+
+    def search_text(self, query, k=8):
+        return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
+
+    def search_image(self, image, k=8):
+        return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
+
+
 def png_bytes() -> bytes:
     buf = io.BytesIO()
     Image.new("RGB", (32, 32), "red").save(buf, format="PNG")
@@ -40,6 +51,7 @@ def png_bytes() -> bytes:
 @pytest.fixture()
 def client():
     with TestClient(main.app) as c:
+        main.ENABLED_MODELS = {"classifier", "detector", "retrieval", "llm"}
         main.MODELS.update(classifier=FakeClassifier(), detector=FakeDetector(), llm=FakeBot())
         yield c
         main.MODELS.clear()
@@ -66,7 +78,8 @@ def test_detect_returns_annotated_image(client):
     assert r.status_code == 200 and r.json()["image"].startswith("data:image/jpeg;base64,")
 
 
-def test_model_not_loaded_returns_503(client):
+def test_model_not_enabled_returns_503(client, monkeypatch):
+    monkeypatch.setattr(main, "ENABLED_MODELS", {"classifier", "detector", "llm"})
     r = client.post("/api/search/text", json={"query": "a dog"})
     assert r.status_code == 503
 
@@ -79,3 +92,79 @@ def test_chat_stream_events(client):
     with client.stream("POST", "/api/chat", json={"message": "Đổi trả?"}) as r:
         body = "".join(r.iter_text())
     assert '"type": "sources"' in body and '"type": "done"' in body and "7 ngày" in body
+
+
+def test_species_list_ok(client):
+    r = client.get("/api/species")
+    assert r.status_code == 200 and len(r.json()) >= 5
+
+
+def test_species_image_ok(client, tmp_path, monkeypatch):
+    image_path = tmp_path / "flower.png"
+    Image.new("RGB", (4, 4), "pink").save(image_path)
+    monkeypatch.setattr(main, "ROOT", tmp_path)
+    monkeypatch.setattr(main, "resolve_path", lambda path: image_path)
+    monkeypatch.setattr(main, "species", lambda: [{"id": "test-flower", "image": "flower.png"}])
+    r = client.get("/api/species/test-flower/image")
+    assert r.status_code == 200 and r.headers["content-type"] == "image/png"
+
+
+def test_species_image_unknown_is_404(client):
+    assert client.get("/api/species/not-a-species/image").status_code == 404
+
+
+def test_classify_missing_file_is_422(client):
+    assert client.post("/api/classify").status_code == 422
+
+
+def test_detect_bad_image_is_400(client):
+    r = client.post("/api/detect", files={"file": ("bad.png", b"not an image", "image/png")})
+    assert r.status_code == 400
+
+
+def test_detect_missing_file_is_422(client):
+    assert client.post("/api/detect").status_code == 422
+
+
+def test_search_text_ok(client, monkeypatch):
+    monkeypatch.setattr(main, "_require", lambda name: FakeSearch())
+    r = client.post("/api/search/text", json={"query": "hoa hồng", "k": 2})
+    assert r.status_code == 200 and r.json()["results"][0]["score"] == 0.9
+
+
+def test_search_image_ok(client, monkeypatch):
+    monkeypatch.setattr(main, "_require", lambda name: FakeSearch())
+    r = client.post("/api/search/image", files={"file": ("a.png", png_bytes(), "image/png")})
+    assert r.status_code == 200 and len(r.json()["results"]) == 1
+
+
+def test_search_image_bad_image_is_400(client, monkeypatch):
+    monkeypatch.setattr(main, "_require", lambda name: FakeSearch())
+    r = client.post("/api/search/image", files={"file": ("bad.png", b"bad", "image/png")})
+    assert r.status_code == 400
+
+
+def test_search_image_missing_file_is_422(client):
+    assert client.post("/api/search/image").status_code == 422
+
+
+def test_gallery_ok(client, monkeypatch, tmp_path):
+    image_path = tmp_path / "gallery.png"
+    Image.new("RGB", (4, 4), "red").save(image_path)
+    monkeypatch.setattr(main, "_require", lambda name: FakeSearch(image_path))
+    r = client.get("/api/gallery/0")
+    assert r.status_code == 200 and r.headers["content-type"] == "image/png"
+
+
+def test_gallery_invalid_id_is_422(client):
+    assert client.get("/api/gallery/not-an-integer").status_code == 422
+
+
+def test_chat_sync_ok(client):
+    r = client.post("/api/chat/sync", json={"message": "Hoa cần tưới không?"})
+    assert r.status_code == 200 and r.json()["answer"]
+
+
+def test_chat_and_sync_missing_message_are_422(client):
+    assert client.post("/api/chat", json={}).status_code == 422
+    assert client.post("/api/chat/sync", json={}).status_code == 422

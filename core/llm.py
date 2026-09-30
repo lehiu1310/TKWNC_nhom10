@@ -1,16 +1,14 @@
 """Ứng dụng 4 — Chatbot RAG: tra cứu tài liệu (embeddings + FAISS) rồi để LLM trả lời có dẫn nguồn."""
 import re
+import os
 import threading
 from pathlib import Path
 from typing import Iterator
 
 import faiss
 import numpy as np
-import torch
 from sentence_transformers import SentenceTransformer
-from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer
-
-from config import DATA_DIR, DEVICE, EMBED_MODEL, LLM_MODEL
+from config import DATA_DIR, DEVICE, EMBED_MODEL, GEMINI_MODEL, LLM_MODEL, LLM_PROVIDER
 
 SYSTEM_PROMPT = (
     "Bạn là Cô làm vườn, trợ lý hỏi đáp về các loài hoa. "
@@ -56,13 +54,25 @@ class Retriever:
 
 
 class RAGChatbot:
-    def __init__(self, kb_dir: Path = DATA_DIR / "kb", model_name: str = LLM_MODEL):
+    def __init__(self, kb_dir: Path = DATA_DIR / "kb", model_name: str = LLM_MODEL,
+                 provider: str = LLM_PROVIDER):
         self.retriever = Retriever(load_chunks(kb_dir))
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        dtype = torch.float16 if DEVICE == "cuda" else torch.float32
-        self.model = AutoModelForCausalLM.from_pretrained(model_name, dtype=dtype).to(DEVICE).eval()
-        self.model_name = model_name
-        self._lock = threading.Lock()  # 1 GPU → sinh lần lượt từng request
+        self.provider = provider
+        self.model_name = GEMINI_MODEL if provider == "gemini" else model_name
+        self._lock = threading.Lock()
+        if provider == "gemini":
+            if not (os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")):
+                raise RuntimeError("Thiếu GOOGLE_API_KEY (hoặc GEMINI_API_KEY) để dùng Gemini.")
+            from google import genai
+            self.client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"))
+        elif provider == "hf_local":
+            import torch
+            from transformers import AutoModelForCausalLM, AutoTokenizer
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            dtype = torch.float16 if DEVICE == "cuda" else torch.float32
+            self.model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=dtype).to(DEVICE).eval()
+        else:
+            raise ValueError("LLM_PROVIDER chỉ hỗ trợ 'gemini' hoặc 'hf_local'.")
 
     def _messages(self, question: str, contexts: list[dict], history: list[dict] | None) -> list[dict]:
         docs = "\n\n".join(f"[{c['source']}]\n{c['text']}" for c in contexts)
@@ -76,6 +86,28 @@ class RAGChatbot:
     def stream(self, question: str, history: list[dict] | None = None, k: int = 3,
                max_new_tokens: int = 384) -> tuple[list[dict], Iterator[str]]:
         contexts = self.retriever.search(question, k)
+        if self.provider == "gemini":
+            docs = "\n\n".join(f"[{c['source']}]\n{c['text']}" for c in contexts)
+            conversation = "\n".join(
+                f"{turn.get('role')}: {str(turn.get('content', ''))[:2000]}"
+                for turn in (history or [])[-6:] if turn.get("role") in ("user", "assistant")
+            )
+            prompt = f"Lịch sử gần đây:\n{conversation or '(chưa có)'}\n\nCâu hỏi: {question}\n\nTÀI LIỆU:\n{docs}"
+
+            def gemini_tokens():
+                with self._lock:
+                    response = self.client.models.generate_content_stream(
+                        model=self.model_name,
+                        contents=prompt,
+                        config={"system_instruction": SYSTEM_PROMPT},
+                    )
+                    for chunk in response:
+                        if chunk.text:
+                            yield chunk.text
+
+            return contexts, gemini_tokens()
+
+        from transformers import TextIteratorStreamer
         prompt = self.tokenizer.apply_chat_template(
             self._messages(question, contexts, history), tokenize=False, add_generation_prompt=True
         )
