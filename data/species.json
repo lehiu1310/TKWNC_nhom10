@@ -12,7 +12,7 @@
       "Cụm hoa có tâm vàng và hoa tia trắng",
       "Ưa nơi có nắng; mùa nở tùy khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06223.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06223.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -25,7 +25,7 @@
     "color": "#FFC93C",
     "scene_background": "#FFC93C",
     "description": "Từ đóa vàng nhỏ đến những chiếc dù hạt bay theo gió.",
-    "image": "data/flowers-102/jpg/image_06561.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06561.jpg",
     "long_description": "Tên bồ công anh được dùng cho nhiều loài cây thuộc họ Cúc. Loài thường thấy có cụm hoa vàng; sau khi tàn, quả mang chùm lông mảnh giúp hạt theo gió phát tán. Vì có nhiều loài cùng tên, đặc điểm sinh trưởng và mùa hoa còn tuỳ giống, khí hậu địa phương và cách gọi dân gian.",
     "facts": [
       "Họ thực vật: Asteraceae (họ Cúc)",
@@ -42,7 +42,7 @@
     "color": "#FF6F91",
     "scene_background": "#FF6F91",
     "description": "Muôn sắc cánh hoa và hương thơm nồng nàn làm nên vẻ duyên dáng rất riêng.",
-    "image": "data/flowers-102/jpg/image_01171.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_01171.jpg",
     "long_description": "Hoa hồng thuộc chi Rosa, có nhiều giống khác nhau về dáng cành, số lớp cánh, màu sắc và hương thơm. Thân thường có gai, lá kép và hoa có thể nở đơn lẻ hoặc theo chùm. Ở Việt Nam, nhiều giống hồng cho hoa thành nhiều đợt trong năm khi có đủ nắng, đất thoát nước và được tỉa chăm sóc phù hợp.",
     "facts": [
       "Chi thực vật: Rosa",
@@ -59,7 +59,7 @@
     "color": "#FFC93C",
     "scene_background": "#FFC93C",
     "description": "Tán hoa vàng rực rỡ luôn gợi nhớ đến những ngày ngập nắng.",
-    "image": "data/flowers/flower_photos/sunflowers/8563099326_8be9177101.jpg",
+    "image": "data/deploy_images/flowers/flower_photos/sunflowers/8563099326_8be9177101.jpg",
     "long_description": "Hướng dương (Helianthus annuus) là cây thân thảo ưa nắng. Phần đĩa lớn ở giữa thực chất gồm rất nhiều hoa nhỏ; các cánh vàng bao quanh tạo nên hình dáng quen thuộc. Tuỳ giống và điều kiện trồng, cây có thể cao nổi bật trong vườn hoặc nhỏ gọn để trồng chậu. Thời gian gieo trồng ở Việt Nam thay đổi theo vùng và kế hoạch mùa vụ.",
     "facts": [
       "Tên khoa học: Helianthus annuus",
@@ -76,7 +76,7 @@
     "color": "#9B7EDE",
     "scene_background": "#D3C4F3",
     "description": "Dáng hoa thanh lịch với sắc màu tươi tắn, nổi bật trên thân lá xanh.",
-    "image": "data/flowers/flower_photos/tulips/8523133474_d2c0845b54.jpg",
+    "image": "data/deploy_images/flowers/flower_photos/tulips/8523133474_d2c0845b54.jpg",
     "long_description": "Tulip (Tulipa) phát triển từ củ và thường có hoa hình cốc với nhiều màu sắc. Cây thích điều kiện mát, vì vậy ở Việt Nam thường được trồng tại vùng khí hậu lạnh hoặc trong môi trường được kiểm soát nhiệt độ. Khi giới thiệu mùa hoa, mùa xuân là quy luật phổ biến ở vùng ôn đới; thời điểm ở nơi trồng cụ thể còn phụ thuộc giống và kỹ thuật xử lý củ.",
     "facts": [
       "Chi thực vật: Tulipa",
@@ -97,7 +97,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06759.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06759.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -114,7 +114,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_08095.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_08095.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -131,7 +131,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07903.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07903.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -148,7 +148,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07984.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07984.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -165,7 +165,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_08047.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_08047.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -182,7 +182,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03178.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03178.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -199,7 +199,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04045.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04045.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -216,7 +216,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05791.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05791.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -233,7 +233,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06095.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06095.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -250,7 +250,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06346.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06346.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -267,7 +267,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06659.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06659.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -284,7 +284,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03894.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03894.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -301,7 +301,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04245.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04245.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -318,7 +318,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06191.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06191.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -335,7 +335,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05087.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05087.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -352,7 +352,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04936.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04936.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -369,7 +369,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06791.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06791.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -386,7 +386,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05360.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05360.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -403,7 +403,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03426.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03426.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -420,7 +420,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06842.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06842.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -437,7 +437,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06594.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06594.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -454,7 +454,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06505.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06505.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -471,7 +471,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06872.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06872.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -488,7 +488,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05221.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05221.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -505,7 +505,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04104.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04104.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -522,7 +522,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06640.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06640.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -539,7 +539,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03528.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03528.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -556,7 +556,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_08065.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_08065.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -573,7 +573,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05606.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05606.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -590,7 +590,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06474.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06474.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -607,7 +607,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06932.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06932.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -624,7 +624,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06989.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06989.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -641,7 +641,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04376.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04376.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -658,7 +658,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03811.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03811.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -675,7 +675,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05823.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05823.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -692,7 +692,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07042.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07042.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -709,7 +709,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05649.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05649.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -726,7 +726,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04558.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04558.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -743,7 +743,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02267.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02267.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -760,7 +760,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05726.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05726.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -777,7 +777,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02429.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02429.jpg",
     "color": "#6B9DD4",
     "scene_background": "#6B9DD4"
   },
@@ -794,7 +794,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_01503.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_01503.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -811,7 +811,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07147.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07147.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -828,7 +828,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_00972.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_00972.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -845,7 +845,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04977.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04977.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -862,7 +862,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04694.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04694.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -879,7 +879,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05187.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05187.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -896,7 +896,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03987.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03987.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -913,7 +913,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04208.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04208.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -930,7 +930,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03669.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03669.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -947,7 +947,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04745.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04745.jpg",
     "color": "#FF8A5B",
     "scene_background": "#FF8A5B"
   },
@@ -964,7 +964,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02774.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02774.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -981,7 +981,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_08125.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_08125.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -998,7 +998,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02656.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02656.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1015,7 +1015,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05055.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05055.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1032,7 +1032,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_08111.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_08111.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1049,7 +1049,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03020.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03020.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1066,7 +1066,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06288.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06288.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1083,7 +1083,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_08154.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_08154.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1100,7 +1100,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05860.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05860.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1117,7 +1117,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06122.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06122.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1134,7 +1134,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03271.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03271.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1151,7 +1151,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05552.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05552.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -1168,7 +1168,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07059.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07059.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1185,7 +1185,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05943.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05943.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1202,7 +1202,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05959.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05959.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1219,7 +1219,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07213.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07213.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1236,7 +1236,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05303.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05303.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1253,7 +1253,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04509.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04509.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -1270,7 +1270,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03617.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03617.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1287,7 +1287,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_00365.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_00365.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -1304,7 +1304,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02133.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02133.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -1321,7 +1321,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02538.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02538.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1338,7 +1338,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_00123.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_00123.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1355,7 +1355,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_01848.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_01848.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1372,7 +1372,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06709.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06709.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1389,7 +1389,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03299.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03299.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1406,7 +1406,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_01995.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_01995.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1423,7 +1423,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_00782.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_00782.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1440,7 +1440,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_01693.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_01693.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1457,7 +1457,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_01782.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_01782.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1474,7 +1474,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02596.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02596.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -1491,7 +1491,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04816.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04816.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1508,7 +1508,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_02881.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_02881.jpg",
     "color": "#FF6F91",
     "scene_background": "#FF6F91"
   },
@@ -1525,7 +1525,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_05502.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_05502.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1542,7 +1542,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_00522.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_00522.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1559,7 +1559,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_00680.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_00680.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1576,7 +1576,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06408.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06408.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1593,7 +1593,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04436.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04436.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1610,7 +1610,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_04886.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_04886.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1627,7 +1627,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_03054.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_03054.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -1644,7 +1644,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_06044.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_06044.jpg",
     "color": "#9B7EDE",
     "scene_background": "#9B7EDE"
   },
@@ -1661,7 +1661,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07372.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07372.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1678,7 +1678,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07485.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07485.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1695,7 +1695,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07642.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07642.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1712,7 +1712,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07712.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07712.jpg",
     "color": "#5BAE6B",
     "scene_background": "#5BAE6B"
   },
@@ -1729,7 +1729,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07790.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07790.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   },
@@ -1746,7 +1746,7 @@
       "Ảnh đại diện là ảnh chụp hoa thật",
       "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
     ],
-    "image": "data/flowers-102/jpg/image_07864.jpg",
+    "image": "data/deploy_images/flowers-102/jpg/image_07864.jpg",
     "color": "#FFC93C",
     "scene_background": "#FFC93C"
   }

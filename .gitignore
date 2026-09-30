@@ -24,6 +24,17 @@ artifacts/**
 *.faiss
 *.safetensors
 
+# Model files required by the deployed API (large binaries use Git LFS).
+!artifacts/classifier/
+!artifacts/classifier/classes.json
+!artifacts/classifier/metrics.json
+!artifacts/classifier/model.pt
+!artifacts/detector/
+!artifacts/detector/yolo11n.pt
+!artifacts/retrieval/
+!artifacts/retrieval/index.faiss
+!artifacts/retrieval/meta.json
+
 # Local runtime
 .env
 logs/

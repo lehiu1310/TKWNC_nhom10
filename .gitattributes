@@ -1,0 +1,4 @@
+artifacts/classifier/model.pt filter=lfs diff=lfs merge=lfs -text
+artifacts/detector/yolo11n.pt filter=lfs diff=lfs merge=lfs -text
+artifacts/retrieval/index.faiss filter=lfs diff=lfs merge=lfs -text
+data/deploy_images/**/*.jpg filter=lfs diff=lfs merge=lfs -text
