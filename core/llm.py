@@ -1,14 +1,13 @@
-"""Ứng dụng 4 — Chatbot RAG: tra cứu tài liệu (embeddings + FAISS) rồi để LLM trả lời có dẫn nguồn."""
+"""Chatbot RAG: truy xuất tài liệu hoa bằng BM25 nhẹ rồi sinh câu trả lời có dẫn nguồn."""
 import re
 import os
 import threading
+import math
+from collections import Counter
 from pathlib import Path
 from typing import Iterator
 
-import faiss
-import numpy as np
-from sentence_transformers import SentenceTransformer
-from config import DATA_DIR, DEVICE, EMBED_MODEL, GEMINI_MODEL, LLM_MODEL, LLM_PROVIDER
+from config import DATA_DIR, DEVICE, GEMINI_MODEL, LLM_MODEL, LLM_PROVIDER
 
 SYSTEM_PROMPT = (
     "Bạn là Cô làm vườn, trợ lý hỏi đáp về các loài hoa. "
@@ -40,17 +39,55 @@ def load_chunks(kb_dir: Path = DATA_DIR / "kb", max_chars: int = 600) -> list[di
 
 
 class Retriever:
-    def __init__(self, chunks: list[dict], model_name: str = EMBED_MODEL):
+    """Small BM25 retriever for the Vietnamese flower knowledge base.
+
+    Keeping retrieval lexical avoids loading a 470 MB embedding model on small
+    instances; the chunk corpus is tiny and its terms are already in Vietnamese.
+    """
+    _TOKEN_RE = re.compile(r"[\wÀ-ỹ]+", re.UNICODE)
+    _STOP_WORDS = {
+        "là", "và", "của", "có", "cho", "các", "những", "một", "này", "đó",
+        "thì", "với", "trong", "khi", "nào", "gì", "hãy", "được", "để", "từ",
+    }
+
+    @classmethod
+    def _terms(cls, text: str) -> list[str]:
+        words = [w.lower() for w in cls._TOKEN_RE.findall(text)]
+        words = [w for w in words if w not in cls._STOP_WORDS]
+        # Keep adjacent Vietnamese word pairs so phrases such as “hoa hồng”
+        # are ranked as a unit as well as by their individual terms.
+        return words + [f"{a}_{b}" for a, b in zip(words, words[1:])]
+
+    def __init__(self, chunks: list[dict]):
         self.chunks = chunks
-        self.embedder = SentenceTransformer(model_name, device=DEVICE)
-        embs = self.embedder.encode([c["text"] for c in chunks], normalize_embeddings=True, convert_to_numpy=True)
-        self.index = faiss.IndexFlatIP(embs.shape[1])
-        self.index.add(embs.astype("float32"))
+        self.documents = [self._terms(f"{c['source']} {c['text']}") for c in chunks]
+        self.term_counts = [Counter(doc) for doc in self.documents]
+        self.doc_lengths = [len(doc) for doc in self.documents]
+        self.avg_doc_length = sum(self.doc_lengths) / max(len(self.doc_lengths), 1)
+        self.document_frequency = Counter(
+            term for counts in self.term_counts for term in counts
+        )
 
     def search(self, query: str, k: int = 3) -> list[dict]:
-        q = self.embedder.encode([query], normalize_embeddings=True, convert_to_numpy=True).astype("float32")
-        scores, ids = self.index.search(q, k)
-        return [{**self.chunks[i], "score": round(float(s), 4)} for s, i in zip(scores[0], ids[0]) if i != -1]
+        terms = self._terms(query)
+        if not terms:
+            return []
+        n_docs = len(self.documents)
+        scores = []
+        for i, counts in enumerate(self.term_counts):
+            score = 0.0
+            length_norm = self.doc_lengths[i] / max(self.avg_doc_length, 1)
+            for term in terms:
+                frequency = counts.get(term, 0)
+                if not frequency:
+                    continue
+                idf = math.log(1 + (n_docs - self.document_frequency[term] + 0.5)
+                               / (self.document_frequency[term] + 0.5))
+                score += idf * frequency * 2.2 / (frequency + 1.2 * (0.25 + 0.75 * length_norm))
+            scores.append((score, i))
+        ranked = sorted(scores, reverse=True)[:max(0, k)]
+        return [{**self.chunks[i], "score": round(float(score), 4)}
+                for score, i in ranked if score > 0]
 
 
 class RAGChatbot:
