@@ -19,16 +19,16 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 | API phân loại | Process peak RSS | 423,3 MB | Dòng `API_PERF` trong log Render sau khi nạp classifier; RSS cực đại process, không phải RAM toàn container. Instance giới hạn 512 MB. |
 | API phát hiện | p50 / p95 | 38,74 s / 55,45 s | Locust 2.46.6, 51 request qua ba lượt một người dùng, 0 lỗi; nearest-rank tính từ history tích lũy của Locust. Chi tiết từng mẫu: [`reports/render-detect_samples.csv`](reports/render-detect_samples.csv); tổng hợp lượt: [`reports/render-detect_runs.csv`](reports/render-detect_runs.csv). |
 | API phát hiện | Process peak RSS | 506,2 MB | Cao nhất trong log `API_PERF` Render khi classifier và YOLO cùng nạp; giới hạn container Render Free 512 MB. Sau lần khởi động lại, riêng detector ghi 457,1 MB. |
-| API tìm ảnh | Độ trễ / lỗi | Chưa đo được | Một request ảnh hoa hồng tới Render Free làm instance vượt 512 MB và bị OOM (Render Events, 01/10/2026 00:42). Chưa có mẫu latency thành công; cần giảm RAM CLIP hoặc tăng bộ nhớ trước khi benchmark. |
+| API tìm ảnh | Độ trễ / lỗi | Chưa đo được trên bản deploy mới | Bản deploy cũ dùng CLIP ViT-B/32 và OOM trên Render Free (512 MB). Mã hiện tại dùng MobileCLIP2-S0 half precision; index 1.236 ảnh; truy vấn cục bộ bằng ảnh hoa hồng trả top-5 cùng nhãn. Cần deploy và đo live trước khi kết luận hết OOM. |
 | API chatbot | Độ trễ / lỗi | Chưa đo được | Một request `POST /api/chat/sync` trả 503 vì Render chưa có `GOOGLE_API_KEY`; log xác nhận `Thiếu GOOGLE_API_KEY (hoặc GEMINI_API_KEY) để dùng Gemini.` Chưa có mẫu thành công; cần thêm key vào Render Secret rồi benchmark. |
 
 ## 3. Giới hạn
 
 - Bộ phân loại chỉ học các nhãn trong 103 lớp; năm loài trên giao diện không đại diện cho toàn bộ phạm vi. Ảnh ngoài phân phối vẫn có thể bị gán nhãn gần nhất.
 - Detector YOLO11n pretrained COCO không có lớp hoa chuyên biệt; có thể không phát hiện hoa hoặc chỉ nhận diện vật thể nền thuộc COCO.
-- CLIP/FAISS trả ảnh tương tự trong index, không xác nhận danh tính thực vật.
+- MobileCLIP2-S0 + FAISS trả ảnh tương tự trong index 1.236 ảnh, không xác nhận danh tính thực vật. Truy vấn chữ tiếng Việt được dịch sang tiếng Anh bằng Helsinki-NLP opus-mt-vi-en trước khi mã hóa.
 - RAG giới hạn bởi 8 tệp tri thức và xếp hạng từ khóa BM25; câu hỏi dùng cách diễn đạt xa nội dung tài liệu có thể không truy xuất đúng đoạn. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
-- Đo thành công hiện có classifier (102 request) và detector (51 request). CLIP/FAISS làm Render Free OOM ở giới hạn 512 MB; chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.
+- Đo thành công trên dịch vụ hiện có classifier (102 request) và detector (51 request). Bản tìm ảnh cũ gây OOM; encoder MobileCLIP2 mới chỉ được kiểm tra cục bộ, chưa deploy/benchmark. Chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.
 
 ## 4. Rủi ro
 

@@ -1,0 +1,6 @@
+{
+  "model": "MobileCLIP2-S0",
+  "pretrained": "dfndr2b",
+  "embedding_dimension": 512,
+  "images": 1236
+}

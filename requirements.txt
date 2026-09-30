@@ -3,6 +3,7 @@ torch
 torchvision
 ultralytics>=8.3.0
 transformers>=4.56
+open_clip_torch>=3.3.0,<4
 sentence-transformers>=3.0
 accelerate
 faiss-cpu
