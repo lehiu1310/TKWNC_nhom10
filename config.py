@@ -3,8 +3,11 @@ import os
 from pathlib import Path
 
 import torch
+from dotenv import load_dotenv
 
 ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent))
+# Read local secrets from the ignored project-root .env without overriding shell/host secrets.
+load_dotenv(ROOT / ".env", override=False)
 DATA_DIR = ROOT / "data"
 ART_DIR = ROOT / "artifacts"
 
