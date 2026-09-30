@@ -1,0 +1,1753 @@
+[
+  {
+    "id": "daisy",
+    "name_vi": "Cúc mắt bò",
+    "name_en": "Oxeye daisy",
+    "meaning": "Vẻ thuần khiết, bình dị và sức sống giữa đồng cỏ.",
+    "bloom_season": "Cuối xuân – đầu thu (tùy vùng)",
+    "description": "Cánh hoa trắng bao quanh nhụy vàng nổi bật trên nền lá xanh.",
+    "long_description": "Cúc mắt bò (Leucanthemum vulgare) là cây thân thảo lâu năm với cụm hoa dạng đầu: phần giữa gồm nhiều hoa nhỏ màu vàng, bao quanh bởi các hoa tia màu trắng. Loài này phổ biến ở đồng cỏ ôn đới; thời điểm nở thay đổi theo khí hậu và vùng trồng.",
+    "facts": [
+      "Họ thực vật: Asteraceae (họ Cúc)",
+      "Cụm hoa có tâm vàng và hoa tia trắng",
+      "Ưa nơi có nắng; mùa nở tùy khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06223.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "dandelion",
+    "name_vi": "Bồ công anh",
+    "name_en": "Dandelion",
+    "meaning": "Ước mơ, tự do và những khởi đầu mới.",
+    "bloom_season": "Tháng 3 – 5",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C",
+    "description": "Từ đóa vàng nhỏ đến những chiếc dù hạt bay theo gió.",
+    "image": "data/flowers-102/jpg/image_06561.jpg",
+    "long_description": "Tên bồ công anh được dùng cho nhiều loài cây thuộc họ Cúc. Loài thường thấy có cụm hoa vàng; sau khi tàn, quả mang chùm lông mảnh giúp hạt theo gió phát tán. Vì có nhiều loài cùng tên, đặc điểm sinh trưởng và mùa hoa còn tuỳ giống, khí hậu địa phương và cách gọi dân gian.",
+    "facts": [
+      "Họ thực vật: Asteraceae (họ Cúc)",
+      "Quả có chùm lông giúp phát tán theo gió",
+      "Tên gọi phổ thông có thể chỉ nhiều loài khác nhau"
+    ]
+  },
+  {
+    "id": "roses",
+    "name_vi": "Hoa hồng",
+    "name_en": "Rose",
+    "meaning": "Tình yêu, lòng trân trọng và vẻ đẹp đa sắc.",
+    "bloom_season": "Quanh năm",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91",
+    "description": "Muôn sắc cánh hoa và hương thơm nồng nàn làm nên vẻ duyên dáng rất riêng.",
+    "image": "data/flowers-102/jpg/image_01171.jpg",
+    "long_description": "Hoa hồng thuộc chi Rosa, có nhiều giống khác nhau về dáng cành, số lớp cánh, màu sắc và hương thơm. Thân thường có gai, lá kép và hoa có thể nở đơn lẻ hoặc theo chùm. Ở Việt Nam, nhiều giống hồng cho hoa thành nhiều đợt trong năm khi có đủ nắng, đất thoát nước và được tỉa chăm sóc phù hợp.",
+    "facts": [
+      "Chi thực vật: Rosa",
+      "Thân thường có gai, lá kép và nhiều lớp cánh",
+      "Màu hoa có thể thay đổi thông điệp văn hoá"
+    ]
+  },
+  {
+    "id": "sunflowers",
+    "name_vi": "Hướng dương",
+    "name_en": "Sunflower",
+    "meaning": "Lạc quan, sức sống và niềm hy vọng.",
+    "bloom_season": "Tháng 4 – 5, 11 – 12",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C",
+    "description": "Tán hoa vàng rực rỡ luôn gợi nhớ đến những ngày ngập nắng.",
+    "image": "data/flowers/flower_photos/sunflowers/8563099326_8be9177101.jpg",
+    "long_description": "Hướng dương (Helianthus annuus) là cây thân thảo ưa nắng. Phần đĩa lớn ở giữa thực chất gồm rất nhiều hoa nhỏ; các cánh vàng bao quanh tạo nên hình dáng quen thuộc. Tuỳ giống và điều kiện trồng, cây có thể cao nổi bật trong vườn hoặc nhỏ gọn để trồng chậu. Thời gian gieo trồng ở Việt Nam thay đổi theo vùng và kế hoạch mùa vụ.",
+    "facts": [
+      "Tên khoa học: Helianthus annuus",
+      "Đĩa giữa gồm nhiều hoa nhỏ",
+      "Cây ưa nắng; cây cao có thể cần cọc đỡ khi gió mạnh"
+    ]
+  },
+  {
+    "id": "tulips",
+    "name_vi": "Tulip",
+    "name_en": "Tulip",
+    "meaning": "Tình cảm chân thành và một khởi đầu mới.",
+    "bloom_season": "Tháng 3 – 5",
+    "color": "#9B7EDE",
+    "scene_background": "#D3C4F3",
+    "description": "Dáng hoa thanh lịch với sắc màu tươi tắn, nổi bật trên thân lá xanh.",
+    "image": "data/flowers/flower_photos/tulips/8523133474_d2c0845b54.jpg",
+    "long_description": "Tulip (Tulipa) phát triển từ củ và thường có hoa hình cốc với nhiều màu sắc. Cây thích điều kiện mát, vì vậy ở Việt Nam thường được trồng tại vùng khí hậu lạnh hoặc trong môi trường được kiểm soát nhiệt độ. Khi giới thiệu mùa hoa, mùa xuân là quy luật phổ biến ở vùng ôn đới; thời điểm ở nơi trồng cụ thể còn phụ thuộc giống và kỹ thuật xử lý củ.",
+    "facts": [
+      "Chi thực vật: Tulipa",
+      "Cây mọc từ củ; hoa thường có dáng cốc",
+      "Ưa khí hậu mát, cần tránh để củ bị úng nước"
+    ]
+  },
+  {
+    "id": "pink-primrose",
+    "name_vi": "Anh thảo hồng",
+    "name_en": "Pink Primrose",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của anh thảo hồng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Anh thảo hồng (nhãn dữ liệu: pink primrose) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: pink primrose",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06759.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "globe-thistle",
+    "name_vi": "Kế cầu",
+    "name_en": "Globe Thistle",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của kế cầu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Kế cầu (nhãn dữ liệu: globe thistle) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: globe thistle",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_08095.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "blanket-flower",
+    "name_vi": "Cúc Gaillardia",
+    "name_en": "Blanket Flower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc gaillardia trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc Gaillardia (nhãn dữ liệu: blanket flower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: blanket flower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07903.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "trumpet-creeper",
+    "name_vi": "Đăng tiêu",
+    "name_en": "Trumpet Creeper",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của đăng tiêu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Đăng tiêu (nhãn dữ liệu: trumpet creeper) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: trumpet creeper",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07984.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "blackberry-lily",
+    "name_vi": "Diên vĩ báo",
+    "name_en": "Blackberry Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của diên vĩ báo trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Diên vĩ báo (nhãn dữ liệu: blackberry lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: blackberry lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_08047.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "snapdragon",
+    "name_vi": "Hoa mõm sói",
+    "name_en": "Snapdragon",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa mõm sói trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa mõm sói (nhãn dữ liệu: snapdragon) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: snapdragon",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03178.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "colt-s-foot",
+    "name_vi": "Khoản đông hoa",
+    "name_en": "Colt'S Foot",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của khoản đông hoa trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Khoản đông hoa (nhãn dữ liệu: colt's foot) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: colt's foot",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04045.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "king-protea",
+    "name_vi": "Protea hoàng đế",
+    "name_en": "King Protea",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của protea hoàng đế trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Protea hoàng đế (nhãn dữ liệu: king protea) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: king protea",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05791.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "spear-thistle",
+    "name_vi": "Kế gai",
+    "name_en": "Spear Thistle",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của kế gai trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Kế gai (nhãn dữ liệu: spear thistle) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: spear thistle",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06095.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "yellow-iris",
+    "name_vi": "Diên vĩ vàng",
+    "name_en": "Yellow Iris",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của diên vĩ vàng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Diên vĩ vàng (nhãn dữ liệu: yellow iris) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: yellow iris",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06346.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "globe-flower",
+    "name_vi": "Cầu hoa vàng",
+    "name_en": "Globe-Flower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cầu hoa vàng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cầu hoa vàng (nhãn dữ liệu: globe-flower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: globe-flower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06659.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "purple-coneflower",
+    "name_vi": "Cúc Echinacea",
+    "name_en": "Purple Coneflower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc echinacea trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc Echinacea (nhãn dữ liệu: purple coneflower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: purple coneflower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03894.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "peruvian-lily",
+    "name_vi": "Ly Peru",
+    "name_en": "Peruvian Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của ly peru trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Ly Peru (nhãn dữ liệu: peruvian lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: peruvian lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04245.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "balloon-flower",
+    "name_vi": "Hoa cát cánh",
+    "name_en": "Balloon Flower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa cát cánh trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa cát cánh (nhãn dữ liệu: balloon flower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: balloon flower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06191.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "hard-leaved-pocket-orchid",
+    "name_vi": "Lan hài",
+    "name_en": "Hard-Leaved Pocket Orchid",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của lan hài trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Lan hài (nhãn dữ liệu: hard-leaved pocket orchid) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: hard-leaved pocket orchid",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05087.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "giant-white-arum-lily",
+    "name_vi": "Rum trắng",
+    "name_en": "Giant White Arum Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của rum trắng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Rum trắng (nhãn dữ liệu: giant white arum lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: giant white arum lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04936.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "fire-lily",
+    "name_vi": "Huệ lửa",
+    "name_en": "Fire Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của huệ lửa trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Huệ lửa (nhãn dữ liệu: fire lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: fire lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06791.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "pincushion-flower",
+    "name_vi": "Hoa scabiosa",
+    "name_en": "Pincushion Flower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa scabiosa trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa scabiosa (nhãn dữ liệu: pincushion flower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: pincushion flower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05360.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "fritillary",
+    "name_vi": "Hoa fritillaria",
+    "name_en": "Fritillary",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa fritillaria trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa fritillaria (nhãn dữ liệu: fritillary) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: fritillary",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03426.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "red-ginger",
+    "name_vi": "Gừng đỏ",
+    "name_en": "Red Ginger",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của gừng đỏ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Gừng đỏ (nhãn dữ liệu: red ginger) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: red ginger",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06842.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "grape-hyacinth",
+    "name_vi": "Dạ hương nho",
+    "name_en": "Grape Hyacinth",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của dạ hương nho trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Dạ hương nho (nhãn dữ liệu: grape hyacinth) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: grape hyacinth",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06594.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "corn-poppy",
+    "name_vi": "Anh túc đỏ",
+    "name_en": "Corn Poppy",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của anh túc đỏ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Anh túc đỏ (nhãn dữ liệu: corn poppy) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: corn poppy",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06505.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "prince-of-wales-feathers",
+    "name_vi": "Mào gà đuôi phụng",
+    "name_en": "Prince Of Wales Feathers",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của mào gà đuôi phụng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Mào gà đuôi phụng (nhãn dữ liệu: prince of wales feathers) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: prince of wales feathers",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06872.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "stemless-gentian",
+    "name_vi": "Long đởm không thân",
+    "name_en": "Stemless Gentian",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của long đởm không thân trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Long đởm không thân (nhãn dữ liệu: stemless gentian) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: stemless gentian",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05221.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "artichoke",
+    "name_vi": "Atisô",
+    "name_en": "Artichoke",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của atisô trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Atisô (nhãn dữ liệu: artichoke) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: artichoke",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04104.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "canterbury-bells",
+    "name_vi": "Chuông Canterbury",
+    "name_en": "Canterbury Bells",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của chuông canterbury trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Chuông Canterbury (nhãn dữ liệu: canterbury bells) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: canterbury bells",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06640.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "sweet-william",
+    "name_vi": "Cẩm chướng chùm",
+    "name_en": "Sweet William",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cẩm chướng chùm trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cẩm chướng chùm (nhãn dữ liệu: sweet william) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: sweet william",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03528.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "carnation",
+    "name_vi": "Cẩm chướng",
+    "name_en": "Carnation",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cẩm chướng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cẩm chướng (nhãn dữ liệu: carnation) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: carnation",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_08065.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "garden-phlox",
+    "name_vi": "Phlox vườn",
+    "name_en": "Garden Phlox",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của phlox vườn trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Phlox vườn (nhãn dữ liệu: garden phlox) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: garden phlox",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05606.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "love-in-the-mist",
+    "name_vi": "Hoa tình yêu trong sương",
+    "name_en": "Love In The Mist",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa tình yêu trong sương trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa tình yêu trong sương (nhãn dữ liệu: love in the mist) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: love in the mist",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06474.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "mexican-aster",
+    "name_vi": "Cúc Mexico",
+    "name_en": "Mexican Aster",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc mexico trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc Mexico (nhãn dữ liệu: mexican aster) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: mexican aster",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06932.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "alpine-sea-holly",
+    "name_vi": "Kế biển Alpine",
+    "name_en": "Alpine Sea Holly",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của kế biển alpine trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Kế biển Alpine (nhãn dữ liệu: alpine sea holly) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: alpine sea holly",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06989.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "ruby-lipped-cattleya",
+    "name_vi": "Lan Cattleya môi ruby",
+    "name_en": "Ruby-Lipped Cattleya",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của lan cattleya môi ruby trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Lan Cattleya môi ruby (nhãn dữ liệu: ruby-lipped cattleya) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: ruby-lipped cattleya",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04376.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "cape-flower",
+    "name_vi": "Hoa Cape",
+    "name_en": "Cape Flower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa cape trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa Cape (nhãn dữ liệu: cape flower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: cape flower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03811.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "great-masterwort",
+    "name_vi": "Astrantia",
+    "name_en": "Great Masterwort",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của astrantia trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Astrantia (nhãn dữ liệu: great masterwort) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: great masterwort",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05823.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "siam-tulip",
+    "name_vi": "Nghệ Thái",
+    "name_en": "Siam Tulip",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của nghệ thái trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Nghệ Thái (nhãn dữ liệu: siam tulip) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: siam tulip",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07042.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "sweet-pea",
+    "name_vi": "Đậu thơm",
+    "name_en": "Sweet Pea",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của đậu thơm trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Đậu thơm (nhãn dữ liệu: sweet pea) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: sweet pea",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05649.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "lenten-rose",
+    "name_vi": "Hồng mùa chay",
+    "name_en": "Lenten Rose",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hồng mùa chay trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hồng mùa chay (nhãn dữ liệu: lenten rose) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: lenten rose",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04558.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "barbeton-daisy",
+    "name_vi": "Hoa đồng tiền",
+    "name_en": "Barbeton Daisy",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa đồng tiền trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa đồng tiền (nhãn dữ liệu: barbeton daisy) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: barbeton daisy",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02267.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "daffodil",
+    "name_vi": "Thủy tiên vàng",
+    "name_en": "Daffodil",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của thủy tiên vàng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Thủy tiên vàng (nhãn dữ liệu: daffodil) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: daffodil",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05726.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "sword-lily",
+    "name_vi": "Lay ơn",
+    "name_en": "Sword Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của lay ơn trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Lay ơn (nhãn dữ liệu: sword lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: sword lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02429.jpg",
+    "color": "#6B9DD4",
+    "scene_background": "#6B9DD4"
+  },
+  {
+    "id": "poinsettia",
+    "name_vi": "Trạng nguyên",
+    "name_en": "Poinsettia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của trạng nguyên trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Trạng nguyên (nhãn dữ liệu: poinsettia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: poinsettia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_01503.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "bolero-deep-blue",
+    "name_vi": "Cát tường xanh",
+    "name_en": "Bolero Deep Blue",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cát tường xanh trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cát tường xanh (nhãn dữ liệu: bolero deep blue) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bolero deep blue",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07147.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "wallflower",
+    "name_vi": "Hoa wallflower",
+    "name_en": "Wallflower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa wallflower trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa wallflower (nhãn dữ liệu: wallflower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: wallflower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_00972.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "marigold",
+    "name_vi": "Vạn thọ",
+    "name_en": "Marigold",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của vạn thọ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Vạn thọ (nhãn dữ liệu: marigold) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: marigold",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04977.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "buttercup",
+    "name_vi": "Mao lương",
+    "name_en": "Buttercup",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của mao lương trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Mao lương (nhãn dữ liệu: buttercup) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: buttercup",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04694.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "english-marigold",
+    "name_vi": "Cúc kim tiền",
+    "name_en": "English Marigold",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc kim tiền trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc kim tiền (nhãn dữ liệu: english marigold) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: english marigold",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05187.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "petunia",
+    "name_vi": "Dạ yên thảo",
+    "name_en": "Petunia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của dạ yên thảo trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Dạ yên thảo (nhãn dữ liệu: petunia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: petunia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03987.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "wild-pansy",
+    "name_vi": "Viola ba màu",
+    "name_en": "Wild Pansy",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của viola ba màu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Viola ba màu (nhãn dữ liệu: wild pansy) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: wild pansy",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04208.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "primula",
+    "name_vi": "Anh thảo",
+    "name_en": "Primula",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của anh thảo trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Anh thảo (nhãn dữ liệu: primula) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: primula",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03669.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "pelargonium",
+    "name_vi": "Phong lữ thảo",
+    "name_en": "Pelargonium",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của phong lữ thảo trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Phong lữ thảo (nhãn dữ liệu: pelargonium) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: pelargonium",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04745.jpg",
+    "color": "#FF8A5B",
+    "scene_background": "#FF8A5B"
+  },
+  {
+    "id": "bishop-of-llandaff",
+    "name_vi": "Thược dược Bishop of Llandaff",
+    "name_en": "Bishop Of Llandaff",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của thược dược bishop of llandaff trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Thược dược Bishop of Llandaff (nhãn dữ liệu: bishop of llandaff) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bishop of llandaff",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02774.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "gaura",
+    "name_vi": "Gaura",
+    "name_en": "Gaura",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của gaura trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Gaura (nhãn dữ liệu: gaura) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: gaura",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_08125.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "geranium",
+    "name_vi": "Phong lữ",
+    "name_en": "Geranium",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của phong lữ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Phong lữ (nhãn dữ liệu: geranium) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: geranium",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02656.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "orange-dahlia",
+    "name_vi": "Thược dược cam",
+    "name_en": "Orange Dahlia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của thược dược cam trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Thược dược cam (nhãn dữ liệu: orange dahlia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: orange dahlia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05055.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "tiger-lily",
+    "name_vi": "Ly hổ",
+    "name_en": "Tiger Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của ly hổ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Ly hổ (nhãn dữ liệu: tiger lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: tiger lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_08111.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "pink-yellow-dahlia",
+    "name_vi": "Thược dược hồng vàng",
+    "name_en": "Pink-Yellow Dahlia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của thược dược hồng vàng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Thược dược hồng vàng (nhãn dữ liệu: pink-yellow dahlia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: pink-yellow dahlia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03020.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "cautleya-spicata",
+    "name_vi": "Gừng cảnh Cautleya",
+    "name_en": "Cautleya Spicata",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của gừng cảnh cautleya trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Gừng cảnh Cautleya (nhãn dữ liệu: cautleya spicata) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: cautleya spicata",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06288.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "japanese-anemone",
+    "name_vi": "Hải quỳ Nhật",
+    "name_en": "Japanese Anemone",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hải quỳ nhật trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hải quỳ Nhật (nhãn dữ liệu: japanese anemone) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: japanese anemone",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_08154.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "black-eyed-susan",
+    "name_vi": "Cúc mắt đen",
+    "name_en": "Black-Eyed Susan",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc mắt đen trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc mắt đen (nhãn dữ liệu: black-eyed susan) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: black-eyed susan",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05860.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "silverbush",
+    "name_vi": "Bìm bạc",
+    "name_en": "Silverbush",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của bìm bạc trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Bìm bạc (nhãn dữ liệu: silverbush) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: silverbush",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06122.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "californian-poppy",
+    "name_vi": "Anh túc California",
+    "name_en": "Californian Poppy",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của anh túc california trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Anh túc California (nhãn dữ liệu: californian poppy) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: californian poppy",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03271.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "osteospermum",
+    "name_vi": "Cúc châu Phi",
+    "name_en": "Osteospermum",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc châu phi trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc châu Phi (nhãn dữ liệu: osteospermum) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: osteospermum",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05552.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "spring-crocus",
+    "name_vi": "Nghệ tây mùa xuân",
+    "name_en": "Spring Crocus",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của nghệ tây mùa xuân trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Nghệ tây mùa xuân (nhãn dữ liệu: spring crocus) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: spring crocus",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07059.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "bearded-iris",
+    "name_vi": "Diên vĩ râu",
+    "name_en": "Bearded Iris",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của diên vĩ râu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Diên vĩ râu (nhãn dữ liệu: bearded iris) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bearded iris",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05943.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "windflower",
+    "name_vi": "Cỏ chân ngỗng",
+    "name_en": "Windflower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cỏ chân ngỗng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cỏ chân ngỗng (nhãn dữ liệu: windflower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: windflower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05959.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "moon-orchid",
+    "name_vi": "Lan hồ điệp",
+    "name_en": "Moon Orchid",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của lan hồ điệp trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Lan hồ điệp (nhãn dữ liệu: moon orchid) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: moon orchid",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07213.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "tree-poppy",
+    "name_vi": "Anh túc thân gỗ",
+    "name_en": "Tree Poppy",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của anh túc thân gỗ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Anh túc thân gỗ (nhãn dữ liệu: tree poppy) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: tree poppy",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05303.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "gazania",
+    "name_vi": "Cúc Gazania",
+    "name_en": "Gazania",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cúc gazania trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cúc Gazania (nhãn dữ liệu: gazania) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: gazania",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04509.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "azalea",
+    "name_vi": "Đỗ quyên",
+    "name_en": "Azalea",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của đỗ quyên trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Đỗ quyên (nhãn dữ liệu: azalea) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: azalea",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03617.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "water-lily",
+    "name_vi": "Hoa súng",
+    "name_en": "Water Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa súng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa súng (nhãn dữ liệu: water lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: water lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_00365.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "thorn-apple",
+    "name_vi": "Cà độc dược",
+    "name_en": "Thorn Apple",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cà độc dược trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cà độc dược (nhãn dữ liệu: thorn apple) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: thorn apple",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02133.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "morning-glory",
+    "name_vi": "Bìm bìm",
+    "name_en": "Morning Glory",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của bìm bìm trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Bìm bìm (nhãn dữ liệu: morning glory) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: morning glory",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02538.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "passion-flower",
+    "name_vi": "Lạc tiên",
+    "name_en": "Passion Flower",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của lạc tiên trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Lạc tiên (nhãn dữ liệu: passion flower) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: passion flower",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_00123.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "lotus",
+    "name_vi": "Hoa sen",
+    "name_en": "Lotus",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa sen trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa sen (nhãn dữ liệu: lotus) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: lotus",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_01848.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "toad-lily",
+    "name_vi": "Lily cóc",
+    "name_en": "Toad Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của lily cóc trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Lily cóc (nhãn dữ liệu: toad lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: toad lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06709.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "bird-of-paradise",
+    "name_vi": "Thiên điểu",
+    "name_en": "Bird Of Paradise",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của thiên điểu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Thiên điểu (nhãn dữ liệu: bird of paradise) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bird of paradise",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03299.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "anthurium",
+    "name_vi": "Hồng môn",
+    "name_en": "Anthurium",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hồng môn trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hồng môn (nhãn dữ liệu: anthurium) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: anthurium",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_01995.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "frangipani",
+    "name_vi": "Hoa sứ",
+    "name_en": "Frangipani",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa sứ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa sứ (nhãn dữ liệu: frangipani) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: frangipani",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_00782.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "clematis",
+    "name_vi": "Ông lão",
+    "name_en": "Clematis",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của ông lão trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Ông lão (nhãn dữ liệu: clematis) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: clematis",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_01693.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "hibiscus",
+    "name_vi": "Dâm bụt",
+    "name_en": "Hibiscus",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của dâm bụt trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Dâm bụt (nhãn dữ liệu: hibiscus) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: hibiscus",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_01782.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "columbine",
+    "name_vi": "Hoa bồ câu",
+    "name_en": "Columbine",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa bồ câu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa bồ câu (nhãn dữ liệu: columbine) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: columbine",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02596.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "desert-rose",
+    "name_vi": "Sứ Thái",
+    "name_en": "Desert-Rose",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của sứ thái trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Sứ Thái (nhãn dữ liệu: desert-rose) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: desert-rose",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04816.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "tree-mallow",
+    "name_vi": "Cẩm quỳ thân gỗ",
+    "name_en": "Tree Mallow",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cẩm quỳ thân gỗ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cẩm quỳ thân gỗ (nhãn dữ liệu: tree mallow) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: tree mallow",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_02881.jpg",
+    "color": "#FF6F91",
+    "scene_background": "#FF6F91"
+  },
+  {
+    "id": "magnolia",
+    "name_vi": "Mộc lan",
+    "name_en": "Magnolia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của mộc lan trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Mộc lan (nhãn dữ liệu: magnolia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: magnolia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_05502.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "cyclamen",
+    "name_vi": "Anh thảo Cyclamen",
+    "name_en": "Cyclamen",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của anh thảo cyclamen trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Anh thảo Cyclamen (nhãn dữ liệu: cyclamen) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: cyclamen",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_00522.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "watercress",
+    "name_vi": "Cải xoong ra hoa",
+    "name_en": "Watercress",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cải xoong ra hoa trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cải xoong ra hoa (nhãn dữ liệu: watercress) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: watercress",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_00680.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "monkshood",
+    "name_vi": "Ô đầu",
+    "name_en": "Monkshood",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của ô đầu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Ô đầu (nhãn dữ liệu: monkshood) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: monkshood",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06408.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "canna-lily",
+    "name_vi": "Dong riềng cảnh",
+    "name_en": "Canna Lily",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của dong riềng cảnh trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Dong riềng cảnh (nhãn dữ liệu: canna lily) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: canna lily",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04436.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "hippeastrum",
+    "name_vi": "Huệ tây",
+    "name_en": "Hippeastrum",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của huệ tây trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Huệ tây (nhãn dữ liệu: hippeastrum) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: hippeastrum",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_04886.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "bee-balm",
+    "name_vi": "Bạc hà ong",
+    "name_en": "Bee Balm",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của bạc hà ong trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Bạc hà ong (nhãn dữ liệu: bee balm) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bee balm",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_03054.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "ball-moss",
+    "name_vi": "Rêu cầu",
+    "name_en": "Ball Moss",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của rêu cầu trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Rêu cầu (nhãn dữ liệu: ball moss) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: ball moss",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_06044.jpg",
+    "color": "#9B7EDE",
+    "scene_background": "#9B7EDE"
+  },
+  {
+    "id": "foxglove",
+    "name_vi": "Mao địa hoàng",
+    "name_en": "Foxglove",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của mao địa hoàng trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Mao địa hoàng (nhãn dữ liệu: foxglove) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: foxglove",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07372.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "bougainvillea",
+    "name_vi": "Hoa giấy",
+    "name_en": "Bougainvillea",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của hoa giấy trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Hoa giấy (nhãn dữ liệu: bougainvillea) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bougainvillea",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07485.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "camellia",
+    "name_vi": "Trà mi",
+    "name_en": "Camellia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của trà mi trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Trà mi (nhãn dữ liệu: camellia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: camellia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07642.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "mallow",
+    "name_vi": "Cẩm quỳ",
+    "name_en": "Mallow",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của cẩm quỳ trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Cẩm quỳ (nhãn dữ liệu: mallow) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: mallow",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07712.jpg",
+    "color": "#5BAE6B",
+    "scene_background": "#5BAE6B"
+  },
+  {
+    "id": "mexican-petunia",
+    "name_vi": "Dạ yên thảo Mexico",
+    "name_en": "Mexican Petunia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của dạ yên thảo mexico trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Dạ yên thảo Mexico (nhãn dữ liệu: mexican petunia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: mexican petunia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07790.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  },
+  {
+    "id": "bromelia",
+    "name_vi": "Dứa cảnh",
+    "name_en": "Bromelia",
+    "meaning": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa.",
+    "bloom_season": "Tùy giống và vùng khí hậu",
+    "description": "Ảnh thực tế của dứa cảnh trong bộ dữ liệu nhận diện hoa.",
+    "long_description": "Dứa cảnh (nhãn dữ liệu: bromelia) là một trong các nhóm hoa có ảnh đại diện trong Oxford Flowers 102. Đặc điểm hình thái, mùa nở và cách trồng có thể khác nhau tùy giống và khí hậu địa phương.",
+    "facts": [
+      "Nhãn phân loại trong bộ dữ liệu: bromelia",
+      "Ảnh đại diện là ảnh chụp hoa thật",
+      "Mùa hoa và cách chăm sóc tùy giống, khí hậu"
+    ],
+    "image": "data/flowers-102/jpg/image_07864.jpg",
+    "color": "#FFC93C",
+    "scene_background": "#FFC93C"
+  }
+]

@@ -1,0 +1,61 @@
+{
+  "colorGrading": {
+    "name": "garden-soft",
+    "cssFilter": "saturate(1.04) contrast(1.02) sepia(0.025)"
+  },
+  "images": {
+    "daisy": {
+      "url": "/images/display-flowers/daisy.jpg",
+      "sourceImageUrl": "https://images.unsplash.com/photo-1580319481957-b20ba850a25e?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
+      "source": "Unsplash",
+      "sourcePage": "https://unsplash.com/photos/un-primer-plano-de-una-margarita-blanca-con-un-centro-amarillo-jMHDCmnMXtI",
+      "photographer": "Ruslan Sikunov",
+      "license": "Unsplash License",
+      "width": 1800,
+      "height": 1800,
+      "alt": "Cúc trắng cận cảnh, nhụy vàng rõ nét trên nền xanh mờ"
+    },
+    "dandelion": {
+      "url": "/images/display-flowers/dandelion.jpg",
+      "sourceImageUrl": "https://images.unsplash.com/photo-1588918001123-94f85b1ab1bf?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
+      "source": "Unsplash",
+      "sourcePage": "https://unsplash.com/photos/yellow-dandelion-in-close-up-photography-q4hnxqjPvWY",
+      "photographer": "Hendrik Roggemann",
+      "license": "Unsplash License",
+      "width": 1800,
+      "height": 1800,
+      "alt": "Bồ công anh vàng cận cảnh, cánh hoa nét trên nền xanh mờ"
+    },
+    "rose": {
+      "url": "/images/display-flowers/rose.jpg",
+      "sourceImageUrl": "https://images.unsplash.com/photo-1732507462670-3758c55242aa?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
+      "source": "Unsplash",
+      "sourcePage": "https://unsplash.com/photos/a-close-up-of-a-red-rose-in-a-garden-o3uxl8x0p88",
+      "photographer": "Leo_Visions",
+      "license": "Unsplash License",
+      "width": 1800,
+      "height": 1800,
+      "alt": "Một bông hồng đỏ nở rộ, cánh hoa rõ nét trên nền vườn mờ"
+    },
+    "sunflower": {
+      "url": "/images/display-flowers/sunflower.jpg",
+      "sourceImageUrl": "https://images.unsplash.com/photo-1530981541910-e49c5e95d631?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
+      "source": "Unsplash",
+      "sourcePage": "https://unsplash.com/photos/shallow-focus-photography-of-yellow-sunflower-oCwc0Qpkm10",
+      "photographer": "Jason Leung",
+      "license": "Unsplash License",
+      "width": 1800,
+      "height": 1800,
+      "alt": "Một bông hướng dương vàng cận cảnh với hậu cảnh xanh mờ"
+    },
+    "tulip": {
+      "url": "/images/display-flowers/tulip-bloom.png",
+      "source": "OpenAI ImageGen",
+      "photographer": "Ảnh tạo riêng cho đồ án",
+      "license": "AI-generated project asset",
+      "width": 1254,
+      "height": 1254,
+      "alt": "Hoa tulip hồng đã nở, cận cảnh trên nền xanh mờ"
+    }
+  }
+}

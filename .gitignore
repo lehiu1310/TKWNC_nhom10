@@ -1,0 +1,29 @@
+# Python
+.venv/
+.python311/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+tmp/
+.env.*
+!.env.example
+
+# Frontend
+web/node_modules/
+web/dist/
+**/.pnpm-store/
+
+# Downloaded data and generated model/index files
+data/flowers/
+data/flowers-102/
+data/coco128/
+data/*.tgz
+artifacts/**
+!artifacts/.gitkeep
+*.pt
+*.faiss
+*.safetensors
+
+# Local runtime
+.env
+logs/

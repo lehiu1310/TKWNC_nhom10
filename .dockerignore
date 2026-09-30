@@ -1,0 +1,11 @@
+.git
+.venv
+**/node_modules
+**/dist
+**/.pnpm-store
+logs
+.pytest_cache
+**/__pycache__
+cloudflared
+*.zip
+data/coco128
