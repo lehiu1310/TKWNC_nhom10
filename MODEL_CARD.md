@@ -10,7 +10,7 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 
 | Thành phần | Chỉ số | Kết quả | Bằng chứng / giới hạn |
 |---|---|---:|---|
-| Bộ phân loại | Accuracy validation | 0,9026 (90,26%) | `artifacts/classifier/metrics.json`; 2.135 ảnh validation, 103 lớp, 3 epoch. Artifact hiện có, chưa phải phép đo độc lập mới. |
+| Bộ phân loại | Accuracy validation | 0,9026 (90,26%) | Snapshot có thể xem trong [`reports/classifier_metrics.json`](reports/classifier_metrics.json), lấy từ artifact hiện có; 2.135 ảnh validation, 103 lớp, 3 epoch. Không phải phép đo độc lập mới. |
 | Bộ phân loại | Macro-F1 / confusion matrix | Chưa đo được | Không có trong metrics artifact hiện có. |
 | Detector | mAP50 | Chưa đo được | YOLO11n pretrained COCO; không có kết quả fine-tune trên bộ hoa riêng. |
 | Tìm ảnh | Precision@5 | Chưa đo được | Có 1.236 ảnh trong index; chưa có ground-truth relevance set. |
