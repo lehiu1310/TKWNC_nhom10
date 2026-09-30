@@ -27,7 +27,7 @@ LLM_MODEL = os.environ.get(
     "Qwen/Qwen2.5-1.5B-Instruct" if DEVICE == "cuda" else "Qwen/Qwen2.5-0.5B-Instruct",
 )
 LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "gemini").strip().lower()
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
 
 # Mô hình được nạp lần đầu khi người dùng mở từng tính năng.
 ENABLED_MODELS = {
