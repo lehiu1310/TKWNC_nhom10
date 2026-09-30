@@ -87,8 +87,9 @@ Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md
 | Endpoint | Số request | Lỗi | p50 | p95 | Trung bình | Process peak RSS |
 |---|---:|---:|---:|---:|---:|---:|
 | `POST /api/classify` | 102 | 0 | 3,90 s | 4,50 s | 3,87 s | 423,3 MB |
+| `POST /api/detect` | 13 | 0 | 31,00 s | 44,00 s | 33,10 s | 506,2 MB |
 
-Chi tiết đo có trong [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv). Đây là phép đo đơn người dùng trên gói CPU miễn phí, không đại diện tải đồng thời cao. Chưa đo p50/p95 và RAM riêng cho YOLO, CLIP/FAISS hoặc chatbot Gemini; cần benchmark riêng để không trộn mức tải/mô hình khác nhau.
+Kết quả detector là mẫu thăm dò dưới mức 50 request; không đủ để xác nhận C5. Chi tiết có trong [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv) và [`reports/render-detect_stats.csv`](reports/render-detect_stats.csv). Đây là phép đo đơn người dùng trên gói CPU miễn phí, không đại diện tải đồng thời cao. YOLO nâng process peak RSS lên 506,2 MB trên giới hạn container 512 MB; chưa đo CLIP/FAISS và chatbot Gemini vì nạp tiếp model trên instance này có nguy cơ OOM. Cần benchmark riêng trên phần cứng đủ RAM để hoàn tất các route còn lại.
 
 Có thể chạy lại bằng `python -m pip install -r requirements-benchmark.txt`, đặt `FLOWER_TEST_IMAGE` trỏ tới ảnh hoa rồi chọn task Locust cần đo bằng `--tags classify`, `--tags detect`, `--tags search-image` hoặc `--tags chat`.
 
