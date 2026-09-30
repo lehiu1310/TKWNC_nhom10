@@ -4,6 +4,8 @@ WORKDIR /web
 COPY web/package.json web/pnpm-lock.yaml ./
 RUN corepack enable pnpm && pnpm install --frozen-lockfile
 COPY web/ ./
+# App.jsx imports the shared JSON catalogue from ../../data, which resolves to /data in this stage.
+COPY data/ /data/
 RUN npm run build
 
 # ---- Tầng 2: API Python + mô hình ----
