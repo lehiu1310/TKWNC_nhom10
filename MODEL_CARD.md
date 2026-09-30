@@ -15,7 +15,9 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 | Detector | mAP50 | Chưa đo được | YOLO11n pretrained COCO; không có kết quả fine-tune trên bộ hoa riêng. |
 | Tìm ảnh | Precision@5 | Chưa đo được | Có 1.236 ảnh trong index; chưa có ground-truth relevance set. |
 | RAG | Hit@3 / độ đúng câu trả lời | Chưa đo được | Chưa có tập 30 câu hỏi với nguồn chuẩn. |
-| API | p50 / p95 và RAM | Chưa đo được | Chưa benchmark trên backend deploy và chưa đo RAM thật. |
+| API phân loại | p50 / p95 | 3,90 s / 4,50 s | Locust 2.46.6, 102 request, 1 người dùng đồng thời tới Render Free ngày 30/09/2026; 0 lỗi. CSV: [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv). |
+| API phân loại | Process peak RSS | 423,3 MB | Dòng `API_PERF` trong log Render sau khi nạp classifier; RSS cực đại process, không phải RAM toàn container. Instance giới hạn 512 MB. |
+| API detect / search / chat | p50 / p95 và RAM riêng | Chưa đo được | Chưa benchmark tách riêng cho các model/route này. |
 
 ## 3. Giới hạn
 
@@ -23,7 +25,7 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 - Detector YOLO11n pretrained COCO không có lớp hoa chuyên biệt; có thể không phát hiện hoa hoặc chỉ nhận diện vật thể nền thuộc COCO.
 - CLIP/FAISS trả ảnh tương tự trong index, không xác nhận danh tính thực vật.
 - RAG giới hạn bởi 8 tệp tri thức. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
-- Chưa có số liệu hiệu năng, độ trễ, RAM đáng tin cậy trên phần cứng deploy.
+- Số đo API hiện chỉ bao gồm classifier trên Render Free (0,15 CPU, giới hạn RAM 512 MB); chưa đại diện hiệu năng của YOLO, CLIP/FAISS hoặc chatbot Gemini.
 
 ## 4. Rủi ro
 

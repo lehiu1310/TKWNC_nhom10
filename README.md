@@ -78,7 +78,19 @@ API gồm 10 endpoint: `/api/health`, `/api/species`, `/api/species/{id}/image`,
 
 Các biến môi trường backend chính: `ENABLED_MODELS`, `LLM_PROVIDER` (`gemini` mặc định hoặc `hf_local`), `GEMINI_MODEL`, `GOOGLE_API_KEY` (hoặc `GEMINI_API_KEY`), `LLM_MODEL`, `CLIP_MODEL`, `TRANSLATION_MODEL`, `EMBED_MODEL`, `MAX_UPLOAD_MB`, `CORS_ORIGINS`, `APP_ROOT`. Không đặt khóa Gemini trong frontend. Frontend hỗ trợ `VITE_API_BASE_URL` (ưu tiên) và `VITE_API_URL`; để trống thì dùng proxy `/api` của Vite tới cổng 8000.
 
-Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). Chạy API tests bằng `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`; bộ test dùng model giả nên không tải checkpoint hay cần GPU. Bộ test bao phủ 10 endpoint, mỗi endpoint có tình huống hợp lệ, lỗi yêu cầu (400) và lỗi schema (422). GitHub Actions chạy cùng lệnh khi push/pull request. Benchmark: cài `python -m pip install -r requirements-benchmark.txt`; `locustfile.py` gọi bốn route AI, cần backend deploy và `FLOWER_TEST_IMAGE` trước khi đo.
+Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). Chạy API tests bằng `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`; bộ test dùng model giả nên không tải checkpoint hay cần GPU. Bộ test bao phủ 10 endpoint, mỗi endpoint có tình huống hợp lệ, lỗi yêu cầu (400) và lỗi schema (422). GitHub Actions chạy cùng lệnh khi push/pull request.
+
+## Hiệu năng đã đo trên backend deploy
+
+Đo ngày **30/09/2026** bằng Locust 2.46.6 tới Render, 1 người dùng đồng thời, ảnh hoa hồng mẫu, 102 request phân loại: 0 lỗi. Phần cứng của dịch vụ là Render Free tại Singapore, giới hạn **0,15 CPU và 512 MB RAM**. Log ứng dụng ghi process peak RSS **423,3 MB** khi classifier đã nạp (`API_PERF`, Python `resource.getrusage`; đây là RSS cực đại của process, không phải biểu đồ RAM toàn container của Render). Kết quả p50/p95 tính từ thời gian phản hồi HTTP:
+
+| Endpoint | Số request | Lỗi | p50 | p95 | Trung bình | Process peak RSS |
+|---|---:|---:|---:|---:|---:|---:|
+| `POST /api/classify` | 102 | 0 | 3,90 s | 4,50 s | 3,87 s | 423,3 MB |
+
+Chi tiết đo có trong [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv). Đây là phép đo đơn người dùng trên gói CPU miễn phí, không đại diện tải đồng thời cao. Chưa đo p50/p95 và RAM riêng cho YOLO, CLIP/FAISS hoặc chatbot Gemini; cần benchmark riêng để không trộn mức tải/mô hình khác nhau.
+
+Có thể chạy lại bằng `python -m pip install -r requirements-benchmark.txt`, đặt `FLOWER_TEST_IMAGE` trỏ tới ảnh hoa rồi chọn task Locust cần đo bằng `--tags classify`, `--tags detect`, `--tags search-image` hoặc `--tags chat`.
 
 Không đưa cache Hugging Face, ảnh dataset hoặc checkpoint vào Git. Thư mục `artifacts/`, ảnh hoa, index và `web/node_modules/` đã được loại khỏi Git.
 
