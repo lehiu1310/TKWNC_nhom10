@@ -17,8 +17,8 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 | RAG | Hit@3 / độ đúng câu trả lời | Chưa đo được | Chưa có tập 30 câu hỏi với nguồn chuẩn. |
 | API phân loại | p50 / p95 | 3,90 s / 4,50 s | Locust 2.46.6, 102 request, 1 người dùng đồng thời tới Render Free ngày 30/09/2026; 0 lỗi. CSV: [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv). |
 | API phân loại | Process peak RSS | 423,3 MB | Dòng `API_PERF` trong log Render sau khi nạp classifier; RSS cực đại process, không phải RAM toàn container. Instance giới hạn 512 MB. |
-| API phát hiện | p50 / p95 | 31,00 s / 44,00 s | Locust 2.46.6, 13 request, 1 người dùng, 0 lỗi; mẫu dưới yêu cầu 50. CSV: [`reports/render-detect_stats.csv`](reports/render-detect_stats.csv). |
-| API phát hiện | Process peak RSS | 506,2 MB | Log `API_PERF` Render sau khi classifier và YOLO đã nạp; Render Free giới hạn container 512 MB. |
+| API phát hiện | p50 / p95 | 38,74 s / 55,45 s | Locust 2.46.6, 51 request qua ba lượt một người dùng, 0 lỗi; nearest-rank tính từ history tích lũy của Locust. Chi tiết từng mẫu: [`reports/render-detect_samples.csv`](reports/render-detect_samples.csv); tổng hợp lượt: [`reports/render-detect_runs.csv`](reports/render-detect_runs.csv). |
+| API phát hiện | Process peak RSS | 506,2 MB | Cao nhất trong log `API_PERF` Render khi classifier và YOLO cùng nạp; giới hạn container Render Free 512 MB. Sau lần khởi động lại, riêng detector ghi 457,1 MB. |
 | API tìm ảnh / chatbot | p50 / p95 và RAM riêng | Chưa đo được | Chưa benchmark; instance Render Free đã dùng peak RSS 506,2 MB khi chạy classifier và YOLO. |
 
 ## 3. Giới hạn
@@ -27,7 +27,7 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG hi�
 - Detector YOLO11n pretrained COCO không có lớp hoa chuyên biệt; có thể không phát hiện hoa hoặc chỉ nhận diện vật thể nền thuộc COCO.
 - CLIP/FAISS trả ảnh tương tự trong index, không xác nhận danh tính thực vật.
 - RAG giới hạn bởi 8 tệp tri thức. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
-- Số đo API mới có classifier (102 request) và detector (13 request). Cỡ mẫu detector chưa đạt 50; chưa đo CLIP/FAISS và chatbot Gemini. Render Free có 0,15 CPU và 512 MB RAM, process peak đã đạt 506,2 MB khi classifier cùng YOLO được nạp.
+- Số đo API mới có classifier (102 request) và detector (51 request); chưa đo CLIP/FAISS và chatbot Gemini. Render Free có 0,15 CPU và 512 MB RAM, process peak đã đạt 506,2 MB khi classifier cùng YOLO được nạp. Cold start detector có thể mất hơn 2 phút.
 
 ## 4. Rủi ro
 

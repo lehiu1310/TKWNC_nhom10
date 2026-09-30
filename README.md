@@ -87,9 +87,9 @@ Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md
 | Endpoint | Số request | Lỗi | p50 | p95 | Trung bình | Process peak RSS |
 |---|---:|---:|---:|---:|---:|---:|
 | `POST /api/classify` | 102 | 0 | 3,90 s | 4,50 s | 3,87 s | 423,3 MB |
-| `POST /api/detect` | 13 | 0 | 31,00 s | 44,00 s | 33,10 s | 506,2 MB |
+| `POST /api/detect` | 51 | 0 | 38,74 s | 55,45 s | 43,52 s | 506,2 MB |
 
-Kết quả detector là mẫu thăm dò dưới mức 50 request; không đủ để xác nhận C5. Chi tiết có trong [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv) và [`reports/render-detect_stats.csv`](reports/render-detect_stats.csv). Đây là phép đo đơn người dùng trên gói CPU miễn phí, không đại diện tải đồng thời cao. YOLO nâng process peak RSS lên 506,2 MB trên giới hạn container 512 MB; chưa đo CLIP/FAISS và chatbot Gemini vì nạp tiếp model trên instance này có nguy cơ OOM. Cần benchmark riêng trên phần cứng đủ RAM để hoàn tất các route còn lại.
+Detector được đo bằng Locust 2.46.6 trong ba lượt một người dùng, cùng ảnh hoa hồng; tổng cộng 51 request, 0 lỗi. p50/p95 trong bảng được tính theo nearest-rank từ 51 độ trễ được tái dựng từ cumulative response-time history của Locust. Chi tiết từng request ở [`reports/render-detect_samples.csv`](reports/render-detect_samples.csv), tổng hợp ba lượt ở [`reports/render-detect_runs.csv`](reports/render-detect_runs.csv), và số liệu gộp ở [`reports/render-detect_stats.csv`](reports/render-detect_stats.csv). Đây là phép đo đơn người dùng trên gói CPU miễn phí, không đại diện tải đồng thời cao. Có một lần cold start 130,27 giây; p95 toàn mẫu là 55,45 giây. Process peak RSS cao nhất ghi trong log Render là 506,2 MB trên giới hạn container 512 MB. Chưa đo CLIP/FAISS và chatbot Gemini: CLIP có nguy cơ vượt RAM còn lại trên instance này.
 
 Có thể chạy lại bằng `python -m pip install -r requirements-benchmark.txt`, đặt `FLOWER_TEST_IMAGE` trỏ tới ảnh hoa rồi chọn task Locust cần đo bằng `--tags classify`, `--tags detect`, `--tags search-image` hoặc `--tags chat`.
 
