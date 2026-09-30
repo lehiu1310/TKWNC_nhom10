@@ -59,7 +59,7 @@ API: `/api/health`, `/api/species`, `/api/species/{id}/image`, `/api/classify`, 
 
 Các biến môi trường backend chính: `ENABLED_MODELS`, `LLM_PROVIDER` (`gemini` mặc định hoặc `hf_local`), `GEMINI_MODEL`, `GOOGLE_API_KEY` (hoặc `GEMINI_API_KEY`), `LLM_MODEL`, `CLIP_MODEL`, `TRANSLATION_MODEL`, `EMBED_MODEL`, `MAX_UPLOAD_MB`, `CORS_ORIGINS`, `APP_ROOT`. Không đặt khóa Gemini trong frontend. Frontend hỗ trợ `VITE_API_BASE_URL` (ưu tiên) và `VITE_API_URL`; để trống thì dùng proxy `/api` của Vite tới cổng 8000.
 
-Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). API tests: `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`. GitHub Actions chạy cùng bộ test mỗi lần push/pull request. `locustfile.py` kiểm tra bốn route AI; cần backend deploy và `FLOWER_TEST_IMAGE` trước khi có thể ghi số benchmark thật.
+Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). API tests: `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`. GitHub Actions chạy cùng bộ test mỗi lần push/pull request. Benchmark: cài `python -m pip install -r requirements-benchmark.txt`; `locustfile.py` kiểm tra bốn route AI, cần backend deploy và `FLOWER_TEST_IMAGE` trước khi đo.
 
 Không đưa cache Hugging Face, ảnh dataset hoặc checkpoint vào Git. Thư mục `artifacts/`, ảnh hoa, index và `web/node_modules/` đã được loại khỏi Git.
 
