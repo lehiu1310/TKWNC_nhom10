@@ -1,0 +1,14 @@
+{
+  "dataset": "Weirdo-329/flower-detection-dataset",
+  "initial_weights": "Ultralytics YOLO11n pretrained COCO",
+  "fine_tuned_weights": "artifacts\\detector\\flower_yolo11n.pt",
+  "epochs": 3,
+  "image_size": 320,
+  "test_split": "test (deterministic 10% split; see data/detection_flowers_yolo/dataset_report.json)",
+  "metrics": {
+    "mAP50": 0.7306233764721043,
+    "mAP50_95": 0.523580494136851,
+    "precision": 0.6641146470097219,
+    "recall": 0.7410758069394513
+  }
+}

@@ -4,6 +4,7 @@ import ImagePicker from './ImagePicker.jsx';
 
 export default function Search() {
   const [query, setQuery] = useState('một vườn hoa hướng dương rực nắng');
+  const [label, setLabel] = useState('');
   const [state, setState] = useState({ status: 'idle' });
   const [loadedImages, setLoadedImages] = useState(() => new Set());
   async function run(promise) {
@@ -12,10 +13,11 @@ export default function Search() {
     try { const data = await promise; setState({ status: 'ok', results: data.results }); }
     catch (err) { setState({ status: 'error', error: friendlyFailure(err) }); }
   }
-  function submit(e) { e.preventDefault(); if (query.trim()) run(postJson('/api/search/text', { query: query.trim(), k: 12 })); }
+  const filters = label.trim() ? { label: label.trim() } : {};
+  function submit(e) { e.preventDefault(); if (query.trim()) run(postJson('/api/search/text', { query: query.trim(), k: 12, ...filters })); }
   return <section>
     <h2>Tìm một bức ảnh bạn hình dung</h2><p className="muted">Mô tả bằng lời hoặc gửi một ảnh mẫu để tìm những khung hình gần nhất trong album. Điểm tương đồng giúp so sánh ảnh, không phải xác suất nhận diện chính xác.</p>
-    <form className="row" onSubmit={submit}><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Ví dụ: cúc trắng trong nắng sớm" aria-label="Mô tả ảnh cần tìm"/><button className="button" type="submit" disabled={state.status === 'loading'}>Tìm ảnh <span>→</span></button><ImagePicker label="Tìm bằng ảnh" onChange={(file) => run(postImage('/api/search/image', file, { k: 12 }))}/></form>
+    <form className="row" onSubmit={submit}><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Ví dụ: cúc trắng trong nắng sớm" aria-label="Mô tả ảnh cần tìm"/><input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Lọc nhãn (vd. roses)" aria-label="Lọc kết quả theo nhãn"/><button className="button" type="submit" disabled={state.status === 'loading'}>Tìm ảnh <span>→</span></button><ImagePicker label="Tìm bằng ảnh" onChange={(file) => run(postImage('/api/search/image', file, { k: 12, ...filters }))}/></form>
     {state.status === 'idle' && <div className="empty-state empty-search"><span>▦</span><p>Kết quả ảnh thật trong kho hoa sẽ xếp ở đây.</p></div>}
     {state.status === 'loading' && <div className="search-skeletons">{Array.from({ length: 6 }, (_, i) => <div className="search-skeleton" key={i}/>)}</div>}
     {state.status === 'error' && <p className="error">Album chưa tìm được ảnh. {state.error}</p>}

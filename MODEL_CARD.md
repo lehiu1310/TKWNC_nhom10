@@ -4,7 +4,9 @@
 
 Ứng dụng hiện phân loại ảnh trên **103 nhãn** của bộ Oxford Flowers 102 kết hợp TF Flowers, tổng cộng **11.859 ảnh** theo thống kê trong workspace. Phân bố không đồng đều: 76 nhãn có dưới 100 ảnh; số ảnh thấp nhất là 40. Năm loài được giới thiệu nổi bật trên giao diện là tập con của bộ phân loại: cúc (daisy) 700, bồ công anh 947, hoa hồng (roses) 761, hướng dương 792 và tulip 799 ảnh theo thống kê hiện có. Nguồn là hai bộ dữ liệu công khai trên; cần giữ điều khoản/ghi công của từng bộ khi phân phối.
 
-Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 8 tệp Markdown tiếng Việt trong `data/kb/` và dùng BM25 để truy xuất, chưa phải bộ tài liệu 20 trang hay tập đánh giá 30 câu.
+Detector được fine-tune từ YOLO11n trên 831 ảnh có bounding box (1.280 hộp, 4 nhãn: daisy, dandelion, roses, sunflowers) từ bộ công khai [Weirdo-329/flower-detection-dataset](https://huggingface.co/datasets/Weirdo-329/flower-detection-dataset), giấy phép Apache-2.0 theo dataset card. Chia ngẫu nhiên cố định seed 42: 664 train, 83 validation, 84 test; train 3 epoch ở kích thước 320 trên CPU. Dataset gốc và split tái tạo không được commit vào repo; script tải/chuyển đổi và báo cáo nguồn/số lượng được lưu trong `scripts/prepare_flower_detection.py` và `data/detection_flowers_yolo/dataset_report.json` (thư mục dữ liệu đã chuyển đổi nằm trong `.gitignore`).
+
+Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 8 tệp Markdown tiếng Việt trong `data/kb/` và dùng BM25 để truy xuất, chưa phải bộ tài liệu 20 trang. Bộ câu hỏi Hit@3 có 30 câu do nhóm biên soạn.
 
 ## 2. Chỉ số đã đo
 
@@ -12,9 +14,10 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 |---|---|---:|---|
 | Bộ phân loại | Accuracy validation | 0,9026 (90,26%) | Tái đánh giá checkpoint trên đúng split 2.135 ảnh/103 lớp, khớp `artifacts/classifier/metrics.json`; cùng validation split đã dùng chọn checkpoint, không phải test độc lập. Báo cáo: [`reports/classifier_evaluation.json`](reports/classifier_evaluation.json). |
 | Bộ phân loại | Macro-F1 / weighted-F1 | 0,9156 / 0,9024 | Cùng split validation, 2.135 ảnh; confusion matrix: [`reports/classifier_confusion_matrix.csv`](reports/classifier_confusion_matrix.csv). |
-| Detector | mAP50 | Chưa đo được | YOLO11n pretrained COCO; không có kết quả fine-tune trên bộ hoa riêng. |
+| Detector | mAP50 / mAP50-95 | 0,7306 / 0,5236 | Fine-tune 3 epoch, 320px; đánh giá trên 84 ảnh test tách riêng, 145 instances, CPU Intel Core i5-13500H 13th Gen. Báo cáo [`reports/detector_evaluation.json`](reports/detector_evaluation.json). |
+| Detector | Precision / Recall | 0,6641 / 0,7411 | Cùng test split 84 ảnh; chi tiết split và license tại [`data/detection_flowers_yolo/dataset_report.json`](data/detection_flowers_yolo/dataset_report.json). |
 | Tìm ảnh | Precision@5 | 0,8592 | 206 query held-out theo đường dẫn (2 ảnh × 103 lớp), không có query nào nằm trong FAISS index; relevance là cùng `species_id`. Cùng các nguồn Flowers dùng huấn luyện/index nên chưa phải đánh giá ngoài phân phối. Báo cáo: [`reports/retrieval_precision_at_5.json`](reports/retrieval_precision_at_5.json). |
-| RAG | Hit@3 / độ đúng câu trả lời | Chưa đo được | Chưa có tập 30 câu hỏi với nguồn chuẩn. |
+| RAG | Hit@3 (đúng tệp nguồn trong top 3) | 0,9667 (29/30) | Bộ câu hỏi nội bộ [`data/kb_eval/rag_hit_at_3.json`](data/kb_eval/rag_hit_at_3.json); kết quả [`reports/rag_hit_at_3.json`](reports/rag_hit_at_3.json). Chỉ đo truy xuất nguồn, chưa chấm tính đúng của câu trả lời Gemini. Kho tri thức hiện có 8 tài liệu Markdown ngắn, chưa đạt điều kiện ≥20 trang. |
 | API phân loại | p50 / p95 | 3,90 s / 4,50 s | Locust 2.46.6, 102 request, 1 người dùng đồng thời tới Render Free ngày 30/09/2026; 0 lỗi. CSV: [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv). |
 | API phân loại | Process peak RSS | 423,3 MB | Dòng `API_PERF` trong log Render sau khi nạp classifier; RSS cực đại process, không phải RAM toàn container. Instance giới hạn 512 MB. |
 | API phát hiện | p50 / p95 | 38,74 s / 55,45 s | Locust 2.46.6, 51 request qua ba lượt một người dùng, 0 lỗi; nearest-rank tính từ history tích lũy của Locust. Chi tiết từng mẫu: [`reports/render-detect_samples.csv`](reports/render-detect_samples.csv); tổng hợp lượt: [`reports/render-detect_runs.csv`](reports/render-detect_runs.csv). |
@@ -25,7 +28,7 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 ## 3. Giới hạn
 
 - Bộ phân loại chỉ học các nhãn trong 103 lớp; năm loài trên giao diện không đại diện cho toàn bộ phạm vi. Ảnh ngoài phân phối vẫn có thể bị gán nhãn gần nhất.
-- Detector YOLO11n pretrained COCO không có lớp hoa chuyên biệt; có thể không phát hiện hoa hoặc chỉ nhận diện vật thể nền thuộc COCO.
+- Detector YOLO11n hiện được fine-tune cho bốn nhóm daisy, dandelion, roses và sunflowers; chưa có lớp tulip. mAP50 đo trên test split cùng nguồn bộ dữ liệu, chưa chứng minh khả năng ngoài phân phối. Huấn luyện ngắn 3 epoch và test 84 ảnh nên kết quả còn hạn chế; ảnh thử thật cũng có thể xuất hiện hộp nhầm.
 - MobileCLIP2-S0 + FAISS trả ảnh tương tự trong index 1.236 ảnh, không xác nhận danh tính thực vật. Truy vấn chữ tiếng Việt được dịch sang tiếng Anh bằng Helsinki-NLP opus-mt-vi-en trước khi mã hóa. Precision@5 được đo trên ảnh cùng nguồn dataset, chưa chứng minh khả năng tìm ảnh từ miền dữ liệu khác.
 - RAG giới hạn bởi 8 tệp tri thức và xếp hạng từ khóa BM25; câu hỏi dùng cách diễn đạt xa nội dung tài liệu có thể không truy xuất đúng đoạn. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
 - Đo thành công trên dịch vụ hiện có classifier (102 request) và detector (51 request). Encoder MobileCLIP2 + index mới đã qua kiểm tra API cục bộ và đạt Precision@5 0,8592 trên 206 ảnh held-out cùng dataset; bản mới chưa deploy/benchmark trên Render. Chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.

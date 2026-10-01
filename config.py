@@ -22,7 +22,7 @@ os.environ.setdefault("YOLO_CONFIG_DIR", str(ROOT))
 DEVICE = "cuda" if torch is not None and torch.cuda.is_available() else "cpu"
 
 # Mô hình (đổi tên model = đổi biến môi trường, không sửa code)
-YOLO_WEIGHTS = os.environ.get("YOLO_WEIGHTS", str(ART_DIR / "detector" / "yolo11n.pt"))
+YOLO_WEIGHTS = os.environ.get("YOLO_WEIGHTS", str(ART_DIR / "detector" / "flower_yolo11n.pt"))
 CLIP_MODEL = os.environ.get("CLIP_MODEL", "MobileCLIP2-S0")
 CLIP_PRETRAINED = os.environ.get("CLIP_PRETRAINED", "dfndr2b")
 TRANSLATION_MODEL = os.environ.get("TRANSLATION_MODEL", "Helsinki-NLP/opus-mt-vi-en")

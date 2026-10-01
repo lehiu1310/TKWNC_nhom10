@@ -107,15 +107,23 @@ class ImageSearch:
             log.exception("Vietnamese query translation failed; falling back to the original query")
             return query
 
-    def _search(self, query_vec: np.ndarray, k: int) -> list[dict]:
-        scores, ids = self.index.search(query_vec, k)
-        return [
+    def _search(self, query_vec: np.ndarray, k: int, label: str | None = None) -> list[dict]:
+        # Filter after ranking so a sparse label still fills the requested page.
+        candidate_k = self.index.ntotal if label else k
+        scores, ids = self.index.search(query_vec, candidate_k)
+        results = [
             {"id": int(i), "score": round(float(s), 4), **self.meta[i]}
             for s, i in zip(scores[0], ids[0]) if i != -1
         ]
+        if label:
+            needle = label.strip().casefold()
+            results = [r for r in results if needle in {
+                str(r.get("label", "")).casefold(), str(r.get("species_id", "")).casefold()
+            }]
+        return results[:k]
 
-    def search_text(self, query: str, k: int = 8) -> list[dict]:
-        return self._search(self.encoder.encode_texts([self._english_query(query)]), k)
+    def search_text(self, query: str, k: int = 8, label: str | None = None) -> list[dict]:
+        return self._search(self.encoder.encode_texts([self._english_query(query)]), k, label)
 
-    def search_image(self, image: Image.Image, k: int = 8) -> list[dict]:
-        return self._search(self.encoder.encode_images([image]), k)
+    def search_image(self, image: Image.Image, k: int = 8, label: str | None = None) -> list[dict]:
+        return self._search(self.encoder.encode_images([image]), k, label)

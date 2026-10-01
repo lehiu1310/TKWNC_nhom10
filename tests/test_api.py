@@ -35,10 +35,10 @@ class FakeSearch:
     def __init__(self, image_path=None):
         self.meta = [{"id": 0, "path": str(image_path or __file__)}]
 
-    def search_text(self, query, k=8):
+    def search_text(self, query, k=8, label=None):
         return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
 
-    def search_image(self, image, k=8):
+    def search_image(self, image, k=8, label=None):
         return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
 
 
@@ -160,6 +160,21 @@ def test_search_text_blank_query_is_400(client):
 
 def test_search_text_invalid_k_is_422(client):
     assert client.post("/api/search/text", json={"query": "hoa", "k": 0}).status_code == 422
+
+
+def test_search_text_label_filter_is_forwarded(client, monkeypatch):
+    class LabelSearch(FakeSearch):
+        def search_text(self, query, k=8, label=None):
+            assert label == "roses"
+            return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
+
+    monkeypatch.setattr(main, "_require", lambda name: LabelSearch())
+    response = client.post("/api/search/text", json={"query": "red flower", "label": "roses"})
+    assert response.status_code == 200
+
+
+def test_search_text_invalid_label_is_422(client):
+    assert client.post("/api/search/text", json={"query": "hoa", "label": ""}).status_code == 422
 
 
 def test_search_image_ok(client, monkeypatch):

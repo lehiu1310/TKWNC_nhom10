@@ -17,6 +17,8 @@ web/dist/
 data/flowers/
 data/flowers-102/
 data/coco128/
+data/detection_flowers/
+data/detection_flowers_yolo/
 data/*.tgz
 artifacts/**
 !artifacts/.gitkeep
@@ -31,6 +33,7 @@ artifacts/**
 !artifacts/classifier/model.pt
 !artifacts/detector/
 !artifacts/detector/yolo11n.pt
+!artifacts/detector/flower_yolo11n.pt
 !artifacts/retrieval/
 !artifacts/retrieval/index.faiss
 !artifacts/retrieval/meta.json
@@ -39,3 +42,4 @@ artifacts/**
 # Local runtime
 .env
 logs/
+runs/

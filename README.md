@@ -12,6 +12,7 @@ Website giới thiệu 5 loài hoa nổi bật, với bốn chức năng AI lấ
 - `api/`: FastAPI cho web và Streamlit. Mô hình được nạp lần đầu khi mở tính năng tương ứng để trang/API khởi động nhanh.
 - `web/`: React + Vite, trải nghiệm responsive theo chủ đề vườn hoa.
 - `data/kb/`: tài liệu tiếng Việt cho chatbot; mỗi chủ đề bắt đầu bằng tiêu đề `## `.
+- `data/kb_eval/rag_hit_at_3.json`: 30 câu hỏi đánh giá nguồn truy xuất RAG.
 - `data/species.json`: dữ liệu loài và nhãn phân loại; Bách khoa trên web giới thiệu 5 loài nổi bật.
 - `data/display_images.json`: nguồn ảnh đại diện cho 5 loài hiển thị.
 
@@ -78,7 +79,28 @@ API gồm 10 endpoint: `/api/health`, `/api/species`, `/api/species/{id}/image`,
 
 Các biến môi trường backend chính: `ENABLED_MODELS`, `LLM_PROVIDER` (`gemini` mặc định hoặc `hf_local`), `GEMINI_MODEL`, `GOOGLE_API_KEY` (hoặc `GEMINI_API_KEY`), `LLM_MODEL`, `CLIP_MODEL` (mặc định `MobileCLIP2-S0`), `CLIP_PRETRAINED` (mặc định `dfndr2b`), `TRANSLATION_MODEL`, `EMBED_MODEL`, `MAX_UPLOAD_MB`, `CORS_ORIGINS`, `APP_ROOT`. Không đặt khóa Gemini trong frontend. Frontend hỗ trợ `VITE_API_BASE_URL` (ưu tiên) và `VITE_API_URL`; để trống thì dùng proxy `/api` của Vite tới cổng 8000.
 
-Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). Chạy lại metric ResNet trên validation split bằng `python scripts/evaluate_classifier.py`; đo image retrieval bằng query không có trong index với `python scripts/evaluate_retrieval.py --queries-per-class 2`. Chạy API tests bằng `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`; bộ test dùng model giả nên không tải checkpoint hay cần GPU. Bộ test bao phủ 10 endpoint, mỗi endpoint có tình huống hợp lệ, lỗi yêu cầu (400) và lỗi schema (422). GitHub Actions chạy cùng lệnh khi push/pull request.
+Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). Chạy lại metric ResNet trên validation split bằng `python scripts/evaluate_classifier.py`; đo image retrieval bằng query không có trong index với `python scripts/evaluate_retrieval.py --queries-per-class 2`; đo RAG Hit@3 trên bộ 30 câu hỏi bằng `python scripts/evaluate_rag.py`. Chạy API tests bằng `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`; bộ test dùng model giả nên không tải checkpoint hay cần GPU. Bộ test bao phủ 10 endpoint, mỗi endpoint có tình huống hợp lệ, lỗi yêu cầu (400) và lỗi schema (422). GitHub Actions chạy cùng lệnh khi push/pull request.
+
+## Bằng chứng theo rubric 10.2 — mức cơ bản
+
+| Ứng dụng | Tiến độ mức cơ bản | Bằng chứng / phần còn thiếu |
+|---|---|---|
+| Phân loại | Đạt theo dữ liệu và báo cáo hiện có | 103 lớp; năm lớp hoa nổi bật đều có trên 100 ảnh (daisy 700, dandelion 947, roses 761, sunflowers 792, tulips 799). Accuracy 90,26%, macro-F1 91,56%, weighted-F1 90,24%; confusion matrix tại `reports/classifier_confusion_matrix.csv`. Split validation đã dùng chọn checkpoint, vì vậy không phải test độc lập. |
+| Phát hiện | Đạt mức cơ bản theo quy trình huấn luyện/đánh giá hiện có | Fine-tune YOLO11n trên 831 ảnh có nhãn bounding box (664 train / 83 validation / 84 test, 4 lớp, 1.280 hộp; CC Apache-2.0); test mAP50 = 0,7306, precision = 0,6641, recall = 0,7411 sau 3 epoch. Kết quả thật tại `reports/detector_evaluation.json`; một ảnh hoa hồng thử trực tiếp trả về hộp `roses` cùng một false positive `daisy`. Chưa có lớp tulip và chưa đánh giá ngoài phân phối. |
+| Tìm ảnh | Đạt theo kho ảnh và phép đo retrieval | FAISS có 1.236 ảnh (>1.000). Precision@5 = 0,8592 trên 206 ảnh query held-out theo đường dẫn, cùng nguồn Flowers; báo cáo tại `reports/retrieval_precision_at_5.json`. API hỗ trợ lọc kết quả theo nhãn (tham số `label`). |
+| Chatbot RAG | Đạt bước đánh giá truy xuất; chưa đạt điều kiện dữ liệu 20 trang | Hit@3 = 29/30 = 96,67% trên câu hỏi nội bộ tại `data/kb_eval/rag_hit_at_3.json`; kết quả ở `reports/rag_hit_at_3.json`. Kho hiện chỉ có 8 tài liệu Markdown ngắn, chưa phải bộ tài liệu thật ≥20 trang như rubric yêu cầu; điểm Hit@3 đo việc tìm đúng file nguồn, không chấm độ đúng câu trả lời sinh ra. |
+
+Các số liệu trên là kết quả đo; dòng “chưa đạt” không được xem là đạt chỉ vì API hoặc giao diện đang chạy.
+
+Để tái tạo fine-tune detector: tải dataset Apache-2.0 rồi tạo split YOLO cố định seed và train (CPU, thời gian tuỳ máy):
+
+```powershell
+python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Weirdo-329/flower-detection-dataset', repo_type='dataset', local_dir='data/detection_flowers')"
+python scripts/prepare_flower_detection.py --seed 42
+python scripts/train_flower_detector.py --epochs 3 --imgsz 320 --batch 4
+```
+
+Báo cáo hiện tại dùng split test 84 ảnh; không dùng test set để chọn checkpoint. Dữ liệu được lấy từ [Hugging Face dataset card](https://huggingface.co/datasets/Weirdo-329/flower-detection-dataset) (Apache-2.0). Trọng số fine-tune mặc định nằm tại `artifacts/detector/flower_yolo11n.pt` qua Git LFS.
 
 ## Hiệu năng đã đo trên backend deploy
 

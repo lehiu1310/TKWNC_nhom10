@@ -174,6 +174,7 @@ async def detect(file: UploadFile = File(...), conf: float = Form(0.25)):
 class TextQuery(BaseModel):
     query: str = Field(..., min_length=1, max_length=200)
     k: int = Field(8, ge=1, le=24)
+    label: str | None = Field(None, min_length=1, max_length=128, description="Optional exact species label or species ID")
 
 
 def _with_urls(results: list[dict]) -> list[dict]:
@@ -184,13 +185,13 @@ def _with_urls(results: list[dict]) -> list[dict]:
 def search_text(q: TextQuery):
     if not q.query.strip():
         raise HTTPException(400, "Câu tìm kiếm không được chỉ chứa khoảng trắng")
-    return {"results": _with_urls(_require("retrieval").search_text(q.query, q.k))}
+    return {"results": _with_urls(_require("retrieval").search_text(q.query, q.k, q.label))}
 
 
 @app.post("/api/search/image")
-async def search_image(file: UploadFile = File(...), k: int = Form(8)):
+async def search_image(file: UploadFile = File(...), k: int = Form(8), label: str | None = Form(None, min_length=1, max_length=128)):
     engine = _require("retrieval")
-    return {"results": _with_urls(engine.search_image(await _read_image(file), max(1, min(k, 24))))}
+    return {"results": _with_urls(engine.search_image(await _read_image(file), max(1, min(k, 24)), label))}
 
 
 @app.get("/api/gallery/{item_id}")

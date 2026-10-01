@@ -1,4 +1,4 @@
-"""Ứng dụng 2 — Phát hiện đối tượng (YOLO11, 80 lớp COCO)."""
+"""Ứng dụng 2 — Phát hiện 4 nhóm hoa bằng YOLO11n đã fine-tune."""
 from collections import Counter
 from pathlib import Path
 
