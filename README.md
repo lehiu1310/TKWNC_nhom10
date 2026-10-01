@@ -22,6 +22,14 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 - `data/species.json`: dữ liệu của 103 loài, khớp với 103 nhãn trong `artifacts/classifier/classes.json`.
 - `data/display_images.json`: nguồn ảnh trưng bày chất lượng cao cho 5 loài nổi bật trên trang chủ; các loài còn lại dùng ảnh đại diện trong dữ liệu Flowers.
 
+## Ảnh giao diện
+
+Ảnh chụp giao diện local ở kích thước 1440 × 900; ảnh minh họa giao diện, không giả lập kết quả inference production.
+
+![Trang chủ và bốn chức năng AI](docs/screenshots/home.png)
+
+![Bách khoa 103 loài và bộ lọc](docs/screenshots/encyclopedia.png)
+
 ## Cần cài
 
 - Python 3.11
@@ -114,12 +122,9 @@ python scripts/compare_classifier_architectures.py --epochs 3
 
 Lệnh này fine-tune MobileNetV3-Small, đánh giá ResNet/MobileNet trên cùng validation split, export ResNet ONNX và ghi `reports/classifier_architecture_comparison.json`.
 
-## Hồ sơ nộp bài 10.3
+## Phiên bản mã nguồn
 
-- Báo cáo (giới hạn nội dung theo cấu trúc 8 trang): [`reports/bao_cao_do_an.md`](reports/bao_cao_do_an.md)
-- Phiên bản mã nguồn: tag [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0)
-
-Video và ảnh chụp màn hình cần được ghi trực tiếp từ bản demo tại thời điểm nộp; tài liệu không giả lập ảnh hoặc kết quả chưa xác nhận trên deploy.
+Tag phát hành: [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0).
 
 Các số liệu trên là kết quả đo; dòng “chưa đạt” không được xem là đạt chỉ vì API hoặc giao diện đang chạy.
 
