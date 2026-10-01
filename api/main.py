@@ -4,6 +4,7 @@ import importlib
 import io
 import json
 import logging
+import os
 import sys
 import threading
 import time
@@ -121,8 +122,10 @@ def health(model: str | None = Query(None, max_length=32, description="Optional 
     if model is not None and model not in LOADERS:
         raise HTTPException(400, f"Unknown model component: {model}")
     enabled = sorted(ENABLED_MODELS if model is None else ENABLED_MODELS & {model})
+    revision = os.environ.get("RENDER_GIT_COMMIT") or os.environ.get("GIT_COMMIT")
     return {
         "status": "ok", "device": DEVICE,
+        "revision": revision[:12] if revision else None,
         "models": {m: m in MODELS for m in enabled},
         "model_states": {m: ("ready" if m in MODELS else "failed" if m in MODEL_ERRORS else "not_loaded") for m in enabled},
     }

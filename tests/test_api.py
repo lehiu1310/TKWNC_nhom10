@@ -65,6 +65,13 @@ def test_health(client):
     assert r.status_code == 200 and r.json()["status"] == "ok"
 
 
+def test_health_reports_short_render_revision(client, monkeypatch):
+    monkeypatch.setenv("RENDER_GIT_COMMIT", "0123456789abcdef")
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    assert response.json()["revision"] == "0123456789ab"
+
+
 def test_health_unknown_component_is_400(client):
     assert client.get("/api/health", params={"model": "not-a-component"}).status_code == 400
 
