@@ -10,13 +10,14 @@ export default function Classify() {
   const [state, setState] = useState({ status: 'idle' });
   const [scores, setScores] = useState([]);
   const [barsReady, setBarsReady] = useState(false);
+  const [showGradCam, setShowGradCam] = useState(false);
 
   async function run(file) {
     setScores([]);
     setBarsReady(false);
     setState({ status: 'loading' });
     try {
-      const data = await postImage('/api/classify', file, { top_k: 5 });
+      const data = await postImage('/api/classify', file, { top_k: 5, explain: showGradCam });
       setState({ status: 'ok', data, resultKey: `${Date.now()}-${Math.random()}` });
     } catch (err) {
       setState({ status: 'error', error: friendlyFailure(err) });
@@ -66,6 +67,7 @@ export default function Classify() {
     <div>
       <h2>Đoán tên loài hoa</h2>
       <p className="muted">Tải ảnh lên để nhận năm dự đoán phù hợp nhất. Nếu ảnh không thuộc các loài trong bộ dữ liệu, AI vẫn có thể chọn một nhãn gần giống — hãy xem điểm số như gợi ý.</p>
+      <label className="gradcam-toggle"><input type="checkbox" checked={showGradCam} onChange={(event) => setShowGradCam(event.target.checked)}/> Giải thích vùng ảnh ảnh hưởng đến dự đoán (Grad-CAM)</label>
       <ImagePicker label="Chọn ảnh để nhận diện" onChange={run} result={imageResult} />
     </div>
     <div className="result-panel"><span className="feature-subtitle">KẾT QUẢ NHẬN DIỆN</span>
@@ -88,6 +90,7 @@ export default function Classify() {
           </div>;
         })}
         <p className="muted result-meta">ResNet-18 · {state.data.latency_ms} ms</p>
+        {state.data.grad_cam && <figure className="gradcam-result"><img src={state.data.grad_cam} alt="Grad-CAM tô sáng vùng ảnh ảnh hưởng đến dự đoán"/><figcaption>Grad-CAM · vùng nóng đóng góp nhiều hơn cho nhãn top-1; đây là giải thích xấp xỉ.</figcaption></figure>}
       </>}
     </div>
   </section>;

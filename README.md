@@ -90,6 +90,24 @@ Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md
 | Tìm ảnh | Đạt theo kho ảnh và phép đo retrieval | FAISS có 1.236 ảnh (>1.000). Precision@5 = 0,8592 trên 206 ảnh query held-out theo đường dẫn, cùng nguồn Flowers; báo cáo tại `reports/retrieval_precision_at_5.json`. API hỗ trợ lọc kết quả theo nhãn (tham số `label`). |
 | Chatbot RAG | Đạt bước đánh giá truy xuất; chưa đạt điều kiện dữ liệu 20 trang | Hit@3 = 29/30 = 96,67% trên câu hỏi nội bộ tại `data/kb_eval/rag_hit_at_3.json`; kết quả ở `reports/rag_hit_at_3.json`. Kho hiện chỉ có 8 tài liệu Markdown ngắn, chưa phải bộ tài liệu thật ≥20 trang như rubric yêu cầu; điểm Hit@3 đo việc tìm đúng file nguồn, không chấm độ đúng câu trả lời sinh ra. |
 
+### Thử nghiệm mức nâng cao đã chạy
+
+- **Phân loại + ONNX:** cùng split stratified 82/18, seed 42, 11.859 ảnh/103 lớp. ResNet-18: accuracy 90,26%, macro-F1 91,56%, checkpoint 44.995.147 byte, latency PyTorch CPU p50/p95 69,18/75,20 ms. MobileNetV3-Small (ImageNet pretrained, fine-tune feature block cuối + head trong 3 epoch): accuracy 65,90%, macro-F1 57,45%, checkpoint 6.626.901 byte, p50/p95 17,90/20,20 ms. MobileNet nhẹ/nhanh hơn nhưng giảm accuracy khoảng 24,36 điểm; chưa thay model production. ResNet đã export ONNX opset 17: 44.907.914 byte; sai khác logits tuyệt đối lớn nhất 5,61e-6 trên 64 ảnh. Trong cùng lượt đo, ONNX Runtime CPU p50/p95 73,06/77,70 ms so với PyTorch 68,96/74,37 ms, nên chưa nhanh hơn ở cấu hình máy này. Đây là validation protocol dùng khi chọn checkpoint, không phải test độc lập. Kết quả/script: `reports/classifier_architecture_comparison.json`, `scripts/compare_classifier_architectures.py`; model/graph được lưu trong `artifacts/comparison/`.
+- **Grad-CAM:** API `/api/classify` nhận field tùy chọn `explain=true` và trả overlay giải thích. Ca thử ảnh hoa hồng trả top-1 `roses` 90,37%; ảnh overlay kiểm tra trực quan tại [`reports/gradcam_rose_example.jpg`](reports/gradcam_rose_example.jpg). Heatmap là giải thích xấp xỉ, không phải bằng chứng mô hình suy luận đúng.
+- **FAISS Flat vs HNSW:** `reports/faiss_index_comparison.json` ghi phép đo trên 1.236 vector, 206 query lấy mẫu cố định, Intel Core i5-13500H / Python 3.11.9 / FAISS 1.15.1. HNSW (`M=32`, `efSearch=64`) có Recall@5 so với Flat = 1,0 và cùng Precision@5 cùng nhãn = 0,8427; p50/p95 tìm trong index là 0,133/0,400 ms so với Flat 0,098/0,194 ms; HNSW chiếm 2.867.154 byte so với Flat 2.531.373 byte. Đây là query lấy từ vectors đã index để đo độ xấp xỉ, không phải tập query held-out; vì kho chỉ có 1.236 ảnh nên kết quả ủng hộ giữ Flat. Benchmark không tính thời gian encoder hoặc network.
+- **Phát hiện webcam:** giao diện có đường xử lý webcam từng frame nối tiếp, đo FPS thực tế và đếm track cắt vạch dọc. Chưa xác nhận luồng camera trên thiết bị người dùng; lần đo Render detect gần nhất mất 73,51 giây/ảnh và backend còn trả nhãn COCO cũ, nên chưa thể coi phần này chạy mượt trên production.
+- **RAG nâng cao:** chunk theo mục có overlap tối đa 100 ký tự và lexical rerank sau BM25; Hit@3 vẫn 29/30. Chưa có evaluator tự động độ đúng câu trả lời, reranker neural hoặc kho tài liệu thật ≥20 trang (hiện 8 file ngắn).
+- **Chưa hoàn thành nâng cao:** detector webcam chưa đạt FPS thực tế để demo mượt; retrieval hiện dịch tiếng Việt sang tiếng Anh chứ chưa dùng CLIP đa ngôn ngữ cross-modal; classifier chưa có OOD detector/calibrated uncertainty; RAG chưa chấm tự động độ đúng câu trả lời. Những phần đã có code nhưng chưa deploy/benchmark live không được tính là đã đạt trên production.
+
+Tái tạo phép so sánh classifier/ONNX (cần dataset Flowers đã chuẩn bị và các gói ONNX trong `requirements-benchmark.txt`):
+
+```powershell
+python -m pip install -r requirements-benchmark.txt
+python scripts/compare_classifier_architectures.py --epochs 3
+```
+
+Lệnh này fine-tune MobileNetV3-Small, đánh giá ResNet/MobileNet trên cùng validation split, export ResNet ONNX và ghi `reports/classifier_architecture_comparison.json`.
+
 ## Hồ sơ nộp bài 10.3
 
 - Báo cáo (giới hạn nội dung theo cấu trúc 8 trang): [`reports/bao_cao_do_an.md`](reports/bao_cao_do_an.md)

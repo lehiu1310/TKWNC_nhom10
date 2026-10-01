@@ -18,8 +18,9 @@ SYSTEM_PROMPT = (
 )
 
 
-def load_chunks(kb_dir: Path = DATA_DIR / "kb", max_chars: int = 600) -> list[dict]:
-    """Chia mỗi file Markdown theo tiêu đề '## ', đoạn dài thì cắt theo đoạn văn."""
+def load_chunks(kb_dir: Path = DATA_DIR / "kb", max_chars: int = 600,
+                overlap_chars: int = 100) -> list[dict]:
+    """Split Markdown by semantic section and character windows with bounded overlap."""
     chunks = []
     for path in sorted(Path(kb_dir).glob("*.md")):
         text = path.read_text(encoding="utf-8")
@@ -27,14 +28,27 @@ def load_chunks(kb_dir: Path = DATA_DIR / "kb", max_chars: int = 600) -> list[di
             section = section.strip()
             if not section:
                 continue
-            buf = ""
-            for para in section.split("\n\n"):
-                if len(buf) + len(para) > max_chars and buf:
-                    chunks.append({"source": path.name, "text": buf.strip()})
-                    buf = ""
-                buf += para + "\n\n"
-            if buf.strip():
-                chunks.append({"source": path.name, "text": buf.strip()})
+            # Keep paragraph/sentence boundaries where possible, with a small
+            # trailing overlap so a fact split between chunks remains searchable.
+            start = 0
+            while start < len(section):
+                end = min(start + max_chars, len(section))
+                if end < len(section):
+                    boundary = max(section.rfind("\n\n", start, end),
+                                   section.rfind(". ", start, end),
+                                   section.rfind("; ", start, end))
+                    if boundary > start + max_chars // 2:
+                        end = boundary + (2 if section[boundary:boundary + 2] in (". ", "; ") else 0)
+                piece = section[start:end].strip()
+                if piece:
+                    chunks.append({"source": path.name, "text": piece})
+                if end == len(section):
+                    break
+                next_start = max(start + 1, end - max(0, overlap_chars))
+                # Advance past leading whitespace so the overlap is useful text.
+                while next_start < end and section[next_start].isspace():
+                    next_start += 1
+                start = next_start
     return chunks
 
 
@@ -85,9 +99,26 @@ class Retriever:
                                / (self.document_frequency[term] + 0.5))
                 score += idf * frequency * 2.2 / (frequency + 1.2 * (0.25 + 0.75 * length_norm))
             scores.append((score, i))
-        ranked = sorted(scores, reverse=True)[:max(0, k)]
-        return [{**self.chunks[i], "score": round(float(score), 4)}
-                for score, i in ranked if score > 0]
+        candidates = sorted(scores, reverse=True)[:max(0, k * 4)]
+        max_score = max((score for score, _ in candidates), default=0.0) or 1.0
+        query_terms = set(terms)
+        reranked = []
+        for bm25_score, i in candidates:
+            document_terms = set(self.documents[i])
+            coverage = len(query_terms & document_terms) / max(1, len(query_terms))
+            phrase_bonus = 0.0
+            normalized_query = " ".join(query.lower().split())
+            normalized_text = " ".join(self.chunks[i]["text"].lower().split())
+            if len(normalized_query) >= 6 and normalized_query in normalized_text:
+                phrase_bonus = 0.15
+            # Lightweight lexical second-stage ranker: normalize BM25, then
+            # reward query-term coverage and exact phrase evidence.
+            score = 0.70 * (bm25_score / max_score) + 0.25 * coverage + phrase_bonus
+            reranked.append((score, i, bm25_score))
+        ranked = sorted(reranked, reverse=True)[:max(0, k)]
+        return [{**self.chunks[i], "score": round(float(score), 4),
+                 "bm25_score": round(float(bm25_score), 4)}
+                for score, i, bm25_score in ranked if bm25_score > 0]
 
 
 class RAGChatbot:

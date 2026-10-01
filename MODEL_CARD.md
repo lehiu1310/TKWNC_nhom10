@@ -6,7 +6,7 @@
 
 Detector được fine-tune từ YOLO11n trên 831 ảnh có bounding box (1.280 hộp, 4 nhãn: daisy, dandelion, roses, sunflowers) từ bộ công khai [Weirdo-329/flower-detection-dataset](https://huggingface.co/datasets/Weirdo-329/flower-detection-dataset), giấy phép Apache-2.0 theo dataset card. Chia ngẫu nhiên cố định seed 42: 664 train, 83 validation, 84 test; train 3 epoch ở kích thước 320 trên CPU. Dataset gốc và split tái tạo không được commit vào repo; script tải/chuyển đổi và báo cáo nguồn/số lượng được lưu trong `scripts/prepare_flower_detection.py` và `data/detection_flowers_yolo/dataset_report.json` (thư mục dữ liệu đã chuyển đổi nằm trong `.gitignore`).
 
-Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 8 tệp Markdown tiếng Việt trong `data/kb/` và dùng BM25 để truy xuất, chưa phải bộ tài liệu 20 trang. Bộ câu hỏi Hit@3 có 30 câu do nhóm biên soạn.
+Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 8 tệp Markdown tiếng Việt trong `data/kb/`, dùng BM25 kèm lexical rerank và chunk overlap tối đa 100 ký tự; kho hiện chưa phải bộ tài liệu thật ≥20 trang. Bộ câu hỏi Hit@3 có 30 câu do nhóm biên soạn.
 
 ## 2. Chỉ số đã đo
 
@@ -49,3 +49,9 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 ## Cấu hình chatbot
 
 Provider mặc định là Gemini (`LLM_PROVIDER=gemini`, model được cấu hình qua `GEMINI_MODEL`). Cần đặt `GOOGLE_API_KEY` hoặc `GEMINI_API_KEY` trong backend/secret của nền tảng deploy. Có thể chọn `LLM_PROVIDER=hf_local` để dùng Qwen cục bộ, cần tải trọng số lớn hơn. Không commit khóa API vào Git.
+
+## So sánh nâng cao và giải thích
+
+ResNet-18 được đối chiếu với MobileNetV3-Small trên cùng validation split 2.135 ảnh/103 lớp: lần lượt accuracy 90,26% và 65,90%; macro-F1 91,56% và 57,45%. Checkpoint lần lượt 44,995 MB và 6,627 MB; latency batch-1 PyTorch CPU p50/p95 69,18/75,20 ms và 17,90/20,20 ms trên Intel Core i5-13500H, PyTorch 2.14.0+cpu, 2 threads. MobileNet chỉ được fine-tune 3 epoch nên đây là một phép so sánh engineering, không phải hyperparameter search cân bằng. ONNX opset 17 cho ResNet có sai khác logits tối đa 5,61e-6 trên 64 ảnh; ONNX Runtime CPU p50/p95 73,06/77,70 ms trong lần đo cuối, không nhanh hơn PyTorch trên máy này. Báo cáo: `reports/classifier_architecture_comparison.json`.
+
+API có tùy chọn Grad-CAM cho một ảnh; overlay ví dụ `reports/gradcam_rose_example.jpg`. Đây chỉ là heatmap xấp xỉ vùng ảnh ảnh hưởng tới điểm lớp, không xác thực độ đúng và chưa phải detector ảnh ngoài phân phối. Mã giải thích nằm ở `core/classifier.py`; `POST /api/classify` bật bằng field `explain=true`.

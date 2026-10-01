@@ -357,3 +357,13 @@ body{background:var(--cream)}
 .flower-ticker::-webkit-scrollbar-thumb{border-radius:99px;background:#d8b68f}
 .flower-ticker.is-dragging{cursor:grabbing}
 .ticker-track .ticker-flower{flex:none}
+/* Advanced classifier explainability controls */
+.gradcam-toggle{display:flex;align-items:center;gap:.55rem;margin:1rem 0;color:#3a4a3a;font-size:.92rem;font-weight:600}
+.gradcam-toggle input{accent-color:#ff6f91;width:1rem;height:1rem}
+.gradcam-result{margin:1rem 0 0;padding:.65rem;border:1px solid rgba(91,174,107,.25);border-radius:1rem;background:rgba(255,255,255,.72)}
+.gradcam-result img{display:block;width:100%;max-height:360px;object-fit:contain;border-radius:.7rem}
+.gradcam-result figcaption{margin:.55rem .25rem .1rem;color:#536653;font-size:.8rem;line-height:1.55}
+.webcam-controls{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap;margin:1rem 0;color:#405640;font-size:.85rem;font-weight:700}
+.webcam-live-preview{display:block;width:min(100%,440px);aspect-ratio:4/3;object-fit:cover;border:1px solid rgba(91,174,107,.35);border-radius:1.1rem;background:#172317;margin:.75rem 0 1rem}
+.webcam-count-line{position:absolute;z-index:2;top:0;bottom:0;left:50%;border-left:2px dashed rgba(255,201,60,.95);pointer-events:none;filter:drop-shadow(0 0 3px #fff)}
+@media(prefers-reduced-motion:reduce){.webcam-live-preview{scroll-behavior:auto}}

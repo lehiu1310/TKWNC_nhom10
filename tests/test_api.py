@@ -16,6 +16,9 @@ class FakeClassifier:
     def predict(self, image, top_k=3):
         return {"predictions": [{"label": "roses", "score": 0.9}][:top_k], "confident": True}
 
+    def explain(self, image):
+        return image
+
 
 class FakeDetector:
     def detect(self, image, conf=0.25):
@@ -80,6 +83,13 @@ def test_classify_ok(client):
     r = client.post("/api/classify", files={"file": ("a.png", png_bytes(), "image/png")}, data={"top_k": 1})
     assert r.status_code == 200
     assert r.json()["predictions"][0]["label"] == "roses"
+
+
+def test_classify_gradcam_overlay_is_optional(client):
+    response = client.post("/api/classify", files={"file": ("rose.png", png_bytes(), "image/png")},
+                           data={"explain": "true"})
+    assert response.status_code == 200
+    assert response.json()["grad_cam"].startswith("data:image/jpeg;base64,")
 
 
 def test_classify_rejects_non_image(client):

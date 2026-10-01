@@ -1,4 +1,5 @@
 from core.llm import Retriever
+from core.llm import load_chunks
 from core.search_filter import filter_by_label
 
 
@@ -21,6 +22,17 @@ def test_bm25_returns_no_irrelevant_chunks():
     ])
 
     assert retriever.search("máy bay vũ trụ", k=3) == []
+
+
+def test_markdown_chunking_has_bounded_overlap(tmp_path):
+    text = "## Hướng dẫn\n\n" + ("A" * 230) + ". " + ("B" * 230) + ". " + ("C" * 230)
+    (tmp_path / "hoa.md").write_text(text, encoding="utf-8")
+
+    chunks = load_chunks(tmp_path, max_chars=260, overlap_chars=80)
+
+    assert len(chunks) >= 2
+    assert all(len(chunk["text"]) <= 260 for chunk in chunks)
+    assert chunks[0]["text"][-40:] in chunks[1]["text"]
 
 
 def test_image_search_label_filter_applies_before_page_limit():

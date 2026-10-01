@@ -1,0 +1,59 @@
+{
+  "dataset_records": 11859,
+  "classes": 103,
+  "validation_count": 2135,
+  "split": "same stratified 82/18 split; random_state=42",
+  "hardware": {
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "torch": "2.14.0+cpu",
+    "device": "cpu",
+    "threads": 2
+  },
+  "training": {
+    "epochs": 3,
+    "frozen_backbone": "MobileNet features except final feature block; classifier trained",
+    "warning": "ResNet is the existing checkpoint; MobileNet is trained with the same split but a separate run. Compare as an engineering benchmark, not a controlled hyperparameter search."
+  },
+  "models": {
+    "resnet18": {
+      "accuracy": 0.9025761124121779,
+      "macro_f1": 0.9155919570941784,
+      "weighted_f1": 0.9024319975080686,
+      "checkpoint_bytes": 44995147,
+      "parameter_count": 11229351,
+      "inference_latency": {
+        "sample_count": 128,
+        "p50_ms": 69.17809999868041,
+        "p95_ms": 75.19823999973596
+      }
+    },
+    "mobilenet_v3_small": {
+      "accuracy": 0.659016393442623,
+      "macro_f1": 0.5744948248319913,
+      "weighted_f1": 0.6331970848153162,
+      "checkpoint_bytes": 6626901,
+      "parameter_count": 1623431,
+      "inference_latency": {
+        "sample_count": 128,
+        "p50_ms": 17.900299993925728,
+        "p95_ms": 20.202845000312664
+      }
+    }
+  },
+  "onnx_resnet18": {
+    "path": "artifacts/comparison/resnet18.onnx",
+    "bytes": 44907914,
+    "runtime": "1.30.0",
+    "opset": 17,
+    "parity_samples": 64,
+    "max_abs_logit_error": 5.602836608886719e-06,
+    "p50_ms": {
+      "pytorch_cpu": 68.96450000203913,
+      "onnxruntime_cpu": 73.06144999165554
+    },
+    "p95_ms": {
+      "pytorch_cpu": 74.37054500769591,
+      "onnxruntime_cpu": 77.70419499720447
+    }
+  }
+}

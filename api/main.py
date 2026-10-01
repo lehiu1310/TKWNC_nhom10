@@ -152,11 +152,13 @@ def species_image(species_id: str = ApiPath(..., max_length=128)):
 
 # ---------- 1. Phân loại ảnh ----------
 @app.post("/api/classify")
-async def classify(file: UploadFile = File(...), top_k: int = Form(3)):
+async def classify(file: UploadFile = File(...), top_k: int = Form(3), explain: bool = Form(False)):
     model = await run_in_threadpool(_require, "classifier")
     t0 = time.perf_counter()
     image = await _read_image(file)
     result = await run_in_threadpool(partial(model.predict, image, top_k=max(1, min(top_k, 5))))
+    if explain:
+        result["grad_cam"] = _to_base64(await run_in_threadpool(partial(model.explain, image)))
     return {**result, "latency_ms": round((time.perf_counter() - t0) * 1000, 1)}
 
 

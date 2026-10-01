@@ -1,8 +1,11 @@
 """Ứng dụng 1 — Phân loại ảnh (ResNet-18 fine-tune trên bộ Flowers)."""
 import json
+import threading
 from pathlib import Path
 
+import numpy as np
 import torch
+import torch.nn.functional as F
 from PIL import Image
 from torchvision import models, transforms
 
@@ -43,11 +46,13 @@ class ImageClassifier:
         self.model.load_state_dict(state)
         self.model.to(DEVICE).eval()
         self.min_confidence = min_confidence
+        self._inference_lock = threading.Lock()
 
     @torch.inference_mode()
     def predict(self, image: Image.Image, top_k: int = 3) -> dict:
         x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(DEVICE)
-        probs = self.model(x).softmax(dim=-1)[0]
+        with self._inference_lock, torch.inference_mode():
+            probs = self.model(x).softmax(dim=-1)[0]
         scores, idx = probs.topk(min(top_k, len(self.classes)))
         preds = [{"label": self.classes[i], "score": round(float(s), 4)} for s, i in zip(scores.tolist(), idx.tolist())]
         return {
@@ -55,3 +60,43 @@ class ImageClassifier:
             # Ảnh không thuộc 5 loài hoa vẫn bị gán nhãn: báo "không chắc" thay vì khẳng định sai
             "confident": preds[0]["score"] >= self.min_confidence,
         }
+
+    def explain(self, image: Image.Image, class_index: int | None = None) -> Image.Image:
+        """Create a Grad-CAM overlay for the selected/predicted ResNet class."""
+        activations = []
+        gradients = []
+        target_layer = self.model.layer4[-1]
+        x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(DEVICE)
+
+        def capture_activation(_module, _inputs, output):
+            activations.append(output)
+            output.register_hook(lambda grad: gradients.append(grad))
+
+        with self._inference_lock:
+            handle = target_layer.register_forward_hook(capture_activation)
+            try:
+                self.model.zero_grad(set_to_none=True)
+                with torch.enable_grad():
+                    logits = self.model(x)
+                    selected_class = int(logits.argmax(dim=1).item()) if class_index is None else int(class_index)
+                    logits[0, selected_class].backward()
+                activation = activations[-1].detach()
+                gradient = gradients[-1].detach()
+                weights = gradient.mean(dim=(2, 3), keepdim=True)
+                cam = F.relu((weights * activation).sum(dim=1, keepdim=True))
+                cam = F.interpolate(cam, size=x.shape[-2:], mode="bilinear", align_corners=False)[0, 0]
+                cam -= cam.min()
+                cam /= cam.max().clamp_min(1e-8)
+                heat = cam.cpu().numpy()
+            finally:
+                handle.remove()
+                self.model.zero_grad(set_to_none=True)
+
+        # Compact JET-like color mapping without adding an image-processing dependency.
+        red = np.clip(1.5 - np.abs(4 * heat - 3), 0, 1)
+        green = np.clip(1.5 - np.abs(4 * heat - 2), 0, 1)
+        blue = np.clip(1.5 - np.abs(4 * heat - 1), 0, 1)
+        heat_rgb = Image.fromarray((np.stack([red, green, blue], axis=-1) * 255).astype(np.uint8))
+        original = image.convert("RGB")
+        heat_rgb = heat_rgb.resize(original.size, Image.Resampling.BILINEAR)
+        return Image.blend(original, heat_rgb, alpha=0.38)
