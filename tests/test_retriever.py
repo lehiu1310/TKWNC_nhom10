@@ -1,5 +1,5 @@
 from core.llm import Retriever
-from core.retrieval import ImageSearch
+from core.search_filter import filter_by_label
 
 
 def test_bm25_ranks_relevant_vietnamese_flower_chunks_first():
@@ -24,23 +24,14 @@ def test_bm25_returns_no_irrelevant_chunks():
 
 
 def test_image_search_label_filter_applies_before_page_limit():
-    class FakeIndex:
-        ntotal = 4
-
-        def search(self, query, count):
-            assert count == self.ntotal
-            return [[0.9, 0.8, 0.7, 0.6]], [[0, 1, 2, 3]]
-
-    engine = ImageSearch.__new__(ImageSearch)
-    engine.index = FakeIndex()
-    engine.meta = [
+    ranked = [
         {"label": "rose", "species_id": "roses"},
         {"label": "daisy", "species_id": "daisy"},
         {"label": "rose", "species_id": "roses"},
         {"label": "tulip", "species_id": "tulips"},
     ]
 
-    result = engine._search([[0.0]], 1, label="roses")
+    result = filter_by_label(ranked, "roses")[:1]
 
     assert len(result) == 1
     assert result[0]["species_id"] == "roses"

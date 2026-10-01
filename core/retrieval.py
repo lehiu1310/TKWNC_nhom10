@@ -12,6 +12,7 @@ import torch.nn.functional as F
 from PIL import Image
 
 from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DEVICE, TRANSLATION_MODEL, resolve_path
+from core.search_filter import filter_by_label
 
 log = logging.getLogger(__name__)
 
@@ -115,11 +116,7 @@ class ImageSearch:
             {"id": int(i), "score": round(float(s), 4), **self.meta[i]}
             for s, i in zip(scores[0], ids[0]) if i != -1
         ]
-        if label:
-            needle = label.strip().casefold()
-            results = [r for r in results if needle in {
-                str(r.get("label", "")).casefold(), str(r.get("species_id", "")).casefold()
-            }]
+        results = filter_by_label(results, label)
         return results[:k]
 
     def search_text(self, query: str, k: int = 8, label: str | None = None) -> list[dict]:
