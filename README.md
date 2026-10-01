@@ -8,7 +8,7 @@
 
 - Render `/api/health`: HTTP 200, `status: ok`. Ảnh hoa hồng mẫu gọi `POST /api/classify` trả HTTP 200, top-1 `roses` (0,751). CORS preflight từ `https://tkwnc-nhom10.vercel.app` tới chatbot trả HTTP 200 và đúng `Access-Control-Allow-Origin`.
 - `POST /api/chat/sync` hiện trả HTTP 503 trên Render (`Mô hình 'llm' chưa sẵn sàng`); chatbot production chưa đạt. Health báo `model_states.llm: failed`; log khởi tạo cụ thể không có trong endpoint công khai.
-- Dashboard Vercel xác nhận production deployment ở trạng thái Ready trên commit `844a7e0`; trang demo trả HTTP 200 và bundle có giao diện Bách khoa 103 loài. CSS mobile mới nhất đang được chốt và sẽ tự deploy sau commit kế tiếp.
+- Dashboard Vercel xác nhận production deployment ở trạng thái Ready trên commit `c8f7ac4`; trang demo trả HTTP 200 và bundle production có CSS một cột/giới hạn chiều rộng cho các thẻ AI trên màn hình nhỏ.
 
 Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet-18 có 103 nhãn; trang chủ chọn 5 loài làm câu chuyện nổi bật, còn Bách khoa và trang chi tiết bao phủ toàn bộ 103 loài.
 
