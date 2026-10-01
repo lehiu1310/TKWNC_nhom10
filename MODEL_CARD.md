@@ -23,7 +23,7 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 | API phát hiện | p50 / p95 | 38,74 s / 55,45 s | Locust 2.46.6, 51 request qua ba lượt một người dùng, 0 lỗi; nearest-rank tính từ history tích lũy của Locust. Chi tiết từng mẫu: [`reports/render-detect_samples.csv`](reports/render-detect_samples.csv); tổng hợp lượt: [`reports/render-detect_runs.csv`](reports/render-detect_runs.csv). |
 | API phát hiện | Process peak RSS | 506,2 MB | Cao nhất trong log `API_PERF` Render khi classifier và YOLO cùng nạp; giới hạn container Render Free 512 MB. Sau lần khởi động lại, riêng detector ghi 457,1 MB. |
 | API tìm ảnh | Độ trễ / lỗi | Chưa đo được trên bản deploy mới | Bản deploy cũ dùng CLIP ViT-B/32 và OOM trên Render Free (512 MB). Mã hiện tại dùng MobileCLIP2-S0 half precision; index 1.236 ảnh; truy vấn cục bộ bằng ảnh hoa hồng trả top-5 cùng nhãn. Cần deploy và đo live trước khi kết luận hết OOM. |
-| API chatbot | Độ trễ / lỗi | Chưa đo được | Một request `POST /api/chat/sync` trả 503 vì Render chưa có `GOOGLE_API_KEY`; log xác nhận `Thiếu GOOGLE_API_KEY (hoặc GEMINI_API_KEY) để dùng Gemini.` Chưa có mẫu thành công; cần thêm key vào Render Secret rồi benchmark. |
+| API chatbot | Độ trễ / lỗi | Chưa đo được | Lần kiểm tra công khai 01/10/2026, `POST /api/chat/sync` trả 503 với `Mô hình 'llm' chưa sẵn sàng`; `/api/health` báo `model_states.llm: failed`. Endpoint không cung cấp log khởi tạo nên chưa kết luận được nguyên nhân cấu hình hay provider. Chưa có mẫu thành công trên production. |
 
 ## 3. Giới hạn
 
@@ -31,7 +31,7 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 - Detector YOLO11n hiện được fine-tune cho bốn nhóm daisy, dandelion, roses và sunflowers; chưa có lớp tulip. mAP50 đo trên test split cùng nguồn bộ dữ liệu, chưa chứng minh khả năng ngoài phân phối. Huấn luyện ngắn 3 epoch và test 84 ảnh nên kết quả còn hạn chế; ảnh thử thật cũng có thể xuất hiện hộp nhầm.
 - MobileCLIP2-S0 + FAISS trả ảnh tương tự trong index 1.236 ảnh, không xác nhận danh tính thực vật. Truy vấn chữ tiếng Việt được dịch sang tiếng Anh bằng Helsinki-NLP opus-mt-vi-en trước khi mã hóa. Precision@5 được đo trên ảnh cùng nguồn dataset, chưa chứng minh khả năng tìm ảnh từ miền dữ liệu khác.
 - RAG giới hạn bởi 8 tệp tri thức và xếp hạng từ khóa BM25; câu hỏi dùng cách diễn đạt xa nội dung tài liệu có thể không truy xuất đúng đoạn. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
-- Đo thành công trên dịch vụ hiện có classifier (102 request) và detector (51 request). Encoder MobileCLIP2 + index mới đã qua kiểm tra API cục bộ và đạt Precision@5 0,8592 trên 206 ảnh held-out cùng dataset; bản mới chưa deploy/benchmark trên Render. Chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.
+- Đo thành công trên dịch vụ hiện có classifier (102 request) và detector (51 request). Encoder MobileCLIP2 + index mới đạt Precision@5 0,8592 trên 206 ảnh held-out cùng dataset; chưa xác nhận benchmark live trên Render. Chatbot production chưa trả lời thành công trong lần kiểm tra gần nhất. Cold start detector có thể mất hơn 2 phút.
 
 ## 4. Rủi ro
 

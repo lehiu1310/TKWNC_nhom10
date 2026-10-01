@@ -24,6 +24,23 @@
 @media(max-width:600px){.feature-flow{grid-template-columns:1fr;gap:9px;margin-bottom:18px}.feature-flow-step>i{display:none}.feature-flow-step b{font-size:8px}.scene-facts{font-size:9px;gap:4px;margin-top:11px}.story-intro>p{font-size:12px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @keyframes modal-slide{from{transform:translateY(35px);opacity:.5}to{transform:translateY(0);opacity:1}}
+/* Keep the AI tools inside the phone viewport even when a title has a long word. */
+@media(max-width:600px){
+  .topbar{padding-inline:14px}
+  .main-nav{gap:8px}
+  .main-nav a{font-size:9px}
+  .ai-glass-inner.section-wrap{box-sizing:border-box;width:calc(100vw - 36px)!important;max-width:calc(100vw - 36px)!important;margin-inline:auto}
+  .ai-glass-inner,.feature-grid,.feature-card{min-width:0}
+  .feature-grid{width:72vw!important;max-width:72vw!important}
+  .ai-glass-inner .feature-grid{width:72vw!important;max-width:72vw!important;grid-template-columns:minmax(0,1fr)}
+  .ai-glass-inner .feature-card{width:100%;max-width:100%}
+  .feature-grid{grid-template-columns:minmax(0,1fr)}
+  .ai-heading{display:block!important;width:100%}
+  .ai-heading>div,.ai-heading h2{display:block;width:100%;min-width:0;max-width:100%;white-space:normal!important;overflow-wrap:anywhere}
+  .ai-heading h2{font-size:clamp(30px,8vw,36px);letter-spacing:-1.4px;line-height:1.08}
+  .ai-heading h2 em{display:block;white-space:normal}
+  .feature-text,.feature-subtitle,.feature-prompt{min-width:0;overflow-wrap:anywhere}
+}
 .flower-scene{min-width:0}.scene-copy{min-width:0;max-width:min(390px,100%);overflow-wrap:break-word}.scene-copy>p{max-width:100%}
 @media(max-width:600px){.stage-scene-stack{overflow:hidden}.flower-scene{inset-inline:0;overflow:hidden;transform-origin:50% 50%}.scene-copy{z-index:6;left:8px;right:8px;width:auto;max-width:100%;overflow-wrap:anywhere;transform:translateZ(120px)}.scene-copy h2,.scene-copy>p,.scene-meaning,.scene-facts{max-width:100%;min-width:0}.scene-copy h2{overflow-wrap:break-word}.scene-art{z-index:1;transform-style:flat;opacity:.2}.scene-photo{z-index:2}}
 :root{--cream:#FFF6EC;--pink:#FF6F91;--yellow:#FFC93C;--orange:#FF8A5B;--purple:#9B7EDE;--green:#5BAE6B;--paper:#FFFCF7}
