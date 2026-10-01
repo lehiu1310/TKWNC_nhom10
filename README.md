@@ -69,7 +69,7 @@ Mở địa chỉ Vite vừa in ra (mặc định ép cổng `5175` theo lệnh 
 | Tên trên web | Mô hình | Dữ liệu / giới hạn |
 |---|---|---|
 | Kính lúp hoa | ResNet-18 | 103 lớp: Oxford Flowers 102 + lớp tulip từ TF Flowers |
-| Mắt thần vườn | YOLO11n | Checkpoint COCO 80 lớp trong notebook; không phải detector huấn luyện riêng cho hoa, có thể nhận hoa thành “potted plant” |
+| Mắt thần vườn | YOLO11n fine-tuned | Bản mã nguồn mặc định dùng `artifacts/detector/flower_yolo11n.pt` (4 lớp hoa). Dịch vụ Render live lần kiểm tra gần nhất vẫn trả nhãn COCO cũ; xem bảng tình trạng deploy bên dưới. |
 | Album hoa | MobileCLIP2-S0 + FAISS | Tìm ảnh trong bộ Flowers; câu tiếng Việt được dịch cục bộ sang tiếng Anh trước khi mã hoá |
 | Cô làm vườn | Gemini API (mặc định) + BM25 | RAG truy xuất tám tài liệu hoa trong `data/kb/`; Qwen local là tùy chọn |
 
@@ -89,6 +89,14 @@ Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md
 | Phát hiện | Đạt mức cơ bản theo quy trình huấn luyện/đánh giá hiện có | Fine-tune YOLO11n trên 831 ảnh có nhãn bounding box (664 train / 83 validation / 84 test, 4 lớp, 1.280 hộp; CC Apache-2.0); test mAP50 = 0,7306, precision = 0,6641, recall = 0,7411 sau 3 epoch. Kết quả thật tại `reports/detector_evaluation.json`; một ảnh hoa hồng thử trực tiếp trả về hộp `roses` cùng một false positive `daisy`. Chưa có lớp tulip và chưa đánh giá ngoài phân phối. |
 | Tìm ảnh | Đạt theo kho ảnh và phép đo retrieval | FAISS có 1.236 ảnh (>1.000). Precision@5 = 0,8592 trên 206 ảnh query held-out theo đường dẫn, cùng nguồn Flowers; báo cáo tại `reports/retrieval_precision_at_5.json`. API hỗ trợ lọc kết quả theo nhãn (tham số `label`). |
 | Chatbot RAG | Đạt bước đánh giá truy xuất; chưa đạt điều kiện dữ liệu 20 trang | Hit@3 = 29/30 = 96,67% trên câu hỏi nội bộ tại `data/kb_eval/rag_hit_at_3.json`; kết quả ở `reports/rag_hit_at_3.json`. Kho hiện chỉ có 8 tài liệu Markdown ngắn, chưa phải bộ tài liệu thật ≥20 trang như rubric yêu cầu; điểm Hit@3 đo việc tìm đúng file nguồn, không chấm độ đúng câu trả lời sinh ra. |
+
+## Hồ sơ nộp bài 10.3
+
+- Báo cáo (giới hạn nội dung theo cấu trúc 8 trang): [`reports/bao_cao_do_an.md`](reports/bao_cao_do_an.md)
+- Kịch bản quay video demo 3 phút: [`reports/kich_ban_demo_3_phut.md`](reports/kich_ban_demo_3_phut.md)
+- Phiên bản mã nguồn: tag [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0)
+
+Video và ảnh chụp màn hình cần được ghi trực tiếp từ bản demo tại thời điểm nộp; tài liệu không giả lập ảnh hoặc kết quả chưa xác nhận trên deploy.
 
 Các số liệu trên là kết quả đo; dòng “chưa đạt” không được xem là đạt chỉ vì API hoặc giao diện đang chạy.
 
