@@ -10,10 +10,10 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 
 | Thành phần | Chỉ số | Kết quả | Bằng chứng / giới hạn |
 |---|---|---:|---|
-| Bộ phân loại | Accuracy validation | 0,9026 (90,26%) | Snapshot có thể xem trong [`reports/classifier_metrics.json`](reports/classifier_metrics.json), lấy từ artifact hiện có; 2.135 ảnh validation, 103 lớp, 3 epoch. Không phải phép đo độc lập mới. |
-| Bộ phân loại | Macro-F1 / confusion matrix | Chưa đo được | Không có trong metrics artifact hiện có. |
+| Bộ phân loại | Accuracy validation | 0,9026 (90,26%) | Tái đánh giá checkpoint trên đúng split 2.135 ảnh/103 lớp, khớp `artifacts/classifier/metrics.json`; cùng validation split đã dùng chọn checkpoint, không phải test độc lập. Báo cáo: [`reports/classifier_evaluation.json`](reports/classifier_evaluation.json). |
+| Bộ phân loại | Macro-F1 / weighted-F1 | 0,9156 / 0,9024 | Cùng split validation, 2.135 ảnh; confusion matrix: [`reports/classifier_confusion_matrix.csv`](reports/classifier_confusion_matrix.csv). |
 | Detector | mAP50 | Chưa đo được | YOLO11n pretrained COCO; không có kết quả fine-tune trên bộ hoa riêng. |
-| Tìm ảnh | Precision@5 | Chưa đo được | Có 1.236 ảnh trong index; chưa có ground-truth relevance set. |
+| Tìm ảnh | Precision@5 | 0,8592 | 206 query held-out theo đường dẫn (2 ảnh × 103 lớp), không có query nào nằm trong FAISS index; relevance là cùng `species_id`. Cùng các nguồn Flowers dùng huấn luyện/index nên chưa phải đánh giá ngoài phân phối. Báo cáo: [`reports/retrieval_precision_at_5.json`](reports/retrieval_precision_at_5.json). |
 | RAG | Hit@3 / độ đúng câu trả lời | Chưa đo được | Chưa có tập 30 câu hỏi với nguồn chuẩn. |
 | API phân loại | p50 / p95 | 3,90 s / 4,50 s | Locust 2.46.6, 102 request, 1 người dùng đồng thời tới Render Free ngày 30/09/2026; 0 lỗi. CSV: [`reports/render-classify_stats.csv`](reports/render-classify_stats.csv). |
 | API phân loại | Process peak RSS | 423,3 MB | Dòng `API_PERF` trong log Render sau khi nạp classifier; RSS cực đại process, không phải RAM toàn container. Instance giới hạn 512 MB. |
@@ -26,9 +26,9 @@ Kho tìm kiếm có 1.236 ảnh đã lập chỉ mục trong workspace. RAG có 
 
 - Bộ phân loại chỉ học các nhãn trong 103 lớp; năm loài trên giao diện không đại diện cho toàn bộ phạm vi. Ảnh ngoài phân phối vẫn có thể bị gán nhãn gần nhất.
 - Detector YOLO11n pretrained COCO không có lớp hoa chuyên biệt; có thể không phát hiện hoa hoặc chỉ nhận diện vật thể nền thuộc COCO.
-- MobileCLIP2-S0 + FAISS trả ảnh tương tự trong index 1.236 ảnh, không xác nhận danh tính thực vật. Truy vấn chữ tiếng Việt được dịch sang tiếng Anh bằng Helsinki-NLP opus-mt-vi-en trước khi mã hóa.
+- MobileCLIP2-S0 + FAISS trả ảnh tương tự trong index 1.236 ảnh, không xác nhận danh tính thực vật. Truy vấn chữ tiếng Việt được dịch sang tiếng Anh bằng Helsinki-NLP opus-mt-vi-en trước khi mã hóa. Precision@5 được đo trên ảnh cùng nguồn dataset, chưa chứng minh khả năng tìm ảnh từ miền dữ liệu khác.
 - RAG giới hạn bởi 8 tệp tri thức và xếp hạng từ khóa BM25; câu hỏi dùng cách diễn đạt xa nội dung tài liệu có thể không truy xuất đúng đoạn. Gemini sinh câu trả lời dựa trên ngữ cảnh truy xuất nhưng không đảm bảo mọi câu đều chính xác.
-- Đo thành công trên dịch vụ hiện có classifier (102 request) và detector (51 request). Bản tìm ảnh cũ gây OOM; encoder MobileCLIP2 mới chỉ được kiểm tra cục bộ, chưa deploy/benchmark. Chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.
+- Đo thành công trên dịch vụ hiện có classifier (102 request) và detector (51 request). Encoder MobileCLIP2 + index mới đã qua kiểm tra API cục bộ và đạt Precision@5 0,8592 trên 206 ảnh held-out cùng dataset; bản mới chưa deploy/benchmark trên Render. Chatbot chưa có khóa Gemini ở Render. Cold start detector có thể mất hơn 2 phút.
 
 ## 4. Rủi ro
 
