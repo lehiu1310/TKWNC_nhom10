@@ -66,7 +66,7 @@ export default function Classify() {
   return <section className="grid">
     <div>
       <h2>Đoán tên loài hoa</h2>
-      <p className="muted">Tải ảnh lên để nhận năm dự đoán phù hợp nhất. Nếu ảnh không thuộc các loài trong bộ dữ liệu, AI vẫn có thể chọn một nhãn gần giống — hãy xem điểm số như gợi ý.</p>
+      <p className="muted">ResNet-18 đối chiếu ảnh với {speciesData.length} nhãn hoa trong bộ dữ liệu và hiển thị 5 kết quả phù hợp nhất. Nếu ảnh nằm ngoài các nhãn này, AI vẫn có thể chọn nhãn gần giống — hãy xem điểm số như gợi ý.</p>
       <label className="gradcam-toggle"><input type="checkbox" checked={showGradCam} onChange={(event) => setShowGradCam(event.target.checked)}/> Giải thích vùng ảnh ảnh hưởng đến dự đoán (Grad-CAM)</label>
       <ImagePicker label="Chọn ảnh để nhận diện" onChange={run} result={imageResult} />
     </div>

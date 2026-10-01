@@ -14,3 +14,6 @@ Cúc hoạ mi ở miền Bắc thường nở vào khoảng tháng 11. Một s�
 
 ## Lưu ý theo vùng
 Khí hậu Việt Nam khác nhau giữa miền núi, đồng bằng, miền Trung và miền Nam. Thời điểm nở có thể sớm hoặc muộn theo thời tiết từng năm.
+
+## Loài hoa ở vùng khí hậu mát hoặc lạnh
+Tulip thường sinh trưởng trong khí hậu mát hoặc ôn đới; tại Việt Nam, nên trồng ở vùng mát hoặc nơi có thể điều chỉnh nhiệt độ. Cúc họa mi ở miền Bắc thường nở khoảng tháng 11. Việc nở vào mùa đông không đồng nghĩa với khả năng chịu rét sâu; tài liệu hiện có chưa đánh giá ngưỡng nhiệt độ chịu lạnh của các loài này.

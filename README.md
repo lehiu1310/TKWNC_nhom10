@@ -4,7 +4,7 @@
 **Backend demo (Render):** https://tkw-nhom10-api.onrender.com  
 **Health check:** https://tkw-nhom10-api.onrender.com/api/health
 
-Website giới thiệu 5 loài hoa nổi bật, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet hiện có 103 nhãn phân loại; Bách khoa và ảnh trưng bày giới thiệu 5 loài đã chọn.
+Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet-18 có 103 nhãn; trang chủ chọn 5 loài làm câu chuyện nổi bật, còn Bách khoa và trang chi tiết bao phủ toàn bộ 103 loài.
 
 ## Kiến trúc
 
@@ -13,8 +13,8 @@ Website giới thiệu 5 loài hoa nổi bật, với bốn chức năng AI lấ
 - `web/`: React + Vite, trải nghiệm responsive theo chủ đề vườn hoa.
 - `data/kb/`: tài liệu tiếng Việt cho chatbot; mỗi chủ đề bắt đầu bằng tiêu đề `## `.
 - `data/kb_eval/rag_hit_at_3.json`: 30 câu hỏi đánh giá nguồn truy xuất RAG.
-- `data/species.json`: dữ liệu loài và nhãn phân loại; Bách khoa trên web giới thiệu 5 loài nổi bật.
-- `data/display_images.json`: nguồn ảnh đại diện cho 5 loài hiển thị.
+- `data/species.json`: dữ liệu của 103 loài, khớp với 103 nhãn trong `artifacts/classifier/classes.json`.
+- `data/display_images.json`: nguồn ảnh trưng bày chất lượng cao cho 5 loài nổi bật trên trang chủ; các loài còn lại dùng ảnh đại diện trong dữ liệu Flowers.
 
 ## Cần cài
 
@@ -55,7 +55,7 @@ cd ..
 python -m uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
-`prepare_flowers102.py` tải Oxford Flowers 102 (8.189 ảnh, 102 lớp), ghép dữ liệu để fine-tune ResNet-18 trên 11.859 ảnh với 103 nhãn. Bách khoa trên web chỉ giới thiệu 5 loài nổi bật; 103 nhãn là phạm vi phân loại của model, không phải số loài trong Bách khoa. MobileCLIP2-S0 + FAISS dùng tối đa 12 ảnh đại diện mỗi nhãn (1.236 ảnh hiện tại); index đi cùng mã nguồn và `encoder.json` xác nhận model dùng để tạo vector. Danh sách lớp Oxford chủ yếu gồm hoa phổ biến ở Anh, không đại diện cho mọi loài hoa trên thế giới. Chuẩn bị dữ liệu/trọng số là bước một lần, cần Internet và vài GB dung lượng; thời gian trên CPU phụ thuộc máy và có thể vượt 15 phút. YOLO11, MobileCLIP2-S0 và mô hình dịch Việt–Anh được tải khi mở chức năng lần đầu. Chatbot dùng BM25 trên tài liệu tiếng Việt để giảm RAM, Gemini yêu cầu `GOOGLE_API_KEY`/`GEMINI_API_KEY`; `LLM_PROVIDER=hf_local` dùng Qwen local và có thể đổi model bằng `LLM_MODEL`.
+`prepare_flowers102.py` tải Oxford Flowers 102 (8.189 ảnh, 102 lớp), ghép dữ liệu để fine-tune ResNet-18 trên 11.859 ảnh với 103 nhãn. Bách khoa có đủ 103 mục khớp với các nhãn phân loại; năm loài trên trang chủ chỉ là nhóm nổi bật. MobileCLIP2-S0 + FAISS dùng tối đa 12 ảnh đại diện mỗi nhãn (1.236 ảnh hiện tại); index đi cùng mã nguồn và `encoder.json` xác nhận model dùng để tạo vector. Danh sách lớp Oxford chủ yếu gồm hoa phổ biến ở Anh, không đại diện cho mọi loài hoa trên thế giới. Chuẩn bị dữ liệu/trọng số là bước một lần, cần Internet và vài GB dung lượng; thời gian trên CPU phụ thuộc máy và có thể vượt 15 phút. YOLO11, MobileCLIP2-S0 và mô hình dịch Việt–Anh được tải khi mở chức năng lần đầu. Chatbot dùng BM25 trên tài liệu tiếng Việt để giảm RAM, Gemini yêu cầu `GOOGLE_API_KEY`/`GEMINI_API_KEY`; `LLM_PROVIDER=hf_local` dùng Qwen local và có thể đổi model bằng `LLM_MODEL`.
 
 Khi phát triển React riêng, mở **hai terminal và giữ cả hai chạy cùng lúc**:
 
@@ -111,7 +111,6 @@ Lệnh này fine-tune MobileNetV3-Small, đánh giá ResNet/MobileNet trên cùn
 ## Hồ sơ nộp bài 10.3
 
 - Báo cáo (giới hạn nội dung theo cấu trúc 8 trang): [`reports/bao_cao_do_an.md`](reports/bao_cao_do_an.md)
-- Kịch bản quay video demo 3 phút: [`reports/kich_ban_demo_3_phut.md`](reports/kich_ban_demo_3_phut.md)
 - Phiên bản mã nguồn: tag [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0)
 
 Video và ảnh chụp màn hình cần được ghi trực tiếp từ bản demo tại thời điểm nộp; tài liệu không giả lập ảnh hoặc kết quả chưa xác nhận trên deploy.

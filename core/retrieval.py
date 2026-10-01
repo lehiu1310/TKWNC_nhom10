@@ -11,7 +11,7 @@ import torch
 import torch.nn.functional as F
 from PIL import Image
 
-from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DEVICE, TRANSLATION_MODEL, resolve_path
+from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DATA_DIR, DEVICE, TRANSLATION_MODEL, resolve_path
 from core.search_filter import filter_by_label
 
 log = logging.getLogger(__name__)
@@ -87,6 +87,21 @@ class ImageSearch:
         self.index = faiss.read_index(str(index_dir / "index.faiss"))
         self.meta: list[dict] = json.loads((index_dir / "meta.json").read_text(encoding="utf-8"))
         self._translator = None
+        species_path = DATA_DIR / "species.json"
+        species = json.loads(species_path.read_text(encoding="utf-8")) if species_path.is_file() else []
+        self._english_name_by_id = {item["id"]: item.get("name_en", item["id"]) for item in species}
+        self._species_names = [
+            (item["id"], name.casefold())
+            for item in species
+            for name in (item.get("id", ""), item.get("name_vi", ""), item.get("name_en", ""))
+            if name
+        ]
+
+    def _label_from_query(self, query: str) -> str | None:
+        """Use an explicit flower name as a category constraint, then CLIP-rank its photos."""
+        text = query.casefold()
+        matches = [(len(name), species_id) for species_id, name in self._species_names if name in text]
+        return max(matches)[1] if matches else None
 
     def _english_query(self, query: str) -> str:
         """CLIP checkpoint in this project is English-first; translate Vietnamese queries locally."""
@@ -120,7 +135,15 @@ class ImageSearch:
         return results[:k]
 
     def search_text(self, query: str, k: int = 8, label: str | None = None) -> list[dict]:
-        return self._search(self.encoder.encode_texts([self._english_query(query)]), k, label)
+        # A named class is stronger evidence than a weak English-only CLIP text match.
+        # Keep CLIP ranking within that flower's photos; preserve the manual filter override.
+        matched_label = self._label_from_query(query) if not label else None
+        effective_label = label or matched_label
+        if matched_label:
+            clip_query = f"a photograph of {self._english_name_by_id.get(matched_label, matched_label)} flower"
+        else:
+            clip_query = self._english_query(query)
+        return self._search(self.encoder.encode_texts([clip_query]), k, effective_label)
 
     def search_image(self, image: Image.Image, k: int = 8, label: str | None = None) -> list[dict]:
         return self._search(self.encoder.encode_images([image]), k, label)
