@@ -1,4 +1,5 @@
 """Ứng dụng 3 — Tìm kiếm ảnh (CLIP + FAISS): tìm bằng câu mô tả hoặc bằng ảnh mẫu."""
+from __future__ import annotations
 import json
 import logging
 import re
@@ -7,11 +8,7 @@ import threading
 from collections import OrderedDict
 from pathlib import Path
 
-import faiss
 import numpy as np
-import open_clip
-import torch
-import torch.nn.functional as F
 from PIL import Image
 
 from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DATA_DIR, DEVICE, GEMINI_MODEL, resolve_path
@@ -20,8 +17,21 @@ from core.search_filter import filter_by_label
 log = logging.getLogger(__name__)
 
 
+def _inference_mode(function):
+    try:
+        import torch
+    except ImportError:
+        return function
+    return torch.inference_mode()(function)
+
+
 class ClipEncoder:
     def __init__(self, model_name: str = CLIP_MODEL, pretrained: str = CLIP_PRETRAINED):
+        # Keep retrieval dependencies lazy so API tests and lightweight tools can
+        # import the query helpers without installing PyTorch/OpenCLIP/FAISS.
+        import open_clip
+        import torch
+
         # MobileCLIP2-S0 fits the 512 MB Render free container where ViT-B/32
         # previously exhausted memory before an image query could finish.
         self.model, _, self.preprocess = open_clip.create_model_and_transforms(
@@ -35,16 +45,22 @@ class ClipEncoder:
         self.pretrained = pretrained
         self.tokenizer = open_clip.get_tokenizer(model_name)
 
-    @torch.inference_mode()
+    @_inference_mode
     def encode_images(self, images: list[Image.Image], batch_size: int = 64) -> np.ndarray:
+        import torch
+        import torch.nn.functional as F
+
         chunks = []
         for i in range(0, len(images), batch_size):
             batch = torch.stack([self.preprocess(im.convert("RGB")) for im in images[i:i + batch_size]]).to(DEVICE, dtype=self.dtype)
             chunks.append(F.normalize(self.model.encode_image(batch).float(), dim=-1).cpu())
         return torch.cat(chunks).numpy().astype("float32")
 
-    @torch.inference_mode()
+    @_inference_mode
     def encode_texts(self, texts: list[str]) -> np.ndarray:
+        import torch
+        import torch.nn.functional as F
+
         tokens = self.tokenizer(texts).to(DEVICE)
         feats = self.model.encode_text(tokens).float()
         return F.normalize(feats, dim=-1).cpu().numpy().astype("float32")
@@ -52,6 +68,8 @@ class ClipEncoder:
 
 def build_index(encoder: ClipEncoder, items: list[dict], out_dir: Path = ART_DIR / "retrieval") -> faiss.Index:
     """items: [{"path": <tương đối so với ROOT>, "label": ..., "source": ...}] → lưu index.faiss + meta.json."""
+    import faiss
+
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     embeddings = []
@@ -79,6 +97,8 @@ def build_index(encoder: ClipEncoder, items: list[dict], out_dir: Path = ART_DIR
 
 class ImageSearch:
     def __init__(self, index_dir: Path = ART_DIR / "retrieval", encoder: ClipEncoder | None = None):
+        import faiss
+
         index_dir = Path(index_dir)
         self.encoder = encoder or ClipEncoder()
         manifest_path = index_dir / "encoder.json"
