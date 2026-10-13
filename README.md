@@ -10,7 +10,16 @@
 - `POST /api/chat/sync` hiện trả HTTP 503 trên Render (`Mô hình 'llm' chưa sẵn sàng`); chatbot production chưa đạt. Health báo `model_states.llm: failed`; log khởi tạo cụ thể không có trong endpoint công khai.
 - Dashboard Vercel xác nhận production deployment ở trạng thái Ready trên commit `c8f7ac4`; trang demo trả HTTP 200 và bundle production có CSS một cột/giới hạn chiều rộng cho các thẻ AI trên màn hình nhỏ.
 
-Kiểm tra lại ngày **13/10/2026**: demo Vercel trả HTTP 200; Render `/api/health` trả HTTP 200 (`status: ok`). Ảnh mẫu hoa hồng mới gửi tới `/api/classify` trả HTTP 200, top-1 `roses` với confidence **0,9259**. Dịch vụ production chưa đạt đủ bốn chức năng: `/api/search/text` trả HTTP 502 trong lần gọi kiểm tra, còn `/api/chat/sync` trả HTTP 503 với `{"detail":"Mô hình 'llm' chưa sẵn sàng."}`. Vì vậy chỉ xác nhận classify chạy thật; không tính search/chat là đạt trên deploy. Các chỉnh sửa hiện tại nằm trên nhánh local `ui-upgrade`, chưa được deploy lên Render.
+Kiểm tra lại ngày **13/10/2026**: demo Vercel trả HTTP 200; Render `/api/health` trả HTTP 200 (`status: ok`). Ảnh mẫu hoa hồng mới gửi tới `/api/classify` trả HTTP 200, top-1 `roses` với confidence **0,9259**. Dịch vụ production chưa đạt đủ bốn chức năng: `/api/search/text` trả HTTP 502 trong lần gọi kiểm tra, còn `/api/chat/sync` trả HTTP 503 với `{"detail":"Mô hình 'llm' chưa sẵn sàng."}`. Vì vậy chỉ xác nhận classify chạy thật; không tính search/chat là đạt trên deploy.
+
+### Nhánh nâng cấp `ui-upgrade` — kiểm tra preview ngày 13/10/2026
+
+- Preview Vercel: https://tkwnc-nhom10-git-ui-upgrade-tkwnc-nhom10.vercel.app/ — trang tải thành công, gọi `/api/health` qua rewrite cùng origin và hiển thị vườn đang mở. Commit preview trước phần giới hạn thời gian request là `ab39978`.
+- Nhận diện trên preview: ảnh mẫu Hoa hồng cho top-1 `roses` với confidence **91,7%**, có năm dự đoán và đường dẫn sang chi tiết Hoa hồng. Direct call tới backend Render cùng ảnh trả top-1 `roses` **0,9259**.
+- Album trên backend production: một lần kiểm tra `POST /api/search/text` kết thúc HTTP **502 Bad Gateway** sau khoảng 60 giây. Trên preview, thao tác tìm ảnh còn giữ trạng thái loading lâu; bản cập nhật UI giới hạn chờ request đang được chuẩn bị để trạng thái này kết thúc bằng lỗi thân thiện và nút thử lại.
+- Chatbot trên backend production: `POST /api/chat/sync` trả HTTP **503**, `Mô hình 'llm' chưa sẵn sàng`; chưa xác nhận được trả lời Gemini thật trên preview. Detect chưa được chạy lại trên backend production trong lượt này.
+- CI GitHub Actions xanh trên các commit `8cc39e4` và `ab39978`; bộ kiểm tra cục bộ gần nhất trước thay đổi request-timeout là **46 passed**. `pnpm run build` sau thay đổi request-timeout thành công; Vite còn cảnh báo bundle JavaScript lớn hơn 500 kB.
+- Render đang chạy revision cũ, không phải nhánh preview. Không thể kiểm tra build log hoặc trigger deploy Render trong lượt này, nên các kết quả lỗi backend phía trên vẫn là trạng thái deploy hiện tại.
 
 Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet-18 có 103 nhãn; trang chủ chọn 5 loài làm câu chuyện nổi bật, còn Bách khoa và trang chi tiết bao phủ toàn bộ 103 loài.
 
