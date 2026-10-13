@@ -3,6 +3,7 @@ import { friendlyFailure, postImage } from '../api.js';
 import ImagePicker from './ImagePicker.jsx';
 import speciesData from '../../../data/species.json';
 import detectorDemoSamples from '../../../data/detector_demo_samples.json';
+import VideoDetect from './VideoDetect.jsx';
 
 const LABEL_COLORS = {
   person: '#FF6F91', 'potted plant': '#5BAE6B', vase: '#9B7EDE', bird: '#FFC93C',
@@ -24,6 +25,7 @@ export default function Detect() {
   const [imagePreview, setImagePreview] = useState('');
   const [imageSize, setImageSize] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [inputMode, setInputMode] = useState('image');
   const canvasRef = useRef(null);
 
   async function run(file, previewUrl) {
@@ -53,7 +55,12 @@ export default function Detect() {
     image.src = imagePreview;
   }, [selected, imagePreview]);
 
-  return <section className="grid">
+  return <div className="detect-panel">
+    <div className="detect-mode-switch" role="tablist" aria-label="Chế độ phát hiện">
+      <button type="button" role="tab" aria-selected={inputMode === 'image'} className={inputMode === 'image' ? 'active' : ''} onClick={() => setInputMode('image')}>Ảnh tĩnh</button>
+      <button type="button" role="tab" aria-selected={inputMode === 'video'} className={inputMode === 'video' ? 'active' : ''} onClick={() => setInputMode('video')}>Video / webcam</button>
+    </div>
+    {inputMode === 'video' ? <VideoDetect/> : <section className="grid">
     <div><h2>Tìm vật thể trong ảnh</h2><p className="muted">Tải ảnh lên hoặc chọn ảnh hoa mẫu để xem các vật thể được khoanh vùng.</p><ImagePicker label="Chọn ảnh để tìm vật thể" onChange={run} samples={SAMPLES}/><p className="search-hint">Đây là mô hình YOLO được fine-tune riêng cho các nhãn hoa trong bộ huấn luyện, không phải các lớp hoa có sẵn của YOLO gốc. Các đối tượng ngoài nhãn đã học có thể bị bỏ sót hoặc nhận nhầm.</p></div>
     <div className="result-panel"><span className="feature-subtitle">BẢN ĐỒ KHU VƯỜN</span>
       {state.status === 'idle' && <div className="empty-state"><span>◎</span><p>Khung ảnh và các vùng phát hiện sẽ hiện ở đây.</p></div>}
@@ -73,5 +80,6 @@ export default function Detect() {
       </>}
     </div>
     {selected && <div className="detect-zoom-backdrop" role="presentation" onClick={() => setSelected(null)}><section data-tilt className="detect-zoom-card tilt-card" role="dialog" aria-modal="true" aria-label={`Vùng ảnh: ${selected.label}`} onClick={(event) => event.stopPropagation()}><button type="button" className="close-button" onClick={() => setSelected(null)} aria-label="Đóng phóng to">×</button><span className="feature-subtitle">VÙNG ĐƯỢC PHÁT HIỆN</span><h3>{selected.label}<small style={{ color: labelColor(selected.label) }}>{(selected.score * 100).toFixed(1)}%</small></h3><canvas ref={canvasRef} aria-label={`Ảnh phóng to vùng ${selected.label}`}/></section></div>}
-  </section>;
+  </section>}
+  </div>;
 }
