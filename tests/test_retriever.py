@@ -61,6 +61,20 @@ def test_bm25_ranks_relevant_vietnamese_flower_chunks_first():
     assert results[0]["score"] > 0
 
 
+def test_bm25_returns_distinct_sources_for_citations():
+    retriever = Retriever([
+        {"source": "hoa_hong.md", "text": "Hoa hồng đỏ tượng trưng cho tình yêu."},
+        {"source": "hoa_hong.md", "text": "Hoa hồng phấn gợi sự dịu dàng."},
+        {"source": "hoa_cuc.md", "text": "Hoa cúc cũng gắn với tình cảm và ý nghĩa."},
+        {"source": "tulip.md", "text": "Tulip mang thông điệp tình cảm chân thành."},
+    ])
+
+    results = retriever.search("ý nghĩa tình cảm hoa", k=3)
+
+    assert len(results) == 3
+    assert len({item["source"] for item in results}) == 3
+
+
 def test_bm25_returns_no_irrelevant_chunks():
     retriever = Retriever([
         {"source": "hoa_hong.md", "text": "Hoa hồng tượng trưng cho tình yêu."},
@@ -78,6 +92,22 @@ def test_markdown_chunking_has_bounded_overlap(tmp_path):
     assert len(chunks) >= 2
     assert all(len(chunk["text"]) <= 260 for chunk in chunks)
     assert chunks[0]["text"][-40:] in chunks[1]["text"]
+
+
+def test_pdf_knowledge_source_is_chunked_with_page_citations():
+    chunks = load_chunks()
+    sunflower_pages = [c for c in chunks if c["source"] == "sunflower_usda_1901.pdf"]
+    kstate_pages = [c for c in chunks if c["source"] == "sunflower_kstate_2019.pdf"]
+
+    assert sunflower_pages
+    assert all(c.get("historical") is True for c in sunflower_pages)
+    assert all(isinstance(c.get("page"), int) for c in sunflower_pages)
+    assert any("sunflower" in c["text"].casefold() for c in sunflower_pages)
+    formatted = RAGChatbot._format_context(sunflower_pages[0])
+    assert "trang " in formatted
+    assert "không dùng làm hướng dẫn canh tác hiện hành" in formatted
+    assert len({c["page"] for c in kstate_pages}) == 56
+    assert all(c.get("source_note") for c in kstate_pages)
 
 
 def test_gemini_without_api_key_uses_grounded_rag_fallback(tmp_path, monkeypatch):

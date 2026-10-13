@@ -1,18 +1,18 @@
 {
   "metric": "Hit@3",
-  "hits": 29,
+  "hits": 30,
   "total": 30,
-  "score": 0.9666666666666667,
+  "score": 1.0,
   "retriever": "BM25",
-  "kb_files": 8,
+  "kb_files": 10,
   "results": [
     {
       "question": "Hoa hồng đỏ thường được tặng với thông điệp gì?",
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
-        "y_nghia_hoa.md",
         "hoa_hong.md",
-        "tulip.md"
+        "y_nghia_hoa.md",
+        "bo_cong_anh.md"
       ],
       "hit_at_3": true
     },
@@ -30,9 +30,9 @@
       "question": "Làm thế nào tưới hoa hồng để hạn chế úng rễ?",
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
-        "hoa_cuc.md",
-        "y_nghia_hoa.md",
-        "hoa_hong.md"
+        "hoa_hong.md",
+        "huong_duong.md",
+        "tulip.md"
       ],
       "hit_at_3": true
     },
@@ -41,8 +41,8 @@
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
         "hoa_hong.md",
-        "y_nghia_hoa.md",
-        "hoa_cuc.md"
+        "huong_duong.md",
+        "tulip.md"
       ],
       "hit_at_3": true
     },
@@ -51,8 +51,8 @@
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
         "hoa_hong.md",
-        "mua_hoa_viet_nam.md",
-        "bo_cong_anh.md"
+        "tulip.md",
+        "mua_hoa_viet_nam.md"
       ],
       "hit_at_3": true
     },
@@ -61,8 +61,8 @@
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
         "hoa_hong.md",
-        "tulip.md",
-        "hoa_cuc.md"
+        "huong_duong.md",
+        "tulip.md"
       ],
       "hit_at_3": true
     },
@@ -70,9 +70,9 @@
       "question": "Tulip mọc từ bộ phận nào và có hình dáng hoa ra sao?",
       "expected_source": "tulip.md",
       "retrieved_sources": [
-        "hoa_cuc.md",
-        "hoa_hong.md",
-        "tulip.md"
+        "tulip.md",
+        "bo_cong_anh.md",
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -81,8 +81,8 @@
       "expected_source": "tulip.md",
       "retrieved_sources": [
         "tulip.md",
-        "bo_cong_anh.md",
-        "mua_hoa_viet_nam.md"
+        "mua_hoa_viet_nam.md",
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -92,7 +92,7 @@
       "retrieved_sources": [
         "tulip.md",
         "mua_hoa_viet_nam.md",
-        "mua_hoa_viet_nam.md"
+        "hoa_cuc.md"
       ],
       "hit_at_3": true
     },
@@ -101,8 +101,8 @@
       "expected_source": "tulip.md",
       "retrieved_sources": [
         "tulip.md",
-        "tulip.md",
-        "tulip.md"
+        "mua_hoa_viet_nam.md",
+        "hoa_cuc.md"
       ],
       "hit_at_3": true
     },
@@ -111,18 +111,18 @@
       "expected_source": "tulip.md",
       "retrieved_sources": [
         "y_nghia_hoa.md",
-        "huong_duong.md",
-        "y_nghia_hoa.md"
+        "tulip.md",
+        "mua_hoa_viet_nam.md"
       ],
-      "hit_at_3": false
+      "hit_at_3": true
     },
     {
       "question": "Vì sao không nên để củ tulip bị đọng nước?",
       "expected_source": "tulip.md",
       "retrieved_sources": [
         "tulip.md",
-        "hoa_cuc.md",
-        "tulip.md"
+        "huong_duong.md",
+        "bo_cong_anh.md"
       ],
       "hit_at_3": true
     },
@@ -131,8 +131,8 @@
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
         "huong_duong.md",
-        "huong_duong.md",
-        "y_nghia_hoa.md"
+        "y_nghia_hoa.md",
+        "hoa_cuc.md"
       ],
       "hit_at_3": true
     },
@@ -140,9 +140,9 @@
       "question": "Hướng dương cần vị trí trồng như thế nào?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
-        "cach_cham_soc.md",
         "huong_duong.md",
-        "huong_duong.md"
+        "hoa_cuc.md",
+        "cach_cham_soc.md"
       ],
       "hit_at_3": true
     },
@@ -150,7 +150,7 @@
       "question": "Ý nghĩa phổ biến của hoa Helianthus annuus là gì?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
-        "bo_cong_anh.md",
+        "hoa_hong.md",
         "huong_duong.md",
         "y_nghia_hoa.md"
       ],
@@ -161,8 +161,8 @@
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
         "huong_duong.md",
-        "huong_duong.md",
-        "huong_duong.md"
+        "hoa_cuc.md",
+        "tulip.md"
       ],
       "hit_at_3": true
     },
@@ -172,7 +172,7 @@
       "retrieved_sources": [
         "huong_duong.md",
         "mua_hoa_viet_nam.md",
-        "mua_hoa_viet_nam.md"
+        "hoa_cuc.md"
       ],
       "hit_at_3": true
     },
@@ -180,9 +180,9 @@
       "question": "Điều gì cần tránh khi tưới cây hướng dương?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
-        "tulip.md",
         "huong_duong.md",
-        "y_nghia_hoa.md"
+        "hoa_cuc.md",
+        "hoa_hong.md"
       ],
       "hit_at_3": true
     },
@@ -192,7 +192,7 @@
       "retrieved_sources": [
         "hoa_cuc.md",
         "bo_cong_anh.md",
-        "hoa_cuc.md"
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -200,9 +200,9 @@
       "question": "Cúc họa mi miền Bắc thường xuất hiện vào khoảng tháng nào?",
       "expected_source": "hoa_cuc.md",
       "retrieved_sources": [
-        "hoa_cuc.md",
         "mua_hoa_viet_nam.md",
-        "bo_cong_anh.md"
+        "hoa_cuc.md",
+        "tulip.md"
       ],
       "hit_at_3": true
     },
@@ -210,9 +210,9 @@
       "question": "Cắt hoa cúc tàn đem lại lợi ích gì cho cây?",
       "expected_source": "hoa_cuc.md",
       "retrieved_sources": [
-        "cach_cham_soc.md",
         "hoa_cuc.md",
-        "hoa_cuc.md"
+        "cach_cham_soc.md",
+        "hoa_hong.md"
       ],
       "hit_at_3": true
     },
@@ -221,8 +221,8 @@
       "expected_source": "hoa_cuc.md",
       "retrieved_sources": [
         "hoa_cuc.md",
-        "y_nghia_hoa.md",
-        "hoa_hong.md"
+        "hoa_hong.md",
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -231,8 +231,8 @@
       "expected_source": "hoa_cuc.md",
       "retrieved_sources": [
         "hoa_cuc.md",
-        "hoa_cuc.md",
-        "y_nghia_hoa.md"
+        "huong_duong.md",
+        "bo_cong_anh.md"
       ],
       "hit_at_3": true
     },
@@ -241,8 +241,8 @@
       "expected_source": "hoa_cuc.md",
       "retrieved_sources": [
         "hoa_cuc.md",
-        "mua_hoa_viet_nam.md",
-        "mua_hoa_viet_nam.md"
+        "hoa_hong.md",
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -251,8 +251,8 @@
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
         "bo_cong_anh.md",
-        "bo_cong_anh.md",
-        "y_nghia_hoa.md"
+        "y_nghia_hoa.md",
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -260,9 +260,9 @@
       "question": "Bồ công anh thường gợi biểu tượng về điều gì?",
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
-        "y_nghia_hoa.md",
         "bo_cong_anh.md",
-        "huong_duong.md"
+        "y_nghia_hoa.md",
+        "hoa_cuc.md"
       ],
       "hit_at_3": true
     },
@@ -271,8 +271,8 @@
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
         "bo_cong_anh.md",
-        "bo_cong_anh.md",
-        "bo_cong_anh.md"
+        "y_nghia_hoa.md",
+        "huong_duong.md"
       ],
       "hit_at_3": true
     },
@@ -281,8 +281,8 @@
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
         "bo_cong_anh.md",
-        "y_nghia_hoa.md",
-        "bo_cong_anh.md"
+        "huong_duong.md",
+        "y_nghia_hoa.md"
       ],
       "hit_at_3": true
     },
@@ -292,7 +292,7 @@
       "retrieved_sources": [
         "bo_cong_anh.md",
         "y_nghia_hoa.md",
-        "bo_cong_anh.md"
+        "hoa_cuc.md"
       ],
       "hit_at_3": true
     },
@@ -302,7 +302,7 @@
       "retrieved_sources": [
         "bo_cong_anh.md",
         "y_nghia_hoa.md",
-        "bo_cong_anh.md"
+        "huong_duong.md"
       ],
       "hit_at_3": true
     }
