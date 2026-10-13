@@ -4,15 +4,37 @@ export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VIT
 async function handle(res) {
   if (!res.ok) {
     let detail = res.statusText;
-    try { detail = (await res.json()).detail ?? detail; } catch { /* không phải JSON */ }
+    try {
+      const body = await res.json();
+      detail = typeof body.detail === 'string' ? body.detail : body.detail ? JSON.stringify(body.detail) : detail;
+    } catch { /* không phải JSON */ }
     throw new Error(`${res.status}: ${detail}`);
   }
   return res.json();
 }
 
-export function postImage(path, file, fields = {}) {
+async function prepareImage(file) {
+  if (!file || !file.type.startsWith('image/')) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, 1024 / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    canvas.getContext('2d', { alpha: false })?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.84));
+    if (!blob) return file;
+    return new File([blob], `${file.name.replace(/\.[^.]+$/, '') || 'flower'}.jpg`, { type: 'image/jpeg' });
+  } catch {
+    return file;
+  }
+}
+
+export async function postImage(path, file, fields = {}) {
+  const preparedFile = await prepareImage(file);
   const form = new FormData();
-  form.append('file', file);
+  form.append('file', preparedFile);
   Object.entries(fields).forEach(([k, v]) => form.append(k, String(v)));
   return fetch(`${API_BASE}${path}`, { method: 'POST', body: form }).then(handle);
 }
@@ -25,23 +47,34 @@ export function postJson(path, body) {
   }).then(handle);
 }
 
-export const getHealth = () => fetch(`${API_BASE}/api/health`).then(handle);
+export const getHealth = (options = {}) => fetch(`${API_BASE}/api/health`, options).then(handle);
+
+export async function fetchSampleImage(species) {
+  const response = await fetch(`${API_BASE}/api/species/${encodeURIComponent(species.id)}/image`);
+  if (!response.ok) throw new Error(`${response.status}: ${response.statusText}`);
+  const blob = await response.blob();
+  const extension = blob.type === 'image/png' ? 'png' : 'jpg';
+  return new File([blob], `${species.id}-mau.${extension}`, { type: blob.type || 'image/jpeg' });
+}
 
 export function friendlyFailure(error) {
   console.error('AI request failed:', error);
   const networkError = error instanceof TypeError;
   if (networkError) {
-    return 'Không kết nối được máy chủ AI. Hãy khởi động backend FastAPI rồi thử lại.';
+    return 'Khu vườn AI đang khởi động hoặc mất kết nối. Đợi một chút rồi thử lại nhé.';
   }
 
   const responseError = /^(\d{3}):\s*(.*)$/.exec(error?.message ?? '');
   if (!responseError) return error?.message || 'Đã xảy ra lỗi khi xử lý yêu cầu.';
   const [, status, detail] = responseError;
+  if (status === '400' || status === '413' || status === '422') {
+    return status === '413' ? 'Ảnh quá lớn để xử lý. Hãy chọn ảnh nhẹ hơn nhé.' : 'Ảnh hoặc thông tin gửi lên chưa hợp lệ. Bạn kiểm tra lại rồi thử lần nữa nhé.';
+  }
   if (status === '502' || status === '504') {
-    return `Không kết nối được backend AI (HTTP ${status}). FastAPI chưa chạy hoặc không phản hồi.`;
+    return `Máy chủ AI chưa phản hồi (HTTP ${status}). Bạn đợi một chút rồi thử lại nhé.`;
   }
   if (status === '503') {
-    return `Backend chưa sẵn sàng (HTTP 503). ${detail || 'Kiểm tra trạng thái mô hình và dữ liệu cần thiết.'}`;
+    return `Khu vườn AI đang chuẩn bị dữ liệu (HTTP 503). Bạn thử lại sau ít phút nhé.`;
   }
   return `Backend trả lỗi HTTP ${status}${detail ? `: ${detail}` : '.'}`;
 }

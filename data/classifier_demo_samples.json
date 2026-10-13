@@ -1,0 +1,6 @@
+[
+  {"id":"daisy","assetUrl":"/samples/classifier/daisy.jpg"},
+  {"id":"dandelion","assetUrl":"/samples/classifier/dandelion.jpg"},
+  {"id":"roses","assetUrl":"/samples/classifier/roses.jpg"},
+  {"id":"sunflowers","assetUrl":"/samples/classifier/sunflowers.jpg"}
+]

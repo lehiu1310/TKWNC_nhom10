@@ -10,13 +10,84 @@ import Search from './features/Search.jsx';
 import Chat from './features/Chat.jsx';
 import speciesData from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
+import classifierClasses from '../../artifacts/classifier/classes.json';
+import classifierMetrics from '../../artifacts/classifier/metrics.json';
+import detectorReport from '../../reports/detector_evaluation.json';
+import retrievalReport from '../../reports/retrieval_precision_at_5.json';
+import ragReport from '../../reports/rag_hit_at_3.json';
+import classifyStatsCsv from '../../reports/render-classify_stats.csv?raw';
+import detectStatsCsv from '../../reports/render-detect_stats.csv?raw';
+import modelCardMarkdown from '../../MODEL_CARD.md?raw';
 
 
-const FLOWERS = speciesData.map((item, i) => ({ ...item, vi: item.name_vi, en: item.name_en, color: item.color, bloom: item.bloom_season, icon: ['✿', '❋', '✿', '✺', '❀'][i] }));
-const FEATURED_FLOWERS = FLOWERS.slice(0, 5);
-const DISPLAY_KEYS = { roses: 'rose', sunflowers: 'sunflower', tulips: 'tulip' };
-const flowerDisplayRecord = (flower) => displayImageData.images[DISPLAY_KEYS[flower.id] || flower.id];
+const FLOWERS = speciesData.map((item) => ({ ...item, vi: item.name_vi, en: item.name_en, color: item.color, bloom: item.bloom_season, icon: item.icon || '✿' }));
+const FEATURED_FLOWERS = FLOWERS.filter((item) => item.featured).sort((a, b) => a.featured_order - b.featured_order);
+const flowerDisplayRecord = (flower) => displayImageData.images[flower.display_image_key || flower.id];
 const flowerDisplayImage = (flower) => flowerDisplayRecord(flower)?.url || `/api/species/${flower.id}/image`;
+
+function FlowerOfMonth({ navigate }) {
+  const now = new Date();
+  const monthNumber = now.getMonth() + 1;
+  const monthName = new Intl.DateTimeFormat('vi-VN', { month: 'long' }).format(now);
+  const eligible = FLOWERS.filter((flower) => {
+    const season = flower.bloom_season.toLocaleLowerCase('vi');
+    if (season.includes('quanh năm')) return true;
+    const months = [...season.matchAll(/\d{1,2}/g)].map(([month]) => Number(month));
+    if (months.length === 1) return months[0] === monthNumber;
+    if (months.length >= 2) return months.some((month, index) => index % 2 === 0 && month <= monthNumber && months[index + 1] >= monthNumber);
+    return false;
+  });
+  const flower = eligible[0];
+  if (!flower) return null;
+  const photo = flowerDisplayRecord(flower);
+  return <section className="monthly-flower section-wrap" aria-label={`Hoa của ${monthName}`}>
+    <div className="monthly-flower-card" style={{ '--flower-color': flower.color }}>
+      <div className="monthly-flower-copy"><span className="eyebrow">GỢI Ý THEO MÙA · {monthName.toLocaleUpperCase('vi')}</span><h2>Hoa của tháng này</h2><p>{flower.name_vi} đang hợp mùa theo dữ liệu khu vườn: {flower.bloom_season}.</p><button className="text-link" onClick={() => navigate(`/bach-khoa/${flower.id}`)}>Đọc chuyện về {flower.name_vi} <span>→</span></button></div>
+      <img className={photo ? 'display-flower-photo' : undefined} style={photo ? { '--display-photo-grade': displayImageData.colorGrading.cssFilter } : undefined} src={flowerDisplayImage(flower)} alt={photo?.alt || `Ảnh ${flower.name_vi}`} loading="lazy"/>
+    </div>
+  </section>;
+}
+
+function locustPercentile(csv, route, column) {
+  const rows = csv.trim().split(/\r?\n/).map((line) => line.split(','));
+  const headers = rows[0] || [];
+  const row = rows.find((values) => values[0] === 'POST' && values[1] === route);
+  const value = row?.[headers.indexOf(column)];
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number / 1000 : null;
+}
+
+function cardSection(markdown, title) {
+  const marker = `## ${title}`;
+  const start = markdown.indexOf(marker);
+  if (start < 0) return '';
+  const tail = markdown.slice(start + marker.length);
+  const end = tail.search(/\n##? /);
+  return tail.slice(0, end < 0 ? undefined : end).trim();
+}
+
+function ModelPage() {
+  const classifyP50 = locustPercentile(classifyStatsCsv, '/api/classify', '50%');
+  const classifyP95 = locustPercentile(classifyStatsCsv, '/api/classify', '95%');
+  const detectP50 = locustPercentile(detectStatsCsv, '/api/detect', 'p50 nearest-rank');
+  const detectP95 = locustPercentile(detectStatsCsv, '/api/detect', 'p95 nearest-rank');
+  const sections = [
+    ['Dữ liệu', cardSection(modelCardMarkdown, '1. Dữ liệu')],
+    ['Giới hạn', cardSection(modelCardMarkdown, '3. Giới hạn')],
+    ['Cách dùng đúng / sai', cardSection(modelCardMarkdown, '5. Cách dùng đúng / sai')],
+  ];
+  return <main className="model-page section-wrap"><a className="back-home" href="/">← Về khu vườn</a><span className="eyebrow">MINH BẠCH MÔ HÌNH</span><h1>AI trong khu vườn<br/><em>được đo thế nào?</em></h1><p className="model-page-lede">Các số liệu dưới đây lấy từ artifact và báo cáo benchmark trong repository; số đo API là lần đo lịch sử trên Render, không phải cam kết cho lần chạy hiện tại.</p>
+    <div className="model-metrics">
+      <article><span>PHÂN LOẠI · VALIDATION</span><b>{(classifierMetrics.validation_accuracy * 100).toFixed(2)}%</b><small>{classifierMetrics.validation_size.toLocaleString('vi-VN')} ảnh · {classifierClasses.length} lớp</small></article>
+      <article><span>PHÁT HIỆN · mAP50</span><b>{(detectorReport.metrics.mAP50 * 100).toFixed(1)}%</b><small>YOLO fine-tune · test split riêng</small></article>
+      <article><span>TÌM ẢNH · PRECISION@5</span><b>{(retrievalReport.precision_at_5 * 100).toFixed(1)}%</b><small>{retrievalReport.query_count.toLocaleString('vi-VN')} ảnh query held-out</small></article>
+      <article><span>RAG · HIT@3</span><b>{ragReport.hits}/{ragReport.total}</b><small>Đúng tệp nguồn · chưa chấm câu trả lời sinh</small></article>
+    </div>
+    <section className="model-latency"><h2>Độ trễ API đã đo</h2><div><span>Phân loại</span><b>p50 {classifyP50?.toFixed(2) ?? 'chưa đo'}s · p95 {classifyP95?.toFixed(2) ?? 'chưa đo'}s</b></div><div><span>Phát hiện</span><b>p50 {detectP50?.toFixed(2) ?? 'chưa đo'}s · p95 {detectP95?.toFixed(2) ?? 'chưa đo'}s</b></div><p>RAM và cấu hình máy đo: xem bảng benchmark trong Model Card.</p></section>
+    <div className="model-sections">{sections.map(([title, text]) => <section key={title}><h2>{title}</h2><pre>{text || 'Chưa có dữ liệu trong Model Card.'}</pre></section>)}</div>
+    <a className="text-link" href="https://github.com/lehiu1310/TKWNC_nhom10/blob/ui-upgrade/MODEL_CARD.md" target="_blank" rel="noreferrer">Đọc Model Card đầy đủ <span>↗</span></a>
+  </main>;
+}
 
 function NoiseOverlay({ id }) {
   return <svg className="noise-overlay" aria-hidden="true" focusable="false"><filter id={id}><feTurbulence type="fractalNoise" baseFrequency=".78" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .14"/></feComponentTransfer></filter><rect width="100%" height="100%" filter={`url(#${id})`}/></svg>;
@@ -99,7 +170,7 @@ class FeatureErrorBoundary extends Component {
 }
 
 function Flowerfield() {
-  const photos = [FEATURED_FLOWERS[2], FEATURED_FLOWERS[3], FEATURED_FLOWERS[0], FEATURED_FLOWERS[4], FEATURED_FLOWERS[1]];
+  const photos = FEATURED_FLOWERS.filter((flower) => flower.hero_order).sort((a, b) => a.hero_order - b.hero_order);
   return <div className="hero-blooms" aria-hidden="true"><span className="paper-cloud cloud-a"/><span className="paper-cloud cloud-b"/>{photos.map((flower, index) => <img data-parallax key={flower.id} className={`flower-mark flower-photo flower-photo-${index + 1} display-flower-photo`} style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(flower)} alt=""/>)}<span className="floating-petal petal-a"/><span className="floating-petal petal-b"/><span className="floating-petal petal-c"/></div>;
 }
 
@@ -109,6 +180,7 @@ export default function App() {
   const [active, setActive] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const [healthError, setHealthError] = useState(false);
+  const healthCheckRef = useRef(null);
   const tickerDrag = useRef(null);
   const suppressTickerClick = useRef(false);
   const startTickerDrag = (event) => {
@@ -139,7 +211,37 @@ export default function App() {
   };
   const navigate = (path) => { window.history.pushState({}, '', path); setRoute(path); window.scrollTo({ top: 0, behavior: 'instant' }); };
   useEffect(() => { const onPopState = () => setRoute(window.location.pathname); window.addEventListener('popstate', onPopState); return () => window.removeEventListener('popstate', onPopState); }, []);
-  useEffect(() => { getHealth().then((value) => { setHealth(value); setHealthError(false); }).catch(() => { setHealth({ status: 'down', models: {} }); setHealthError(true); }); }, []);
+  useEffect(() => {
+    let stopped = false;
+    let timer;
+    let controller;
+    let requestId = 0;
+    const check = async () => {
+      window.clearTimeout(timer);
+      const currentRequest = ++requestId;
+      let nextDelay = 4500;
+      controller?.abort();
+      controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 6500);
+      try {
+        const value = await getHealth({ signal: controller.signal, cache: 'no-store' });
+        if (stopped || currentRequest !== requestId) return;
+        setHealth(value);
+        setHealthError(false);
+        nextDelay = 30000;
+      } catch {
+        if (stopped || currentRequest !== requestId) return;
+        setHealth({ status: 'down', models: {} });
+        setHealthError(true);
+      } finally {
+        window.clearTimeout(timeout);
+        if (!stopped && currentRequest === requestId) timer = window.setTimeout(check, nextDelay);
+      }
+    };
+    healthCheckRef.current = check;
+    void check();
+    return () => { stopped = true; window.clearTimeout(timer); controller?.abort(); healthCheckRef.current = null; };
+  }, []);
   useEffect(() => { const fn = () => setScrolled(window.scrollY > 24); window.addEventListener('scroll', fn, { passive: true }); return () => window.removeEventListener('scroll', fn); }, []);
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -194,36 +296,71 @@ export default function App() {
     return () => { gsap.ticker.remove(tick); lenis.destroy(); };
   }, []);
   useEffect(() => { if (!active) return; const onKey = (e) => e.key === 'Escape' && setActive(null); window.addEventListener('keydown', onKey); document.body.classList.add('modal-open'); return () => { window.removeEventListener('keydown', onKey); document.body.classList.remove('modal-open'); }; }, [active]);
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (reduceMotion.matches || !finePointer.matches) return undefined;
+    const petals = new Set();
+    let last = null;
+    let glyphIndex = 0;
+    const glyphs = ['✿', '❀', '✳', '✦'];
+    const spawn = (event) => {
+      if (event.pointerType !== 'mouse') return;
+      if (last && Math.hypot(event.clientX - last.x, event.clientY - last.y) < 44) return;
+      last = { x: event.clientX, y: event.clientY };
+      const petal = document.createElement('span');
+      petal.className = 'cursor-petal';
+      petal.setAttribute('aria-hidden', 'true');
+      petal.textContent = glyphs[glyphIndex++ % glyphs.length];
+      petal.style.left = `${event.clientX}px`;
+      petal.style.top = `${event.clientY}px`;
+      document.body.append(petal);
+      petals.add(petal);
+      while (petals.size > 25) {
+        const oldest = petals.values().next().value;
+        oldest.remove();
+        petals.delete(oldest);
+      }
+      petal.addEventListener('animationend', () => { petals.delete(petal); petal.remove(); }, { once: true });
+    };
+    document.addEventListener('pointermove', spawn, { passive: true });
+    return () => { document.removeEventListener('pointermove', spawn); petals.forEach((petal) => petal.remove()); };
+  }, []);
   const CurrentFeature = FEATURES.find((item) => item.id === active);
+  const backendReady = health?.status === 'ok';
+  const checkBackend = () => healthCheckRef.current?.();
   return <div className="site-shell">
     <header className={`topbar ${scrolled ? 'topbar-scrolled' : ''}`}>
       <a className="brand" href="/" aria-label="Vườn Hoa, về đầu trang"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a>
-      <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khu vườn AI</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Bách khoa</a></nav>
-      <div className={`service-state ${healthError ? 'service-error' : ''}`} aria-live="polite"><i className={health?.status === 'ok' ? 'state-dot online' : 'state-dot'} />{health === null ? 'Đang mở vườn…' : healthError ? 'Vườn đang nghỉ một lát' : health?.status === 'ok' ? 'Khu vườn đang mở' : ''}</div>
+      <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khu vườn AI</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Bách khoa</a><a href="/ve-mo-hinh" onClick={(event) => { event.preventDefault(); navigate('/ve-mo-hinh'); }}>Về mô hình</a></nav>
+      <div className={`service-state ${backendReady ? 'service-ready' : 'service-waking'}`} aria-live="polite"><i className={backendReady ? 'state-dot online' : 'state-dot waking-dot'} />{backendReady ? 'Khu vườn đang mở' : <><span>Khu vườn đang thức dậy, đợi chút nhé…</span><button type="button" onClick={checkBackend} aria-label="Thử kết nối lại với khu vườn AI">↻</button></>}</div>
     </header>
 
-    <main>{route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
-      <section className="ai-section" id="khu-vuon-ai"><div className="ai-glass-inner section-wrap"><div className="section-heading ai-heading"><div><span className="eyebrow">BỐN CÁCH KHÁM PHÁ KHU VƯỜN</span><h2>Khám phá <em>khu vườn.</em></h2></div><p>Nhận diện hoa, tìm vật thể, khám phá album và hỏi đáp từ cẩm nang — chọn một công cụ để thử với ảnh hay câu hỏi của bạn.</p></div>
-        {healthError && <p className="backend-notice friendly-notice" role="status">Khu vườn đang tạm nghỉ. Bạn thử lại sau một chút nhé.</p>}
-        <div className="feature-grid">{FEATURES.map((item, i) => <button data-tilt className={`feature-card tilt-card feature-${item.color}`} key={item.id} onClick={() => setActive(item.id)}><div className="feature-top"><span className="feature-icon"><FeatureBotanicalIcon id={item.id}/></span><div className="feature-top-meta"><span className="feature-index">0{i + 1}</span><span className="model-chip">{item.modelLabel}</span></div></div><div className="feature-text"><span className="feature-subtitle">{item.subtitle}</span><h3>{item.title}</h3><p>{item.desc}</p></div><div className="feature-bottom"><span className="feature-prompt">{item.prompt}</span><span className="feature-arrow">↗</span></div></button>)}</div>
-      </div></section>
+    <main key={route} className="page-transition">{route === '/ve-mo-hinh' ? <ModelPage/> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
+
       <section className="hero section-wrap" id="home"><NoiseOverlay id="hero-grain"/>
-        <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><a className="primary-button" href="#khu-vuon-ai">Bước vào khu vườn <span>↗</span></a><div className="hero-note"><span className="note-spark">✦</span><span>{FLOWERS.length} loài AI · 4 trải nghiệm</span></div></div>
+        <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><a className="primary-button" href="#khu-vuon-ai">Bước vào khu vườn <span>↗</span></a><div className="hero-note"><span className="note-spark">✦</span><span>{FLOWERS.length} loài AI · {FEATURES.length} trải nghiệm</span></div></div>
         <Flowerfield/>
         <div className="hero-bottom"><span>MỘT CHÚT NẮNG, MỘT CHÚT HOA</span><a href="#the-gioi-hoa" aria-label="Cuộn xuống">↓</a></div>
       </section>
 
 
+      <section className="ai-section" id="khu-vuon-ai"><div className="ai-glass-inner section-wrap"><div className="section-heading ai-heading"><div><span className="eyebrow">BỐN CÁCH KHÁM PHÁ KHU VƯỜN</span><h2>Khám phá <em>khu vườn.</em></h2></div><p>Nhận diện hoa, tìm vật thể, khám phá album và hỏi đáp từ cẩm nang — chọn một công cụ để thử với ảnh hay câu hỏi của bạn.</p></div>
+        {!backendReady && <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>{healthError ? 'Máy chủ đang khởi động lại. Trang sẽ tự kết nối lại trong giây lát.' : 'Đang kiểm tra kết nối để chuẩn bị các công cụ AI.'}</p></div><span className="waking-dots" aria-hidden="true"><i/><i/><i/></span></div>}
+        <div className={`feature-grid${backendReady ? '' : ' feature-grid-waking'}`}>{FEATURES.map((item, i) => <button data-tilt className={`feature-card tilt-card feature-${item.color}`} key={item.id} disabled={!backendReady} onClick={() => setActive(item.id)}><div className="feature-top"><span className="feature-icon"><FeatureBotanicalIcon id={item.id}/></span><div className="feature-top-meta"><span className="feature-index">0{i + 1}</span><span className="model-chip">{item.modelLabel}</span></div></div><div className="feature-text"><span className="feature-subtitle">{item.subtitle}</span><h3>{item.title}</h3><p>{item.desc}</p></div><div className="feature-bottom"><span className="feature-prompt">{backendReady ? item.prompt : 'Sẵn sàng sau khi kết nối'}</span><span className="feature-arrow">↗</span></div></button>)}</div>
+      </div></section>
+
+      <FlowerOfMonth navigate={navigate}/>
       <div className="flower-ticker" aria-label="Danh sách loài hoa nổi bật — kéo hoặc vuốt ngang để xem" onPointerDown={startTickerDrag} onPointerMove={moveTickerDrag} onPointerUp={endTickerDrag} onPointerCancel={endTickerDrag}><div className="ticker-track">{[...FEATURED_FLOWERS, ...FEATURED_FLOWERS, ...FEATURED_FLOWERS].map((flower, i) => <a className="ticker-flower" href={`#flower-${flower.id}`} key={`${flower.id}-${i}`} onClick={(event) => { if (suppressTickerClick.current) { event.preventDefault(); return; } event.preventDefault(); const hash = `#flower-${flower.id}`; if (window.location.hash !== hash) window.history.pushState({}, '', hash); window.dispatchEvent(new CustomEvent('flower:navigate', { detail: flower.id })); }}><i style={{ color: flower.color }}>{flower.icon}</i>{flower.vi}<b>✳</b></a>)}</div></div>
 
-      <section className="story-intro section-wrap"><div><span className="eyebrow">NHẬT KÝ THỰC VẬT · 05 LOÀI NỔI BẬT</span><h2>Năm sắc hoa,<br/><em>năm nét duyên.</em></h2></div><p>Cả 5 loài đều có ảnh chụp thật.</p></section>
+      <section className="story-intro section-wrap"><div><span className="eyebrow">NHẬT KÝ THỰC VẬT · {FEATURED_FLOWERS.length} LOÀI NỔI BẬT</span><h2>Sắc hoa,<br/><em>nét duyên riêng.</em></h2></div><p>Cả {FEATURED_FLOWERS.length} loài nổi bật đều có ảnh chụp thật.</p></section>
       <ScrollGarden/>
 
-    <section className="encyclopedia section-wrap" id="bach-khoa"><div className="ency-copy"><span className="eyebrow">BÁCH KHOA · {FLOWERS.length} LOÀI</span><h2>Gặp hoa qua<br/>ảnh chụp <em>thật.</em></h2><p>Tra cứu {FLOWERS.length} loài hoa có trong bộ dữ liệu nhận diện AI, lọc theo màu, mùa hoặc tìm bằng tên.</p><a className="text-link" href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Khám phá {FLOWERS.length} loài hoa <span>→</span></a></div><div className="ency-art"><div className="ency-sun"/>{FEATURED_FLOWERS.slice(0, 3).map((flower, index) => <img key={flower.id} className={`ency-photo-art ency-photo-art-${index + 1} display-flower-photo`} style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(flower)} alt="" loading="lazy"/>)}<span className="ency-note note-two">✳</span></div></section>
+    <section className="encyclopedia section-wrap" id="bach-khoa"><div className="ency-copy"><span className="eyebrow">BÁCH KHOA · {FLOWERS.length} LOÀI</span><h2>Gặp hoa qua<br/>ảnh chụp <em>thật.</em></h2><p>Tra cứu {FLOWERS.length} loài hoa có trong bộ dữ liệu nhận diện AI, lọc theo màu, mùa hoặc tìm bằng tên.</p><a className="text-link" href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Khám phá {FLOWERS.length} loài hoa <span>→</span></a></div><div className="ency-art"><div className="ency-sun"/>{FEATURED_FLOWERS.filter((flower) => flower.encyclopedia_photo).map((flower, index) => <img key={flower.id} className={`ency-photo-art ency-photo-art-${index + 1} display-flower-photo`} style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(flower)} alt="" loading="lazy"/>)}<span className="ency-note note-two">✳</span></div></section>
     </> }</main>
 
     <footer className="footer"><div className="footer-leaves" aria-hidden="true">❧ ✿ ❧</div><a className="brand footer-brand" href="/"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a><p>Một khu vườn nhỏ để học, ngắm và khám phá bằng AI.</p><span className="footer-copy">ĐỒ ÁN LẬP TRÌNH WEB NÂNG CAO · NHÓM 10</span></footer>
 
-    {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body"><div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><CurrentFeature.Component/></FeatureErrorBoundary></div></div></div>}
+    {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body">{!backendReady ? <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>Đang chờ máy chủ AI sẵn sàng. Trang sẽ tự kết nối lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div> : <><div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><CurrentFeature.Component/></FeatureErrorBoundary></>}</div></div></div>}
   </div>;
 }

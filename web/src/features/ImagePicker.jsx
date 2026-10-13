@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import { API_BASE, fetchSampleImage } from '../api.js';
 
 // Chọn ảnh + xem trước. Giải phóng object URL khi đổi ảnh để tránh rò bộ nhớ.
 const FLOWER_ICONS = { daisy: '✿', dandelion: '❋', roses: '❀', sunflowers: '✺', tulips: '❁' };
 
-export default function ImagePicker({ onChange, label = 'Chọn ảnh', result = null }) {
+export default function ImagePicker({ onChange, label = 'Chọn ảnh', result = null, samples = [] }) {
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState('');
   const inputRef = useRef(null);
   const [showPetals, setShowPetals] = useState(false);
+  const [sampleLoading, setSampleLoading] = useState('');
   useEffect(() => () => preview && URL.revokeObjectURL(preview), [preview]);
   useEffect(() => {
     setShowPetals(false);
@@ -27,12 +29,35 @@ export default function ImagePicker({ onChange, label = 'Chọn ảnh', result =
     onChange(file, previewUrl);
   }
 
+  async function chooseSample(sample) {
+    if (sampleLoading) return;
+    setSampleLoading(sample.id);
+    setError('');
+    try {
+      if (sample.assetUrl) {
+        const response = await fetch(sample.assetUrl);
+        if (!response.ok) throw new Error('sample unavailable');
+        const blob = await response.blob();
+        choose(new File([blob], `${sample.id}-mau.jpg`, { type: blob.type || 'image/jpeg' }));
+      } else choose(await fetchSampleImage(sample));
+    }
+    catch { setError('Chưa tải được ảnh mẫu. Bạn thử lại sau một chút nhé.'); }
+    finally { setSampleLoading(''); }
+  }
+
   return (
     <div className="picker">
       <button type="button" className="drop-zone" onClick={() => inputRef.current?.click()} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); choose(e.dataTransfer.files?.[0]); }}>
         <span><b>{label}</b>Kéo thả ảnh vào đây hoặc chạm để chọn · JPG, PNG, WEBP · tối đa 8 MB</span>
         <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { choose(e.target.files?.[0]); e.target.value = ''; }} />
       </button>
+      {samples.length > 0 && <div className="sample-images" aria-label="Ảnh mẫu chạy thử">
+        <span className="sample-images-title">Thử nhanh với ảnh hoa</span>
+        <div className="sample-images-list">{samples.map((sample) => <button type="button" className="sample-image-button" key={sample.id} onClick={() => chooseSample(sample)} disabled={Boolean(sampleLoading)} aria-label={`Chạy thử ${sample.name_vi}`}>
+          <img src={sample.assetUrl || `${API_BASE}/api/species/${encodeURIComponent(sample.id)}/image`} alt="" loading="lazy"/>
+          <span>{sampleLoading === sample.id ? 'Đang tải…' : sample.name_vi}</span>
+        </button>)}</div>
+      </div>}
       {error && <p className="error">{error}</p>}
       {preview && <div className={`preview-wrap${result ? ' has-result' : ''}`} style={result ? { '--top-color': result.species.color } : undefined}>
         <img src={preview} alt="Ảnh đầu vào" className="preview" />

@@ -2,6 +2,9 @@
 import json
 import logging
 import re
+import os
+import threading
+from collections import OrderedDict
 from pathlib import Path
 
 import faiss
@@ -11,7 +14,7 @@ import torch
 import torch.nn.functional as F
 from PIL import Image
 
-from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DATA_DIR, DEVICE, TRANSLATION_MODEL, resolve_path
+from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DATA_DIR, DEVICE, GEMINI_MODEL, resolve_path
 from core.search_filter import filter_by_label
 
 log = logging.getLogger(__name__)
@@ -86,7 +89,9 @@ class ImageSearch:
             raise RuntimeError("FAISS index không khớp model; hãy tạo lại index theo README.md")
         self.index = faiss.read_index(str(index_dir / "index.faiss"))
         self.meta: list[dict] = json.loads((index_dir / "meta.json").read_text(encoding="utf-8"))
-        self._translator = None
+        self._translation_cache: OrderedDict[str, str] = OrderedDict()
+        self._translation_lock = threading.Lock()
+        self._translator_client = None
         species_path = DATA_DIR / "species.json"
         species = json.loads(species_path.read_text(encoding="utf-8")) if species_path.is_file() else []
         self._english_name_by_id = {item["id"]: item.get("name_en", item["id"]) for item in species}
@@ -103,25 +108,54 @@ class ImageSearch:
         matches = [(len(name), species_id) for species_id, name in self._species_names if name in text]
         return max(matches)[1] if matches else None
 
+    @staticmethod
+    def _is_vietnamese_query(query: str) -> bool:
+        vietnamese_words = r"\b(hoa|vườn|vuon|bồ công anh|bo cong anh|cúc|cuc|hồng|hong|hướng dương|huong duong|tulip|vàng|vang|trắng|trang|đỏ|do|nắng|nang|sáng|sang)\b"
+        return any("\u00c0" <= ch <= "\u1ef9" for ch in query) or bool(
+            re.search(vietnamese_words, query, re.IGNORECASE)
+        )
+
     def _english_query(self, query: str) -> str:
-        """CLIP checkpoint in this project is English-first; translate Vietnamese queries locally."""
-        vietnamese_words = r"\b(hoa|vuon|buom|mua|canh|hong|huong duong|cuc|tulip|vang|trang|do)\b"
-        if not any("\u00c0" <= ch <= "\u1ef9" for ch in query) and not re.search(vietnamese_words, query, re.IGNORECASE):
+        """Use cached Gemini translation for Vietnamese queries; never load a local MT model."""
+        if not self._is_vietnamese_query(query):
             return query
-        try:
-            if self._translator is None:
-                from transformers import MarianMTModel, MarianTokenizer
-                tokenizer = MarianTokenizer.from_pretrained(TRANSLATION_MODEL)
-                model = MarianMTModel.from_pretrained(TRANSLATION_MODEL).to(DEVICE).eval()
-                self._translator = (tokenizer, model)
-            tokenizer, model = self._translator
-            inputs = tokenizer([query], return_tensors="pt", padding=True, truncation=True).to(DEVICE)
-            with torch.inference_mode():
-                translated = model.generate(**inputs, max_new_tokens=96)
-            return tokenizer.decode(translated[0], skip_special_tokens=True)
-        except Exception:
-            log.exception("Vietnamese query translation failed; falling back to the original query")
-            return query
+        cache_key = " ".join(query.casefold().split())
+        with self._translation_lock:
+            cached = self._translation_cache.get(cache_key)
+            if cached:
+                self._translation_cache.move_to_end(cache_key)
+                return cached
+            api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+            if not api_key:
+                log.info("Gemini key unavailable for search translation; using original query")
+                return query
+            try:
+                if self._translator_client is None:
+                    from google import genai
+                    self._translator_client = genai.Client(
+                        api_key=api_key, http_options={"timeout": 10000},
+                    )
+                response = self._translator_client.models.generate_content(
+                    model=GEMINI_MODEL,
+                    contents=(
+                        "Translate this short Vietnamese visual image-search query into concise English. "
+                        "Preserve flower names, colors, and scene details. Output only the translation.\n"
+                        f"Query: {query}"
+                    ),
+                    config={"temperature": 0, "max_output_tokens": 96},
+                )
+                translated = (response.text or "").strip().strip('"')
+                if not translated or len(translated) > 300:
+                    return query
+                self._translation_cache[cache_key] = translated
+                self._translation_cache.move_to_end(cache_key)
+                if len(self._translation_cache) > 256:
+                    self._translation_cache.popitem(last=False)
+                return translated
+            except Exception as exc:
+                # A failed/429 translation is intentionally not cached; the next query may retry.
+                log.warning("Gemini search translation unavailable (%s); using original query", type(exc).__name__)
+                return query
 
     def _search(self, query_vec: np.ndarray, k: int, label: str | None = None) -> list[dict]:
         # Filter after ranking so a sparse label still fills the requested page.
@@ -135,15 +169,32 @@ class ImageSearch:
         return results[:k]
 
     def search_text(self, query: str, k: int = 8, label: str | None = None) -> list[dict]:
+        return self.search_text_with_query(query, k, label)["results"]
+
+    def search_text_with_query(self, query: str, k: int = 8, label: str | None = None) -> dict:
         # A named class is stronger evidence than a weak English-only CLIP text match.
         # Keep CLIP ranking within that flower's photos; preserve the manual filter override.
         matched_label = self._label_from_query(query) if not label else None
         effective_label = label or matched_label
         if matched_label:
+            query_used = query
             clip_query = f"a photograph of {self._english_name_by_id.get(matched_label, matched_label)} flower"
         else:
-            clip_query = self._english_query(query)
-        return self._search(self.encoder.encode_texts([clip_query]), k, effective_label)
+            query_used = self._english_query(query)
+            translated_label = self._label_from_query(query_used)
+            if translated_label:
+                # Gemini may resolve a common Vietnamese synonym (for example
+                # "bông cúc" -> "daisy"). Use that explicit class as a light
+                # metadata filter, while retaining the translated query for UI.
+                effective_label = effective_label or translated_label
+                clip_query = f"a photograph of {self._english_name_by_id.get(translated_label, translated_label)} flower"
+            else:
+                clip_query = f"a photograph of {query_used}"
+        return {
+            "results": self._search(self.encoder.encode_texts([clip_query]), k, effective_label),
+            "query_used": query_used,
+            "translated": query_used.casefold() != query.casefold(),
+        }
 
     def search_image(self, image: Image.Image, k: int = 8, label: str | None = None) -> list[dict]:
         return self._search(self.encoder.encode_images([image]), k, label)

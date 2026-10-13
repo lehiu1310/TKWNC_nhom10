@@ -110,9 +110,12 @@ async def _read_image(file: UploadFile) -> Image.Image:
         raise HTTPException(400, "File không phải ảnh hợp lệ (jpg, png, webp)")
 
 
-def _to_base64(image: Image.Image) -> str:
+def _to_base64(image: Image.Image, max_dimension: int | None = None, quality: int = 88) -> str:
+    if max_dimension:
+        image = image.copy()
+        image.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
     buf = io.BytesIO()
-    image.save(buf, format="JPEG", quality=88)
+    image.save(buf, format="JPEG", quality=quality, optimize=True)
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
@@ -132,11 +135,12 @@ def health(model: str | None = Query(None, max_length=32, description="Optional 
 
 
 @app.get("/api/species")
-def species(limit: int = 103, offset: int = 0):
-    if limit < 1 or offset < 0:
+def species(limit: int | None = None, offset: int = 0):
+    if (limit is not None and limit < 1) or offset < 0:
         raise HTTPException(400, "limit must be positive and offset cannot be negative")
     entries = json.loads((ROOT / "data" / "species.json").read_text(encoding="utf-8"))
-    return entries[offset:offset + limit]
+    end = offset + limit if limit is not None else len(entries)
+    return entries[offset:end]
 
 
 @app.get("/api/species/{species_id}/image")
@@ -161,7 +165,9 @@ async def classify(file: UploadFile = File(...), top_k: int = Form(3), explain: 
     image = await _read_image(file)
     result = await run_in_threadpool(partial(model.predict, image, top_k=max(1, min(top_k, 5))))
     if explain:
-        result["grad_cam"] = _to_base64(await run_in_threadpool(partial(model.explain, image)))
+        result["grad_cam"] = _to_base64(
+            await run_in_threadpool(partial(model.explain, image)), max_dimension=512, quality=80,
+        )
     return {**result, "latency_ms": round((time.perf_counter() - t0) * 1000, 1)}
 
 
@@ -190,7 +196,10 @@ def _with_urls(results: list[dict]) -> list[dict]:
 def search_text(q: TextQuery):
     if not q.query.strip():
         raise HTTPException(400, "Câu tìm kiếm không được chỉ chứa khoảng trắng")
-    return {"results": _with_urls(_require("retrieval").search_text(q.query, q.k, q.label))}
+    engine = _require("retrieval")
+    payload = engine.search_text_with_query(q.query, q.k, q.label)
+    return {"results": _with_urls(payload["results"]), "query_used": payload["query_used"],
+            "translated": payload["translated"]}
 
 
 @app.post("/api/search/image")

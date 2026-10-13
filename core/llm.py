@@ -149,11 +149,16 @@ class RAGChatbot:
         self.provider = provider
         self.model_name = GEMINI_MODEL if provider == "gemini" else model_name
         self._lock = threading.Lock()
+        self.client = None
         if provider == "gemini":
-            if not (os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")):
-                raise RuntimeError("Thiếu GOOGLE_API_KEY (hoặc GEMINI_API_KEY) để dùng Gemini.")
-            from google import genai
-            self.client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"))
+            api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+            if api_key:
+                from google import genai
+                self.client = genai.Client(api_key=api_key)
+            else:
+                # A missing hosted secret must not take the entire RAG endpoint
+                # down. Keep lexical retrieval usable and return sourced evidence.
+                log.warning("Gemini API key is not configured; RAG will use its grounded retrieval fallback.")
         elif provider == "hf_local":
             import torch
             from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -176,15 +181,21 @@ class RAGChatbot:
             )
 
         excerpts = []
+        best_score = max((float(item.get("score", 0)) for item in contexts), default=0.0)
         for item in contexts:
+            score = float(item.get("score", 0))
+            if best_score and score < best_score * 0.70:
+                continue
             text = " ".join(line.strip() for line in item.get("text", "").splitlines() if line.strip() and not line.lstrip().startswith("#"))
-            if text:
+            # Ignore title-only chunks (for example a broad "meaning of flowers"
+            # heading) so fallback answers do not pad a precise answer with noise.
+            if len(text) >= 32:
                 excerpts.append(f"{text} [{item['source']}]")
             if len(excerpts) == 2:
                 break
         if not excerpts:
             return "Mình chưa có thông tin này."
-        return "Gemini đang bận; thông tin gần nhất trong cẩm nang là: " + " ".join(excerpts)
+        return "Mình chưa thể tạo câu trả lời bằng AI lúc này. Theo cẩm nang: " + " ".join(excerpts)
 
     def _messages(self, question: str, contexts: list[dict], history: list[dict] | None) -> list[dict]:
         docs = "\n\n".join(f"[{c['source']}]\n{c['text']}" for c in contexts)
@@ -203,6 +214,12 @@ class RAGChatbot:
             if focused:
                 contexts = focused[:2]
         if self.provider == "gemini":
+            if self.client is None:
+                def fallback_tokens():
+                    yield self._retrieval_fallback(contexts, question)
+
+                return contexts, fallback_tokens()
+
             docs = "\n\n".join(f"[{c['source']}]\n{c['text']}" for c in contexts)
             conversation = "\n".join(
                 f"{turn.get('role')}: {str(turn.get('content', ''))[:2000]}"
@@ -213,21 +230,36 @@ class RAGChatbot:
             def gemini_tokens():
                 with self._lock:
                     emitted = False
-                    try:
-                        response = self.client.models.generate_content_stream(
-                            model=self.model_name,
-                            contents=prompt,
-                            config={"system_instruction": SYSTEM_PROMPT, "temperature": 0.2},
-                        )
-                        for chunk in response:
-                            if chunk.text:
-                                emitted = True
-                                yield chunk.text
-                    except Exception as exc:
-                        log.warning("Gemini response unavailable (%s); returning retrieved RAG context.", type(exc).__name__)
-                        if emitted:
-                            yield "\n\n"
-                        yield self._retrieval_fallback(contexts, question)
+                    attempt = 0
+                    while True:
+                        try:
+                            response = self.client.models.generate_content_stream(
+                                model=self.model_name,
+                                contents=prompt,
+                                config={"system_instruction": SYSTEM_PROMPT, "temperature": 0.2},
+                            )
+                            for chunk in response:
+                                if chunk.text:
+                                    emitted = True
+                                    yield chunk.text
+                            return
+                        except Exception as exc:
+                            status = (getattr(exc, "code", None)
+                                      or getattr(exc, "status_code", None)
+                                      or getattr(getattr(exc, "response", None), "status_code", None))
+                            is_rate_limit = str(status) == "429" or "429" in str(exc).upper() or "RESOURCE_EXHAUSTED" in str(exc).upper()
+                            if is_rate_limit and attempt == 0 and not emitted:
+                                attempt += 1
+                                log.warning("Gemini rate limited; retrying once.")
+                                threading.Event().wait(0.6)
+                                continue
+                            log.warning("Gemini response unavailable (%s); returning retrieved RAG context.", type(exc).__name__)
+                            if emitted:
+                                yield "\n\n"
+                            if is_rate_limit:
+                                yield "Gemini đang quá tải; mình đã thử kết nối lại một lần. "
+                            yield self._retrieval_fallback(contexts, question)
+                            return
 
             return contexts, gemini_tokens()
 

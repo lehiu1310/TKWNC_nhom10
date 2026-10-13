@@ -5,9 +5,8 @@ import species from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
 
 gsap.registerPlugin(ScrollTrigger);
-const FEATURED_SPECIES = species.slice(0, 5);
-const DISPLAY_KEYS = { roses: 'rose', sunflowers: 'sunflower', tulips: 'tulip' };
-const storyPhoto = (flower) => displayImageData.images[DISPLAY_KEYS[flower.id] || flower.id];
+const FEATURED_SPECIES = species.filter((item) => item.featured).sort((a, b) => a.featured_order - b.featured_order);
+const storyPhoto = (flower) => displayImageData.images[flower.display_image_key || flower.id];
 
 export default function ScrollGarden() {
   const sectionRef = useRef(null);
@@ -89,7 +88,7 @@ export default function ScrollGarden() {
       <div className="stage-scene-stack">
         {FEATURED_SPECIES.map((flower, index) => <article className="flower-scene" id={`flower-${flower.id}`} key={flower.id} ref={(node) => { sceneRefs.current[index] = node; }} aria-hidden={active !== index}>
           <div className="scene-copy">
-            <span className="scene-index">0{index + 1}<i/>05 · FLORA NOTES</span>
+            <span className="scene-index">{String(index + 1).padStart(2, '0')}<i/>{String(FEATURED_SPECIES.length).padStart(2, '0')} · FLORA NOTES</span>
             <span className="eyebrow">{flower.name_en.toUpperCase()} · {flower.bloom_season.toUpperCase()}</span>
             <h2>{flower.name_vi}</h2>
             <p>{flower.long_description || flower.description}</p>

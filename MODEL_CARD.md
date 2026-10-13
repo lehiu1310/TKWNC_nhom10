@@ -20,7 +20,13 @@ Chi tiết và tệp đo ở [`README.md`](README.md) và `reports/`. Latency/RA
 
 ## 3. Giới hạn
 
-Classifier chỉ trả một trong 103 nhãn và có thể gán nhãn gần nhất cho ảnh ngoài phân phối; confidence chưa được hiệu chuẩn. YOLO chỉ có bốn lớp hoa đã liệt kê, không có lớp tulip hoặc lớp “hoa” tổng quát. CLIP tìm ảnh tương tự, không xác nhận danh tính thực vật. RAG bị giới hạn bởi tám tài liệu ngắn; câu trả lời Gemini có thể thiếu hoặc sai. Detector mới train 3 epoch; kết quả còn yếu trên ảnh khác miền.
+Classifier chỉ trả một trong 103 nhãn và có thể gán nhãn gần nhất cho ảnh ngoài phân phối. Ngưỡng chọn trên tập hiệu chuẩn nhỏ là **0,6967**, cấu hình bằng `CLASSIFIER_OOD_MIN_CONFIDENCE`. Trên 10 ảnh hoa Oxford Flowers 102 (lấy từ split validation đã dùng chọn checkpoint) và 10 ảnh không hoa COCO128 đã xem thủ công, ngưỡng này cho balanced accuracy **0,70**, flower recall **0,40** (4/10), non-flower rejection **1,00** (10/10), false-positive **0/10**. Đây là kết quả chọn ngưỡng trên mẫu nhỏ, không phải ước lượng tổng quát hay đánh giá độc lập: nhóm hoa thuộc validation đã dùng chọn checkpoint nên có thể lạc quan; cần test set mới trước khi công bố chất lượng OOD. Chi tiết nhãn dự đoán nằm ở [`reports/classifier_ood_calibration.json`](reports/classifier_ood_calibration.json); tái tạo bằng `scripts/evaluate_classifier_ood.py` với hai thư mục có nhãn.
+
+`POST /api/classify` hỗ trợ `explain=true`, dùng Grad-CAM ở lớp convolution cuối của ResNet-18 và trả ảnh phủ heatmap JPEG tối đa 512 px. Đây là giải thích xấp xỉ, không chứng minh mô hình đã dùng đúng đặc điểm thực vật. Giao diện báo “AI đang phân vân…” khi chênh lệch top-1/top-2 nhỏ hơn 0,15; con số này là quy tắc hiển thị, không phải khoảng tin cậy thống kê.
+
+Album dịch truy vấn tiếng Việt bằng Gemini trước CLIP, cache tối đa 256 bản dịch trong process và dùng câu gốc khi Gemini lỗi/429. Trên 10 prompt tiếng Việt được viết thủ công, Precision@5 theo nhãn loài là **0,22**; đây là tập nhỏ, không ngẫu nhiên và cho thấy mô tả thị giác chung vẫn dễ xếp nhầm. Các truy vấn gọi đúng tên loài được lọc theo nhãn trong dữ liệu. Chi tiết tại [`reports/vietnamese_search_precision_at5.json`](reports/vietnamese_search_precision_at5.json).
+
+YOLO chỉ có bốn lớp hoa đã liệt kê, không có lớp tulip hoặc lớp “hoa” tổng quát. CLIP tìm ảnh tương tự, không xác nhận danh tính thực vật. RAG bị giới hạn bởi tám tài liệu ngắn; câu trả lời Gemini có thể thiếu hoặc sai. Detector mới train 3 epoch; kết quả còn yếu trên ảnh khác miền.
 
 ## 4. Rủi ro
 

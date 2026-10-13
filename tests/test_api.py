@@ -14,7 +14,8 @@ from api import main
 
 class FakeClassifier:
     def predict(self, image, top_k=3):
-        return {"predictions": [{"label": "roses", "score": 0.9}][:top_k], "confident": True}
+        return {"predictions": [{"label": "roses", "score": 0.9}][:top_k], "confident": True,
+                "confidence_threshold": 0.5}
 
     def explain(self, image):
         return image
@@ -41,13 +42,16 @@ class FakeSearch:
     def search_text(self, query, k=8, label=None):
         return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
 
+    def search_text_with_query(self, query, k=8, label=None):
+        return {"results": self.search_text(query, k, label), "query_used": query, "translated": False}
+
     def search_image(self, image, k=8, label=None):
         return [{"id": 0, "path": self.meta[0]["path"], "score": 0.9}]
 
 
-def png_bytes() -> bytes:
+def png_bytes(size=(32, 32)) -> bytes:
     buf = io.BytesIO()
-    Image.new("RGB", (32, 32), "red").save(buf, format="PNG")
+    Image.new("RGB", size, "red").save(buf, format="PNG")
     return buf.getvalue()
 
 
@@ -90,13 +94,17 @@ def test_classify_ok(client):
     r = client.post("/api/classify", files={"file": ("a.png", png_bytes(), "image/png")}, data={"top_k": 1})
     assert r.status_code == 200
     assert r.json()["predictions"][0]["label"] == "roses"
+    assert r.json()["confidence_threshold"] == 0.5
 
 
 def test_classify_gradcam_overlay_is_optional(client):
-    response = client.post("/api/classify", files={"file": ("rose.png", png_bytes(), "image/png")},
+    response = client.post("/api/classify", files={"file": ("rose.png", png_bytes((800, 600)), "image/png")},
                            data={"explain": "true"})
     assert response.status_code == 200
-    assert response.json()["grad_cam"].startswith("data:image/jpeg;base64,")
+    overlay = response.json()["grad_cam"]
+    assert overlay.startswith("data:image/jpeg;base64,")
+    encoded = overlay.partition(",")[2]
+    assert Image.open(io.BytesIO(__import__("base64").b64decode(encoded))).size == (512, 384)
 
 
 def test_classify_rejects_non_image(client):
@@ -169,6 +177,7 @@ def test_search_text_ok(client, monkeypatch):
     monkeypatch.setattr(main, "_require", lambda name: FakeSearch())
     r = client.post("/api/search/text", json={"query": "hoa hồng", "k": 2})
     assert r.status_code == 200 and r.json()["results"][0]["score"] == 0.9
+    assert r.json()["query_used"] == "hoa hồng" and not r.json()["translated"]
 
 
 def test_search_text_blank_query_is_400(client):
@@ -229,6 +238,18 @@ def test_gallery_negative_id_is_400(client):
 def test_chat_sync_ok(client):
     r = client.post("/api/chat/sync", json={"message": "Hoa cần tưới không?"})
     assert r.status_code == 200 and r.json()["answer"]
+
+
+def test_chat_sync_falls_back_to_sources_when_gemini_key_missing(client, monkeypatch):
+    monkeypatch.setenv("GOOGLE_API_KEY", "")
+    monkeypatch.setenv("GEMINI_API_KEY", "")
+    main.MODELS.pop("llm", None)
+
+    response = client.post("/api/chat/sync", json={"message": "Hoa hồng đỏ có ý nghĩa gì?"})
+
+    assert response.status_code == 200
+    assert "tình yêu" in response.json()["answer"]
+    assert response.json()["sources"]
 
 
 def test_chat_and_sync_missing_message_are_422(client):
