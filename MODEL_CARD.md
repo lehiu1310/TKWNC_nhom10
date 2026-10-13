@@ -30,7 +30,7 @@ YOLO chỉ có bốn lớp hoa đã liệt kê, không có lớp tulip hoặc l�
 
 ## 4. Rủi ro
 
-Dự đoán sai có thể gây nhầm lẫn về loài, độc tính hoặc cách chăm sóc; không dùng cho quyết định y tế, ăn/uống hay nông nghiệp có hậu quả cao. Ảnh tải lên được gửi tới backend; khi Gemini hoạt động, câu hỏi và đoạn tri thức được gửi tới Google Gemini API. Không đưa API key vào frontend hoặc Git.
+Dự đoán sai có thể gây nhầm lẫn về loài, độc tính hoặc cách chăm sóc; không dùng cho quyết định y tế, ăn/uống hay nông nghiệp có hậu quả cao. Tài liệu RAG được coi là nội dung không tin cậy và có test kiểm tra cách dựng prompt, nhưng đây không phải bảo đảm chống mọi prompt injection. Ảnh tải lên được gửi tới backend; khi Gemini hoạt động, câu hỏi và đoạn tri thức được gửi tới Google Gemini API. Không đưa API key vào frontend hoặc Git.
 
 ## 5. Cách dùng đúng / sai
 
