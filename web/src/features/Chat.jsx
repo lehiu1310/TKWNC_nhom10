@@ -74,7 +74,9 @@ export default function Chat() {
   async function retry() {
     const question = retryQuestion;
     if (!question || busy) return;
-    const priorMessages = messages.at(-1)?.role === 'assistant' ? messages.slice(0, -1) : messages;
+    const hasFailedAssistant = messages.at(-1)?.role === 'assistant';
+    const hasFailedUser = hasFailedAssistant && messages.at(-2)?.role === 'user';
+    const priorMessages = messages.slice(0, messages.length - Number(hasFailedAssistant) - Number(hasFailedUser));
     setMessages(priorMessages);
     await sendQuestion(question, priorMessages);
   }
