@@ -100,6 +100,23 @@ def test_gemini_without_api_key_uses_grounded_rag_fallback(tmp_path, monkeypatch
     assert "hoa_cuc.md" not in answer["answer"]
 
 
+def test_gemini_client_uses_short_timeout_and_bounded_retry(monkeypatch):
+    from google import genai
+    from core.gemini_client import create_gemini_client
+
+    class FakeClient:
+        def __init__(self, **kwargs):
+            self.options = kwargs["http_options"]
+
+    monkeypatch.setattr(genai, "Client", FakeClient)
+
+    client = create_gemini_client("test-key", timeout_ms=12_000)
+
+    assert client.options.timeout == 12_000
+    assert client.options.retry_options.attempts == 2
+    assert client.options.retry_options.max_delay == 0.5
+
+
 def test_gemini_without_key_says_when_kb_has_no_answer(tmp_path, monkeypatch):
     (tmp_path / "hoa_hong.md").write_text(
         "## Ý nghĩa\n\nHoa hồng đỏ tượng trưng cho tình yêu.", encoding="utf-8"
@@ -168,6 +185,37 @@ def test_gemini_exhausted_rate_limit_returns_friendly_grounded_fallback(monkeypa
     assert models.calls == 2
     assert "đã thử kết nối lại một lần" in answer["answer"]
     assert "tình yêu" in answer["answer"]
+
+
+def test_gemini_unavailable_returns_grounded_fallback():
+    from threading import Lock
+
+    class ServiceUnavailable(Exception):
+        code = 503
+
+    class Models:
+        calls = 0
+
+        def generate_content_stream(self, **kwargs):
+            self.calls += 1
+            raise ServiceUnavailable("temporarily overloaded")
+
+    bot = object.__new__(RAGChatbot)
+    bot.provider = "gemini"
+    bot.model_name = "test-model"
+    bot._lock = Lock()
+    bot.retriever = Retriever([{
+        "source": "hoa_hong.md",
+        "text": "Hoa hồng đỏ thường tượng trưng cho tình yêu và sự trân trọng.",
+    }])
+    models = Models()
+    bot.client = type("Client", (), {"models": models})()
+
+    answer = bot.answer("Hoa hồng có ý nghĩa gì?")
+
+    assert models.calls == 1
+    assert "tình yêu" in answer["answer"]
+    assert "[hoa_hong.md]" in answer["answer"]
 
 
 def test_image_search_label_filter_applies_before_page_limit():

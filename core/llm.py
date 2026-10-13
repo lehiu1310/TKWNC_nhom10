@@ -153,8 +153,8 @@ class RAGChatbot:
         if provider == "gemini":
             api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
             if api_key:
-                from google import genai
-                self.client = genai.Client(api_key=api_key)
+                from core.gemini_client import create_gemini_client
+                self.client = create_gemini_client(api_key, timeout_ms=15_000)
             else:
                 # A missing hosted secret must not take the entire RAG endpoint
                 # down. Keep lexical retrieval usable and return sourced evidence.

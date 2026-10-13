@@ -151,10 +151,8 @@ class ImageSearch:
                 return query
             try:
                 if self._translator_client is None:
-                    from google import genai
-                    self._translator_client = genai.Client(
-                        api_key=api_key, http_options={"timeout": 10000},
-                    )
+                    from core.gemini_client import create_gemini_client
+                    self._translator_client = create_gemini_client(api_key, timeout_ms=8_000)
                 response = self._translator_client.models.generate_content(
                     model=GEMINI_MODEL,
                     contents=(
