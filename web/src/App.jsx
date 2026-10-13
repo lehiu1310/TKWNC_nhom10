@@ -1,13 +1,13 @@
-import { Component, useEffect, useRef, useState } from 'react';
+import { Component, Suspense, lazy, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import Lenis from 'lenis';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { getHealth } from './api.js';
 import ScrollGarden from './ScrollGarden.jsx';
-import Classify from './features/Classify.jsx';
-import Detect from './features/Detect.jsx';
-import Search from './features/Search.jsx';
-import Chat from './features/Chat.jsx';
+const Classify = lazy(() => import('./features/Classify.jsx'));
+const Detect = lazy(() => import('./features/Detect.jsx'));
+const Search = lazy(() => import('./features/Search.jsx'));
+const Chat = lazy(() => import('./features/Chat.jsx'));
 import speciesData from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
 import classifierClasses from '../../artifacts/classifier/classes.json';
@@ -361,6 +361,6 @@ export default function App() {
 
     <footer className="footer"><div className="footer-leaves" aria-hidden="true">❧ ✿ ❧</div><a className="brand footer-brand" href="/"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a><p>Một khu vườn nhỏ để học, ngắm và khám phá bằng AI.</p><span className="footer-copy">ĐỒ ÁN LẬP TRÌNH WEB NÂNG CAO · NHÓM 10</span></footer>
 
-    {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body">{!backendReady ? <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>Đang chờ máy chủ AI sẵn sàng. Trang sẽ tự kết nối lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div> : <><div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><CurrentFeature.Component/></FeatureErrorBoundary></>}</div></div></div>}
+    {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body">{!backendReady ? <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>Đang chờ máy chủ AI sẵn sàng. Trang sẽ tự kết nối lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div> : <><div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><Suspense fallback={<div className="feature-module-loading" role="status"><p className="loading-skeleton"/><span>Đang chuẩn bị công cụ AI…</span></div>}><CurrentFeature.Component/></Suspense></FeatureErrorBoundary></>}</div></div></div>}
   </div>;
 }

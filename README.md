@@ -14,7 +14,7 @@ Kiểm tra lại ngày **13/10/2026**: demo Vercel trả HTTP 200; Render `/api/
 
 ### Nhánh nâng cấp `ui-upgrade` — kiểm tra preview ngày 13/10/2026
 
-- Preview Vercel: https://tkwnc-nhom10-git-ui-upgrade-tkwnc-nhom10.vercel.app/ — trang tải thành công, gọi `/api/health` qua rewrite cùng origin và hiển thị vườn đang mở. Commit preview trước phần giới hạn thời gian request là `ab39978`.
+- Preview Vercel: https://tkwnc-nhom10-git-ui-upgrade-tkwnc-nhom10.vercel.app/ — preview đã từng tải thành công và gọi `/api/health` qua rewrite cùng origin ở các lượt kiểm tra trước. Kiểm tra lại ngày 13/10/2026 cho thấy URL hiện chuyển hướng sang Vercel SSO, nên chưa xác minh được bản preview sau các commit mới nhất. Commit preview đã xác minh trước đó là `ab39978`.
 - Nhận diện trên preview: ảnh mẫu Hoa hồng cho top-1 `roses` với confidence **91,7%**, có năm dự đoán và đường dẫn sang chi tiết Hoa hồng. Direct call tới backend Render cùng ảnh trả top-1 `roses` **0,9259**.
 - Album trên backend production: một lần kiểm tra `POST /api/search/text` kết thúc HTTP **502 Bad Gateway** sau khoảng 60 giây. Trên preview, thao tác tìm ảnh còn giữ trạng thái loading lâu; bản cập nhật UI giới hạn chờ request đang được chuẩn bị để trạng thái này kết thúc bằng lỗi thân thiện và nút thử lại.
 - Chatbot trên backend production: `POST /api/chat/sync` trả HTTP **503**, `Mô hình 'llm' chưa sẵn sàng`; chưa xác nhận được trả lời Gemini thật trên preview. Detect chưa được chạy lại trên backend production trong lượt này.
@@ -32,6 +32,13 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 - `data/kb_eval/rag_hit_at_3.json`: 30 câu hỏi đánh giá nguồn truy xuất RAG.
 - `data/species.json`: dữ liệu của 103 loài, khớp với 103 nhãn trong `artifacts/classifier/classes.json`.
 - `data/display_images.json`: nguồn ảnh trưng bày chất lượng cao cho 5 loài nổi bật trên trang chủ; các loài còn lại dùng ảnh đại diện trong dữ liệu Flowers.
+
+### Tối ưu tải giao diện (13/10/2026)
+
+- Năm ảnh trưng bày được chuyển sang WebP, giữ nguyên độ phân giải và đã kiểm tra trực quan. Tổng dung lượng của bộ ảnh giảm từ **3.361.123 byte** xuống **547.280 byte** (giảm **83,7%**); ảnh gốc không còn được phục vụ trùng lặp.
+- Bốn panel AI được tải khi người dùng mở panel; lần đầu mở có trạng thái chờ tải module.
+- Google Fonts được preload bất đồng bộ để stylesheet font không chặn dựng trang.
+- Lighthouse mobile đo trên bản production đang public ghi nhận payload **3,678 MiB**, điểm Performance dao động **61–67** trong hai lượt, Accessibility **100**, Best Practices **100**, SEO **92**. Bản build mới tại localhost ghi payload **1,125 MiB**, Performance **60**, Accessibility **100**, Best Practices **96**, SEO **92**. Hai lượt dùng hai môi trường khác nhau nên không xem là phép so sánh trước/sau; branch preview hiện bị Vercel SSO bảo vệ, chưa đo lại được cùng môi trường. Chưa tuyên bố đạt cải thiện điểm Lighthouse.
 
 ## Ảnh giao diện
 
