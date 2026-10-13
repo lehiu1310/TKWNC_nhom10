@@ -1,5 +1,7 @@
-// Mọi lời gọi backend nằm ở đây. API_BASE rỗng = cùng origin (FastAPI phục vụ bản build).
-export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
+// Static Vercel builds proxy /api to Render through vercel.json so preview
+// deployments work without adding each generated preview hostname to CORS.
+const onVercel = typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app');
+export const API_BASE = onVercel ? '' : import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
 
 async function handle(res) {
   if (!res.ok) {
