@@ -57,7 +57,7 @@ class ImageClassifier:
         preds = [{"label": self.classes[i], "score": round(float(s), 4)} for s, i in zip(scores.tolist(), idx.tolist())]
         return {
             "predictions": preds,
-            # Ảnh không thuộc 5 loài hoa vẫn bị gán nhãn: báo "không chắc" thay vì khẳng định sai
+            # Ảnh ngoài phân phối vẫn có thể bị gán nhãn: báo "không chắc" thay vì khẳng định sai
             "confident": preds[0]["score"] >= self.min_confidence,
             "confidence_threshold": self.min_confidence,
         }

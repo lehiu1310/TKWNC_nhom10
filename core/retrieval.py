@@ -37,9 +37,12 @@ class ClipEncoder:
         self.model, _, self.preprocess = open_clip.create_model_and_transforms(
             model_name, pretrained=pretrained, device=DEVICE,
         )
-        # Store the compact encoder in half precision on CPU; FP32 MobileCLIP
-        # still pushes a small 512 MB container over its memory limit.
-        self.model.to(dtype=torch.float16).eval()
+        # MobileCLIP2's CPU FP16 kernels are dramatically slower than FP32 on
+        # typical x86 CPUs. Keep FP16 on CUDA, where it is accelerated; use
+        # FP32 on CPU. Cloud Run has enough memory for this and the same
+        # checkpoint produces numerically equivalent embeddings.
+        inference_dtype = torch.float16 if DEVICE == "cuda" else torch.float32
+        self.model.to(dtype=inference_dtype).eval()
         self.dtype = next(self.model.parameters()).dtype
         self.model_name = model_name
         self.pretrained = pretrained
