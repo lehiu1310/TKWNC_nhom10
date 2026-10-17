@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from PIL import Image
 from torchvision import models, transforms
 
-from config import ART_DIR, DEVICE
+from config import ART_DIR, CLASSIFIER_OOD_MIN_CONFIDENCE, DEVICE
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
@@ -38,7 +38,7 @@ def build_model(num_classes: int, pretrained: bool = True) -> torch.nn.Module:
 
 
 class ImageClassifier:
-    def __init__(self, model_dir: Path = ART_DIR / "classifier", min_confidence: float = 0.5):
+    def __init__(self, model_dir: Path = ART_DIR / "classifier", min_confidence: float = CLASSIFIER_OOD_MIN_CONFIDENCE):
         model_dir = Path(model_dir)
         self.classes: list[str] = json.loads((model_dir / "classes.json").read_text(encoding="utf-8"))
         self.model = build_model(len(self.classes), pretrained=False)
@@ -59,6 +59,7 @@ class ImageClassifier:
             "predictions": preds,
             # Ảnh không thuộc 5 loài hoa vẫn bị gán nhãn: báo "không chắc" thay vì khẳng định sai
             "confident": preds[0]["score"] >= self.min_confidence,
+            "confidence_threshold": self.min_confidence,
         }
 
     def explain(self, image: Image.Image, class_index: int | None = None) -> Image.Image:

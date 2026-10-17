@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import speciesData from '../../../data/species.json';
+import classifierDemoSamples from '../../../data/classifier_demo_samples.json';
 import { friendlyFailure, postImage } from '../api.js';
 import ImagePicker from './ImagePicker.jsx';
 
 const SPECIES = Object.fromEntries(speciesData.map((flower) => [flower.id, flower]));
-const FLOWER_ICONS = { daisy: '✿', dandelion: '❋', roses: '❀', sunflowers: '✺', tulips: '❁' };
+const SAMPLES = classifierDemoSamples.map((sample) => ({ ...SPECIES[sample.id], assetUrl: sample.assetUrl }));
 
 export default function Classify() {
   const [state, setState] = useState({ status: 'idle' });
@@ -12,15 +13,15 @@ export default function Classify() {
   const [barsReady, setBarsReady] = useState(false);
   const [showGradCam, setShowGradCam] = useState(false);
 
-  async function run(file) {
+  async function run(file, _previewUrl, explain = showGradCam) {
     setScores([]);
     setBarsReady(false);
     setState({ status: 'loading' });
     try {
-      const data = await postImage('/api/classify', file, { top_k: 5, explain: showGradCam });
-      setState({ status: 'ok', data, resultKey: `${Date.now()}-${Math.random()}` });
+      const data = await postImage('/api/classify', file, { top_k: 5, explain });
+      setState({ status: 'ok', data, file, resultKey: `${Date.now()}-${Math.random()}` });
     } catch (err) {
-      setState({ status: 'error', error: friendlyFailure(err) });
+      setState({ status: 'error', error: friendlyFailure(err), file });
     }
   }
 
@@ -57,6 +58,8 @@ export default function Classify() {
   const predictions = state.status === 'ok' ? state.data.predictions : [];
   const topPrediction = predictions[0];
   const topSpecies = topPrediction ? SPECIES[topPrediction.label] : null;
+  const secondPrediction = predictions[1];
+  const isAmbiguous = topPrediction && secondPrediction && topPrediction.score - secondPrediction.score < 0.15;
   const imageResult = topPrediction && topSpecies ? {
     species: topSpecies,
     score: topPrediction.score,
@@ -66,16 +69,17 @@ export default function Classify() {
   return <section className="grid">
     <div>
       <h2>Đoán tên loài hoa</h2>
-      <p className="muted">ResNet-18 đối chiếu ảnh với {speciesData.length} nhãn hoa trong bộ dữ liệu và hiển thị 5 kết quả phù hợp nhất. Nếu ảnh nằm ngoài các nhãn này, AI vẫn có thể chọn nhãn gần giống — hãy xem điểm số như gợi ý.</p>
-      <label className="gradcam-toggle"><input type="checkbox" checked={showGradCam} onChange={(event) => setShowGradCam(event.target.checked)}/> Giải thích vùng ảnh ảnh hưởng đến dự đoán (Grad-CAM)</label>
-      <ImagePicker label="Chọn ảnh để nhận diện" onChange={run} result={imageResult} />
+      <p className="muted">ResNet-18 đối chiếu ảnh với {speciesData.length} nhãn hoa trong bộ dữ liệu và hiển thị 5 kết quả phù hợp nhất. Điểm tin cậy thấp có thể báo ảnh ngoài bộ dữ liệu; hãy xem dự đoán như gợi ý.</p>
+      <label className="gradcam-toggle"><input type="checkbox" checked={showGradCam} onChange={(event) => { const enabled = event.target.checked; setShowGradCam(enabled); if (state.status === 'ok' && state.file) void run(state.file, undefined, enabled); }}/> Xem AI đang nhìn vào đâu (Grad-CAM)</label>
+      <ImagePicker label="Chọn ảnh để nhận diện" onChange={run} result={imageResult} samples={SAMPLES} />
     </div>
     <div className="result-panel"><span className="feature-subtitle">KẾT QUẢ NHẬN DIỆN</span>
       {state.status === 'idle' && <div className="empty-state"><span>✿</span><p>Kết quả và độ tin cậy sẽ hiện ở đây.</p></div>}
       {state.status === 'loading' && <><p className="loading-skeleton"/><p className="loading-skeleton"/><p className="loading-skeleton"/><p className="muted">AI đang quan sát cánh hoa…</p></>}
-      {state.status === 'error' && <p className="error">Chưa nhận diện được ảnh. {state.error}</p>}
+      {state.status === 'error' && <div className="friendly-error" role="alert"><p>Chưa nhận diện được ảnh. {state.error}</p><button type="button" className="button" onClick={() => run(state.file)}>Thử lại</button></div>}
       {state.status === 'ok' && <>
-        {!state.data.confident && <p className="warn">AI chưa đủ chắc chắn — hãy thử ảnh rõ hơn, chỉ có một bông hoa.</p>}
+        {!state.data.confident && <p className="warn" role="status">Ảnh này có thể không phải loài hoa trong bộ dữ liệu, hoặc AI chưa đủ chắc chắn để nhận diện.</p>}
+        {isAmbiguous && <p className="warn ambiguity-notice" role="status">AI đang phân vân giữa {SPECIES[topPrediction.label]?.name_vi || topPrediction.label} và {SPECIES[secondPrediction.label]?.name_vi || secondPrediction.label}.</p>}
         {predictions.map((prediction, index) => {
           const flower = SPECIES[prediction.label];
           const name = flower?.name_vi || prediction.label;
@@ -90,7 +94,7 @@ export default function Classify() {
           </div>;
         })}
         <p className="muted result-meta">ResNet-18 · {state.data.latency_ms} ms</p>
-        {state.data.grad_cam && <figure className="gradcam-result"><img src={state.data.grad_cam} alt="Grad-CAM tô sáng vùng ảnh ảnh hưởng đến dự đoán"/><figcaption>Grad-CAM · vùng nóng đóng góp nhiều hơn cho nhãn top-1; đây là giải thích xấp xỉ.</figcaption></figure>}
+        {state.data.grad_cam && showGradCam && <figure className="gradcam-result"><img src={state.data.grad_cam} alt="Ảnh gốc phủ heatmap Grad-CAM, vùng màu thể hiện nơi ảnh tác động tới dự đoán"/><figcaption>Grad-CAM · vùng màu là tín hiệu giải thích xấp xỉ cho nhãn top-1, không chứng minh dự đoán đúng.</figcaption></figure>}
       </>}
     </div>
   </section>;

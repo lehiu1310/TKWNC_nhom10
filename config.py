@@ -9,6 +9,17 @@ try:
 except ImportError:  # API schema tests do not need the inference runtime.
     torch = None
 
+# Cloud Run is configured for two vCPUs and concurrency two. One intra-op
+# thread per request avoids oversubscribing those cores under concurrent inference.
+TORCH_NUM_THREADS = max(1, int(os.environ.get("TORCH_NUM_THREADS", "1")))
+if torch is not None:
+    torch.set_num_threads(TORCH_NUM_THREADS)
+    try:
+        torch.set_num_interop_threads(1)
+    except RuntimeError:
+        # Another imported library already initialized the inter-op pool.
+        pass
+
 ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent))
 # Read local secrets from the ignored project-root .env without overriding shell/host secrets.
 load_dotenv(ROOT / ".env", override=False)
@@ -40,6 +51,9 @@ ENABLED_MODELS = {
 }
 
 MAX_UPLOAD_MB = int(os.environ.get("MAX_UPLOAD_MB", "8"))
+CLASSIFIER_OOD_MIN_CONFIDENCE = float(os.environ.get("CLASSIFIER_OOD_MIN_CONFIDENCE", "0.6967"))
+if not 0.0 <= CLASSIFIER_OOD_MIN_CONFIDENCE <= 1.0:
+    raise ValueError("CLASSIFIER_OOD_MIN_CONFIDENCE must be between 0 and 1")
 CORS_ORIGINS = [
     origin.strip()
     for origin in os.environ.get(

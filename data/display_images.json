@@ -5,7 +5,7 @@
   },
   "images": {
     "daisy": {
-      "url": "/images/display-flowers/daisy.jpg",
+      "url": "/images/display-flowers/daisy.webp",
       "sourceImageUrl": "https://images.unsplash.com/photo-1580319481957-b20ba850a25e?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
       "source": "Unsplash",
       "sourcePage": "https://unsplash.com/photos/un-primer-plano-de-una-margarita-blanca-con-un-centro-amarillo-jMHDCmnMXtI",
@@ -16,7 +16,7 @@
       "alt": "Cúc trắng cận cảnh, nhụy vàng rõ nét trên nền xanh mờ"
     },
     "dandelion": {
-      "url": "/images/display-flowers/dandelion.jpg",
+      "url": "/images/display-flowers/dandelion.webp",
       "sourceImageUrl": "https://images.unsplash.com/photo-1588918001123-94f85b1ab1bf?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
       "source": "Unsplash",
       "sourcePage": "https://unsplash.com/photos/yellow-dandelion-in-close-up-photography-q4hnxqjPvWY",
@@ -27,7 +27,7 @@
       "alt": "Bồ công anh vàng cận cảnh, cánh hoa nét trên nền xanh mờ"
     },
     "rose": {
-      "url": "/images/display-flowers/rose.jpg",
+      "url": "/images/display-flowers/rose.webp",
       "sourceImageUrl": "https://images.unsplash.com/photo-1732507462670-3758c55242aa?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
       "source": "Unsplash",
       "sourcePage": "https://unsplash.com/photos/a-close-up-of-a-red-rose-in-a-garden-o3uxl8x0p88",
@@ -38,7 +38,7 @@
       "alt": "Một bông hồng đỏ nở rộ, cánh hoa rõ nét trên nền vườn mờ"
     },
     "sunflower": {
-      "url": "/images/display-flowers/sunflower.jpg",
+      "url": "/images/display-flowers/sunflower.webp",
       "sourceImageUrl": "https://images.unsplash.com/photo-1530981541910-e49c5e95d631?auto=format&fit=crop&crop=entropy&w=1800&h=1800&q=88",
       "source": "Unsplash",
       "sourcePage": "https://unsplash.com/photos/shallow-focus-photography-of-yellow-sunflower-oCwc0Qpkm10",
@@ -49,7 +49,7 @@
       "alt": "Một bông hướng dương vàng cận cảnh với hậu cảnh xanh mờ"
     },
     "tulip": {
-      "url": "/images/display-flowers/tulip-bloom.png",
+      "url": "/images/display-flowers/tulip-bloom.webp",
       "source": "OpenAI ImageGen",
       "photographer": "Ảnh tạo riêng cho đồ án",
       "license": "AI-generated project asset",

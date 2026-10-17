@@ -33,7 +33,7 @@ def main() -> None:
         "total": len(examples),
         "score": hits / len(examples) if examples else 0,
         "retriever": "BM25",
-        "kb_files": len(list((ROOT / "data" / "kb").glob("*.md"))),
+        "kb_files": len(list((ROOT / "data" / "kb").glob("*.md"))) + len(list((ROOT / "data" / "kb").glob("*.pdf"))),
         "results": rows,
     }
     out = ROOT / "reports" / "rag_hit_at_3.json"
