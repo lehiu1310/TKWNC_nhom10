@@ -14,9 +14,9 @@
 | YOLO11n | mAP50 0,7306; mAP50–95 0,5236; precision 0,6641; recall 0,7411 | Test riêng 84 ảnh, 145 instances; CPU Intel Core i5-13500H. |
 | MobileCLIP2 + FAISS | Precision@5 0,8592 | 206 query ảnh held-out theo đường dẫn, cùng nguồn dataset; không đại diện dữ liệu ngoài miền. |
 | RAG | Hit@3 30/30 (1,0) | Chấm đúng tệp nguồn truy xuất trong 30 câu nội bộ; chưa chấm tính đúng câu trả lời sinh. |
-| Render API | Classify p50/p95 3,90/4,50 s; detect 38,74/55,45 s | Locust, 102/51 request, 1 user, 0 lỗi. Render Free Singapore, 0,15 CPU/512 MB; process peak RSS 423,3/506,2 MB. Search và chatbot chưa có benchmark live tin cậy. |
+| Render API (đo lịch sử) | Classify p50/p95 3,90/4,50 s; detect 38,74/55,45 s | Locust, 102/51 request, 1 user, 0 lỗi. Render Free Singapore, 0,15 CPU/512 MB; process peak RSS 423,3/506,2 MB. Search và chatbot chưa có benchmark live tin cậy. |
 
-Chi tiết và tệp đo ở [`README.md`](README.md) và `reports/`. Latency/RAM trên là phép đo lịch sử của dịch vụ, không phải cam kết cho revision mới. Kiểm tra live 01/10/2026: `/api/health` trả `status: ok`, ảnh hồng được phân loại top-1 `roses` 0,751; chatbot `POST /api/chat/sync` trả 503, `Mô hình 'llm' chưa sẵn sàng`.
+Chi tiết và tệp đo ở [`README.md`](README.md) và `reports/`. Latency/RAM Render trong bảng là phép đo lịch sử, không phải cam kết cho revision mới. Kiểm tra lại ngày **17/10/2026**: Vercel trả HTTP 200; Render `/api/health` trả HTTP 200 nhưng cả bốn model đều `not_loaded` (`ready: false`). Cloud Run chưa triển khai do chưa có project Google Cloud được liên kết billing. Trên `release-final`, bốn chức năng đã được gọi thành công local; image search API warm calls 73,7–221,4 ms trong vài lượt thử (không phải p50/p95, chưa đo Cloud Run). Số liệu production mới chưa đo được.
 
 ## 3. Giới hạn
 

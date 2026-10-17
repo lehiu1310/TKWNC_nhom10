@@ -1,8 +1,18 @@
 # TKWNC_nhom10 — Vườn Hoa AI
 
 **Demo trực tiếp:** https://tkwnc-nhom10.vercel.app/  
-**Backend demo (Render):** https://tkw-nhom10-api.onrender.com  
-**Health check:** https://tkw-nhom10-api.onrender.com/api/health
+**Backend hiện tại (Render cũ):** https://tkw-nhom10-api.onrender.com  
+**Health check:** https://tkw-nhom10-api.onrender.com/api/health  
+**Cloud Run:** chưa triển khai; đang chờ project Google Cloud được liên kết billing.
+
+## Trạng thái xác minh mới nhất (17/10/2026)
+
+- Vercel demo trả HTTP 200.
+- Render `/api/health` trả HTTP 200 nhưng `ready: false`; `classifier`, `detector`, `llm` và `retrieval` đều `not_loaded`. Health chỉ xác nhận process API còn trả lời, không xác nhận các chức năng AI hoạt động.
+- Cloud Run chưa được tạo. `gcloud` đã đăng nhập nhưng không có billing account khả dụng và các project đang thấy đều chưa bật billing. Chưa có URL Cloud Run, số liệu Cloud Run hoặc xác nhận bốn API trên Cloud Run.
+- Trên nhánh `release-final`, máy local đã trả HTTP 200 cho classify (top-1 `roses` trên ảnh mẫu), detect (2 hộp), search ảnh (8 kết quả) và chatbot Gemini (có trích nguồn `[hoa_hong.md]`). Đây là kiểm tra local, không phải kiểm tra deploy.
+- Sau khi chuyển MobileCLIP2 CPU inference sang FP32, search ảnh local chạy **73,7–221,4 ms** trong các lượt API đã thử, so với **4,6–6,0 s** trước sửa. Đo trên một máy local, số mẫu nhỏ; chưa phải Locust p50/p95 và không đại diện Cloud Run.
+- Code hiện tại ở commit `7a77f6e` trên `release-final`; `main` chưa được cập nhật.
 
 ## Trạng thái deploy đã kiểm chứng (01/10/2026)
 
@@ -27,7 +37,7 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 ## Kiến trúc
 
 - `core/`: suy luận dùng chung — ResNet-18 (103 nhãn), YOLO11, MobileCLIP2-S0 + FAISS và Gemini + RAG với truy xuất BM25 nhẹ (có thể chọn Qwen local).
-- `api/`: FastAPI cho web và Streamlit. Mô hình được nạp lần đầu khi mở tính năng tương ứng để trang/API khởi động nhanh.
+- `api/`: FastAPI cho web và Streamlit. Khi bật `MODEL_WARMUP`, bốn mô hình được nạp tuần tự trong luồng nền; `/api/health` trả trạng thái từng mô hình và `/api/startup` chờ tới khi sẵn sàng.
 - `web/`: React + Vite, trải nghiệm responsive theo chủ đề vườn hoa.
 - `data/kb/`: tám bản tóm tắt tiếng Việt cùng PDF được chia theo trang; danh mục, số trang và phạm vi nguồn xem tại [`data/kb_sources.md`](data/kb_sources.md).
 - `data/kb_eval/rag_hit_at_3.json`: 30 câu hỏi đánh giá nguồn truy xuất RAG.
@@ -61,7 +71,7 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 
 ## Demo và chạy nhanh trong 15 phút
 
-Cách nhanh nhất là mở [demo trực tiếp](https://tkwnc-nhom10.vercel.app/); không cần cài gì. Nếu cần clone và chạy giao diện trên máy, chỉ cần Git, Node.js 22 LTS và Corepack (đi kèm Node). Lệnh dưới đây dùng backend Render đã deploy nên **không cần cài Python, tải model hay tạo khóa Gemini**:
+Cách nhanh nhất để xem giao diện là mở [demo trực tiếp](https://tkwnc-nhom10.vercel.app/). Backend Render hiện trả health nhưng báo bốn mô hình `not_loaded`, do đó không thể bảo đảm demo AI public hoạt động. Để chạy giao diện, cần Git, Node.js 22 LTS và Corepack:
 
 ```powershell
 git clone https://github.com/lehiu1310/TKWNC_nhom10.git
@@ -71,7 +81,7 @@ $env:VITE_API_BASE_URL="https://tkw-nhom10-api.onrender.com"
 corepack pnpm dev -- --host 0.0.0.0 --port 5175
 ```
 
-Mở `http://localhost:5175`. Khi dùng chức năng AI lần đầu, Render free có thể cần khởi động lại sau thời gian không hoạt động; chờ cold start rồi thử lại. Bộ cài local đầy đủ cho backend ở mục tiếp theo cần tải dữ liệu/model và có thể lâu hơn 15 phút; cách trên là quy trình clone/chạy nhanh để xem đầy đủ giao diện và gọi backend đã deploy.
+Mở `http://localhost:5175`. Lệnh trên chỉ chạy frontend; các lệnh chạy backend local bên dưới cần Python, model artifacts và khóa Gemini cho chatbot.
 
 ## Chạy lần đầu trên Windows
 
