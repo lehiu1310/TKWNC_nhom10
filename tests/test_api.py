@@ -4,6 +4,7 @@ import io
 import os
 
 os.environ["ENABLED_MODELS"] = ""  # không nạp mô hình thật khi khởi động
+os.environ["MODEL_WARMUP"] = "0"  # TestClient uses explicit fake models below.
 
 import pytest
 from fastapi.testclient import TestClient
@@ -59,14 +60,32 @@ def png_bytes(size=(32, 32)) -> bytes:
 def client():
     with TestClient(main.app) as c:
         main.ENABLED_MODELS = {"classifier", "detector", "retrieval", "llm"}
-        main.MODELS.update(classifier=FakeClassifier(), detector=FakeDetector(), llm=FakeBot())
+        main.MODEL_STATES.update({name: "not_loaded" for name in main.LOADERS})
+        main.MODELS.update(classifier=FakeClassifier(), detector=FakeDetector(), retrieval=FakeSearch(), llm=FakeBot())
         yield c
         main.MODELS.clear()
+        main.MODEL_STATES.update({name: "not_loaded" for name in main.LOADERS})
+        main.ENABLED_MODELS = set()
 
 
 def test_health(client):
     r = client.get("/api/health")
     assert r.status_code == 200 and r.json()["status"] == "ok"
+    assert r.json()["ready"] is True
+    assert set(r.json()["model_states"].values()) == {"ready"}
+
+
+def test_startup_probe_waits_for_all_models(client):
+    main.MODELS.pop("retrieval", None)
+    response = client.get("/api/startup")
+    assert response.status_code == 503
+    assert response.json()["detail"] == "AI models are warming up"
+
+
+def test_startup_probe_passes_when_all_models_are_ready(client):
+    response = client.get("/api/startup")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok", "ready": True}
 
 
 def test_health_reports_short_render_revision(client, monkeypatch):
@@ -180,12 +199,27 @@ def test_search_text_ok(client, monkeypatch):
     assert r.json()["query_used"] == "hoa hồng" and not r.json()["translated"]
 
 
+def test_search_alias_ok(client, monkeypatch):
+    monkeypatch.setattr(main, "_require", lambda name: FakeSearch())
+    response = client.post("/api/search", json={"query": "hoa hồng", "k": 1})
+    assert response.status_code == 200
+    assert response.json()["query_used"] == "hoa hồng"
+
+
 def test_search_text_blank_query_is_400(client):
     assert client.post("/api/search/text", json={"query": "   "}).status_code == 400
 
 
+def test_search_alias_blank_query_is_400(client):
+    assert client.post("/api/search", json={"query": "   "}).status_code == 400
+
+
 def test_search_text_invalid_k_is_422(client):
     assert client.post("/api/search/text", json={"query": "hoa", "k": 0}).status_code == 422
+
+
+def test_search_alias_missing_query_is_422(client):
+    assert client.post("/api/search", json={}).status_code == 422
 
 
 def test_search_text_label_filter_is_forwarded(client, monkeypatch):
@@ -240,6 +274,11 @@ def test_chat_sync_ok(client):
     assert r.status_code == 200 and r.json()["answer"]
 
 
+def test_ask_alias_ok(client):
+    response = client.post("/api/ask", json={"message": "Hoa cần tưới không?"})
+    assert response.status_code == 200 and response.json()["answer"]
+
+
 def test_chat_sync_falls_back_to_sources_when_gemini_key_missing(client, monkeypatch):
     monkeypatch.setenv("GOOGLE_API_KEY", "")
     monkeypatch.setenv("GEMINI_API_KEY", "")
@@ -257,9 +296,17 @@ def test_chat_and_sync_missing_message_are_422(client):
     assert client.post("/api/chat/sync", json={}).status_code == 422
 
 
+def test_ask_alias_missing_message_is_422(client):
+    assert client.post("/api/ask", json={}).status_code == 422
+
+
 def test_chat_and_sync_blank_message_are_400(client):
     assert client.post("/api/chat", json={"message": "   "}).status_code == 400
     assert client.post("/api/chat/sync", json={"message": "   "}).status_code == 400
+
+
+def test_ask_alias_blank_message_is_400(client):
+    assert client.post("/api/ask", json={"message": "   "}).status_code == 400
 
 
 def test_chat_message_too_long_is_422(client):

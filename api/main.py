@@ -28,6 +28,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 log = logging.getLogger("api")
 MODELS: dict = {}
 MODEL_ERRORS: dict[str, str] = {}
+MODEL_STATES: dict[str, str] = {}
+MODEL_STATE_LOCK = threading.Lock()
 
 
 LOADERS = {  # tên → (module, lớp); import trễ để chỉ nạp thư viện của mô hình được bật
@@ -37,13 +39,75 @@ LOADERS = {  # tên → (module, lớp); import trễ để chỉ nạp thư vi�
     "llm": ("core.llm", "RAGChatbot"),
 }
 MODEL_LOCKS = {name: threading.Lock() for name in LOADERS}
+MODEL_STATES.update({name: "not_loaded" for name in LOADERS})
+
+
+def _set_model_state(name: str, state: str) -> None:
+    with MODEL_STATE_LOCK:
+        MODEL_STATES[name] = state
+
+
+def _model_health() -> dict:
+    with MODEL_STATE_LOCK:
+        states = {
+            name: ("ready" if name in ENABLED_MODELS and name in MODELS
+                   else MODEL_STATES.get(name, "not_loaded"))
+            for name in LOADERS
+        }
+    ready = all(name in ENABLED_MODELS and states[name] == "ready" for name in LOADERS)
+    return {"ready": ready, "models": {name: state == "ready" for name, state in states.items()},
+            "model_states": states}
+
+
+def _warm_model(name: str, model) -> None:
+    """Run a small local inference so the first visitor does not pay model setup cost."""
+    from PIL import Image
+
+    sample = Image.new("RGB", (256, 256), color=(118, 142, 92))
+    if name == "classifier":
+        model.predict(sample, top_k=1)
+    elif name == "detector":
+        model.detect(sample, conf=0.25)
+    elif name == "retrieval":
+        model.search_text_with_query("a flower in a garden", k=1)
+    elif name == "llm":
+        # The chatbot's local RAG component is lexical; Gemini is an external
+        # API and must not incur a paid generation just to mark this instance ready.
+        model.retriever.search("hoa hồng", k=1)
+
+
+def _warm_models() -> None:
+    for name in LOADERS:
+        if name not in ENABLED_MODELS:
+            continue
+        _set_model_state(name, "loading")
+        started = time.perf_counter()
+        try:
+            model = _require(name)
+            _warm_model(name, model)
+            MODEL_ERRORS.pop(name, None)
+            _set_model_state(name, "ready")
+            log.info("model warm-up completed model=%s elapsed_s=%.2f", name, time.perf_counter() - started)
+        except Exception as exc:
+            MODEL_ERRORS[name] = str(exc)
+            _set_model_state(name, "failed")
+            log.exception("model warm-up failed model=%s", name)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Nạp từng mô hình khi người dùng mở chức năng để API sẵn sàng nhanh hơn.
-    yield
-    MODELS.clear()
+    # Keep HTTP startup responsive while a single background thread warms each
+    # model in order. Cloud Run's startup probe waits on /api/startup.
+    warmup_enabled = os.environ.get("MODEL_WARMUP", "1").strip().lower() not in {"0", "false", "no"}
+    warmup_thread = None
+    if warmup_enabled:
+        warmup_thread = threading.Thread(target=_warm_models, name="model-warmup", daemon=True)
+        warmup_thread.start()
+    try:
+        yield
+    finally:
+        if warmup_thread and warmup_thread.is_alive():
+            log.warning("server shutdown while model warm-up is still running")
 
 
 app = FastAPI(title="AI Web Apps API", version="1.0.0", lifespan=lifespan)
@@ -57,8 +121,8 @@ async def timing(request: Request, call_next):
     elapsed_ms = (time.perf_counter() - t0) * 1000
     response.headers["X-Process-Time-ms"] = f"{elapsed_ms:.1f}"
     if request.url.path in {
-        "/api/classify", "/api/detect", "/api/search/text", "/api/search/image",
-        "/api/chat", "/api/chat/sync",
+        "/api/classify", "/api/detect", "/api/search", "/api/search/text", "/api/search/image",
+        "/api/chat", "/api/chat/sync", "/api/ask",
     }:
         log.info(
             "API_PERF route=%s status=%s latency_ms=%.1f process_peak_rss_mb=%s",
@@ -71,14 +135,17 @@ def _require(name: str):
     if name not in ENABLED_MODELS:
         raise HTTPException(503, f"Tính năng '{name}' đang tắt trong cấu hình.")
     if name not in MODELS:
+        _set_model_state(name, "loading")
         with MODEL_LOCKS[name]:
             if name not in MODELS:
                 try:
                     module, cls = LOADERS[name]
                     MODELS[name] = getattr(importlib.import_module(module), cls)()
                     MODEL_ERRORS.pop(name, None)
+                    _set_model_state(name, "ready")
                 except Exception as exc:
                     MODEL_ERRORS[name] = str(exc)
+                    _set_model_state(name, "failed")
                     log.exception("cannot load %s: %s", name, exc)
                     detail = f"Mô hình '{name}' chưa sẵn sàng."
                     if name in ("classifier", "retrieval"):
@@ -124,14 +191,24 @@ def _to_base64(image: Image.Image, max_dimension: int | None = None, quality: in
 def health(model: str | None = Query(None, max_length=32, description="Optional model component to inspect")):
     if model is not None and model not in LOADERS:
         raise HTTPException(400, f"Unknown model component: {model}")
-    enabled = sorted(ENABLED_MODELS if model is None else ENABLED_MODELS & {model})
+    snapshot = _model_health()
+    enabled = sorted(LOADERS if model is None else {model})
     revision = os.environ.get("RENDER_GIT_COMMIT") or os.environ.get("GIT_COMMIT")
     return {
         "status": "ok", "device": DEVICE,
         "revision": revision[:12] if revision else None,
-        "models": {m: m in MODELS for m in enabled},
-        "model_states": {m: ("ready" if m in MODELS else "failed" if m in MODEL_ERRORS else "not_loaded") for m in enabled},
+        "ready": snapshot["ready"],
+        "models": {m: snapshot["models"][m] for m in enabled},
+        "model_states": {m: snapshot["model_states"][m] for m in enabled},
     }
+
+
+@app.get("/api/startup")
+def startup_probe():
+    snapshot = _model_health()
+    if not snapshot["ready"]:
+        raise HTTPException(503, "AI models are warming up", headers={"Retry-After": "5"})
+    return {"status": "ok", "ready": True}
 
 
 @app.get("/api/species")
@@ -192,6 +269,7 @@ def _with_urls(results: list[dict]) -> list[dict]:
     return [{k: v for k, v in r.items() if k != "path"} | {"url": f"/api/gallery/{r['id']}"} for r in results]
 
 
+@app.post("/api/search")
 @app.post("/api/search/text")
 def search_text(q: TextQuery):
     if not q.query.strip():
@@ -241,6 +319,7 @@ def chat(req: ChatRequest):
     return StreamingResponse(events(), media_type="text/event-stream; charset=utf-8", headers={"Cache-Control": "no-cache"})
 
 
+@app.post("/api/ask")
 @app.post("/api/chat/sync")
 def chat_sync(req: ChatRequest):
     if not req.message.strip():

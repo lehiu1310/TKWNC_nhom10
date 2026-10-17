@@ -207,7 +207,7 @@ class RAGChatbot:
             api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
             if api_key:
                 from core.gemini_client import create_gemini_client
-                self.client = create_gemini_client(api_key, timeout_ms=15_000)
+                self.client = create_gemini_client(api_key, timeout_ms=10_000)
             else:
                 # A missing hosted secret must not take the entire RAG endpoint
                 # down. Keep lexical retrieval usable and return sourced evidence.
@@ -251,7 +251,7 @@ class RAGChatbot:
                 break
         if not excerpts:
             return "Mình chưa có thông tin này."
-        return "Mình chưa thể tạo câu trả lời bằng AI lúc này. Theo cẩm nang: " + " ".join(excerpts)
+        return "Theo thông tin trong cẩm nang hoa: " + " ".join(excerpts)
 
     def _messages(self, question: str, contexts: list[dict], history: list[dict] | None) -> list[dict]:
         docs = "\n\n".join(self._format_context(c) for c in contexts)

@@ -1,7 +1,6 @@
-// Static Vercel builds proxy /api to Render through vercel.json so preview
-// deployments work without adding each generated preview hostname to CORS.
-const onVercel = typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app');
-export const API_BASE = onVercel ? '' : import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
+// Prefer the configured public API URL (Cloud Run in production). When unset,
+// local development and the Vercel /api rewrite use a same-origin request.
+export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
 const API_TIMEOUT_MS = 70_000;
 const HEALTH_TIMEOUT_MS = 15_000;
 

@@ -159,7 +159,8 @@ def test_gemini_client_uses_short_timeout_and_bounded_retry(monkeypatch):
     client = create_gemini_client("test-key", timeout_ms=12_000)
 
     assert client.options.timeout == 12_000
-    assert client.options.retry_options.attempts == 2
+    # The application performs one explicit 429 retry, so SDK retries stay disabled.
+    assert client.options.retry_options.attempts == 1
     assert client.options.retry_options.max_delay == 0.5
 
 
