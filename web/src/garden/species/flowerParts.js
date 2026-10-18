@@ -73,13 +73,19 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
       const tipProgress = THREE.MathUtils.clamp((t - 0.7) / 0.3, 0, 1);
       // A quarter-ellipse taper gives daisy rays a rounded distal silhouette
       // instead of a chopped rectangle or a needle-like triangle.
-      const roundedTip = trueDaisy || shape === 'rose' || tipShape === 'spatulate' || tipShape === 'round'
-        ? Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1), 2)))
+      const radialRay = trueDaisy || shape === 'daisy' || shape === 'ray';
+      // Ray petals use a short semicircular cap so the last fifth does not
+      // collapse into the needle point that made the reviewed daisy resemble
+      // a fan. Keep rose and other broad petals on their own softer profile.
+      const roundedTip = radialRay
+        ? Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.88) / 0.12, 0, 1), 2)))
+        : shape === 'rose' || tipShape === 'spatulate' || tipShape === 'round'
+          ? Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1), 2)))
         : tipShape === 'pointed' ? Math.max(0.025, 1 - tipProgress)
           : Math.sqrt(Math.max(0, 1 - tipProgress * tipProgress));
       const fullness = trueDaisy
         ? startTaper * roundedTip
-        : shape === 'daisy' || shape === 'ray'
+        : radialRay
           ? startTaper * roundedTip
         : shape === 'rose'
           // Broad, softly rounded rose petals; the previous tapered profile
