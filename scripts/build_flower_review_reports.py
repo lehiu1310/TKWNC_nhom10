@@ -32,22 +32,25 @@ def main() -> None:
     (ROOT / "reports/flower-archetype-review.md").write_text("\n".join(lines), encoding="utf-8")
 
     mismatches = [row for row in colors if row.get("mismatch")]
+    applied_mismatches = [row for row in mismatches if row.get("samples", 0) >= 500]
+    ignored_mismatches = [row for row in mismatches if row.get("samples", 0) < 500]
     lines = [
         "# Kiểm toán màu hoa",
         "",
         "Màu ảnh được ước lượng cục bộ từ vùng giữa ảnh, loại pixel xanh lá và ưu tiên pixel bão hòa. Đây là cảnh báo để rà soát bằng mắt, không phải nhãn chuẩn.",
-        "Ảnh hưởng sản phẩm: `species.json` không bị sửa. Màu dựng 3D chỉ dùng màu ảnh làm gợi ý khi cụm màu trung tâm có ít nhất 500 pixel; mẫu ít hơn dùng màu chủ đề của kiểu hoa.",
+        "Ảnh hưởng sản phẩm: `species.json` không bị sửa. Renderer chỉ dùng màu ảnh làm gợi ý khi cụm màu trung tâm có ít nhất 500 pixel và màu không thuộc dải xanh lá; mẫu nhỏ hoặc màu lá bị bỏ qua.",
         f"Vùng lấy mẫu chuẩn hóa: x={colors[0]['roi']['x'][0]:.0%}–{colors[0]['roi']['x'][1]:.0%}, y={colors[0]['roi']['y'][0]:.0%}–{colors[0]['roi']['y'][1]:.0%}. Ngưỡng lệch hue: 58°.",
-        f"Đã phân tích {len(colors)} ảnh; {len(mismatches)} loài bị gắn cờ lệch màu.",
+        f"Đã phân tích {len(colors)} ảnh; {len(mismatches)} loài là cảnh báo lệch màu tiềm năng (ngưỡng hue >58°). Trong đó {len(applied_mismatches)} mẫu đủ điều kiện kích thước để màu ảnh được dùng làm gợi ý dựng 3D; {len(ignored_mismatches)} mẫu dưới 500 pixel bị bỏ qua. Cảnh báo vẫn cần duyệt bằng mắt vì crop giữa có thể chứa nhiều hoa hoặc nền.",
         "",
-        "| Loài | Màu species.json | Màu ước lượng từ ảnh | Lệch hue | Mẫu màu |",
-        "|---|---|---|---:|---:|",
+        "| Loài | Màu species.json | Màu ước lượng từ ảnh | Lệch hue | Mẫu màu | Xử lý trong 3D |",
+        "|---|---|---|---:|---:|---|",
     ]
     for row in mismatches:
         flower = species_by_id[row["id"]]
-        lines.append(f"| {flower['name_vi']} (`{row['id']}`) | `{row['species_color']}` | `{row['photo_color']}` | {row['hue_difference']}° | {row['samples']} |")
+        action = "gợi ý màu ảnh" if row.get("samples", 0) >= 500 else "bỏ qua mẫu nhỏ"
+        lines.append(f"| {flower['name_vi']} (`{row['id']}`) | `{row['species_color']}` | `{row['photo_color']}` | {row['hue_difference']}° | {row['samples']} | {action} |")
     (ROOT / "reports/flower-color-audit.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"Wrote mapping report ({len(groups)} groups) and color audit ({len(mismatches)}/{len(colors)} potential mismatches).")
+    print(f"Wrote mapping report ({len(groups)} groups) and color audit ({len(mismatches)}/{len(colors)} potential mismatches; {len(applied_mismatches)} eligible for photo-color hint, {len(ignored_mismatches)} ignored for low sample count).")
 
 
 if __name__ == "__main__":

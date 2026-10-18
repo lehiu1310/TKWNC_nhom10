@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import species from '../../../data/species.json';
 import archetypes from '../../../data/flower_archetypes.json';
+import photoColorAudit from '../../../data/flower_photo_colors.json';
 import { API_BASE } from '../api.js';
 import { createFlower, createSpeciesConfig, disposeFlower } from './species/index.js';
 
@@ -11,6 +12,7 @@ const dense = query.has('dense');
 if (dense) document.body.classList.add('dense');
 const records = species.slice(page * pageSize, (page + 1) * pageSize);
 const byId = new Map(archetypes.species.map((entry) => [entry.id, entry]));
+const photoColorsById = new Map(photoColorAudit.map((entry) => [entry.id, entry]));
 const grid = document.querySelector('#grid');
 const models = [];
 const views = [];
@@ -26,6 +28,7 @@ document.querySelector('#next').href = `?page=${Math.min(Math.ceil(species.lengt
 for (const record of records) {
   const assignment = byId.get(record.id);
   const config = createSpeciesConfig(record);
+  const photoColor = photoColorsById.get(record.id);
   const card = document.createElement('article'); card.className = 'card';
   const title = document.createElement('h2'); title.textContent = record.name_vi.normalize('NFC');
   const subtitle = document.createElement('small'); subtitle.innerHTML = `<span class="swatch" style="--swatch:${record.color || '#a0a080'}"></span>${record.name_en || record.id} · ${assignment?.archetype || 'chưa phân loại'}`;
@@ -48,30 +51,14 @@ for (const record of records) {
   image.onerror = () => { missingImages += 1; image.hidden = true; missing.hidden = false; chip.className += ' bad'; chip.textContent += ' · thiếu ảnh'; document.body.dataset.missingImages = String(missingImages); };
   image.onload = () => {
     loadedImages += 1;
-    const distance = comparePhotoHue(image, record.color);
-    if (distance !== null && distance > 58) { colorMismatches += 1; image.dataset.colorMismatch = 'true'; chip.className += ' bad'; chip.textContent += ' · màu cần duyệt'; }
+    // Match the production palette logic: only mark a sample for review when
+    // the offline audit had enough central flower pixels to make it actionable.
+    if (photoColor?.samples >= 500 && photoColor.mismatch) {
+      colorMismatches += 1; image.dataset.colorMismatch = 'true'; chip.className += ' bad'; chip.textContent += ' · màu cần duyệt';
+    }
     document.body.dataset.loadedImages = String(loadedImages); document.body.dataset.colorMismatches = String(colorMismatches);
   };
   card.append(title, subtitle, chip, slot, image, missing); grid.append(card);
-}
-
-function comparePhotoHue(image, hex) {
-  if (!hex || !/^#[0-9a-f]{6}$/i.test(hex)) return null;
-  try {
-    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 48;
-    const context = canvas.getContext('2d', { willReadFrequently: true }); context.drawImage(image, 0, 0, 48, 48);
-    const pixels = context.getImageData(8, 8, 32, 32).data; const buckets = new Map();
-    for (let i = 0; i < pixels.length; i += 4) {
-      const r = pixels[i] / 255, g = pixels[i + 1] / 255, b = pixels[i + 2] / 255;
-      const max = Math.max(r, g, b), min = Math.min(r, g, b), delta = max - min;
-      if (delta < 0.12 || max < 0.18) continue;
-      let hue = max === r ? 60 * (((g - b) / delta) % 6) : max === g ? 60 * ((b - r) / delta + 2) : 60 * ((r - g) / delta + 4);
-      if (hue < 0) hue += 360; const bucket = Math.round(hue / 12) * 12; buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
-    }
-    if (!buckets.size) return null;
-    const photoHue = [...buckets].sort((a, b) => b[1] - a[1])[0][0]; const hsl = {}; new THREE.Color(hex).getHSL(hsl);
-    const difference = Math.abs(photoHue - hsl.h * 360); return Math.min(difference, 360 - difference);
-  } catch { return null; }
 }
 
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });

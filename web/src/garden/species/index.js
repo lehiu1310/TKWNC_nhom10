@@ -9,8 +9,8 @@ const archetypesById = new Map(archetypeDocument.species.map((entry) => [entry.i
 const photoColorsById = new Map(photoColorDocument.map((entry) => [entry.id, entry]));
 const validHex = (value) => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 
-function flowerColor(value, fallback) {
-  if (!validHex(value)) return fallback;
+function isBotanicalPetalColor(value) {
+  if (!validHex(value)) return false;
   const [r, g, b] = value.slice(1).match(/../g).map((channel) => parseInt(channel, 16) / 255);
   const max = Math.max(r, g, b); const min = Math.min(r, g, b); const delta = max - min;
   let hue = 0;
@@ -18,7 +18,11 @@ function flowerColor(value, fallback) {
   if (hue < 0) hue += 360;
   // A number of cards use foliage green as their UI accent. Don't turn that into
   // implausible green petals; the archetype preset remains the display palette.
-  return hue >= 78 && hue <= 165 && max - min > 0.12 ? fallback : value;
+  return !(hue >= 78 && hue <= 165 && max - min > 0.12);
+}
+
+function flowerColor(value, fallback) {
+  return isBotanicalPetalColor(value) ? value : fallback;
 }
 
 function lighten(hex, amount = 0.22) {
@@ -53,7 +57,8 @@ export function createSpeciesConfig(record) {
   // color; keep all source values in species.json untouched for the audit.
   const measuredColorIsUsable = measured && measured.samples >= 500 && validHex(measured.photo_color);
   const hasPhotoColorMismatch = measuredColorIsUsable && measured.hue_difference > 58;
-  const displayColor = measuredColorIsUsable ? measured.photo_color : record?.color;
+  const photoColorIsUsable = measuredColorIsUsable && isBotanicalPetalColor(measured.photo_color);
+  const displayColor = photoColorIsUsable ? measured.photo_color : record?.color;
   const color = flowerColor(displayColor, config.petalBaseColor || config.color);
   const colored = {
     ...config,
@@ -69,7 +74,7 @@ export function createSpeciesConfig(record) {
     flowerTemplateFallback: Boolean(fallback),
     flowerTemplateReason: assignment?.reason || 'Chưa có quy tắc hình thái cho loài này.',
     flowerArchetype: template || null,
-    flowerDisplayColorSource: hasPhotoColorMismatch ? 'central photo sample' : 'species.json',
+    flowerDisplayColorSource: photoColorIsUsable ? 'central photo sample' : validHex(record?.color) ? 'species.json' : 'archetype preset',
     flowerColorNeedsReview: Boolean(hasPhotoColorMismatch),
   };
 }
