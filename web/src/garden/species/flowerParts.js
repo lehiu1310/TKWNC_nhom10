@@ -79,6 +79,8 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
       // a fan. Keep rose and other broad petals on their own softer profile.
       const roundedTip = radialRay
         ? Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.88) / 0.12, 0, 1), 2)))
+        : tipShape === 'scallop'
+          ? 0.82 + 0.18 * Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1), 2)))
         : shape === 'rose' || tipShape === 'spatulate' || tipShape === 'round'
           ? Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1), 2)))
         : tipShape === 'pointed' ? Math.max(0.025, 1 - tipProgress)
@@ -87,6 +89,13 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
         ? startTaper * roundedTip
         : radialRay
           ? startTaper * roundedTip
+        : shape === 'bell'
+          // Bell petals stay narrow at the throat, then flare at the rim.
+          ? startTaper * (0.42 + 0.58 * THREE.MathUtils.smoothstep(t, 0.22, 0.92)) * roundedTip
+        : shape === 'orchid'
+          // Orchid segments have a broad, rounded distal blade and a narrow
+          // attachment point; the separate labellum supplies the lip.
+          ? startTaper * (0.72 + 0.28 * THREE.MathUtils.smoothstep(t, 0.18, 0.8)) * roundedTip
         : shape === 'rose'
           // Broad, softly rounded rose petals; the previous tapered profile
           // made every layer end in a sharp spoke like a dahlia.
@@ -97,8 +106,12 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
       // from reading as identical plastic paddles while retaining one shared mesh.
       const edgeWave = trueDaisy ? 0 : shape === 'dahlia'
         ? Math.cos(v * Math.PI * 4 + t * 1.8) * wave * 0.38
+        : shape === 'orchid'
+          ? Math.sin(v * Math.PI * 2 + t * 2.1) * wave * 0.42
         : Math.sin(v * Math.PI * 2 + t * 2.1) * wave * 0.68;
-      const scallop = edgeWave * Math.abs(v) * t;
+      const scallop = tipShape === 'scallop'
+        ? Math.cos(v * Math.PI * 3) * 0.035 * THREE.MathUtils.smoothstep(t, 0.72, 1) * t
+        : edgeWave * Math.abs(v) * t;
       const x = v * fullness * tipRound + scallop + Math.sin(t * Math.PI * 1.4) * v * 0.05;
       let z = t + (trueDaisy ? 0.14 : shape === 'rose' ? 0.2 : 0.88) * (1 - v * v) * THREE.MathUtils.smoothstep(t, 0.66, 1)
         + Math.sin(v * Math.PI * 3 + t * 5) * wave * 0.2 * Math.sin(Math.PI * t);
@@ -372,7 +385,17 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
       for (let i = 0; i < instanceCount; i += 1) {
         const petalIndex = cluster ? i % floretPetals : i;
         const clusterIndex = cluster ? Math.floor(i / floretPetals) : 0;
-        const phase = (petalIndex / floretPetals) * Math.PI * 2 + (layer.phase || 0) + layerIndex * 0.27;
+        let phase = (petalIndex / floretPetals) * Math.PI * 2 + (layer.phase || 0) + layerIndex * 0.27;
+        if (config.template === 'orchid') {
+          // Three sepals and two side petals form a bilateral face rather
+          // than a five-point pinwheel. The lip below anchors the lower axis.
+          phase = [-Math.PI / 2, Math.PI / 6, 5 * Math.PI / 6, -0.94, -2.2][petalIndex] ?? phase;
+        }
+        if (config.template === 'iris') {
+          // Standards rise behind the flower while three falls spread lower
+          // and wider in front, the defining silhouette of a bearded iris.
+          phase = [-Math.PI / 2, Math.PI / 6, 5 * Math.PI / 6, 0, 2.1, 4.18][petalIndex] ?? phase;
+        }
         // Each ray responds at a slightly different time and rests at its own
         // angle. That breaks the pinwheel symmetry when the flower opens.
         const petalDelay = (Math.sin(i * 4.71 + layerIndex * 2.3) * 0.5 + 0.5) * (isDaisy ? 0.1 : 0.13);
@@ -436,10 +459,14 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
         }
         const roseLayerScale = config.template === 'rose_rolled' ? [1, 0.8, 0.58, 0.48][layerIndex] ?? 0.58 : 1;
         const baseScale = (0.92 + Math.sin(petalIndex * 4) * (isDaisy ? 0.09 : 0.055)) * roseLayerScale;
+        const orchidWidth = config.template === 'orchid' ? (petalIndex < 3 ? 0.86 : 1.22) : 1;
+        const orchidLength = config.template === 'orchid' ? (petalIndex < 3 ? 0.88 : 1.04) : 1;
+        const irisWidth = config.template === 'iris' && petalIndex % 2 === 0 ? 1.26 : 0.9;
+        const irisLength = config.template === 'iris' && petalIndex % 2 === 0 ? 1.04 : 0.86;
         dummy.scale.set(
-          baseScale * naturalSize * radial * (layer.width || 0.18),
+          baseScale * naturalSize * radial * (layer.width || 0.18) * orchidWidth * irisWidth,
           0.9 + petalOpen * 0.1,
-          radial * naturalSize * (layer.length || 0.72),
+          radial * naturalSize * (layer.length || 0.72) * orchidLength * irisLength,
         );
         dummy.updateMatrix(); mesh.setMatrixAt(i, dummy.matrix);
         const baseColor = config.petalBaseColor || layer.color || config.color || '#f4d9dd';
@@ -456,11 +483,26 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
   if (isCluster) center.visible = false;
   if (config.template === 'spadix') {
     center.visible = false;
-    const spadixGeometry = new THREE.CylinderGeometry(0.055, 0.09, 0.62, 12, 1);
+    // A tapered, gently curved spadix reads as a fleshy inflorescence rather
+    // than a straight rod. Its rounded tip avoids a hard cut at the top.
+    const spadixGeometry = new THREE.CylinderGeometry(0.045, 0.105, 0.66, 14, 5);
     const spadixMaterial = new THREE.MeshStandardMaterial({ color: config.center || '#e8bf57', roughness: 0.76 });
     const spadix = new THREE.Mesh(spadixGeometry, spadixMaterial);
-    spadix.position.set(0, 0.24, 0.04); spadix.castShadow = true; flowerParent.add(spadix);
+    spadix.position.set(0, 0.24, 0.04); spadix.rotation.z = -0.08; spadix.castShadow = true; flowerParent.add(spadix);
     tracked(root, spadixGeometry, spadixMaterial);
+  }
+  if (config.template === 'bell') {
+    // A small trumpet throat ties the six flared lobes into one bell-shaped
+    // corolla, keeping this archetype visibly apart from a radial star.
+    const trumpetGeometry = new THREE.LatheGeometry([
+      new THREE.Vector2(0.075, -0.035), new THREE.Vector2(0.09, 0.08),
+      new THREE.Vector2(0.14, 0.22), new THREE.Vector2(0.23, 0.38),
+      new THREE.Vector2(0.31, 0.43),
+    ], 20);
+    const trumpetMaterial = new THREE.MeshStandardMaterial({ color: config.petalBaseColor || config.color || '#a68bd0', roughness: 0.84, side: THREE.DoubleSide });
+    const trumpet = new THREE.Mesh(trumpetGeometry, trumpetMaterial);
+    trumpet.position.y = -0.12; trumpet.scale.set(1, 1, 0.88); trumpet.castShadow = false;
+    flowerParent.add(trumpet); tracked(root, trumpetGeometry, trumpetMaterial);
   }
   if (config.template === 'orchid') {
     // A broad labellum makes the bilateral orchid silhouette distinct from a

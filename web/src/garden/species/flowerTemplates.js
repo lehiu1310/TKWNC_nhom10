@@ -48,7 +48,7 @@ export function createTemplateConfig(templateId, overrides = {}) {
     thorns: templateId === 'rose_rolled',
     floretCount: params.floretCount, clusterRadius: templateId === 'spike' || templateId === 'long_spike' ? 0.43 : templateId === 'small_cluster' ? 0.27 : undefined,
     headY: 0.92 + params.stemLength, headScale: 1, headLeanX: -0.04,
-    shape: templateId === 'star_lily' ? 'lily' : preset.kind, tipShape: params.tip, curl: params.curvature,
+    shape: ['star', 'star_lily'].includes(templateId) ? 'lily' : preset.kind, tipShape: params.tip, curl: params.curvature,
     leaves: params.leafCount, leafLength: templateId === 'disk' ? 0.54 : 0.72,
     leafWidth: templateId === 'disk' ? 0.16 : 0.19, leafLobes: templateId === 'disk',
     leaf: params.leafColor, stem: '#66825d', stemRadius: 0.04, bend: -0.08,
