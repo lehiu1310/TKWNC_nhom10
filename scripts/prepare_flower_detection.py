@@ -1,4 +1,4 @@
-"""Convert the CC-BY flower COCO dataset into a reproducible YOLO11 split."""
+"""Convert the Apache-2.0 flower COCO dataset into a reproducible YOLO11 split."""
 import argparse
 import json
 import random

@@ -49,6 +49,6 @@ export default function DoctorCare() {
     {busy && !answer && <p className="doctor-typing" role="status"><i/><i/><i/> Đang đọc tài liệu chăm sóc hoa…</p>}
     {error && <div className="doctor-error" role="alert"><p>{error}</p><button type="button" onClick={ask} disabled={busy}>Thử lại</button></div>}
     {answer && <div className="doctor-answer" aria-live="polite"><span className="eyebrow">GỢI Ý TỪ CẨM NANG</span><p>{answer}</p>{sources.length > 0 && <details className="doctor-sources"><summary>{sources.length} nguồn tham khảo</summary><ul>{sources.map((source, index) => <li key={`${source.source || 'nguon'}-${index}`}><b>{source.source}{source.page ? ` · trang ${source.page}` : ''}</b><span>{source.text}</span></li>)}</ul></details>}</div>}
-    <p className="doctor-care-disclaimer">Đây là trợ lý tra cứu cẩm nang, không phải mô hình chẩn đoán bệnh qua ảnh. Nếu dấu hiệu lan nhanh hoặc cây suy nặng, hãy hỏi chuyên gia/đơn vị khuyến nông địa phương.</p>
+    <p className="doctor-care-disclaimer">Gợi ý chung, không thay thế chuyên gia. Đây là trợ lý tra cứu cẩm nang, không phải mô hình chẩn đoán bệnh qua ảnh. Nếu dấu hiệu lan nhanh hoặc cây suy nặng, hãy hỏi chuyên gia/đơn vị khuyến nông địa phương.</p>
   </div>;
 }

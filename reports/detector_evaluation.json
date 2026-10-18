@@ -5,10 +5,44 @@
   "epochs": 3,
   "image_size": 320,
   "test_split": "test (deterministic 10% split; see data/detection_flowers_yolo/dataset_report.json)",
+  "test_images": 84,
+  "test_instances": 145,
+  "hardware": {
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "device": "CPU",
+    "torch": "2.14.0+cpu",
+    "ultralytics": "8.4.165"
+  },
   "metrics": {
     "mAP50": 0.7306233764721043,
     "mAP50_95": 0.523580494136851,
     "precision": 0.6641146470097219,
     "recall": 0.7410758069394513
+  },
+  "per_class_metrics": {
+    "daisy": {
+      "precision": 0.6009789634222262,
+      "recall": 0.7647058823529411,
+      "mAP50": 0.7564606657800569,
+      "mAP50_95": 0.555566412187867
+    },
+    "dandelion": {
+      "precision": 0.8249930443442883,
+      "recall": 0.7692307692307693,
+      "mAP50": 0.808614825240441,
+      "mAP50_95": 0.6516385281385281
+    },
+    "roses": {
+      "precision": 0.5794316065113618,
+      "recall": 0.6545045072085777,
+      "mAP50": 0.685759402161983,
+      "mAP50_95": 0.4215620318000588
+    },
+    "sunflowers": {
+      "precision": 0.6510549737610112,
+      "recall": 0.7758620689655172,
+      "mAP50": 0.6716586127059364,
+      "mAP50_95": 0.46555500442095055
+    }
   }
 }
