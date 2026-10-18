@@ -28,11 +28,20 @@ export default function InteractiveGarden() {
   const [selectedId, setSelectedId] = useState(pickerItems[0]?.id || '');
   const selected = pickerItems.find((item) => item.id === selectedId) || pickerItems[0];
   const [open, setOpen] = useState(selected?.open ?? 0.8);
-  const [windEnabled, setWindEnabled] = useState(false);
+  const [windEnabled, setWindEnabled] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [resetRequested, setResetRequested] = useState(0);
   const [viewerReady, setViewerReady] = useState(false);
   const [query, setQuery] = useState('');
   const viewerWrapRef = useRef(null);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (window.location.hash !== '#vuon-3d') return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      sectionRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     const node = viewerWrapRef.current;
@@ -51,7 +60,7 @@ export default function InteractiveGarden() {
   }, [query]);
 
   if (!selected) return null;
-  return <section className="garden3d-section section-wrap rose-studio" id="vuon-3d">
+  return <section className="garden3d-section section-wrap rose-studio" id="vuon-3d" ref={sectionRef}>
     <div className="garden3d-heading rose-studio-heading">
       <div><span className="eyebrow">MỘT CHẬU HOA · NHIỀU DÁNG NỞ</span><h2>Chậu hoa<br/><em>của riêng bạn.</em></h2></div>
       <p>Chọn loài để xem mô hình 3D được dựng hoàn toàn bằng hình học. Kéo để xoay · cuộn để phóng to.</p>
@@ -75,7 +84,7 @@ export default function InteractiveGarden() {
       <div className="garden3d-canvas-wrap rose-viewer-wrap" ref={viewerWrapRef} style={{ '--flower-wash': selected.record.color || selected.color }}>
         <div className="rose-viewer-backdrop" aria-hidden="true"/>
         {selected.fallbackPhoto ? <div className="rose-photo-fallback"><img src={selected.image} alt={`${selected.nameVi} · ảnh thật`} loading="lazy" decoding="async"/><span>ẢNH THẬT · MẪU 3D CHƯA ĐƯỢC DUYỆT</span></div> : viewerReady ? <Suspense fallback={<div className="garden3d-fallback">Đang dựng {selected.nameVi.toLowerCase()}…</div>}>
-          <FlowerViewer speciesId={selected.id} speciesRecord={selected.record} open={open} windEnabled={windEnabled} resetKey={resetRequested} speciesName={selected.nameVi} scientificName={selected.scientificName} onWindPerformanceFallback={() => setWindEnabled(false)}/>
+          <FlowerViewer speciesId={selected.id} speciesRecord={selected.record} open={open} windEnabled={windEnabled} resetKey={resetRequested} speciesName={selected.nameVi} scientificName={selected.scientificName}/>
         </Suspense> : <div className="garden3d-fallback">Mô hình sẽ được dựng khi bạn đến gần…</div>}
       </div>
       <aside className="garden3d-controls rose-studio-controls">

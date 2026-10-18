@@ -56,7 +56,7 @@ function makeModel(id, record, open, windEnabled) {
   return root;
 }
 
-export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled, resetKey, speciesName, scientificName, onWindPerformanceFallback }) {
+export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled, resetKey, speciesName, scientificName = '' }) {
   const hostRef = useRef(null);
   const sceneRef = useRef(null);
   const [error, setError] = useState(false);
@@ -132,17 +132,33 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
       const active = { root: model, id: speciesId, open, dispose: disposeFlower };
       const animate = (time) => {
         frame = 0; if (!visible || !inViewport) return;
-        if (time - lastRender < (reducedMotion ? 100 : 16)) {
+        const stateAtFrameStart = sceneRef.current;
+        const explicitWind = stateAtFrameStart?.windEnabled ?? windEnabled;
+        // The flower only needs 30 rendered frames per second for a soft sway.
+        // Capping the wind loop here halves WebGL work while keeping the scene
+        // responsive to pointer interactions and preserving a crisp pixel ratio.
+        const frameInterval = explicitWind ? 1000 / 30 : (reducedMotion ? 100 : 1000 / 60);
+        if (time - lastRender < frameInterval) {
           const pending = sceneRef.current;
           if (pending && (pending.windEnabled || time < pending.interactionUntil)) schedule();
           return;
         }
         lastRender = time;
         const current = sceneRef.current?.active || active;
-        if (current.root.userData.plantRig) current.root.userData.plantRig.rotation.z = current.root.userData.windEnabled && !reducedMotion ? Math.sin(time * .00056) * .008 : 0;
-        for (const material of current.root.userData.materials || []) {
-          const shader = material.userData.flowerShader;
-          if (shader) { shader.uniforms.uFlowerTime.value = time * .001; shader.uniforms.uFlowerWind.value = current.root.userData.windEnabled && !reducedMotion ? .7 : 0; }
+        if (current.root.userData.plantRig) {
+          // prefers-reduced-motion keeps wind off by default; an explicit click
+          // on the wind control is a user override and should visibly work.
+          const wind = current.root.userData.windEnabled;
+          // Small, visibly readable stem sway; previous 0.008 rad was almost
+          // imperceptible at normal viewing distance.
+          current.root.userData.plantRig.rotation.z = wind ? Math.sin(time * .00048) * .024 : 0;
+          current.root.userData.plantRig.rotation.x = wind ? Math.sin(time * .00037 + .8) * .008 : 0;
+        }
+        if (current.root.userData.windEnabled) {
+          for (const material of current.root.userData.windMaterials || []) {
+            const shader = material.userData.flowerShader;
+            if (shader) { shader.uniforms.uFlowerTime.value = time * .001; shader.uniforms.uFlowerWind.value = 1.05; }
+          }
         }
         controls.update(); renderer.render(scene, camera);
         host.dataset.gardenDrawCalls = String(renderer.info.render.calls);
@@ -159,13 +175,14 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
             } else {
               stats.fps = Math.round(stats.fpsFrames * 1000 / (fpsNow - stats.lastFpsAt)); stats.fpsFrames = 0; stats.lastFpsAt = fpsNow; host.dataset.gardenFps = String(stats.fps);
               if (stats.fps < 28 && current.root.userData.windEnabled && !stats.qualityReduced) {
-                // Keep the still model crisp. On slower devices, stop the optional
-                // continuous wind instead of shrinking the canvas until it blurs.
+                // Preserve explicitly requested wind; trim render resolution a
+                // little on slower devices instead of silently turning it off.
                 stats.qualityReduced = true;
-                current.root.userData.windEnabled = false;
-                sceneRef.current.windEnabled = false;
-                host.dataset.gardenQuality = 'sharp-still';
-                onWindPerformanceFallback?.();
+                const lowerPixelRatio = Math.min(renderer.getPixelRatio(), compact ? 0.95 : 1.15);
+                renderer.setPixelRatio(lowerPixelRatio);
+                renderer.setSize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight), false);
+                host.dataset.gardenQuality = 'wind-lower-resolution';
+                host.dataset.gardenPixelRatio = String(lowerPixelRatio);
               }
             }
           }
@@ -235,9 +252,10 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
     current.controls.target.copy(current.view.target); current.camera.position.copy(current.view.position); current.fitCamera(); current.controls.update(); current.schedule();
   }, [resetKey]);
 
+  const displayScientificName = scientificName || speciesName || speciesId;
   return <div className={`rose-viewer${error ? ' rose-viewer-error' : ''}`} ref={hostRef}>
     {error && <div className="rose-viewer-fallback"><p>Thiết bị chưa dựng được mô hình 3D cho {speciesName.toLowerCase()}.</p></div>}
     {hintVisible && !error && <div className="rose-viewer-hint"><span>✧</span> Kéo để xoay · Cuộn để phóng to</div>}
-    <div className="rose-viewer-caption"><span>{scientificName.toUpperCase()}</span><b>{speciesName} · mô hình 3D dựng bằng hình học</b></div>
+    <div className="rose-viewer-caption"><span>{displayScientificName.toUpperCase()}</span><b>{speciesName} · mô hình 3D dựng bằng hình học</b></div>
   </div>;
 }
