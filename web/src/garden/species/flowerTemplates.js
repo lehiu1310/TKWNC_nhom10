@@ -6,7 +6,15 @@ export const flowerTemplatePresets = entries.filter((item) => item.phase === 1);
 export const supplementalFlowerTemplates = entries.filter((item) => item.phase > 1);
 const allTemplatePresets = entries;
 
-function distributePetals(petalCount, layerCount) {
+function distributePetals(petalCount, layerCount, templateId) {
+  if (templateId === 'rose_rolled' && layerCount === 3) {
+    // A rose builds a fuller outer ring and progressively smaller inner rings.
+    const weights = [1.4, 1, 0.6];
+    const weightTotal = weights.reduce((sum, weight) => sum + weight, 0);
+    const counts = weights.map((weight) => Math.floor(petalCount * weight / weightTotal));
+    for (let i = 0; i < petalCount - counts.reduce((sum, count) => sum + count, 0); i += 1) counts[i % counts.length] += 1;
+    return counts;
+  }
   const counts = Array.from({ length: layerCount }, () => Math.floor(petalCount / layerCount));
   for (let i = 0; i < petalCount % layerCount; i += 1) counts[i] += 1;
   return counts;
@@ -20,7 +28,7 @@ export function createTemplateConfig(templateId, overrides = {}) {
   if (templateId === 'disk' && Object.keys(overrides).length === 0) return daisyConfig;
 
   const params = { ...preset.params, ...overrides };
-  const counts = distributePetals(params.petalCount, params.layerCount);
+  const counts = distributePetals(params.petalCount, params.layerCount, templateId);
   const id = templateId === 'disk' ? 'daisy' : `template-${templateId}`;
   const layers = counts.map((count, index) => {
     const progress = params.layerCount <= 1 ? 0 : index / (params.layerCount - 1);

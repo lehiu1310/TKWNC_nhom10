@@ -176,9 +176,9 @@
     "params": {
       "petalCount": 30,
       "layerCount": 3,
-      "curvature": 0.34,
-      "petalLength": 0.67,
-      "petalWidth": 0.28,
+      "curvature": 0.22,
+      "petalLength": 0.62,
+      "petalWidth": 0.36,
       "tip": "round",
       "petalColor": "#b52d4a",
       "edgeColor": "#e95c70",

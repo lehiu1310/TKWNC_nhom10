@@ -101,27 +101,41 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
       host.dataset.gardenGpuRenderer = gpuRenderer;
       renderer.domElement.setAttribute('aria-label', `Mô hình 3D ${speciesName} trong chậu`); host.appendChild(renderer.domElement);
       const controls = new OrbitControls(camera, renderer.domElement); controls.target.copy(view.target); controls.enableDamping = !reducedMotion; controls.dampingFactor = .075;
-      controls.minDistance = 4.6; controls.maxDistance = 11.5; controls.minPolarAngle = .2; controls.maxPolarAngle = 1.43;
+      controls.minDistance = 4.6; controls.maxDistance = 16; controls.minPolarAngle = .2; controls.maxPolarAngle = 1.43;
       controls.autoRotate = false; controls.addEventListener('start', () => { if (sceneRef.current) sceneRef.current.interactionUntil = performance.now() + 1200; dismissHint(); schedule(); }); controls.update();
 
       const fitCamera = () => {
-        if (active.id !== 'daisy') return;
-        const rememberedOpen = active.open;
-        active.root.userData.setOpen(1);
-        const bounds = new THREE.Box3().setFromObject(active.root);
-        active.root.userData.setOpen(rememberedOpen);
+        // A resize can happen long after a species swap. Use the current plant,
+        // not the model captured when the scene was first initialized.
+        const currentActive = sceneRef.current?.active || active;
+        const rememberedOpen = currentActive.open;
+        currentActive.root.userData.setOpen(1);
+        // InstancedMesh bounds are cached, but petal matrices change with the
+        // opening slider. Recompute them before fitting so an open bloom can't
+        // be clipped using the much smaller bud bounds.
+        currentActive.root.traverse((object) => {
+          if (object.isInstancedMesh) {
+            object.computeBoundingBox();
+            object.computeBoundingSphere();
+          }
+        });
+        const bounds = new THREE.Box3().setFromObject(currentActive.root);
+        currentActive.root.userData.setOpen(rememberedOpen);
         const size = bounds.getSize(new THREE.Vector3());
+        const center = bounds.getCenter(new THREE.Vector3());
         const verticalHalf = THREE.MathUtils.degToRad(camera.fov * 0.5);
         const horizontalHalf = Math.atan(Math.tan(verticalHalf) * camera.aspect);
         const projectedWidth = Math.hypot(size.x, size.z);
-        const projectedHeight = size.y + projectedWidth * 0.22;
+        const projectedHeight = size.y + projectedWidth * 0.48;
         const distance = Math.max(
           projectedHeight / (2 * Math.tan(verticalHalf)),
           projectedWidth / (2 * Math.tan(horizontalHalf)),
-        ) * 1.1;
-        const direction = view.position.clone().sub(view.target).normalize();
-        camera.position.copy(view.target).addScaledVector(direction, distance);
-        camera.lookAt(view.target);
+        ) * 1.34;
+        const currentView = sceneRef.current?.view || view;
+        const direction = currentView.position.clone().sub(currentView.target).normalize();
+        controls.target.copy(center);
+        camera.position.copy(center).addScaledVector(direction, distance);
+        camera.lookAt(center);
         controls.update();
       };
       const resize = () => {

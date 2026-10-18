@@ -57,7 +57,7 @@ export function getPetalGeometryCacheStats() {
 }
 
 function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
-  const curl = trueDaisy ? 0.055 : (shape === 'tulip' ? 0.28 : 0.23);
+  const curl = trueDaisy ? 0.055 : (shape === 'tulip' ? 0.28 : shape === 'rose' ? 0.14 : 0.23);
   const wave = shape === 'dahlia' ? 0.035 : 0.018;
   // A denser shared petal mesh removes the visibly polygonal edges without
   // multiplying draw calls: every petal in a layer still shares one geometry.
@@ -73,7 +73,7 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
       const tipProgress = THREE.MathUtils.clamp((t - 0.7) / 0.3, 0, 1);
       // A quarter-ellipse taper gives daisy rays a rounded distal silhouette
       // instead of a chopped rectangle or a needle-like triangle.
-      const roundedTip = trueDaisy || tipShape === 'spatulate' || tipShape === 'round'
+      const roundedTip = trueDaisy || shape === 'rose' || tipShape === 'spatulate' || tipShape === 'round'
         ? Math.sqrt(Math.max(0, 1 - Math.pow(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1), 2)))
         : tipShape === 'pointed' ? Math.max(0.025, 1 - tipProgress)
           : Math.sqrt(Math.max(0, 1 - tipProgress * tipProgress));
@@ -81,7 +81,11 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
         ? startTaper * roundedTip
         : shape === 'daisy' || shape === 'ray'
           ? startTaper * roundedTip
-        : startTaper * (1 - 0.32 * THREE.MathUtils.smoothstep(t, 0.78, 1));
+        : shape === 'rose'
+          // Broad, softly rounded rose petals; the previous tapered profile
+          // made every layer end in a sharp spoke like a dahlia.
+          ? startTaper * (0.68 + 0.32 * roundedTip)
+          : startTaper * (1 - 0.32 * THREE.MathUtils.smoothstep(t, 0.78, 1));
       const tipRound = shape === 'daisy' || shape === 'ray' ? 1 : 1 - 0.12 * THREE.MathUtils.smoothstep(t, 0.88, 1);
       // Gentle, irregular margins and a slight off-centre ridge keep the petals
       // from reading as identical plastic paddles while retaining one shared mesh.
@@ -90,7 +94,7 @@ function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
         : Math.sin(v * Math.PI * 2 + t * 2.1) * wave * 0.68;
       const scallop = edgeWave * Math.abs(v) * t;
       const x = v * fullness * tipRound + scallop + Math.sin(t * Math.PI * 1.4) * v * 0.05;
-      let z = t + (trueDaisy ? 0.14 : 0.88) * (1 - v * v) * THREE.MathUtils.smoothstep(t, 0.66, 1)
+      let z = t + (trueDaisy ? 0.14 : shape === 'rose' ? 0.2 : 0.88) * (1 - v * v) * THREE.MathUtils.smoothstep(t, 0.66, 1)
         + Math.sin(v * Math.PI * 3 + t * 5) * wave * 0.2 * Math.sin(Math.PI * t);
       if (shape === 'tulip') z = t - 0.12 * Math.sin(Math.PI * t);
       const y = (1 - v * v) * (0.045 + curl * t) + Math.pow(Math.abs(v), 3) * curl * t * 0.2
@@ -276,7 +280,7 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
     flowerParent.rotation.x = config.headPitch ?? 0.78;
   }
   plant.add(flowerParent);
-  let bud = null; let sepals = null; let clusterBuds = null; let seeds = null; let seedGeometry = null; let seedMaterial = null; let seedBaseMatrices = null;
+  let bud = null; let sepals = null; let roseSepals = null; let clusterBuds = null; let seeds = null; let seedGeometry = null; let seedMaterial = null; let seedBaseMatrices = null;
   if (isDaisy) {
     const budGeometry = new THREE.SphereGeometry(config.budRadius || 0.2, 28, 20);
     const budMaterial = new THREE.MeshStandardMaterial({ color: '#86a66e', roughness: 0.88 });
@@ -335,15 +339,15 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
   if (config.template === 'rose_rolled') {
     const geometry = new THREE.ConeGeometry(0.052, 0.3, 7, 1);
     const material = new THREE.MeshStandardMaterial({ color: '#668455', roughness: 0.84 });
-    const sepals = new THREE.InstancedMesh(geometry, material, 5);
+    roseSepals = new THREE.InstancedMesh(geometry, material, 5);
     const dummy = new THREE.Object3D();
-    for (let index = 0; index < sepals.count; index += 1) {
-      const angle = index * Math.PI * 2 / sepals.count;
+    for (let index = 0; index < roseSepals.count; index += 1) {
+      const angle = index * Math.PI * 2 / roseSepals.count;
       dummy.position.set(Math.cos(angle) * 0.09, -0.045, Math.sin(angle) * 0.09);
       dummy.rotation.set(Math.cos(angle) * 0.18, angle, Math.sin(angle) * 0.18);
-      dummy.scale.set(1, 1, 0.72); dummy.updateMatrix(); sepals.setMatrixAt(index, dummy.matrix);
+      dummy.scale.set(1, 1, 0.72); dummy.updateMatrix(); roseSepals.setMatrixAt(index, dummy.matrix);
     }
-    flowerParent.add(sepals); tracked(root, geometry, material);
+    flowerParent.add(roseSepals); tracked(root, geometry, material);
   }
   (config.layers || []).forEach((layer, layerIndex) => {
     const trueDaisy = isDaisy && !config.template;
@@ -380,7 +384,16 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
         if (config.template === 'cluster' || config.template === 'round_cluster' || config.template === 'small_cluster') { openPitch = 0.12 + organicPitch * 0.3; closedPitch = -0.5; }
         if (config.template === 'thistle') { openPitch = 0.26 + organicPitch * 0.25; closedPitch = -0.5; }
         if (isSpike) { openPitch = 0.2 + organicPitch * 0.25; closedPitch = -0.45; }
-        if (config.template === 'rose_rolled') { openPitch = -0.16 + layerIndex * 0.12 + organicPitch * 0.25; closedPitch = -1.02 + layerIndex * 0.08; }
+        if (config.template === 'rose_rolled') {
+          // The outer ring rests low and wide; inner rings curl upward around
+          // the hidden center to create the layered cup of a rose.
+          // In this mesh the outer edge points toward local +Z. Positive X
+          // pitch lowers it; the negative inner pitch turns petals up around
+          // a compact dark-red heart instead of flattening into a pinwheel.
+          openPitch = [0.28, -0.05, -0.62, -0.72][layerIndex] ?? -0.62;
+          openPitch += organicPitch * 0.18;
+          closedPitch = -1.02 + layerIndex * 0.08;
+        }
         if (config.template === 'iris') { openPitch = (petalIndex % 2 === 0 ? 0.42 : -0.24) + organicPitch * 0.25; closedPitch = -0.82; }
         const pitch = THREE.MathUtils.lerp(closedPitch, openPitch, petalOpen) + wobble;
         const petalYaw = phase + Math.sin(petalIndex * 3.71 + layerIndex) * 0.052;
@@ -415,7 +428,8 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
           dummy.position.set(Math.sin(petalYaw) * petalRoot, (1 - petalOpen) * 0.15 - layerIndex * 0.018, Math.cos(petalYaw) * petalRoot);
           dummy.quaternion.copy(yaw).multiply(tilt).multiply(roll);
         }
-        const baseScale = 0.92 + Math.sin(petalIndex * 4) * (isDaisy ? 0.09 : 0.055);
+        const roseLayerScale = config.template === 'rose_rolled' ? [1, 0.8, 0.58, 0.48][layerIndex] ?? 0.58 : 1;
+        const baseScale = (0.92 + Math.sin(petalIndex * 4) * (isDaisy ? 0.09 : 0.055)) * roseLayerScale;
         dummy.scale.set(
           baseScale * naturalSize * radial * (layer.width || 0.18),
           0.9 + petalOpen * 0.1,
@@ -423,7 +437,8 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
         );
         dummy.updateMatrix(); mesh.setMatrixAt(i, dummy.matrix);
         const baseColor = config.petalBaseColor || layer.color || config.color || '#f4d9dd';
-        mesh.setColorAt(i, new THREE.Color(baseColor).offsetHSL(0, 0, Math.sin(petalIndex * 12.989 + clusterIndex + layerIndex) * 0.028));
+        const roseDepth = config.template === 'rose_rolled' ? -layerIndex * 0.045 : 0;
+        mesh.setColorAt(i, new THREE.Color(baseColor).offsetHSL(0, 0, roseDepth + Math.sin(petalIndex * 12.989 + clusterIndex + layerIndex) * 0.028));
       }
       mesh.instanceMatrix.needsUpdate = true;
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
@@ -432,7 +447,7 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
   });
   const centerGeometry = config.centerRadius > 0.36 || isDaisy ? new THREE.SphereGeometry(config.centerRadius || 0.24, 40, 28) : new THREE.SphereGeometry(config.centerRadius || 0.24, 28, 18);
   const center = new THREE.Mesh(centerGeometry, centerMaterial); center.position.set(0, (config.centerY || 0.02), 0); center.scale.y = config.centerScaleY || 0.72; center.castShadow = true; flowerParent.add(center); tracked(root, centerGeometry);
-  if (isCluster || config.template === 'rose_rolled') center.visible = false;
+  if (isCluster) center.visible = false;
   if (config.template === 'spadix') {
     center.visible = false;
     const spadixGeometry = new THREE.CylinderGeometry(0.055, 0.09, 0.62, 12, 1);
@@ -530,6 +545,7 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
       clusterBuds.material.opacity = clusterReveal;
       clusterBuds.visible = clusterReveal > 0.001;
     }
+    if (roseSepals) roseSepals.visible = amount < 0.56;
     if (isDaisy) {
       const centerReveal = THREE.MathUtils.smoothstep(amount, 0.28, 0.68);
       const centerSize = THREE.MathUtils.lerp(0.001, 1, centerReveal);
