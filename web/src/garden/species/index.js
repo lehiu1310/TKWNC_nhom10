@@ -58,7 +58,8 @@ export function createSpeciesConfig(record) {
   const measuredColorIsUsable = measured && measured.samples >= 500 && validHex(measured.photo_color);
   const hasPhotoColorMismatch = measuredColorIsUsable && measured.hue_difference > 58;
   const photoColorIsUsable = measuredColorIsUsable && isBotanicalPetalColor(measured.photo_color);
-  const displayColor = photoColorIsUsable ? measured.photo_color : record?.color;
+  const speciesColorIsUsable = isBotanicalPetalColor(record?.color);
+  const displayColor = photoColorIsUsable ? measured.photo_color : speciesColorIsUsable ? record.color : null;
   const color = flowerColor(displayColor, config.petalBaseColor || config.color);
   const colored = {
     ...config,
@@ -74,7 +75,7 @@ export function createSpeciesConfig(record) {
     flowerTemplateFallback: Boolean(fallback),
     flowerTemplateReason: assignment?.reason || 'Chưa có quy tắc hình thái cho loài này.',
     flowerArchetype: template || null,
-    flowerDisplayColorSource: photoColorIsUsable ? 'central photo sample' : validHex(record?.color) ? 'species.json' : 'archetype preset',
+    flowerDisplayColorSource: photoColorIsUsable ? 'central photo sample' : speciesColorIsUsable ? 'species.json' : 'archetype preset',
     flowerColorNeedsReview: Boolean(hasPhotoColorMismatch),
   };
 }
