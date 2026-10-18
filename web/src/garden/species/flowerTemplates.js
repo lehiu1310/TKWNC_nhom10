@@ -13,7 +13,8 @@ function distributePetals(petalCount, layerCount) {
 }
 
 export function createTemplateConfig(templateId, overrides = {}) {
-  const preset = allTemplatePresets.find((item) => item.id === templateId);
+  const presetId = ({ long_spike: 'spike', star_lily: 'star' })[templateId] || templateId;
+  const preset = allTemplatePresets.find((item) => item.id === presetId);
   if (!preset) throw new Error(`Unknown flower template: ${templateId}`);
   // Keep the accepted daisy geometry and measurements unchanged for the reference view.
   if (templateId === 'disk' && Object.keys(overrides).length === 0) return daisyConfig;
@@ -26,24 +27,25 @@ export function createTemplateConfig(templateId, overrides = {}) {
     return {
       count, length: params.petalLength * (1 - progress * 0.28), width: params.petalWidth * (1 - progress * 0.12),
       curl: params.curvature,
-      pitch: templateId === 'bowl' ? -0.6 : templateId === 'bell' ? 0.1 : templateId === 'star' ? 0.08 : -0.08 - progress * 0.13,
-      color: '#ffffff', phase: index * 0.22, delay: index * 0.06,
+      pitch: templateId === 'bowl' ? -0.6 : templateId === 'bell' ? 0.1 : templateId === 'star' || templateId === 'star_lily' ? 0.08 : -0.08 - progress * 0.13,
+      color: params.petalColor, phase: index * 0.22, delay: index * 0.06,
     };
   });
   return {
     id, template: templateId, nameVi: preset.label, scientificName: '',
     color: params.petalColor, petalBaseColor: params.petalColor, petalEdgeColor: params.edgeColor,
     undersideColor: params.undersideColor, center: params.centerColor, centerRadius: params.centerSize,
-    centerScaleY: templateId === 'cluster' || templateId === 'spike' ? 1 : 0.72, centerY: 0.02,
-    budRadius: templateId === 'cluster' ? 0.12 : templateId === 'spike' ? 0.045 : 0.19,
-    floretCount: params.floretCount, clusterRadius: templateId === 'spike' ? 0.43 : undefined,
+    centerScaleY: ['cluster', 'round_cluster', 'small_cluster', 'thistle', 'spike', 'long_spike'].includes(templateId) ? 1 : 0.72, centerY: 0.02,
+    budRadius: ['cluster', 'round_cluster', 'small_cluster', 'thistle'].includes(templateId) ? 0.075 : templateId === 'spike' || templateId === 'long_spike' ? 0.045 : 0.19,
+    thorns: templateId === 'rose_rolled',
+    floretCount: params.floretCount, clusterRadius: templateId === 'spike' || templateId === 'long_spike' ? 0.43 : templateId === 'small_cluster' ? 0.27 : undefined,
     headY: 0.92 + params.stemLength, headScale: 1, headLeanX: -0.04,
-    shape: preset.kind, tipShape: params.tip, curl: params.curvature,
+    shape: templateId === 'star_lily' ? 'lily' : preset.kind, tipShape: params.tip, curl: params.curvature,
     leaves: params.leafCount, leafLength: templateId === 'disk' ? 0.54 : 0.72,
     leafWidth: templateId === 'disk' ? 0.16 : 0.19, leafLobes: templateId === 'disk',
     leaf: params.leafColor, stem: '#66825d', stemRadius: 0.04, bend: -0.08,
     open: 0, wave: templateId === 'layered' ? 0.05 : 0.018, layers,
-    seedCount: templateId === 'disk' ? 140 : templateId === 'cluster' ? 28 : 0,
+    seedCount: templateId === 'disk' ? 140 : templateId === 'layered' || templateId === 'rose_rolled' ? 0 : 0,
     seedSize: templateId === 'disk' ? 0.008 : 0.013, seedColor: '#b87935',
   };
 }

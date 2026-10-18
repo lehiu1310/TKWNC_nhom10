@@ -1,18 +1,70 @@
 import * as THREE from 'three';
-import { getPetalSurfaceMaps } from './petalSurface.js';
 
 const tracked = (root, geometry, material) => {
   if (geometry) root.userData.geometries.push(geometry);
   if (material) root.userData.materials.add(material);
 };
 
-function makePetalGeometry({ length, width, shape = 'round', tipShape, baseColor, edgeColor, curl = 0.15, wave = 0.025, trueDaisy = false }) {
+// Petal topology is shared by all flowers with the same shape profile. Size,
+// opening, and palette are applied per instance, so changing species does not
+// rebuild a high-resolution mesh for every flower.
+const PETAL_GEOMETRY_CACHE_LIMIT = 16;
+const petalGeometryCache = new Map();
+
+function petalProfileKey(profile, shape, tipShape, trueDaisy) {
+  return `${profile || shape || 'round'}:${shape || 'round'}:${tipShape || 'round'}:${trueDaisy ? 'reference-daisy' : 'template'}`;
+}
+
+function trimPetalGeometryCache() {
+  while (petalGeometryCache.size > PETAL_GEOMETRY_CACHE_LIMIT) {
+    const unused = [...petalGeometryCache.entries()]
+      .filter(([, entry]) => entry.references === 0)
+      .sort((a, b) => a[1].lastUsed - b[1].lastUsed)[0];
+    if (!unused) return;
+    unused[1].geometry.dispose();
+    petalGeometryCache.delete(unused[0]);
+  }
+}
+
+function acquirePetalGeometry(root, profile, shape, tipShape, trueDaisy) {
+  const key = petalProfileKey(profile, shape, tipShape, trueDaisy);
+  let entry = petalGeometryCache.get(key);
+  if (!entry) {
+    entry = { geometry: makePetalGeometry({ shape, tipShape, trueDaisy }), references: 0, lastUsed: 0 };
+    petalGeometryCache.set(key, entry);
+  }
+  entry.references += 1;
+  entry.lastUsed = performance.now();
+  root.userData.sharedPetalGeometryKeys.push(key);
+  trimPetalGeometryCache();
+  return entry.geometry;
+}
+
+function releasePetalGeometry(key) {
+  const entry = petalGeometryCache.get(key);
+  if (!entry) return;
+  entry.references = Math.max(0, entry.references - 1);
+  entry.lastUsed = performance.now();
+  trimPetalGeometryCache();
+}
+
+export function getPetalGeometryCacheStats() {
+  return {
+    entries: petalGeometryCache.size,
+    activeReferences: [...petalGeometryCache.values()].reduce((total, entry) => total + entry.references, 0),
+    limit: PETAL_GEOMETRY_CACHE_LIMIT,
+  };
+}
+
+function makePetalGeometry({ shape = 'round', tipShape, trueDaisy = false }) {
+  const curl = trueDaisy ? 0.055 : (shape === 'tulip' ? 0.28 : 0.23);
+  const wave = shape === 'dahlia' ? 0.035 : 0.018;
   // A denser shared petal mesh removes the visibly polygonal edges without
   // multiplying draw calls: every petal in a layer still shares one geometry.
   // Preserve the approved Daisy mesh exactly; use a lower-cost smooth grid for
   // the other templates while staying above the required 24 x 12 minimum.
   const rows = trueDaisy ? 40 : 28; const cols = trueDaisy ? 22 : 14;
-  const positions = []; const colors = []; const uvs = []; const indices = [];
+  const positions = []; const colors = []; const uvs = []; const petalProgress = []; const indices = [];
   for (let i = 0; i <= rows; i += 1) {
     const t = i / rows;
     for (let j = 0; j <= cols; j += 1) {
@@ -37,18 +89,19 @@ function makePetalGeometry({ length, width, shape = 'round', tipShape, baseColor
         ? Math.cos(v * Math.PI * 4 + t * 1.8) * wave * 0.38
         : Math.sin(v * Math.PI * 2 + t * 2.1) * wave * 0.68;
       const scallop = edgeWave * Math.abs(v) * t;
-      const x = v * width * fullness * tipRound + scallop + Math.sin(t * Math.PI * 1.4) * v * width * 0.05;
-      let z = t * length + width * (trueDaisy ? 0.14 : 0.88) * (1 - v * v) * THREE.MathUtils.smoothstep(t, 0.66, 1)
+      const x = v * fullness * tipRound + scallop + Math.sin(t * Math.PI * 1.4) * v * 0.05;
+      let z = t + (trueDaisy ? 0.14 : 0.88) * (1 - v * v) * THREE.MathUtils.smoothstep(t, 0.66, 1)
         + Math.sin(v * Math.PI * 3 + t * 5) * wave * 0.2 * Math.sin(Math.PI * t);
-      if (shape === 'tulip') z = length * (t - 0.12 * Math.sin(Math.PI * t));
+      if (shape === 'tulip') z = t - 0.12 * Math.sin(Math.PI * t);
       const y = (1 - v * v) * (0.045 + curl * t) + Math.pow(Math.abs(v), 3) * curl * t * 0.2
         + Math.sin(v * Math.PI * 3 + t * 4) * wave * 0.22 * Math.sin(Math.PI * t);
       positions.push(x, y, z);
-      const base = new THREE.Color(baseColor || (trueDaisy ? '#f7f5df' : shape === 'daisy' || shape === 'ray' ? '#f2dfbd' : '#f5e7dc'));
-      const tip = new THREE.Color(edgeColor || (trueDaisy ? '#fffdf8' : shape === 'daisy' || shape === 'ray' ? '#fffdf8' : '#fffaf1'));
-      const color = base.lerp(tip, 0.18 + 0.7 * t).lerp(new THREE.Color('#ffffff'), Math.pow(Math.abs(v), 5) * 0.055);
-      colors.push(color.r, color.g, color.b);
+      // Neutral vertex tint preserves a gentle base-to-tip light gradient;
+      // the instance color and material edge uniform provide the species palette.
+      const value = 0.88 + 0.12 * t + Math.pow(Math.abs(v), 5) * 0.025;
+      colors.push(value, value, value);
       uvs.push(t, j / cols);
+      petalProgress.push(t);
     }
   }
   for (let i = 0; i < rows; i += 1) for (let j = 0; j < cols; j += 1) {
@@ -61,8 +114,29 @@ function makePetalGeometry({ length, width, shape = 'round', tipShape, baseColor
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setAttribute('petalProgress', new THREE.Float32BufferAttribute(petalProgress, 1));
   geometry.setIndex(indices); geometry.computeVertexNormals();
   return geometry;
+}
+
+function makePetalMaterial(config, isDaisy) {
+  const material = new THREE.MeshStandardMaterial({
+    vertexColors: true, side: THREE.DoubleSide, roughness: 0.9, metalness: 0,
+  });
+  const edge = new THREE.Color(config.petalEdgeColor || config.edgeColor || config.petalBaseColor || config.color || '#fffdf8');
+  material.onBeforeCompile = (shader) => {
+    shader.uniforms.uPetalEdgeColor = { value: edge.clone() };
+    shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nattribute float petalProgress;\nvarying float vPetalProgress;');
+    shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nvPetalProgress = petalProgress;');
+    shader.fragmentShader = shader.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec3 uPetalEdgeColor;\nvarying float vPetalProgress;');
+    shader.fragmentShader = shader.fragmentShader.replace(
+      '#include <color_fragment>',
+      `#include <color_fragment>\ndiffuseColor.rgb = mix(diffuseColor.rgb, uPetalEdgeColor, smoothstep(0.0, 1.0, vPetalProgress));${isDaisy ? '\nif (!gl_FrontFacing) diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.90, 0.96, 0.94), 0.12);' : ''}`,
+    );
+    material.userData.flowerShader = shader;
+  };
+  material.customProgramCacheKey = () => `flower-petal-gradient-v3-${isDaisy ? 'daisy' : 'standard'}`;
+  return material;
 }
 
 function addStem(root, config, plant = root) {
@@ -171,7 +245,7 @@ function addLeaves(root, config, plant = root) {
 }
 
 function addPot(root) {
-  const potMaterial = new THREE.MeshPhysicalMaterial({ color: '#caa890', roughness: 0.26, clearcoat: 0.62, clearcoatRoughness: 0.24 });
+  const potMaterial = new THREE.MeshStandardMaterial({ color: '#caa890', roughness: 0.42, metalness: 0 });
   const points = [new THREE.Vector2(0.47, 0.08), new THREE.Vector2(0.65, 0.13), new THREE.Vector2(0.74, 0.93), new THREE.Vector2(0.69, 1.0), new THREE.Vector2(0.59, 0.96), new THREE.Vector2(0.58, 0.88)];
   const potGeometry = new THREE.LatheGeometry(points, 56); const pot = new THREE.Mesh(potGeometry, potMaterial); pot.castShadow = pot.receiveShadow = true; root.add(pot); tracked(root, potGeometry, potMaterial);
   const rimGeometry = new THREE.TorusGeometry(0.67, 0.058, 12, 64); const rim = new THREE.Mesh(rimGeometry, potMaterial); rim.rotation.x = Math.PI / 2; rim.position.y = 0.95; root.add(rim); tracked(root, rimGeometry);
@@ -180,38 +254,12 @@ function addPot(root) {
 }
 
 function addFlowerHead(root, config, initialOpen, plant = root) {
-  // Petals are soft and matte in real light; low roughness was making them
-  // look like glossy molded plastic under the studio lights.
   const isDaisy = config.id === 'daisy';
-  const layers = []; const petalMaterial = isDaisy ? new THREE.MeshPhysicalMaterial({
-    vertexColors: true, side: THREE.DoubleSide, roughness: 0.76, metalness: 0,
-    sheen: 0.18, sheenColor: '#fff7e9', transmission: 0.012, thickness: 0.08,
-    ...getPetalSurfaceMaps(), bumpScale: 0.003,
-  }) : new THREE.MeshStandardMaterial({
-    vertexColors: true, side: THREE.DoubleSide, roughness: 0.96, metalness: 0,
-    ...getPetalSurfaceMaps(), bumpScale: 0.009,
-  });
-  if (isDaisy) {
-    petalMaterial.onBeforeCompile = (shader) => {
-      shader.fragmentShader = shader.fragmentShader.replace(
-        '#include <color_fragment>',
-        '#include <color_fragment>\nif (!gl_FrontFacing) diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.90, 0.96, 0.94), 0.12);',
-      );
-    };
-    petalMaterial.customProgramCacheKey = () => 'daisy-petal-soft-underside-v2';
-  } else if (config.undersideColor) {
-    const underside = new THREE.Color(config.undersideColor);
-    const undersideRgb = [underside.r, underside.g, underside.b].map((channel) => channel.toFixed(3)).join(', ');
-    petalMaterial.onBeforeCompile = (shader) => {
-      shader.fragmentShader = shader.fragmentShader.replace(
-        '#include <color_fragment>',
-        `#include <color_fragment>\nif (!gl_FrontFacing) diffuseColor.rgb = mix(diffuseColor.rgb, vec3(${undersideRgb}), 0.24);`,
-      );
-    };
-    petalMaterial.customProgramCacheKey = () => `flower-underside-${config.undersideColor}`;
-  }
+  const isCluster = ['cluster', 'round_cluster', 'small_cluster', 'thistle', 'spike', 'long_spike'].includes(config.template);
+  const isSpike = config.template === 'spike' || config.template === 'long_spike';
+  const layers = [];
   const centerMaterial = isDaisy
-    ? new THREE.MeshPhysicalMaterial({ color: config.center || '#f2c844', roughness: 0.74, sheen: 0.16 })
+    ? new THREE.MeshStandardMaterial({ color: config.center || '#f2c844', roughness: 0.78 })
     : new THREE.MeshStandardMaterial({ color: config.center || '#c38c37', roughness: 0.72 });
   const flowerParent = new THREE.Group();
   const headY = isDaisy ? 0 : (config.headY ?? 2.52);
@@ -257,15 +305,15 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
     const sepalMaterial = new THREE.MeshStandardMaterial({ color: '#668455', roughness: 0.82, side: THREE.DoubleSide });
     sepals = new THREE.InstancedMesh(sepalGeometry, sepalMaterial, config.sepalCount || 8);
     sepals.instanceMatrix.setUsage(THREE.DynamicDrawUsage); flowerParent.add(sepals); tracked(root, sepalGeometry, sepalMaterial);
-  } else if (config.template === 'cluster' || config.template === 'spike') {
+  } else if (isCluster) {
     const count = config.floretCount || 28; const radius = config.clusterRadius || 0.34;
     const geometry = new THREE.SphereGeometry(config.budRadius || 0.075, 10, 8);
-    const material = new THREE.MeshStandardMaterial({ color: '#94a96c', roughness: 0.88, transparent: true, depthWrite: false });
+    const material = new THREE.MeshStandardMaterial({ color: config.petalBaseColor || '#94a96c', roughness: 0.88, transparent: true, depthWrite: false });
     clusterBuds = new THREE.InstancedMesh(geometry, material, count); clusterBuds.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     const dummy = new THREE.Object3D(); const golden = Math.PI * (3 - Math.sqrt(5));
     for (let i = 0; i < count; i += 1) {
       const y = 1 - 2 * (i + 0.5) / count; const ring = Math.sqrt(1 - y * y); const angle = i * golden;
-      if (config.template === 'spike') {
+      if (isSpike) {
         const along = (i + 0.5) / count;
         const taper = Math.sqrt(1 - along * 0.78);
         dummy.position.set(Math.cos(angle) * radius * taper, (along - 0.5) * 1.14, Math.sin(angle) * radius * taper);
@@ -279,13 +327,31 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
     flowerParent.add(clusterBuds); tracked(root, geometry, material);
   } else if (config.template) {
     const geometry = new THREE.SphereGeometry(config.budRadius || 0.19, 20, 14);
-    const material = new THREE.MeshStandardMaterial({ color: '#91a86d', roughness: 0.86 });
+    const budColor = config.template === 'rose_rolled' ? (config.center || config.petalBaseColor || '#a92845') : '#91a86d';
+    const material = new THREE.MeshStandardMaterial({ color: budColor, roughness: 0.86 });
     bud = new THREE.Mesh(geometry, material); bud.position.set(0, 0.015, 0); bud.castShadow = false;
     flowerParent.add(bud); tracked(root, geometry, material);
   }
+  if (config.template === 'rose_rolled') {
+    const geometry = new THREE.ConeGeometry(0.052, 0.3, 7, 1);
+    const material = new THREE.MeshStandardMaterial({ color: '#668455', roughness: 0.84 });
+    const sepals = new THREE.InstancedMesh(geometry, material, 5);
+    const dummy = new THREE.Object3D();
+    for (let index = 0; index < sepals.count; index += 1) {
+      const angle = index * Math.PI * 2 / sepals.count;
+      dummy.position.set(Math.cos(angle) * 0.09, -0.045, Math.sin(angle) * 0.09);
+      dummy.rotation.set(Math.cos(angle) * 0.18, angle, Math.sin(angle) * 0.18);
+      dummy.scale.set(1, 1, 0.72); dummy.updateMatrix(); sepals.setMatrixAt(index, dummy.matrix);
+    }
+    flowerParent.add(sepals); tracked(root, geometry, material);
+  }
   (config.layers || []).forEach((layer, layerIndex) => {
-    const geometry = makePetalGeometry({ length: layer.length, width: layer.width, shape: config.shape, tipShape: config.tipShape, baseColor: config.template ? config.petalBaseColor : undefined, edgeColor: config.template ? config.petalEdgeColor : undefined, curl: layer.curl ?? config.curl, wave: config.wave, trueDaisy: isDaisy && !config.template });
-    const cluster = config.template === 'cluster' || config.template === 'spike'; const floretPetals = layer.count;
+    const trueDaisy = isDaisy && !config.template;
+    const geometry = acquirePetalGeometry(root, config.template || config.shape, config.shape, config.tipShape, trueDaisy);
+    const petalMaterial = makePetalMaterial(config, trueDaisy);
+    tracked(root, null, petalMaterial);
+    root.userData.windMaterials.push(petalMaterial);
+    const cluster = isCluster; const floretPetals = layer.count;
     const instanceCount = cluster ? floretPetals * (config.floretCount || 28) : layer.count;
     const mesh = new THREE.InstancedMesh(geometry, petalMaterial, instanceCount); mesh.castShadow = false; mesh.receiveShadow = false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     const dummy = new THREE.Object3D();
@@ -311,13 +377,16 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
         if (config.template === 'bowl') { openPitch = -0.62 + organicPitch * 0.4; closedPitch = -0.98; }
         if (config.template === 'bell') { openPitch = 0.28 + organicPitch * 0.45; closedPitch = -0.8; }
         if (config.template === 'swirl5') { openPitch = -0.02 + (petalIndex / floretPetals) * 0.16 + organicPitch * 0.5; closedPitch = -0.7; }
-        if (config.template === 'cluster') { openPitch = 0.12 + organicPitch * 0.3; closedPitch = -0.5; }
-        if (config.template === 'spike') { openPitch = 0.2 + organicPitch * 0.25; closedPitch = -0.45; }
+        if (config.template === 'cluster' || config.template === 'round_cluster' || config.template === 'small_cluster') { openPitch = 0.12 + organicPitch * 0.3; closedPitch = -0.5; }
+        if (config.template === 'thistle') { openPitch = 0.26 + organicPitch * 0.25; closedPitch = -0.5; }
+        if (isSpike) { openPitch = 0.2 + organicPitch * 0.25; closedPitch = -0.45; }
+        if (config.template === 'rose_rolled') { openPitch = -0.16 + layerIndex * 0.12 + organicPitch * 0.25; closedPitch = -1.02 + layerIndex * 0.08; }
+        if (config.template === 'iris') { openPitch = (petalIndex % 2 === 0 ? 0.42 : -0.24) + organicPitch * 0.25; closedPitch = -0.82; }
         const pitch = THREE.MathUtils.lerp(closedPitch, openPitch, petalOpen) + wobble;
         const petalYaw = phase + Math.sin(petalIndex * 3.71 + layerIndex) * 0.052;
         const yaw = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), petalYaw);
         const tilt = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), pitch);
-        const roll = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.sin(phase * 1.7) * (config.template === 'swirl5' ? 0.18 : 0.075));
+        const roll = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.sin(phase * 1.7) * (config.template === 'swirl5' || config.template === 'rose_rolled' ? 0.2 : 0.075));
         const centerRadius = config.centerRadius || 0.15;
         const rootRadius = centerRadius * (layerIndex === 0 ? 0.72 : 0.38);
         const daisyExtension = isDaisy ? Math.pow(petalOpen, 0.72) : 0;
@@ -332,13 +401,13 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
           const sphereY = 1 - 2 * (clusterIndex + 0.5) / floretCount; const ring = Math.sqrt(1 - sphereY * sphereY); const sphereAngle = clusterIndex * golden;
           const along = (clusterIndex + 0.5) / floretCount;
           const taper = Math.sqrt(1 - along * 0.78);
-          const normal = config.template === 'spike'
+          const normal = isSpike
             ? new THREE.Vector3(Math.cos(sphereAngle) * 0.42, 0.76, Math.sin(sphereAngle) * 0.42).normalize()
             : new THREE.Vector3(Math.cos(sphereAngle) * ring, sphereY, Math.sin(sphereAngle) * ring);
           dummy.position.set(
-            config.template === 'spike' ? normal.x * clusterRadius * taper : normal.x * clusterRadius,
-            config.template === 'spike' ? (along - 0.5) * 1.14 : normal.y * clusterRadius * 0.7,
-            config.template === 'spike' ? normal.z * clusterRadius * taper : normal.z * clusterRadius,
+            isSpike ? normal.x * clusterRadius * taper : normal.x * clusterRadius,
+            isSpike ? (along - 0.5) * 1.14 : normal.y * clusterRadius * 0.7,
+            isSpike ? normal.z * clusterRadius * taper : normal.z * clusterRadius,
           );
           const align = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
           dummy.quaternion.copy(align).multiply(yaw).multiply(tilt).multiply(roll);
@@ -347,17 +416,40 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
           dummy.quaternion.copy(yaw).multiply(tilt).multiply(roll);
         }
         const baseScale = 0.92 + Math.sin(petalIndex * 4) * (isDaisy ? 0.09 : 0.055);
-        dummy.scale.set(baseScale * naturalSize * radial, 0.9 + petalOpen * 0.1, radial * naturalSize);
+        dummy.scale.set(
+          baseScale * naturalSize * radial * (layer.width || 0.18),
+          0.9 + petalOpen * 0.1,
+          radial * naturalSize * (layer.length || 0.72),
+        );
         dummy.updateMatrix(); mesh.setMatrixAt(i, dummy.matrix);
-        mesh.setColorAt(i, new THREE.Color(layer.color || config.color).offsetHSL(0, 0, Math.sin(petalIndex * 12.989 + clusterIndex + layerIndex) * 0.028));
+        const baseColor = config.petalBaseColor || layer.color || config.color || '#f4d9dd';
+        mesh.setColorAt(i, new THREE.Color(baseColor).offsetHSL(0, 0, Math.sin(petalIndex * 12.989 + clusterIndex + layerIndex) * 0.028));
       }
       mesh.instanceMatrix.needsUpdate = true;
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     };
-    update(initialOpen); flowerParent.add(mesh); tracked(root, geometry); layers.push(update);
+    update(initialOpen); flowerParent.add(mesh); layers.push(update);
   });
   const centerGeometry = config.centerRadius > 0.36 || isDaisy ? new THREE.SphereGeometry(config.centerRadius || 0.24, 40, 28) : new THREE.SphereGeometry(config.centerRadius || 0.24, 28, 18);
   const center = new THREE.Mesh(centerGeometry, centerMaterial); center.position.set(0, (config.centerY || 0.02), 0); center.scale.y = config.centerScaleY || 0.72; center.castShadow = true; flowerParent.add(center); tracked(root, centerGeometry);
-  if (config.template === 'cluster' || config.template === 'spike') center.visible = false;
+  if (isCluster || config.template === 'rose_rolled') center.visible = false;
+  if (config.template === 'spadix') {
+    center.visible = false;
+    const spadixGeometry = new THREE.CylinderGeometry(0.055, 0.09, 0.62, 12, 1);
+    const spadixMaterial = new THREE.MeshStandardMaterial({ color: config.center || '#e8bf57', roughness: 0.76 });
+    const spadix = new THREE.Mesh(spadixGeometry, spadixMaterial);
+    spadix.position.set(0, 0.24, 0.04); spadix.castShadow = true; flowerParent.add(spadix);
+    tracked(root, spadixGeometry, spadixMaterial);
+  }
+  if (config.template === 'orchid') {
+    // A broad labellum makes the bilateral orchid silhouette distinct from a
+    // generic five-petal radial bloom while keeping geometry inexpensive.
+    const lipGeometry = new THREE.SphereGeometry(0.24, 20, 14);
+    const lipMaterial = new THREE.MeshStandardMaterial({ color: config.center || '#e2b452', roughness: 0.8, side: THREE.DoubleSide });
+    const lip = new THREE.Mesh(lipGeometry, lipMaterial);
+    lip.position.set(0, -0.035, 0.24); lip.scale.set(1.15, 0.35, 0.88);
+    flowerParent.add(lip); tracked(root, lipGeometry, lipMaterial);
+  }
   if (config.seedCount) {
     seedGeometry = new THREE.SphereGeometry(config.seedSize || 0.018, isDaisy ? 8 : 6, isDaisy ? 6 : 5); seedMaterial = isDaisy
       ? new THREE.MeshBasicMaterial({ color: '#fff8dc' })
@@ -454,7 +546,7 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
         }
         seeds.instanceMatrix.needsUpdate = true;
       }
-    } else if (config.template && config.template !== 'cluster' && config.template !== 'spike') {
+    } else if (config.template && !isCluster && config.template !== 'rose_rolled') {
       const reveal = THREE.MathUtils.smoothstep(amount, 0.32, 0.78);
       const scale = THREE.MathUtils.lerp(0.001, 1, reveal);
       center.scale.set(scale, (config.centerScaleY || 0.72) * scale, scale);
@@ -466,7 +558,7 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
 
 export function createBotanical(THREE_NS, config, { initialOpen = config.open ?? 0.78, wind = true } = {}) {
   const root = new THREE.Group(); root.name = `Procedural ${config.id}`;
-  root.userData.geometries = []; root.userData.materials = new Set(); root.userData.textures = new Set(); root.userData.windMaterials = []; root.userData.windEnabled = wind;
+  root.userData.geometries = []; root.userData.sharedPetalGeometryKeys = []; root.userData.materials = new Set(); root.userData.textures = new Set(); root.userData.windMaterials = []; root.userData.windEnabled = wind;
   addPot(root); const plant = new THREE.Group(); plant.name = 'Wind-responsive flower rig'; root.add(plant);
   const stemCurve = addStem(root, config, plant); addLeaves(root, config, plant);
   if (config.thorns) {
@@ -475,7 +567,12 @@ export function createBotanical(THREE_NS, config, { initialOpen = config.open ??
   }
   const setOpen = addFlowerHead(root, config, initialOpen, plant);
   root.userData.setOpen = setOpen; root.userData.stemCurve = stemCurve; root.userData.plantRig = plant;
-  root.userData.dispose = () => { root.userData.geometries.forEach((item) => item.dispose()); root.userData.materials.forEach((item) => item.dispose()); root.userData.textures.forEach((item) => item.dispose()); };
+  root.userData.dispose = () => {
+    root.userData.geometries.forEach((item) => item.dispose());
+    root.userData.sharedPetalGeometryKeys.forEach(releasePetalGeometry);
+    root.userData.materials.forEach((item) => item.dispose());
+    root.userData.textures.forEach((item) => item.dispose());
+  };
   return root;
 }
 

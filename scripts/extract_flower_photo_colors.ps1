@@ -19,30 +19,35 @@ $results = foreach ($flower in $species) {
   if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { continue }
   $bitmap = [System.Drawing.Bitmap]::new($file)
   try {
-    $left=[int]($bitmap.Width*0.22); $right=[int]($bitmap.Width*0.78); $top=[int]($bitmap.Height*0.18); $bottom=[int]($bitmap.Height*0.82)
-    $stepX=[Math]::Max(1,[int](($right-$left)/48)); $stepY=[Math]::Max(1,[int](($bottom-$top)/48))
+    # Restrict the audit to the likely bloom center. This is a display-color
+    # estimate only: the species.json source palette is never rewritten.
+    $left=[int]($bitmap.Width*0.30); $right=[int]($bitmap.Width*0.70); $top=[int]($bitmap.Height*0.20); $bottom=[int]($bitmap.Height*0.68)
+    $stepX=[Math]::Max(1,[int](($right-$left)/56)); $stepY=[Math]::Max(1,[int](($bottom-$top)/56))
     $bins=@{}
     for ($y=$top; $y -lt $bottom; $y+=$stepY) { for ($x=$left; $x -lt $right; $x+=$stepX) {
       $pixel=$bitmap.GetPixel($x,$y); $r=$pixel.R/255.0; $g=$pixel.G/255.0; $b=$pixel.B/255.0
       $max=[Math]::Max($r,[Math]::Max($g,$b)); $min=[Math]::Min($r,[Math]::Min($g,$b)); $delta=$max-$min
-      if ($delta -lt 0.08 -or $max -lt 0.15 -or $max -gt 0.98) { continue }
+      $saturation=if($max -gt 0){$delta/$max}else{0}
+      if ($saturation -lt 0.16 -or $max -lt 0.15 -or $max -gt 0.98) { continue }
       if ($max -eq $r) { $h=60*((($g-$b)/$delta)%6) } elseif ($max -eq $g) { $h=60*(($b-$r)/$delta+2) } else { $h=60*(($r-$g)/$delta+4) }
       if ($h -lt 0) { $h+=360 }
       # Green pixels are usually foliage/background, not petal color. Exclude
       # them from the dominant display-petal estimate while comparing hues.
-      if ($h -ge 78 -and $h -le 165) { continue }
-      $bin=[int][Math]::Floor($h/15); if (-not $bins.ContainsKey($bin)) { $bins[$bin]=[ordered]@{n=0;r=0;g=0;b=0} }
-      $bins[$bin].n++; $bins[$bin].r+=$pixel.R; $bins[$bin].g+=$pixel.G; $bins[$bin].b+=$pixel.B
+      if ($h -ge 75 -and $h -le 170) { continue }
+      $bin=[int][Math]::Floor($h/12); if (-not $bins.ContainsKey($bin)) { $bins[$bin]=[ordered]@{n=0;weight=0.0;r=0.0;g=0.0;b=0.0} }
+      $weight=[Math]::Max(0.05,$saturation); $bins[$bin].n++; $bins[$bin].weight+=$weight
+      $bins[$bin].r+=$pixel.R*$weight; $bins[$bin].g+=$pixel.G*$weight; $bins[$bin].b+=$pixel.B*$weight
     } }
     if ($bins.Count -eq 0) { $photoColor=$flower.color; $sampleCount=0; $photoHue=Get-HslHue $photoColor }
     else {
-      $dominant=$bins.GetEnumerator() | Sort-Object { $_.Value.n } -Descending | Select-Object -First 1
-      $sampleCount=$dominant.Value.n; $pr=[int][Math]::Round($dominant.Value.r/$sampleCount); $pg=[int][Math]::Round($dominant.Value.g/$sampleCount); $pb=[int][Math]::Round($dominant.Value.b/$sampleCount)
-      $photoColor=('#{0:X2}{1:X2}{2:X2}' -f $pr,$pg,$pb); $photoHue=($dominant.Name*15)+7.5
+      $dominant=$bins.GetEnumerator() | Sort-Object { $_.Value.weight } -Descending | Select-Object -First 1
+      $sampleCount=$dominant.Value.n; $weightSum=$dominant.Value.weight
+      $pr=[int][Math]::Round($dominant.Value.r/$weightSum); $pg=[int][Math]::Round($dominant.Value.g/$weightSum); $pb=[int][Math]::Round($dominant.Value.b/$weightSum)
+      $photoColor=('#{0:X2}{1:X2}{2:X2}' -f $pr,$pg,$pb); $photoHue=($dominant.Name*12)+6
     }
     $speciesHue=Get-HslHue $flower.color
     $hueDelta=$null; if ($null -ne $speciesHue -and $null -ne $photoHue) { $raw=[Math]::Abs($speciesHue-$photoHue); $hueDelta=[Math]::Min($raw,360-$raw) }
-    [pscustomobject]@{id=$flower.id; photo_color=$photoColor; photo_hue=[Math]::Round($photoHue,1); species_color=$flower.color; hue_difference=if($null -eq $hueDelta){$null}else{[Math]::Round($hueDelta,1)}; mismatch=($null -ne $hueDelta -and $hueDelta -gt $HueMismatchThreshold); samples=$sampleCount; image=$flower.image}
+    [pscustomobject]@{id=$flower.id; photo_color=$photoColor; photo_hue=[Math]::Round($photoHue,1); species_color=$flower.color; hue_difference=if($null -eq $hueDelta){$null}else{[Math]::Round($hueDelta,1)}; mismatch=($null -ne $hueDelta -and $hueDelta -gt $HueMismatchThreshold); samples=$sampleCount; roi=[pscustomobject]@{x=@(0.30,0.70);y=@(0.20,0.68)}; image=$flower.image}
   } finally { $bitmap.Dispose() }
 }
 $output = Join-Path $root 'data/flower_photo_colors.json'

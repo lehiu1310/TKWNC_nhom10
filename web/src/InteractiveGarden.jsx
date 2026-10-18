@@ -71,7 +71,7 @@ export default function InteractiveGarden() {
       <label className="rose-picker-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm tên Việt hoặc quốc tế…" aria-label="Tìm loài hoa"/><button type="button" onClick={() => setQuery('')} aria-label="Xóa tìm kiếm" disabled={!query}>×</button></label>
       <div className="rose-picker-row">
         {visibleItems.map((flower) => <button key={flower.id} type="button" className={`rose-picker-card${flower.id === selectedId ? ' is-selected' : ''}`} aria-pressed={flower.id === selectedId} onClick={() => { setSelectedId(flower.id); setOpen(flower.open ?? 0.8); }}>
-          <span className="rose-picker-art" style={{ '--flower-accent': flower.record.color || flower.color }}>
+          <span className="rose-picker-art" style={{ '--flower-accent': flower.color || flower.record.color }}>
             <img src={flower.image} alt="" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.hidden = true; }}/>
           </span>
           <span><small>{flower.scientificName}</small><b>{flower.nameVi}</b></span>
@@ -81,7 +81,7 @@ export default function InteractiveGarden() {
     </div>
 
     <div className="garden3d-shell rose-studio-shell">
-      <div className="garden3d-canvas-wrap rose-viewer-wrap" ref={viewerWrapRef} style={{ '--flower-wash': selected.record.color || selected.color }}>
+      <div className="garden3d-canvas-wrap rose-viewer-wrap" ref={viewerWrapRef} style={{ '--flower-wash': selected.color || selected.record.color }}>
         <div className="rose-viewer-backdrop" aria-hidden="true"/>
         {selected.fallbackPhoto ? <div className="rose-photo-fallback"><img src={selected.image} alt={`${selected.nameVi} · ảnh thật`} loading="lazy" decoding="async"/><span>ẢNH THẬT · MẪU 3D CHƯA ĐƯỢC DUYỆT</span></div> : viewerReady ? <Suspense fallback={<div className="garden3d-fallback">Đang dựng {selected.nameVi.toLowerCase()}…</div>}>
           <FlowerViewer speciesId={selected.id} speciesRecord={selected.record} open={open} windEnabled={windEnabled} resetKey={resetRequested} speciesName={selected.nameVi} scientificName={selected.scientificName}/>
