@@ -57,6 +57,25 @@ def test_gift_data_covers_catalog_and_has_auditable_fields():
             assert entry["colors"]
 
 
+def test_flowers_flagged_for_an_occasion_are_never_recommended_for_it():
+    data_path = Path(__file__).resolve().parents[1] / "data" / "gift_meanings.json"
+    gift_data = json.loads(data_path.read_text(encoding="utf-8"))
+    for entry in gift_data["species"]:
+        if not entry.get("gift_ok"):
+            continue
+        for occasion in entry.get("avoid_occasions", []):
+            assert occasion in OCCASIONS
+            result = recommend_gifts(occasion, RECIPIENTS[0])
+            suggested_ids = {item["main"]["id"] for item in result["suggestions"]}
+            assert entry["species_id"] not in suggested_ids
+            try:
+                recommend_gifts(occasion, RECIPIENTS[0], preferred_species_id=entry["species_id"])
+            except ValueError:
+                pass
+            else:
+                raise AssertionError(f"{entry['species_id']} must not be forced into {occasion}")
+
+
 def test_consolation_suggestions_exclude_flowers_flagged_for_joyful_events():
     result = recommend_gifts("chia buồn", "mẹ")
     main_ids = {item["main"]["id"] for item in result["suggestions"]}
