@@ -3,7 +3,7 @@
 **Demo trực tiếp:** https://tkwnc-nhom10.vercel.app/  
 **Backend hiện tại (Render cũ):** https://tkw-nhom10-api.onrender.com  
 **Health check:** https://tkw-nhom10-api.onrender.com/api/health  
-**Cloud Run:** chưa triển khai; đang chờ project Google Cloud được liên kết billing.
+**Cloud Run:** chưa triển khai; hiện chỉ dùng lựa chọn miễn phí và không bật billing Google Cloud.
 
 ## Trạng thái xác minh mới nhất (21/10/2026)
 
@@ -12,7 +12,7 @@
 - Backend https://tkw-nhom10-api.onrender.com/api/health trả HTTP 200 và status: ok, nhưng cả classifier, detector, llm, retrieval đều not_loaded. Vì vậy health chỉ chứng minh process còn hoạt động; bốn chức năng AI trên production chưa sẵn sàng.
 - CORS preflight từ https://tkwnc-nhom10.vercel.app tới /api/chat/sync trả HTTP 200, Access-Control-Allow-Origin khớp domain. Đã xác minh cấu hình CORS, chưa xác minh thao tác trên điện thoại thật.
 - Google Cloud không có billing account khả dụng và người dùng yêu cầu chỉ dùng dịch vụ miễn phí; Cloud Run chưa triển khai. Không có số liệu hay URL Cloud Run.
-- Local tại commit trước các thay đổi đang chờ push: pytest -q 80 passed, 1 cảnh báo deprecation; pnpm test 21/21 passed; pnpm build thành công. GitHub Actions cho commit 7d482ce đã success: https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39474328644. Các thay đổi test/API mới cần một run CI riêng sau khi push.
+- Local tại commit 4faa654: pytest -q 80 passed, 1 cảnh báo deprecation; pnpm test 21/21 passed; pnpm build thành công. GitHub Actions cho commit này đã success: https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39479609281.
 - Benchmark hiện có trong reports: classifier ResNet-18/MobileNetV3/ONNX trên CPU Intel i5-13500H; Locust Render có số liệu classify (102 request) và detect (51 request). Chưa có benchmark đủ bốn endpoint trên backend đang hoạt động; RAM thực tế của service production chưa đo.
 - Hướng dẫn clone hiện yêu cầu cài backend và chuẩn bị/tải dataset; README ghi rõ phần này cần vài GB và có thể quá 15 phút trên CPU. Vì vậy chưa chứng minh được tiêu chí clone toàn bộ ứng dụng chạy trong ≤15 phút.
 ## Trạng thái deploy đã kiểm chứng (01/10/2026)
