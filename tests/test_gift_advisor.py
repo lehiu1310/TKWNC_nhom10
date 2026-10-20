@@ -1,4 +1,4 @@
-from core.gift_advisor import recommend_gifts
+from core.gift_advisor import OCCASIONS, RECIPIENTS, recommend_gifts
 
 
 def test_gift_recommendations_return_three_rule_based_bouquets():
@@ -7,6 +7,13 @@ def test_gift_recommendations_return_three_rule_based_bouquets():
     assert result["verified"] is False
     assert len(result["suggestions"]) == 3
     assert all(item["stem_count"] == 9 for item in result["suggestions"])
+
+
+def test_every_supported_occasion_and_recipient_has_three_suggestions():
+    for occasion in OCCASIONS:
+        for recipient in RECIPIENTS:
+            result = recommend_gifts(occasion, recipient)
+            assert len(result["suggestions"]) == 3, f"{occasion} / {recipient}"
 
 
 def test_consolation_suggestions_exclude_flowers_flagged_for_joyful_events():
