@@ -5,25 +5,16 @@
 **Health check:** https://tkw-nhom10-api.onrender.com/api/health  
 **Cloud Run:** chưa triển khai; đang chờ project Google Cloud được liên kết billing.
 
-## Trạng thái xác minh mới nhất (18/10/2026)
+## Trạng thái xác minh mới nhất (21/10/2026)
 
-- Vercel demo trả HTTP 200.
-- Render `/api/health` trả HTTP 200 nhưng `ready: false`; `classifier`, `detector`, `llm` và `retrieval` đều `not_loaded`. Health chỉ xác nhận process API còn trả lời, không xác nhận các chức năng AI hoạt động.
-- Cloud Run chưa được tạo. `gcloud` đã đăng nhập nhưng không có billing account khả dụng và các project đang thấy đều chưa bật billing. Chưa có URL Cloud Run, số liệu Cloud Run hoặc xác nhận bốn API trên Cloud Run.
-- Trên nhánh `release-final`, máy local đã trả HTTP 200 cho classify (top-1 `roses` trên ảnh mẫu), detect (2 hộp), search ảnh (8 kết quả) và chatbot Gemini (có trích nguồn `[hoa_hong.md]`). Đây là kiểm tra local, không phải kiểm tra deploy.
-- Sau khi chuyển MobileCLIP2 CPU inference sang FP32, search ảnh local chạy **73,7–221,4 ms** trong các lượt API đã thử, so với **4,6–6,0 s** trước sửa. Đo trên một máy local, số mẫu nhỏ; chưa phải Locust p50/p95 và không đại diện Cloud Run.
-- Code hiện tại ở commit `7a77f6e` trên `release-final`; `main` chưa được cập nhật.
-
-Kiểm tra lại trực tiếp ngày **18/10/2026**:
-
-- Demo Vercel trả HTTP **200**. CORS preflight `OPTIONS` từ `https://tkwnc-nhom10.vercel.app` tới Render trả **200** và `Access-Control-Allow-Origin` khớp domain.
-- Render `/api/health` trả **200** và `status: ok`, nhưng ban đầu cả bốn model đều `not_loaded`. Sau khi gọi API, health báo classifier/detector `ready`, retrieval/llm `not_loaded`.
-- Với ảnh hồng đỏ mẫu `data/flowers/flower_photos/roses/10503217854_e66a804309.jpg`, Render `/api/classify` trả **200**, top-1 `roses` **90,37%**, latency **6.821,4 ms**. Với ảnh hoa hồng trắng nhiều bông `10090824183_d02c613f10_m.jpg`, kết quả top-1 là `ball-moss` **40,15%**, `confident: false`; đây là ca sai/không chắc trên ảnh được gắn nhãn roses.
-- Render `/api/detect` trả **200** nhưng **0 detection** cho cả hai ảnh hoa hồng trên. Trên máy local, ảnh hồng đỏ đó trả 9 hộp roses (cao nhất **99,62%**) và 1 hộp sunflower (40,86%); kết quả live/local khác nhau, nguyên nhân revision/weights cần log Render để kết luận.
-- Render `/api/search/text` và `/api/chat/sync` trả **502**. Sau đó health tạm trả 502 rồi hồi lại 200; hiện chưa có log máy chủ để xác định nguyên nhân. Vì vậy không xác nhận đủ bốn chức năng AI trên deploy.
-- GitHub Actions [run gần nhất](https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39105821087) cho nhánh `codex/flower-archetypes-phase1`, commit `ab9b8de8abb6f9a4b3bf176ccbe426616e86ba51`, kết thúc `success`. Máy local: `pytest -q` **61 passed** (1 warning); Vite production build thành công.
-- Cloud Run chưa deploy. `gcloud` có account cấu hình nhưng auth hết hạn; lệnh chỉ đọc project list báo cần `gcloud auth login`. Trạng thái billing không thể xác minh trong lần kiểm tra này.
-
+- Nhánh đang làm: feature-gift-advisor; không sửa main.
+- Demo Vercel https://tkwnc-nhom10.vercel.app/ trả HTTP 200. web/vercel.json rewrite /api/* tới Render.
+- Backend https://tkw-nhom10-api.onrender.com/api/health trả HTTP 200 và status: ok, nhưng cả classifier, detector, llm, retrieval đều not_loaded. Vì vậy health chỉ chứng minh process còn hoạt động; bốn chức năng AI trên production chưa sẵn sàng.
+- CORS preflight từ https://tkwnc-nhom10.vercel.app tới /api/chat/sync trả HTTP 200, Access-Control-Allow-Origin khớp domain. Đã xác minh cấu hình CORS, chưa xác minh thao tác trên điện thoại thật.
+- Google Cloud không có billing account khả dụng và người dùng yêu cầu chỉ dùng dịch vụ miễn phí; Cloud Run chưa triển khai. Không có số liệu hay URL Cloud Run.
+- Local tại commit trước các thay đổi đang chờ push: pytest -q 80 passed, 1 cảnh báo deprecation; pnpm test 21/21 passed; pnpm build thành công. GitHub Actions cho commit 7d482ce đã success: https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39474328644. Các thay đổi test/API mới cần một run CI riêng sau khi push.
+- Benchmark hiện có trong reports: classifier ResNet-18/MobileNetV3/ONNX trên CPU Intel i5-13500H; Locust Render có số liệu classify (102 request) và detect (51 request). Chưa có benchmark đủ bốn endpoint trên backend đang hoạt động; RAM thực tế của service production chưa đo.
+- Hướng dẫn clone hiện yêu cầu cài backend và chuẩn bị/tải dataset; README ghi rõ phần này cần vài GB và có thể quá 15 phút trên CPU. Vì vậy chưa chứng minh được tiêu chí clone toàn bộ ứng dụng chạy trong ≤15 phút.
 ## Trạng thái deploy đã kiểm chứng (01/10/2026)
 
 - Render `/api/health`: HTTP 200, `status: ok`. Ảnh hoa hồng mẫu gọi `POST /api/classify` trả HTTP 200, top-1 `roses` (0,751). CORS preflight từ `https://tkwnc-nhom10.vercel.app` tới chatbot trả HTTP 200 và đúng `Access-Control-Allow-Origin`.

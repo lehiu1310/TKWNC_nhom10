@@ -35,6 +35,9 @@ class FakeBot:
     def answer(self, message, history=None):
         return {"answer": "Được 7 ngày.", "sources": []}
 
+    def generate_greeting(self, occasion, recipient, flowers, situation="", tone=""):
+        return f"Chúc mừng {occasion}, {recipient}!"
+
 
 class FakeSearch:
     def __init__(self, image_path=None):
@@ -348,3 +351,23 @@ def test_gift_recommendation_rejects_unknown_preferred_flower(client):
         "occasion": "Valentine", "recipient": "người yêu", "preferred_species_id": "unknown-flower",
     })
     assert response.status_code == 400
+
+
+def test_gift_greeting_ok(client, monkeypatch):
+    monkeypatch.setattr(main, "LLM_PROVIDER", "gemini")
+    response = client.post("/api/gifts/greeting", json={
+        "occasion": "sinh nhật", "recipient": "mẹ", "flowers": ["roses"],
+    })
+    assert response.status_code == 200
+    assert response.json() == {"message": "Chúc mừng sinh nhật, mẹ!", "source": "Gemini"}
+
+
+def test_gift_greeting_blank_required_value_is_400(client):
+    response = client.post("/api/gifts/greeting", json={
+        "occasion": "  ", "recipient": "mẹ", "flowers": ["roses"],
+    })
+    assert response.status_code == 400
+
+
+def test_gift_greeting_missing_fields_is_422(client):
+    assert client.post("/api/gifts/greeting", json={"occasion": "sinh nhật"}).status_code == 422

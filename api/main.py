@@ -331,6 +331,12 @@ def gift_recommendation(req: GiftRecommendationRequest):
 @app.post("/api/gifts/greeting")
 def gift_greeting(req: GiftGreetingRequest):
     """Create one direct, occasion-specific greeting without flower-guide retrieval."""
+    if (
+        not req.occasion.strip()
+        or not req.recipient.strip()
+        or any(not flower.strip() for flower in req.flowers)
+    ):
+        raise HTTPException(400, "Dịp, người nhận và tên hoa không được để trống")
     if LLM_PROVIDER != "gemini":
         raise HTTPException(503, "Tính năng viết lời chúc cần cấu hình Gemini.")
     try:
