@@ -207,7 +207,10 @@ class RAGChatbot:
             api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
             if api_key:
                 from core.gemini_client import create_gemini_client
-                self.client = create_gemini_client(api_key, timeout_ms=10_000)
+                # Grounded responses can vary significantly in latency; keep a
+                # longer transport window so transient slow starts do not force
+                # an avoidable retrieval-only fallback.
+                self.client = create_gemini_client(api_key, timeout_ms=60_000)
             else:
                 # A missing hosted secret must not take the entire RAG endpoint
                 # down. Keep lexical retrieval usable and return sourced evidence.

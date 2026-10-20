@@ -60,24 +60,31 @@ function offlineMessages(bundle, recipient, occasion) {
 }
 
 async function makeMessages(bundle, recipient, occasion) {
-  const cacheKey = `gift-greetings-v1:${bundle.main.id}:${recipient}:${occasion}`;
+  const cacheKey = `gift-greetings-v2:${bundle.main.id}:${recipient}:${occasion}`;
   try {
     const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
     if (Array.isArray(cached) && cached.length === 3) return { messages: cached, cached: true, source: 'Gemini (bản đã lưu)' };
   } catch { /* Ignore malformed local cache. */ }
   const fallback = offlineMessages(bundle, recipient, occasion);
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 18_000);
+  // Grounded Gemini latency varies. Give the backend's 60s request window time
+  // to finish, while retaining a bounded wait and offline fallback.
+  const timeout = window.setTimeout(() => controller.abort(), 65_000);
   try {
     const response = await postJson('/api/chat/sync', {
       message: `Hãy viết đúng 3 lời nhắn ngắn bằng tiếng Việt để tặng ${recipient} dịp ${occasion}, kèm bó ${bundle.main.name_vi}${bundle.support ? ` và ${bundle.support.name_vi}` : ''}. Ý nghĩa dữ liệu hiện có: ${bundle.meaning}. Viết thành ba dòng, lần lượt mở đầu bằng “Trìu mến:”, “Trang trọng:” và “Vui vẻ:”. Mỗi lời tối đa 35 từ. Không bịa ý nghĩa văn hoá hoặc nguồn trích dẫn.`,
       history: [],
     }, { signal: controller.signal });
     const lines = String(response.answer || '').split('\n').map((line) => line.replace(/^[-*\d.)\s]+/, '').trim()).filter(Boolean);
-    const messages = ['Trìu mến', 'Trang trọng', 'Vui vẻ'].map((tone, index) => {
-      const matching = lines.find((line) => line.toLocaleLowerCase('vi').startsWith(tone.toLocaleLowerCase('vi')));
-      return { tone, text: matching ? matching.replace(new RegExp(`^${tone}:?\\s*`, 'i'), '') : lines[index]?.replace(/^[^:]+:\s*/, '') || fallback[index].text };
-    });
+    const tones = ['Trìu mến', 'Trang trọng', 'Vui vẻ'];
+    const matchedLines = tones.map((tone) => lines.find((line) => new RegExp(`^${tone}:`, 'i').test(line)));
+    if (matchedLines.some((line) => !line)) {
+      return { messages: fallback, cached: false, source: 'Mẫu offline', note: 'Chatbot chưa tạo đủ ba lời nhắn theo định dạng yêu cầu.' };
+    }
+    const messages = tones.map((tone, index) => ({
+      tone,
+      text: matchedLines[index].replace(new RegExp(`^${tone}:\\s*`, 'i'), ''),
+    }));
     localStorage.setItem(cacheKey, JSON.stringify(messages));
     return { messages, cached: false, source: 'Gemini qua API chatbot' };
   } catch (error) {
