@@ -4,6 +4,7 @@ import giftData from '../../data/gift_meanings.json';
 import displayData from '../../data/display_images.json';
 import { friendlyFailure, postJson } from './api.js';
 import { openGardenerWith, readGiftBook, writeGiftBook } from './giftBook.js';
+import { GIFT_INTENTS, intentForOccasion, isCompatiblePreferredFlower } from './giftFlow.js';
 import { isValidGreetingCache, offlineMessages, parseGeneratedGreetings } from './giftGreetings.js';
 
 const OCCASIONS = giftData.occasions;
@@ -65,16 +66,107 @@ function saveGreetingCard(message, flower, sender, recipientName) {
     for (const word of words) { const next = `${line}${word} `; if (context.measureText(next).width > 920) { context.fillText(line.trim(), 600, y); line = `${word} `; y += 64; } else line = next; }
     if (line) context.fillText(line.trim(), 600, y);
     context.fillStyle = '#72816b'; context.font = '28px Arial'; context.fillText([sender && `Từ ${sender}`, recipientName && `Gửi ${recipientName}`].filter(Boolean).join('  ·  '), 600, 1430);
-    canvas.toBlob((blob) => { if (!blob) return; const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `thiep-${flower.id}.png`; link.click(); URL.revokeObjectURL(link.href); }, 'image/png');
+    canvas.toBlob((blob) => { if (!blob) return; const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `thiep-${flower.id}.png`; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); }, 'image/png');
   };
-  const image = new Image(); image.crossOrigin = 'anonymous';
+  const image = new Image();
   image.onload = () => {
     const size = 840; const x = 180; const y = 190;
     context.save(); context.beginPath(); context.roundRect(x, y, size, size, 48); context.clip();
     context.drawImage(image, x, y, size, size); context.restore(); finish();
   };
   image.onerror = finish;
-  image.src = imageFor(flower);
+  image.src = `/images/gift-flowers/${encodeURIComponent(flower.id)}.jpg`;
+}
+
+function loadLocalFlowerImage(flowerId) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error(`Không tải được ảnh ${flowerId}`));
+    image.src = `/images/gift-flowers/${encodeURIComponent(flowerId)}.jpg`;
+  });
+}
+
+async function makeBouquetShareImage(bouquet, context) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1200;
+  canvas.height = 1400;
+  const context2d = canvas.getContext('2d');
+  if (!context2d) throw new Error('Trình duyệt không hỗ trợ tạo ảnh thiệp.');
+
+  const [mainImage, supportImage] = await Promise.all([
+    loadLocalFlowerImage(bouquet.main.id),
+    bouquet.support ? loadLocalFlowerImage(bouquet.support.id) : Promise.resolve(null),
+  ]);
+  const background = context2d.createLinearGradient(0, 0, 1200, 1400);
+  background.addColorStop(0, '#fff8ed');
+  background.addColorStop(1, '#f5ebe5');
+  context2d.fillStyle = background;
+  context2d.fillRect(0, 0, 1200, 1400);
+  context2d.textAlign = 'center';
+  context2d.fillStyle = '#557653';
+  context2d.font = '700 25px Arial';
+  context2d.fillText('MỘT BÓ HOA, MỘT LỜI THƯƠNG', 600, 95);
+
+  context2d.save();
+  context2d.beginPath();
+  context2d.roundRect(80, 145, 1040, 930, 48);
+  context2d.clip();
+  context2d.drawImage(mainImage, 80, 145, 1040, 930);
+  context2d.restore();
+  if (supportImage) {
+    context2d.save();
+    context2d.beginPath();
+    context2d.arc(890, 900, 170, 0, Math.PI * 2);
+    context2d.clip();
+    context2d.drawImage(supportImage, 720, 730, 340, 340);
+    context2d.restore();
+    context2d.beginPath();
+    context2d.arc(890, 900, 170, 0, Math.PI * 2);
+    context2d.strokeStyle = '#fffdf5';
+    context2d.lineWidth = 12;
+    context2d.stroke();
+  }
+
+  context2d.fillStyle = '#294735';
+  context2d.font = '600 47px Georgia, serif';
+  context2d.fillText(`${bouquet.main.name_vi}${bouquet.support ? ` + ${bouquet.support.name_vi}` : ''}`, 600, 1175, 1060);
+  context2d.fillStyle = '#637461';
+  context2d.font = '28px Arial, sans-serif';
+  context2d.fillText(`${context.occasion} · gửi ${context.recipient} · ${bouquet.stem_count} cành`, 600, 1235, 1040);
+  context2d.fillStyle = '#9a7753';
+  context2d.font = 'italic 23px Georgia, serif';
+  context2d.fillText('Gợi ý tham khảo từ Vườn Hoa', 600, 1320);
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Chưa tạo được ảnh chia sẻ.')), 'image/png');
+  });
+}
+
+async function shareBouquetImage(bouquet, context) {
+  const blob = await makeBouquetShareImage(bouquet, context);
+  const file = new File([blob], `bo-hoa-${bouquet.main.id}.png`, { type: 'image/png' });
+  if (navigator.share && navigator.canShare?.({ files: [file] })) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: `Gợi ý bó hoa ${bouquet.main.name_vi}`,
+        text: `Bó hoa gợi ý cho dịp ${context.occasion}, dành tặng ${context.recipient}.`,
+      });
+      return 'Đã mở bảng chia sẻ của thiết bị.';
+    } catch (error) {
+      if (error?.name === 'AbortError') throw error;
+      // Native sharing can reject after image generation consumes activation; keep download available.
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = file.name;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return 'Ảnh bó hoa đã được tải xuống để bạn gửi cho người khác.';
 }
 
 export default function GiftAdvisor() {
@@ -89,10 +181,15 @@ export default function GiftAdvisor() {
   const [error, setError] = useState('');
   const [greetings, setGreetings] = useState(null);
   const [greetingBusy, setGreetingBusy] = useState(false);
+  const [greetingEdits, setGreetingEdits] = useState({});
+  const [shareBusy, setShareBusy] = useState(false);
+  const [shareNotice, setShareNotice] = useState('');
+  const [shareError, setShareError] = useState('');
   const [sender, setSender] = useState('');
   const [recipientName, setRecipientName] = useState('');
   const [book, setBook] = useState(readGiftBook);
   const [tab, setTab] = useState('gift');
+  const [intent, setIntent] = useState('');
   const [preferredFlowerId, setPreferredFlowerId] = useState(() => {
     const id = new URLSearchParams(window.location.search).get('flower');
     return id && GIFT_SPECIES.some((entry) => entry.species_id === id) ? id : '';
@@ -114,7 +211,10 @@ export default function GiftAdvisor() {
     const flower = SPECIES[id];
     if (!entry || !flower) { setPreferredFlowerId(''); return; }
     const validOccasion = entry.occasions.find((item) => !entry.avoid_occasions?.includes(item));
-    if (validOccasion) setOccasion(validOccasion);
+    if (validOccasion) {
+      setOccasion(validOccasion);
+      setIntent(intentForOccasion(validOccasion)?.id || '');
+    }
     setColor(entry.colors[0]?.match(/#[0-9a-f]{6}/i)?.[0] || '');
   }, []);
 
@@ -148,11 +248,45 @@ export default function GiftAdvisor() {
     window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
+  function chooseIntent(option) {
+    setIntent(option.id);
+    setOccasion(option.occasion);
+    setGreetings(null);
+    setGreetingEdits({});
+    setShareNotice('');
+    const preferredEntry = GIFT_SPECIES.find((entry) => entry.species_id === preferredFlowerId);
+    if (preferredEntry && !isCompatiblePreferredFlower(preferredEntry, option.occasion)) {
+      clearPreferredFlower();
+    }
+  }
+
+  function chooseOccasion(nextOccasion) {
+    setOccasion(nextOccasion);
+    setIntent(intentForOccasion(nextOccasion)?.id || '');
+    const preferredEntry = GIFT_SPECIES.find((entry) => entry.species_id === preferredFlowerId);
+    if (preferredEntry && !isCompatiblePreferredFlower(preferredEntry, nextOccasion)) clearPreferredFlower();
+  }
+
   async function generateGreetings() {
     if (!current || greetingBusy) return;
-    setGreetingBusy(true); setGreetings(null);
+    setGreetingBusy(true); setGreetings(null); setGreetingEdits({});
     try { setGreetings(await makeMessages(current, resultContext?.recipient || recipient, resultContext?.occasion || occasion)); }
     finally { setGreetingBusy(false); }
+  }
+
+  async function shareCurrentBouquet() {
+    if (!current || shareBusy) return;
+    setShareBusy(true); setShareNotice(''); setShareError('');
+    try {
+      setShareNotice(await shareBouquetImage(current, {
+        occasion: resultContext?.occasion || occasion,
+        recipient: resultContext?.recipient || recipient,
+      }));
+    } catch (shareFailure) {
+      if (shareFailure?.name !== 'AbortError') setShareError(shareFailure?.message || 'Chưa thể tạo ảnh chia sẻ.');
+    } finally {
+      setShareBusy(false);
+    }
   }
 
   function saveBouquet() {
@@ -174,7 +308,8 @@ export default function GiftAdvisor() {
     <div className="gift-tabs" role="tablist" aria-label="Tặng hoa và sổ hoa"><button type="button" role="tab" aria-selected={tab === 'gift'} className={tab === 'gift' ? 'active' : ''} onClick={() => setTab('gift')}>Phối bó hoa</button><button type="button" role="tab" aria-selected={tab === 'book'} className={tab === 'book' ? 'active' : ''} onClick={() => setTab('book')}>Sổ hoa của tôi <span>{book.bouquets.length + book.favorites.length}</span></button></div>
     {tab === 'gift' ? <>
       <form className="gift-form" onSubmit={getSuggestions}>
-        <label>Dịp<select value={occasion} onChange={(event) => setOccasion(event.target.value)}>{OCCASIONS.map((item) => <option key={item}>{item}</option>)}</select></label>
+        <fieldset className="gift-intents"><legend>Bạn muốn gửi gắm điều gì?</legend><div>{GIFT_INTENTS.map((option) => <button key={option.id} type="button" className={intent === option.id ? 'active' : ''} aria-pressed={intent === option.id} onClick={() => chooseIntent(option)}><span aria-hidden="true">{option.icon}</span>{option.title}</button>)}</div></fieldset>
+        <label>Dịp<select value={occasion} onChange={(event) => chooseOccasion(event.target.value)}>{OCCASIONS.map((item) => <option key={item}>{item}</option>)}</select></label>
         <label>Người nhận<select value={recipient} onChange={(event) => setRecipient(event.target.value)}>{RECIPIENTS.map((item) => <option key={item}>{item}</option>)}</select></label>
         <label>Màu yêu thích <select value={color} onChange={(event) => setColor(event.target.value)}><option value="">Tuỳ ý</option>{COLORS.map((value) => <option value={value} key={value}>{value}</option>)}</select></label>
         <label>Quy mô<select value={size} onChange={(event) => setSize(event.target.value)}>{SIZES.map((item) => <option key={item}>{item}</option>)}</select><small>{size === 'nhỏ' ? '5' : size === 'vừa' ? '9' : '15'} cành · không hiển thị giá</small></label>
@@ -184,7 +319,7 @@ export default function GiftAdvisor() {
       {error && <div className="friendly-error" role="alert"><p>{error}</p><button className="button" type="button" onClick={() => getSuggestions({ preventDefault() {} })}>Thử lại</button></div>}
       {result && <>
         <p className="gift-result-context">Gợi ý này dành cho <b>{resultContext?.recipient || result.recipient}</b> dịp <b>{resultContext?.occasion || result.occasion}</b>{resultContext?.color ? ` · màu ${resultContext.color}` : ''} · bó cỡ <b>{resultContext?.size || result.size}</b>. Đổi lựa chọn phía trên rồi bấm “Tìm bó hoa phù hợp” để cập nhật.</p>
-        <div className="gift-suggestion-tabs" role="tablist" aria-label="Ba gợi ý bó hoa">{result.suggestions.map((suggestion, index) => <button type="button" key={suggestion.id} className={selected === index ? 'active' : ''} onClick={() => { setSelected(index); setGreetings(null); }}>Gợi ý 0{index + 1}<span>{suggestion.main.name_vi}</span></button>)}</div>
+        <div className="gift-suggestion-tabs" role="tablist" aria-label="Ba gợi ý bó hoa">{result.suggestions.map((suggestion, index) => <button type="button" key={suggestion.id} className={selected === index ? 'active' : ''} onClick={() => { setSelected(index); setGreetings(null); setGreetingEdits({}); setShareNotice(''); }}>Gợi ý 0{index + 1}<span>{suggestion.main.name_vi}</span></button>)}</div>
         {current && <article className="bouquet-card">
           <div className="bouquet-photo-composition" aria-label={`Ảnh gợi ý bó ${current.main.name_vi}`}>
             <img className="bouquet-photo-main" src={imageFor(current.main)} alt={current.main.name_vi} loading="lazy"/>
@@ -192,8 +327,9 @@ export default function GiftAdvisor() {
             <span className="bouquet-ribbon">{current.stem_count} cành · {resultContext?.size || size}</span>
           </div>
           <div className="bouquet-copy"><span className="eyebrow">{result.label.toLocaleUpperCase('vi')}</span><h2>{current.main.name_vi}<small> + {current.support?.name_vi || 'hoa phụ theo mùa'}</small></h2><p className="bouquet-meaning">{current.meaning}</p><h3>Vì sao gợi ý bó này?</h3><ul>{current.reason.map((reason) => <li key={reason}>{reason}</li>)}<li>Phối thêm {current.foliage.toLocaleLowerCase('vi')}</li></ul><div className="bouquet-palette" aria-label="Bảng màu bó hoa">{current.palette.filter(Boolean).map((value) => <i key={value} style={{ background: value }} title={value}/>)}</div>{current.caution.length > 0 && <p className="bouquet-caution"><b>Lưu ý:</b> {current.caution.join(' ')}</p>}<p className="draft-note">Dữ liệu ý nghĩa và phối dịp hiện là bản nháp chưa xác minh.</p>
-            <div className="bouquet-actions"><button type="button" className="primary-button" onClick={saveBouquet}>Lưu bó vào Sổ hoa</button><button type="button" className="button" onClick={() => { const question = `Mình muốn tặng bó ${current.main.name_vi}${current.support ? ` và ${current.support.name_vi}` : ''} cho ${resultContext?.recipient || recipient} dịp ${resultContext?.occasion || occasion}. Ý nghĩa và lưu ý văn hoá nào cần biết?`; openGardenerWith(question); }}>Hỏi cô làm vườn về bó này</button><button type="button" className="button" onClick={generateGreetings} disabled={greetingBusy}>{greetingBusy ? 'Đang viết lời nhắn…' : 'Viết lời nhắn'}</button></div>
-            {greetings && <section className="gift-greetings"><span className="eyebrow">3 LỜI NHẮN · {greetings.source}</span>{greetings.note && <p className="draft-note">Gemini chưa sẵn sàng; đang dùng mẫu offline. {greetings.note}</p>}<label>Tên người gửi<input value={sender} onChange={(event) => setSender(event.target.value)} placeholder="Tuỳ chọn" maxLength={40}/></label><label>Tên người nhận<input value={recipientName} onChange={(event) => setRecipientName(event.target.value)} placeholder="Tuỳ chọn" maxLength={40}/></label>{greetings.messages.map((message) => <article className="gift-message" key={message.tone}><div><b>{message.tone}</b><p>{message.text}</p></div><button type="button" className="button" onClick={() => saveGreetingCard(message.text, current.main, sender, recipientName)}>Tải thiệp PNG</button></article>)}</section>}
+            <div className="bouquet-actions"><button type="button" className="primary-button" onClick={saveBouquet}>Lưu bó vào Sổ hoa</button><button type="button" className="button" onClick={() => { const question = `Mình muốn tặng bó ${current.main.name_vi}${current.support ? ` và ${current.support.name_vi}` : ''} cho ${resultContext?.recipient || recipient} dịp ${resultContext?.occasion || occasion}. Ý nghĩa và lưu ý văn hoá nào cần biết?`; openGardenerWith(question); }}>Hỏi cô làm vườn về bó này</button><button type="button" className="button" onClick={generateGreetings} disabled={greetingBusy}>{greetingBusy ? 'Đang viết lời nhắn…' : 'Viết lời nhắn'}</button><button type="button" className="button share-bouquet-button" onClick={shareCurrentBouquet} disabled={shareBusy}>{shareBusy ? 'Đang tạo ảnh…' : 'Chia sẻ bó hoa'}</button></div>
+            {shareNotice && <p className="gift-share-status" role="status">{shareNotice}</p>}{shareError && <p className="gift-share-error" role="alert">{shareError}</p>}
+            {greetings && <section className="gift-greetings"><span className="eyebrow">3 LỜI NHẮN · {greetings.source}</span>{greetings.note && <p className="draft-note">Gemini chưa sẵn sàng; đang dùng mẫu offline. {greetings.note}</p>}<label>Tên người gửi<input value={sender} onChange={(event) => setSender(event.target.value)} placeholder="Tuỳ chọn" maxLength={40}/></label><label>Tên người nhận<input value={recipientName} onChange={(event) => setRecipientName(event.target.value)} placeholder="Tuỳ chọn" maxLength={40}/></label>{greetings.messages.map((message) => { const text = greetingEdits[message.tone] ?? message.text; return <article className="gift-message" key={message.tone}><div><b>{message.tone}</b><textarea aria-label={`Sửa lời nhắn ${message.tone}`} value={text} maxLength={500} onChange={(event) => setGreetingEdits((previous) => ({ ...previous, [message.tone]: event.target.value }))}/></div><button type="button" className="button" disabled={!text.trim()} onClick={() => saveGreetingCard(text.trim(), current.main, sender, recipientName)}>Tải thiệp PNG</button></article>; })}</section>}
           </div>
         </article>}
       </>}
