@@ -605,6 +605,8 @@ body{background:#fff;color:var(--ink)}
 .gift-empty>span{display:grid;place-items:center;width:58px;height:58px;border-radius:20px;background:#fbe6e8;color:#e8798d;font-size:29px}
 .gift-empty h2,.giftbook-panel h2{font:500 28px 'Fraunces',Georgia,serif;color:#38523a;margin:15px 0 4px}
 .gift-empty p{max-width:500px;font-size:12px;line-height:1.65}
+.gift-result-context{margin:22px 0 -13px;padding:10px 13px;border-left:2px solid #8caa78;border-radius:0 10px 10px 0;background:#f3f5ec;color:#66745d;font-size:11px;line-height:1.6}
+.gift-result-context b{color:#3d5839}
 .gift-suggestion-tabs{display:flex;gap:9px;overflow:auto;padding:18px 2px 12px;scrollbar-width:thin}
 .gift-suggestion-tabs button{flex:1;min-width:150px;display:grid;gap:4px;text-align:left;border:1px solid #e9e4d8;border-radius:15px;padding:12px 14px;background:#fffdf8;color:#83907b;font-size:9px;font-weight:800;cursor:pointer}
 .gift-suggestion-tabs button span{color:#3e583c;font:500 17px 'Fraunces',Georgia,serif}
