@@ -39,4 +39,11 @@
 
 - Bản nháp chỉ xếp Vạn thọ, Hoa sen và Lay ơn vào dịp chia buồn; không gợi ý ba loài này cho dịp vui. Tập quán thay đổi theo vùng và gia đình; cần người duyệt kiểm chứng trước khi dùng ngoài demo.
 - “Cúc mắt bò” là tên loài trong dữ liệu, không đồng nghĩa với mọi giống hoa cúc thường dùng trong tang lễ/thờ cúng. Không suy rộng phong tục từ tên gọi.
-- Repo chưa có nguồn văn hoá độc lập xác minh ánh xạ dịp/người nhận. Không tự tạo trích dẫn. Nguồn hiện dùng: `data/gift_meanings.json` (bản nháp), `data/species.json` (ý nghĩa/màu chung) và `data/kb/y_nghia_hoa.md` (ý nghĩa chung).
+- Chưa có nguồn độc lập xác minh các ánh xạ cụ thể theo từng loài, dịp và người nhận trong repo. Không tự tạo trích dẫn và giữ `verified=false` cho đến khi có người duyệt.
+
+## Nguồn bối cảnh văn hoá (không xác minh từng ánh xạ)
+
+- [Study on Flowers and Ornamental Plants Sector in Vietnam (2024)](https://www.agroberichtenbuitenland.nl/site/binaries/site-content/collections/documents/2024/03/06/study-on-flowers-and-ornamental-plants-sector-in-vietnam/Study%2BFlowers%2Band%2BOrnamental%2BPlants%2Bsector%2Bin%2BVietnam%2B-%2Bfinal%2Bupdate%2Bversion%2B8%2BApril%2B2024.pdf): báo cáo ngành đề cập hoa được dùng trong dịp lễ, sinh nhật, kỷ niệm, đám tang, dâng cúng và làm quà; đồng thời ghi nhận khác biệt vùng miền. Đây chỉ là bối cảnh chung, không xác nhận loài hoa cụ thể phù hợp với từng dịp/người nhận trong bảng.
+- [Pew Research Center — Ancestor veneration, funerals and afterlife beliefs (2024)](https://www.pewresearch.org/religion/2024/06/17/ancestor-veneration-funerals-and-afterlife-beliefs/): khảo sát về thực hành thờ kính tổ tiên tại Việt Nam có đề cập việc dâng hoa và nến. Nguồn này không xác nhận ý nghĩa của từng loài hoa hoặc quy tắc chọn quà.
+
+Các nguồn nền hiện dùng: `data/species.json` và `data/kb/y_nghia_hoa.md` cho mô tả/ý nghĩa chung; `data/gift_meanings.json` vẫn là bản nháp cần kiểm chứng theo từng ánh xạ.

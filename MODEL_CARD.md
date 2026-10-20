@@ -70,7 +70,7 @@ Tái tạo phép đo: `.venv/Scripts/python scripts/evaluate_flower_detector.py`
 
 ### Tặng hoa — hệ thống quy tắc, không phải mô hình AI
 
-- `data/gift_meanings.json` có 103 mục: 28 loài ứng viên (`gift_ok=true`) và 75 loài chỉ giữ ý nghĩa chung từ `species.json`; tất cả mục hiện `verified=false`. Các ánh xạ dịp/người nhận và lưu ý tập quán là bản nháp, chưa có nguồn văn hoá độc lập trong repo để xác minh.
+- `data/gift_meanings.json` có 103 mục: 28 loài ứng viên (`gift_ok=true`) và 75 loài chỉ giữ ý nghĩa chung từ `species.json`; tất cả mục hiện `verified=false`. Repo có nguồn bối cảnh văn hoá tổng quát trong `data/kb/y_nghia_tang_hoa.md`, nhưng chưa có nguồn xác minh từng ánh xạ loài–dịp–người nhận; các ánh xạ và lưu ý tập quán vẫn là bản nháp.
 - Bộ gợi ý chấm quy tắc theo dịp, người nhận và màu, loại các dịp được đánh dấu tránh, rồi trả tối đa ba phối bó. API `POST /api/gifts/recommend` chỉ đọc JSON cục bộ, không nạp thêm model. Độ đúng gợi ý, mức phù hợp văn hoá và chất lượng bó: **chưa đo**.
 - Lời nhắn có thể dùng Gemini qua endpoint chatbot hiện có; khi endpoint lỗi/quota, giao diện chuyển sang ba mẫu offline. Lời nhắn và ý nghĩa không được xem là nguồn văn hoá.
 - `data/kb/y_nghia_tang_hoa.md` đưa các bản nháp vào RAG với trích dẫn nội bộ; chatbot phải nói rõ dữ liệu chưa xác minh. Ý nghĩa hoa thay đổi theo vùng miền, tôn giáo, gia đình, màu và quan hệ người tặng/người nhận. Cần hỏi người nhận/gia đình trong tình huống nhạy cảm, nhất là chia buồn/thờ cúng.
