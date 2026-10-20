@@ -13,6 +13,19 @@ export function readGiftBook() {
   }
 }
 
+export function recentUniqueRecognitions(recognitions, limit = 8) {
+  if (!Array.isArray(recognitions) || !Number.isFinite(limit) || limit < 1) return [];
+  const seen = new Set();
+  const recent = [];
+  for (const entry of recognitions) {
+    if (typeof entry?.speciesId !== 'string' || !entry.speciesId || seen.has(entry.speciesId)) continue;
+    seen.add(entry.speciesId);
+    recent.push(entry);
+    if (recent.length >= Math.floor(limit)) break;
+  }
+  return recent;
+}
+
 export function writeGiftBook(next) {
   const value = {
     recognitions: Array.isArray(next.recognitions) ? next.recognitions.slice(-100) : [],

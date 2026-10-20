@@ -3,7 +3,7 @@ import speciesData from '../../data/species.json';
 import giftData from '../../data/gift_meanings.json';
 import displayData from '../../data/display_images.json';
 import { friendlyFailure, postJson } from './api.js';
-import { openGardenerWith, readGiftBook, writeGiftBook } from './giftBook.js';
+import { openGardenerWith, readGiftBook, recentUniqueRecognitions, rememberFavorite, writeGiftBook } from './giftBook.js';
 import { GIFT_INTENTS, intentForOccasion, isCompatiblePreferredFlower } from './giftFlow.js';
 import { isValidGreetingCache, offlineMessages, parseGeneratedGreetings } from './giftGreetings.js';
 
@@ -196,6 +196,7 @@ export default function GiftAdvisor() {
   });
   const current = result?.suggestions?.[selected];
   const uniqueRecognized = useMemo(() => new Set(book.recognitions.map((item) => item.speciesId)).size, [book]);
+  const recentRecognized = useMemo(() => recentUniqueRecognitions(book.recognitions, 8), [book]);
 
   useEffect(() => {
     const update = () => setBook(readGiftBook());
@@ -301,6 +302,33 @@ export default function GiftAdvisor() {
     setBook(writeGiftBook(empty));
   }
 
+  function recommendWithFlower(speciesId) {
+    const entry = GIFT_SPECIES.find((item) => item.species_id === speciesId);
+    if (!entry) {
+      setTab('gift');
+      setError('Loài này đã được lưu, nhưng hiện chưa có dữ liệu phối bó phù hợp.');
+      return;
+    }
+    const nextOccasion = [occasion, ...entry.occasions].find((candidate) => isCompatiblePreferredFlower(entry, candidate));
+    if (!nextOccasion) {
+      setTab('gift');
+      setError('Loài này chưa có dịp tặng phù hợp trong dữ liệu hiện tại.');
+      return;
+    }
+    const nextColor = color || entry.colors[0]?.match(/#[0-9a-f]{6}/i)?.[0] || '';
+    setTab('gift');
+    setError('');
+    setPreferredFlowerId(speciesId);
+    setOccasion(nextOccasion);
+    setIntent(intentForOccasion(nextOccasion)?.id || '');
+    setColor(nextColor);
+    void getSuggestions(null, { occasion: nextOccasion, recipient, color: nextColor, size, preferredFlowerId: speciesId });
+  }
+
+  function removeFavorite(speciesId) {
+    setBook(rememberFavorite(speciesId));
+  }
+
   const recommendationNames = (entry) => entry?.[0] === 'mainId' ? SPECIES[entry[1]]?.name_vi : SPECIES[entry?.[1]]?.name_vi;
 
   return <main className="gift-page section-wrap">
@@ -338,7 +366,8 @@ export default function GiftAdvisor() {
       <header><div><span className="eyebrow">LƯU CỤC BỘ TRÊN THIẾT BỊ</span><h2>Sổ hoa của tôi</h2><p>Không cần đăng nhập. Dữ liệu chỉ nằm trong trình duyệt này.</p></div><button className="button danger-button" type="button" onClick={clearBook} disabled={!book.recognitions.length && !book.favorites.length && !book.bouquets.length}>Xoá dữ liệu</button></header>
       <div className="giftbook-stats"><div><b>{uniqueRecognized}</b><span>loài đã nhận diện</span></div><div><b>{book.favorites.length}</b><span>hoa yêu thích</span></div><div><b>{book.bouquets.length}</b><span>bó đã phối</span></div></div>
       <h3>Bó hoa đã lưu</h3>{book.bouquets.length ? <div className="giftbook-list">{book.bouquets.map((bouquet) => <article key={bouquet.id}><span className="giftbook-icon">✿</span><div><b>{recommendationNames(['mainId', bouquet.mainId])}{bouquet.supportId ? ` + ${SPECIES[bouquet.supportId]?.name_vi || ''}` : ''}</b><small>{bouquet.occasion} · {bouquet.recipient} · {bouquet.size}</small></div><button className="text-link" type="button" onClick={() => { setTab('gift'); void getSuggestions(null, { occasion: bouquet.occasion, recipient: bouquet.recipient, color: bouquet.color || '', size: bouquet.size, preferredFlowerId: bouquet.mainId }); }}>Phối lại →</button></article>)}</div> : <p className="muted">Chưa có bó hoa nào được lưu.</p>}
-      <h3>Hoa yêu thích</h3>{book.favorites.length ? <div className="giftbook-chips">{book.favorites.map((id) => <span key={id}>✿ {SPECIES[id]?.name_vi || id}</span>)}</div> : <p className="muted">Lưu hoa yêu thích từ kết quả nhận diện.</p>}
+      <h3>Hoa nhận diện gần đây</h3>{recentRecognized.length ? <div className="giftbook-list giftbook-flowers">{recentRecognized.map((item) => { const flower = SPECIES[item.speciesId]; if (!flower) return null; const date = item.at && !Number.isNaN(Date.parse(item.at)) ? new Date(item.at).toLocaleDateString('vi-VN') : 'Chưa rõ ngày'; return <article key={item.speciesId}><img src={imageFor(flower)} alt="" loading="lazy"/><div><b>{flower.name_vi}</b><small>Nhận diện ngày {date}</small></div>{GIFT_SPECIES.some((entry) => entry.species_id === item.speciesId) ? <button className="text-link" type="button" onClick={() => recommendWithFlower(item.speciesId)}>Phối bó →</button> : <a className="text-link" href={`/bach-khoa/${encodeURIComponent(item.speciesId)}`}>Khám phá →</a>}</article>; })}</div> : <p className="muted">Hoa bạn nhận diện sẽ xuất hiện ở đây.</p>}
+      <h3>Hoa yêu thích</h3>{book.favorites.length ? <div className="giftbook-list giftbook-flowers">{book.favorites.map((id) => { const flower = SPECIES[id]; if (!flower) return null; return <article key={id}><img src={imageFor(flower)} alt="" loading="lazy"/><div><b>{flower.name_vi}</b><small>Đã lưu trong Sổ hoa</small></div>{GIFT_SPECIES.some((entry) => entry.species_id === id) ? <button className="text-link" type="button" onClick={() => recommendWithFlower(id)}>Phối bó →</button> : <a className="text-link" href={`/bach-khoa/${encodeURIComponent(id)}`}>Khám phá →</a>}<button className="giftbook-remove" type="button" aria-label={`Bỏ ${flower.name_vi} khỏi yêu thích`} onClick={() => removeFavorite(id)}>×</button></article>; })}</div> : <p className="muted">Lưu hoa yêu thích từ kết quả nhận diện.</p>}
     </section>}
   </main>;
 }

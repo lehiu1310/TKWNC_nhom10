@@ -18,7 +18,7 @@ globalThis.CustomEvent = class CustomEvent {
 };
 globalThis.window = { dispatchEvent: (event) => events.push(event.type) };
 
-const { openGardenerWith, readGiftBook, rememberFavorite, rememberRecognition, writeGiftBook } = await import('./giftBook.js');
+const { openGardenerWith, readGiftBook, recentUniqueRecognitions, rememberFavorite, rememberRecognition, writeGiftBook } = await import('./giftBook.js');
 
 beforeEach(() => {
   values.clear();
@@ -52,4 +52,16 @@ test('prefills the gardener chat for this session', () => {
   openGardenerWith('Hoa này hợp tặng dịp nào?');
   assert.equal(sessionValues.get('garden-chat-prefill'), 'Hoa này hợp tặng dịp nào?');
   assert.deepEqual(events, ['garden:open-chat']);
+});
+
+test('returns recent recognized species once, preserving the latest encounter', () => {
+  const records = [
+    { speciesId: 'roses', at: 'newest' },
+    { speciesId: 'daisy', at: 'second' },
+    { speciesId: 'roses', at: 'older' },
+    { speciesId: 'tulips', at: 'third' },
+  ];
+  assert.deepEqual(recentUniqueRecognitions(records, 2), records.slice(0, 2));
+  assert.deepEqual(recentUniqueRecognitions(records, 0), []);
+  assert.deepEqual(recentUniqueRecognitions(null), []);
 });

@@ -805,6 +805,19 @@ body:has(.gift-page){background:radial-gradient(ellipse at 7% 12%,rgba(244,183,1
 @keyframes flower-thumb-pulse{0%,100%{opacity:.62;transform:scale(.94)}50%{opacity:1;transform:scale(1.07)}}
 @media(prefers-reduced-motion:reduce){.rose-picker-art img,.rose-picker-loader{animation:none}.rose-picker-card{transition:none}}
 @media(prefers-reduced-motion:reduce){.rose-reset{transition:none}.rose-reset:hover{transform:none}}
+/* Gift book entries stay scannable while keeping saved flowers actionable. */
+.giftbook-flowers article{gap:11px;min-height:64px}
+.giftbook-flowers article>img{flex:none;width:48px;height:48px;border-radius:12px;object-fit:cover;background:#f1eee5;box-shadow:0 2px 8px #31422b16}
+.giftbook-flowers article>div{min-width:0}
+.giftbook-flowers article>div b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.giftbook-flowers article>div small{display:block;margin-top:3px;font-size:10px}
+.giftbook-flowers article>.text-link{flex:none;border:0;background:none;padding:7px 3px;color:#426b49;font:inherit;font-size:10px;font-weight:800;white-space:nowrap;cursor:pointer}
+.giftbook-flowers article>.text-link:hover{text-decoration:underline;text-underline-offset:3px}
+.giftbook-remove{flex:none;width:27px;height:27px;border:1px solid #eadbd5;border-radius:50%;background:#fff6f2;color:#a85c5b;font-size:18px;line-height:1;cursor:pointer;transition:background .18s,transform .18s}
+.giftbook-remove:hover{transform:scale(1.06);background:#fbe9e3}
+.giftbook-remove:focus-visible,.giftbook-flowers article>.text-link:focus-visible{outline:2px solid #78966e;outline-offset:2px;border-radius:6px}
+@media(max-width:540px){.giftbook-flowers article{gap:8px}.giftbook-flowers article>img{width:42px;height:42px}.giftbook-flowers article>.text-link{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.giftbook-remove{transition:none}.giftbook-remove:hover{transform:none}}
 /* Genuine reference-photo fallback for flower forms not represented by the procedural templates. */
 .rose-photo-fallback{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;border-radius:inherit;background:linear-gradient(145deg,#fff7f0,#eaf2e2)}
 .rose-photo-fallback img{width:min(76%,620px);height:min(76%,620px);aspect-ratio:1;object-fit:cover;border-radius:50% 50% 46% 46%;box-shadow:0 24px 60px rgba(55,68,48,.2);}
