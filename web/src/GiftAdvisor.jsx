@@ -17,38 +17,6 @@ function imageFor(flower) {
   return displayData.images[featuredKey]?.url || `/images/gift-flowers/${encodeURIComponent(flower.id)}.jpg`;
 }
 
-function recommendLocally(occasion, recipient, color, size) {
-  const numbers = { nhỏ: 5, vừa: 9, lớn: 15 };
-  const eligible = GIFT_SPECIES.filter((entry) => entry.occasions.includes(occasion)
-    && !entry.avoid_occasions?.includes(occasion)
-    && !(occasion !== 'chia buồn' && entry.avoid_for.some((note) => note.includes('Không tự gợi ý cho dịp vui'))))
-    .map((entry) => {
-      const flower = SPECIES[entry.species_id];
-      const recipientMatch = entry.recipients.includes(recipient);
-      const colorMatch = Boolean(color && entry.colors.some((value) => value.includes(color)));
-      return { entry, flower, recipientMatch, colorMatch, score: 4 + (recipientMatch ? 3 : 0) + (colorMatch ? 2 : 0) };
-    }).filter((item) => item.flower)
-    .sort((a, b) => b.score - a.score || (a.flower.featured_order || 999) - (b.flower.featured_order || 999) || a.flower.name_vi.localeCompare(b.flower.name_vi, 'vi'));
-  if (!eligible.length) throw new Error('Chưa có gợi ý phù hợp. Hãy chọn dịp khác.');
-  const suggestions = eligible.slice(0, 3).map((item, index) => {
-    const support = eligible.find((candidate) => candidate.flower.id !== item.flower.id);
-    const reason = [`dữ liệu nháp có gắn với dịp ${occasion}`];
-    if (item.recipientMatch) reason.push(`phù hợp nhóm người nhận ${recipient} theo dữ liệu nháp`);
-    else reason.push('điểm người nhận trung tính vì chưa có ghép cụ thể');
-    if (item.colorMatch) reason.push('màu được chọn có trong dữ liệu màu của loài');
-    const card = (flower, entry) => flower && ({ id: flower.id, name_vi: flower.name_vi, name_en: flower.name_en, meaning: entry.meanings.chung || flower.meaning, color: flower.color, image: flower.image, display_image_key: flower.display_image_key });
-    return {
-      id: `${item.flower.id}-${index}`, main: card(item.flower, item.entry),
-      support: support ? card(support.flower, support.entry) : null,
-      foliage: 'Lá xanh trung tính (phần phối trang trí, không phải dữ liệu loài).',
-      meaning: item.entry.meanings.chung || item.flower.meaning, reason,
-      caution: item.entry.avoid_for, score: item.score, stem_count: numbers[size],
-      palette: [item.flower.color, support?.flower.color].filter(Boolean), verified: false,
-    };
-  });
-  return { occasion, recipient, size, suggestions, label: 'Gợi ý dựa trên dữ liệu ý nghĩa hoa', verified: false };
-}
-
 function offlineMessages(bundle, recipient, occasion) {
   const flower = bundle.main.name_vi;
   const name = recipient === 'người yêu' ? 'em' : recipient === 'mẹ' ? 'mẹ' : recipient === 'bố' ? 'bố' : recipient === 'thầy cô' ? 'thầy/cô' : 'bạn';
@@ -139,6 +107,10 @@ export default function GiftAdvisor() {
   const [recipientName, setRecipientName] = useState('');
   const [book, setBook] = useState(readGiftBook);
   const [tab, setTab] = useState('gift');
+  const [preferredFlowerId, setPreferredFlowerId] = useState(() => {
+    const id = new URLSearchParams(window.location.search).get('flower');
+    return id && GIFT_SPECIES.some((entry) => entry.species_id === id) ? id : '';
+  });
   const current = result?.suggestions?.[selected];
   const uniqueRecognized = useMemo(() => new Set(book.recognitions.map((item) => item.speciesId)).size, [book]);
 
@@ -154,17 +126,33 @@ export default function GiftAdvisor() {
     if (!id) return;
     const entry = GIFT_SPECIES.find((item) => item.species_id === id);
     const flower = SPECIES[id];
-    if (!entry || !flower) return;
-    const validOccasion = entry.occasions[0];
+    if (!entry || !flower) { setPreferredFlowerId(''); return; }
+    const validOccasion = entry.occasions.find((item) => !entry.avoid_occasions?.includes(item));
     if (validOccasion) setOccasion(validOccasion);
     setColor(entry.colors[0]?.match(/#[0-9a-f]{6}/i)?.[0] || '');
   }, []);
 
   async function getSuggestions(event) {
-    event.preventDefault(); setBusy(true); setError(''); setGreetings(null); setSelected(0);
-    try { setResult(recommendLocally(occasion, recipient, color, size)); }
-    catch (requestError) { setError(requestError.message || friendlyFailure(requestError)); }
+    event.preventDefault(); setBusy(true); setError(''); setResult(null); setGreetings(null); setSelected(0);
+    try {
+      const data = await postJson('/api/gifts/recommend', {
+        occasion, recipient, color: color || null, size,
+        preferred_species_id: preferredFlowerId || null,
+      });
+      setResult(data);
+    }
+    catch (requestError) {
+      const clientMessage = /^400:\s*(.*)$/.exec(requestError.message || '')?.[1];
+      setError(clientMessage || friendlyFailure(requestError));
+    }
     finally { setBusy(false); }
+  }
+
+  function clearPreferredFlower() {
+    setPreferredFlowerId('');
+    const url = new URL(window.location.href);
+    url.searchParams.delete('flower');
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
   async function generateGreetings() {
@@ -199,6 +187,7 @@ export default function GiftAdvisor() {
         <label>Quy mô<select value={size} onChange={(event) => setSize(event.target.value)}>{SIZES.map((item) => <option key={item}>{item}</option>)}</select><small>{size === 'nhỏ' ? '5' : size === 'vừa' ? '9' : '15'} cành · không hiển thị giá</small></label>
         <button className="primary-button" type="submit" disabled={busy}>{busy ? 'Đang phối gợi ý…' : 'Tìm bó hoa phù hợp'} <span>↗</span></button>
       </form>
+      {preferredFlowerId && SPECIES[preferredFlowerId] && <p className="gift-preferred-flower">Hoa chính đã chọn: <b>{SPECIES[preferredFlowerId].name_vi}</b><button type="button" onClick={clearPreferredFlower}>Bỏ lựa chọn</button></p>}
       {error && <div className="friendly-error" role="alert"><p>{error}</p><button className="button" type="button" onClick={() => getSuggestions({ preventDefault() {} })}>Thử lại</button></div>}
       {result && <>
         <div className="gift-suggestion-tabs" role="tablist" aria-label="Ba gợi ý bó hoa">{result.suggestions.map((suggestion, index) => <button type="button" key={suggestion.id} className={selected === index ? 'active' : ''} onClick={() => { setSelected(index); setGreetings(null); }}>Gợi ý 0{index + 1}<span>{suggestion.main.name_vi}</span></button>)}</div>

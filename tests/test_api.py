@@ -333,3 +333,18 @@ def test_gift_recommendation_rejects_unknown_occasion_as_400(client):
 def test_gift_recommendation_missing_fields_is_422(client):
     response = client.post("/api/gifts/recommend", json={"occasion": "sinh nhật"})
     assert response.status_code == 422
+
+
+def test_gift_recommendation_keeps_preferred_flower_as_primary(client):
+    response = client.post("/api/gifts/recommend", json={
+        "occasion": "Valentine", "recipient": "người yêu", "preferred_species_id": "roses",
+    })
+    assert response.status_code == 200
+    assert response.json()["suggestions"][0]["main"]["id"] == "roses"
+
+
+def test_gift_recommendation_rejects_unknown_preferred_flower(client):
+    response = client.post("/api/gifts/recommend", json={
+        "occasion": "Valentine", "recipient": "người yêu", "preferred_species_id": "unknown-flower",
+    })
+    assert response.status_code == 400

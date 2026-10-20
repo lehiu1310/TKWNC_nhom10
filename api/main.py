@@ -308,13 +308,14 @@ class GiftRecommendationRequest(BaseModel):
     recipient: str = Field(..., min_length=1, max_length=32)
     color: str | None = Field(None, max_length=32)
     size: str = Field("vừa", min_length=1, max_length=16)
+    preferred_species_id: str | None = Field(None, max_length=128)
 
 
 @app.post("/api/gifts/recommend")
 def gift_recommendation(req: GiftRecommendationRequest):
     """Rule/data-based bouquet suggestions; this endpoint does not call an AI model."""
     try:
-        return recommend_gifts(req.occasion, req.recipient, req.color, req.size)
+        return recommend_gifts(req.occasion, req.recipient, req.color, req.size, req.preferred_species_id)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
 

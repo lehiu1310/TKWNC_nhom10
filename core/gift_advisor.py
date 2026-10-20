@@ -24,18 +24,32 @@ def _norm(value: str) -> str:
     return re.sub(r"\s+", " ", value.strip().casefold())
 
 
-def recommend_gifts(occasion: str, recipient: str, color: str | None = None, size: str = "vừa") -> dict:
+def recommend_gifts(occasion: str, recipient: str, color: str | None = None, size: str = "vừa",
+                    preferred_species_id: str | None = None) -> dict:
     occasion_key = _norm(occasion)
     recipient_key = _norm(recipient)
     size_key = _norm(size)
-    if occasion_key not in {_norm(x) for x in OCCASIONS}:
+    occasion = next((item for item in OCCASIONS if _norm(item) == occasion_key), None)
+    recipient = next((item for item in RECIPIENTS if _norm(item) == recipient_key), None)
+    size = next((item for item in SIZES if _norm(item) == size_key), None)
+    if occasion is None:
         raise ValueError("Dịp tặng hoa chưa có trong danh sách.")
-    if recipient_key not in {_norm(x) for x in RECIPIENTS}:
+    if recipient is None:
         raise ValueError("Người nhận chưa có trong danh sách.")
-    if size_key not in {_norm(x) for x in SIZES}:
+    if size is None:
         raise ValueError("Quy mô bó phải là nhỏ, vừa hoặc lớn.")
+    if preferred_species_id is not None and not isinstance(preferred_species_id, str):
+        raise ValueError("Mã loài được chọn không hợp lệ.")
+    preferred_species_id = preferred_species_id.strip() if preferred_species_id else None
+    if preferred_species_id == "":
+        preferred_species_id = None
 
     entries, species = _catalog()
+    if preferred_species_id and preferred_species_id not in species:
+        raise ValueError("Không tìm thấy loài hoa đã chọn.")
+    preferred_entry = next((entry for entry in entries if entry["species_id"] == preferred_species_id), None)
+    if preferred_species_id and not preferred_entry:
+        raise ValueError("Loài đã chọn chưa có dữ liệu để gợi ý tặng.")
     candidates = []
     for entry in entries:
         if not entry.get("gift_ok"):
@@ -55,7 +69,13 @@ def recommend_gifts(occasion: str, recipient: str, color: str | None = None, siz
         score = 4 + (3 if matched_recipient else 0) + (2 if matched_color else 0)
         candidates.append((score, entry, flower, matched_recipient, matched_color))
 
-    candidates.sort(key=lambda item: (-item[0], item[2].get("featured_order", 999), item[2]["name_vi"]))
+    if preferred_species_id and not any(item[2]["id"] == preferred_species_id for item in candidates):
+        raise ValueError("Loài đã chọn chưa có dữ liệu phù hợp cho dịp này.")
+
+    candidates.sort(key=lambda item: (
+        0 if item[2]["id"] == preferred_species_id else 1,
+        -item[0], item[2].get("featured_order", 999), item[2]["name_vi"],
+    ))
     if not candidates:
         raise ValueError("Chưa có gợi ý đã duyệt phù hợp với dịp này. Hãy chọn dịp khác.")
 
@@ -68,6 +88,8 @@ def recommend_gifts(occasion: str, recipient: str, color: str | None = None, siz
             reasons.append(f"phù hợp nhóm người nhận {recipient} theo dữ liệu nháp")
         if matched_color:
             reasons.append("màu được chọn có trong dữ liệu màu của loài")
+        if flower["id"] == preferred_species_id:
+            reasons.append("giữ loài hoa bạn đã chọn làm hoa chính")
         if not matched_recipient:
             reasons.append("điểm người nhận trung tính vì chưa có ghép cụ thể")
         meanings = entry.get("meanings", {}).get("chung") or flower.get("meaning", "")
