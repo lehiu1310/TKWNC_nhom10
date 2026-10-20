@@ -37,6 +37,26 @@ def test_each_gift_eligible_flower_stays_primary_for_every_compatible_occasion()
             assert result["suggestions"][0]["main"]["id"] == entry["species_id"]
 
 
+def test_gift_data_covers_catalog_and_has_auditable_fields():
+    root = Path(__file__).resolve().parents[1]
+    gift_data = json.loads((root / "data" / "gift_meanings.json").read_text(encoding="utf-8"))
+    species = json.loads((root / "data" / "species.json").read_text(encoding="utf-8"))
+    entries = gift_data["species"]
+    ids = [entry["species_id"] for entry in entries]
+
+    assert len(ids) == len(set(ids))
+    assert set(ids) == {flower["id"] for flower in species}
+    for entry in entries:
+        assert isinstance(entry["gift_ok"], bool)
+        assert isinstance(entry["meanings"], dict)
+        assert isinstance(entry["size_note"], str)
+        assert isinstance(entry["sources"], list) and all(source.strip() for source in entry["sources"])
+        if entry["gift_ok"]:
+            assert entry["occasions"] and set(entry["occasions"]) <= set(gift_data["occasions"])
+            assert entry["recipients"] and set(entry["recipients"]) <= set(gift_data["recipients"])
+            assert entry["colors"]
+
+
 def test_consolation_suggestions_exclude_flowers_flagged_for_joyful_events():
     result = recommend_gifts("chia buồn", "mẹ")
     main_ids = {item["main"]["id"] for item in result["suggestions"]}
