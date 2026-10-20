@@ -17,10 +17,15 @@ export default function Chat() {
   }, []);
 
   useEffect(() => {
-    const question = sessionStorage.getItem('garden-chat-prefill');
-    if (!question) return;
-    sessionStorage.removeItem('garden-chat-prefill');
-    void sendQuestion(question, []);
+    // Defer one task so React StrictMode's development-only effect cleanup
+    // cannot abort the auto-prefilled SSE request before it starts.
+    const prefillTimer = window.setTimeout(() => {
+      const question = sessionStorage.getItem('garden-chat-prefill');
+      if (!question) return;
+      sessionStorage.removeItem('garden-chat-prefill');
+      void sendQuestion(question, []);
+    }, 0);
+    return () => window.clearTimeout(prefillTimer);
   }, []);
 
   function patchLastAssistant(update) {

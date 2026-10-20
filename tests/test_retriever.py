@@ -265,6 +265,53 @@ def test_gemini_unavailable_returns_grounded_fallback():
     assert "[hoa_hong.md]" in answer["answer"]
 
 
+def test_gemini_empty_stream_returns_grounded_fallback():
+    from threading import Lock
+
+    class Models:
+        def generate_content_stream(self, **kwargs):
+            return [type("Chunk", (), {"text": ""})()]
+
+    bot = object.__new__(RAGChatbot)
+    bot.provider = "gemini"
+    bot.model_name = "test-model"
+    bot._lock = Lock()
+    bot.retriever = Retriever([{
+        "source": "hoa_hong.md",
+        "text": "Hoa hồng đỏ thường tượng trưng cho tình yêu và sự trân trọng.",
+    }])
+    bot.client = type("Client", (), {"models": Models()})()
+
+    answer = bot.answer("Hoa hồng có ý nghĩa gì?")
+
+    assert "tình yêu" in answer["answer"]
+    assert "[hoa_hong.md]" in answer["answer"]
+
+
+def test_gemini_busy_lock_returns_grounded_fallback_without_waiting():
+    class BusyLock:
+        def acquire(self, timeout=None):
+            return False
+
+        def release(self):
+            raise AssertionError("A lock not acquired must not be released")
+
+    bot = object.__new__(RAGChatbot)
+    bot.provider = "gemini"
+    bot.model_name = "test-model"
+    bot._lock = BusyLock()
+    bot.retriever = Retriever([{
+        "source": "hoa_hong.md",
+        "text": "Hoa hồng đỏ thường tượng trưng cho tình yêu và sự trân trọng.",
+    }])
+    bot.client = object()
+
+    answer = bot.answer("Hoa hồng có ý nghĩa gì?")
+
+    assert "tình yêu" in answer["answer"]
+    assert "[hoa_hong.md]" in answer["answer"]
+
+
 def test_image_search_label_filter_applies_before_page_limit():
     ranked = [
         {"label": "rose", "species_id": "roses"},

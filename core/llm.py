@@ -301,7 +301,13 @@ class RAGChatbot:
             prompt = f"Lịch sử gần đây:\n{conversation or '(chưa có)'}\n\nCâu hỏi: {question}\n\nTÀI LIỆU:\n{docs}"
 
             def gemini_tokens():
-                with self._lock:
+                # Avoid a second chat request waiting indefinitely behind a
+                # Gemini stream that has stalled while holding the shared lock.
+                if not self._lock.acquire(timeout=5.0):
+                    log.warning("Gemini stream is busy; returning retrieved RAG context.")
+                    yield self._retrieval_fallback(contexts, question)
+                    return
+                try:
                     emitted = False
                     attempt = 0
                     while True:
@@ -315,6 +321,13 @@ class RAGChatbot:
                                 if chunk.text:
                                     emitted = True
                                     yield chunk.text
+                            if not emitted:
+                                # Gemini can finish a stream successfully but return no
+                                # text (for example, when a response is filtered). Keep
+                                # the chat bubble useful and grounded instead of ending
+                                # with an empty assistant message.
+                                log.warning("Gemini stream completed without text; returning retrieved RAG context.")
+                                yield self._retrieval_fallback(contexts, question)
                             return
                         except Exception as exc:
                             status = (getattr(exc, "code", None)
@@ -333,6 +346,8 @@ class RAGChatbot:
                                 yield "Gemini đang quá tải; mình đã thử kết nối lại một lần. "
                             yield self._retrieval_fallback(contexts, question)
                             return
+                finally:
+                    self._lock.release()
 
             return contexts, gemini_tokens()
 
