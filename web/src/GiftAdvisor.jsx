@@ -4,7 +4,7 @@ import giftData from '../../data/gift_meanings.json';
 import displayData from '../../data/display_images.json';
 import { friendlyFailure, postJson } from './api.js';
 import { openGardenerWith, readGiftBook, writeGiftBook } from './giftBook.js';
-import { offlineMessages } from './giftGreetings.js';
+import { isValidGreetingCache, offlineMessages, parseGeneratedGreetings } from './giftGreetings.js';
 
 const OCCASIONS = giftData.occasions;
 const RECIPIENTS = giftData.recipients;
@@ -22,7 +22,7 @@ async function makeMessages(bundle, recipient, occasion) {
   const cacheKey = `gift-greetings-v2:${bundle.main.id}:${recipient}:${occasion}`;
   try {
     const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (Array.isArray(cached) && cached.length === 3) return { messages: cached, cached: true, source: 'Gemini (bản đã lưu)' };
+    if (isValidGreetingCache(cached)) return { messages: cached, cached: true, source: 'Gemini (bản đã lưu)' };
   } catch { /* Ignore malformed local cache. */ }
   const fallback = offlineMessages(bundle, recipient, occasion);
   const controller = new AbortController();
@@ -34,16 +34,10 @@ async function makeMessages(bundle, recipient, occasion) {
       message: `Hãy viết đúng 3 lời nhắn ngắn bằng tiếng Việt để tặng ${recipient} dịp ${occasion}, kèm bó ${bundle.main.name_vi}${bundle.support ? ` và ${bundle.support.name_vi}` : ''}. Ý nghĩa dữ liệu hiện có: ${bundle.meaning}. Viết thành ba dòng, lần lượt mở đầu bằng “Trìu mến:”, “Trang trọng:” và “Vui vẻ:”. Mỗi lời tối đa 35 từ. Không bịa ý nghĩa văn hoá hoặc nguồn trích dẫn.`,
       history: [],
     }, { signal: controller.signal });
-    const lines = String(response.answer || '').split('\n').map((line) => line.replace(/^[-*\d.)\s]+/, '').trim()).filter(Boolean);
-    const tones = ['Trìu mến', 'Trang trọng', 'Vui vẻ'];
-    const matchedLines = tones.map((tone) => lines.find((line) => new RegExp(`^${tone}:`, 'i').test(line)));
-    if (matchedLines.some((line) => !line)) {
+    const messages = parseGeneratedGreetings(response.answer);
+    if (!messages) {
       return { messages: fallback, cached: false, source: 'Mẫu offline', note: 'Chatbot chưa tạo đủ ba lời nhắn theo định dạng yêu cầu.' };
     }
-    const messages = tones.map((tone, index) => ({
-      tone,
-      text: matchedLines[index].replace(new RegExp(`^${tone}:\\s*`, 'i'), ''),
-    }));
     localStorage.setItem(cacheKey, JSON.stringify(messages));
     return { messages, cached: false, source: 'Gemini qua API chatbot' };
   } catch (error) {

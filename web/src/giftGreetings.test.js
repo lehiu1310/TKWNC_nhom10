@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { offlineMessages } from './giftGreetings.js';
+import { isValidGreetingCache, offlineMessages, parseGeneratedGreetings } from './giftGreetings.js';
 
 const bundle = { main: { name_vi: 'Hoa hồng' } };
 
@@ -22,4 +22,19 @@ test('sensitive occasions use context-appropriate language instead of festive te
   }
   assert.match(offlineMessages(bundle, 'mẹ', 'chia buồn')[0].text, /chia buồn/);
   assert.match(offlineMessages(bundle, 'thầy cô', '20/11')[0].text, /Nhà giáo Việt Nam/);
+});
+
+test('parses all three labeled generated messages and rejects empty or incomplete output', () => {
+  const parsed = parseGeneratedGreetings('Trìu mến: Một lời nhắn.\n2. Trang trọng: Lời nhắn trang trọng.\n- Vui vẻ: Lời nhắn vui.');
+  assert.deepEqual(parsed.map((item) => item.tone), ['Trìu mến', 'Trang trọng', 'Vui vẻ']);
+  assert.equal(parsed[0].text, 'Một lời nhắn.');
+  assert.equal(parseGeneratedGreetings('Trìu mến:\nTrang trọng: Có nội dung.\nVui vẻ: Có nội dung.'), null);
+  assert.equal(parseGeneratedGreetings('Một đoạn văn tự do không theo định dạng.'), null);
+});
+
+test('rejects malformed cached messages before rendering them', () => {
+  const valid = offlineMessages(bundle, 'mẹ', 'sinh nhật');
+  assert.equal(isValidGreetingCache(valid), true);
+  assert.equal(isValidGreetingCache([valid[0], null, valid[2]]), false);
+  assert.equal(isValidGreetingCache(valid.map((item) => ({ ...item, text: '' }))), false);
 });

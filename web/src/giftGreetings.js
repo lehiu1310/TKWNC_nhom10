@@ -62,3 +62,28 @@ export function offlineMessages(bundle, recipient, occasion) {
     text,
   }));
 }
+
+const GREETING_TONES = ['Trìu mến', 'Trang trọng', 'Vui vẻ'];
+
+export function isValidGreetingCache(value) {
+  return Array.isArray(value)
+    && value.length === GREETING_TONES.length
+    && value.every((item, index) => item?.tone === GREETING_TONES[index]
+      && typeof item.text === 'string'
+      && item.text.trim().length > 0
+      && item.text.trim().length <= 500);
+}
+
+export function parseGeneratedGreetings(answer) {
+  if (typeof answer !== 'string') return null;
+  const matches = new Map();
+  for (const line of answer.split(/\r?\n/)) {
+    const match = line.trim().match(/^(?:[-*]\s*)?(?:\d+[.)]\s*)?(Trìu mến|Trang trọng|Vui vẻ)\s*:\s*(.*?)\s*$/i);
+    if (!match) continue;
+    const tone = GREETING_TONES.find((item) => item.toLocaleLowerCase('vi') === match[1].toLocaleLowerCase('vi'));
+    const text = match[2].trim();
+    if (tone && text) matches.set(tone, { tone, text });
+  }
+  const result = GREETING_TONES.map((tone) => matches.get(tone));
+  return isValidGreetingCache(result) ? result : null;
+}
