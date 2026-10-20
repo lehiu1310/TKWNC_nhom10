@@ -132,12 +132,18 @@ export default function GiftAdvisor() {
     setColor(entry.colors[0]?.match(/#[0-9a-f]{6}/i)?.[0] || '');
   }, []);
 
-  async function getSuggestions(event) {
-    event.preventDefault(); setBusy(true); setError(''); setResult(null); setGreetings(null); setSelected(0);
+  async function getSuggestions(event, overrides = {}) {
+    event?.preventDefault(); setBusy(true); setError(''); setResult(null); setGreetings(null); setSelected(0);
+    const requestOccasion = overrides.occasion ?? occasion;
+    const requestRecipient = overrides.recipient ?? recipient;
+    const requestColor = overrides.color ?? color;
+    const requestSize = overrides.size ?? size;
+    const requestPreferredFlowerId = overrides.preferredFlowerId ?? preferredFlowerId;
     try {
       const data = await postJson('/api/gifts/recommend', {
-        occasion, recipient, color: color || null, size,
-        preferred_species_id: preferredFlowerId || null,
+        occasion: requestOccasion, recipient: requestRecipient,
+        color: requestColor || null, size: requestSize,
+        preferred_species_id: requestPreferredFlowerId || null,
       });
       setResult(data);
     }
@@ -165,7 +171,7 @@ export default function GiftAdvisor() {
   function saveBouquet() {
     if (!current) return;
     const next = readGiftBook();
-    next.bouquets.unshift({ id: `${Date.now()}`, occasion, recipient, mainId: current.main.id, supportId: current.support?.id || null, size, savedAt: new Date().toISOString() });
+    next.bouquets.unshift({ id: `${Date.now()}`, occasion, recipient, mainId: current.main.id, supportId: current.support?.id || null, color, size, savedAt: new Date().toISOString() });
     setBook(writeGiftBook(next));
   }
 
@@ -207,7 +213,7 @@ export default function GiftAdvisor() {
     </> : <section className="giftbook-panel">
       <header><div><span className="eyebrow">LƯU CỤC BỘ TRÊN THIẾT BỊ</span><h2>Sổ hoa của tôi</h2><p>Không cần đăng nhập. Dữ liệu chỉ nằm trong trình duyệt này.</p></div><button className="button danger-button" type="button" onClick={clearBook} disabled={!book.recognitions.length && !book.favorites.length && !book.bouquets.length}>Xoá dữ liệu</button></header>
       <div className="giftbook-stats"><div><b>{uniqueRecognized}</b><span>loài đã nhận diện</span></div><div><b>{book.favorites.length}</b><span>hoa yêu thích</span></div><div><b>{book.bouquets.length}</b><span>bó đã phối</span></div></div>
-      <h3>Bó hoa đã lưu</h3>{book.bouquets.length ? <div className="giftbook-list">{book.bouquets.map((bouquet) => <article key={bouquet.id}><span className="giftbook-icon">✿</span><div><b>{recommendationNames(['mainId', bouquet.mainId])}{bouquet.supportId ? ` + ${SPECIES[bouquet.supportId]?.name_vi || ''}` : ''}</b><small>{bouquet.occasion} · {bouquet.recipient} · {bouquet.size}</small></div><button className="text-link" type="button" onClick={() => { setOccasion(bouquet.occasion); setRecipient(bouquet.recipient); setSize(bouquet.size); setTab('gift'); }}>Phối lại →</button></article>)}</div> : <p className="muted">Chưa có bó hoa nào được lưu.</p>}
+      <h3>Bó hoa đã lưu</h3>{book.bouquets.length ? <div className="giftbook-list">{book.bouquets.map((bouquet) => <article key={bouquet.id}><span className="giftbook-icon">✿</span><div><b>{recommendationNames(['mainId', bouquet.mainId])}{bouquet.supportId ? ` + ${SPECIES[bouquet.supportId]?.name_vi || ''}` : ''}</b><small>{bouquet.occasion} · {bouquet.recipient} · {bouquet.size}</small></div><button className="text-link" type="button" onClick={() => { setTab('gift'); void getSuggestions(null, { occasion: bouquet.occasion, recipient: bouquet.recipient, color: bouquet.color || '', size: bouquet.size, preferredFlowerId: bouquet.mainId }); }}>Phối lại →</button></article>)}</div> : <p className="muted">Chưa có bó hoa nào được lưu.</p>}
       <h3>Hoa yêu thích</h3>{book.favorites.length ? <div className="giftbook-chips">{book.favorites.map((id) => <span key={id}>✿ {SPECIES[id]?.name_vi || id}</span>)}</div> : <p className="muted">Lưu hoa yêu thích từ kết quả nhận diện.</p>}
     </section>}
   </main>;
