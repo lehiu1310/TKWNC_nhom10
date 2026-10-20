@@ -68,6 +68,14 @@ Tái tạo phép đo: `.venv/Scripts/python scripts/evaluate_flower_detector.py`
 - Corpus chỉ có 10 file, trong đó hai PDF đều về hướng dương; phạm vi và tính cập nhật tài liệu không đồng đều. Bộ 30 câu hỏi chỉ đo tìm đúng nguồn, chưa có tập câu hỏi ngoài phạm vi hoặc chấm đáp án.
 - Gợi ý của chatbot chỉ mang tính tham khảo, không thay thế chuyên gia/khuyến nông; không dùng để quyết định cây có độc, ăn/uống được hay điều trị bằng thuốc.
 
+### Tặng hoa — hệ thống quy tắc, không phải mô hình AI
+
+- `data/gift_meanings.json` có 103 mục: 28 loài ứng viên (`gift_ok=true`) và 75 loài chỉ giữ ý nghĩa chung từ `species.json`; tất cả mục hiện `verified=false`. Các ánh xạ dịp/người nhận và lưu ý tập quán là bản nháp, chưa có nguồn văn hoá độc lập trong repo để xác minh.
+- Bộ gợi ý chấm quy tắc theo dịp, người nhận và màu, loại các dịp được đánh dấu tránh, rồi trả tối đa ba phối bó. API `POST /api/gifts/recommend` chỉ đọc JSON cục bộ, không nạp thêm model. Độ đúng gợi ý, mức phù hợp văn hoá và chất lượng bó: **chưa đo**.
+- Lời nhắn có thể dùng Gemini qua endpoint chatbot hiện có; khi endpoint lỗi/quota, giao diện chuyển sang ba mẫu offline. Lời nhắn và ý nghĩa không được xem là nguồn văn hoá.
+- `data/kb/y_nghia_tang_hoa.md` đưa các bản nháp vào RAG với trích dẫn nội bộ; chatbot phải nói rõ dữ liệu chưa xác minh. Ý nghĩa hoa thay đổi theo vùng miền, tôn giáo, gia đình, màu và quan hệ người tặng/người nhận. Cần hỏi người nhận/gia đình trong tình huống nhạy cảm, nhất là chia buồn/thờ cúng.
+- Sổ hoa dùng `localStorage`, không cần đăng nhập và không đồng bộ giữa thiết bị; người dùng có thể xoá dữ liệu. Ảnh thiệp được tạo trong trình duyệt.
+
 ## 4. Rủi ro
 
 Dự đoán sai có thể gây nhầm lẫn về loài, độc tính hoặc cách chăm sóc. Tài liệu truy xuất là dữ liệu bên ngoài không tin cậy; prompt có chỉ dẫn bỏ qua lệnh nằm trong tài liệu nhưng không bảo đảm chống mọi prompt injection. Khi Gemini hoạt động, câu hỏi và các đoạn tài liệu liên quan được gửi tới Gemini API. Không đưa API key vào frontend hoặc Git.

@@ -79,12 +79,13 @@ export async function postImage(path, file, fields = {}) {
   return requestJson(path, { method: 'POST', body: form });
 }
 
-export function postJson(path, body) {
+export function postJson(path, body, options = {}) {
   return requestJson(path, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
-  });
+    signal: options.signal,
+  }, options.timeoutMs ?? API_TIMEOUT_MS);
 }
 
 export const getHealth = (options = {}) => requestJson('/api/health', options, HEALTH_TIMEOUT_MS);

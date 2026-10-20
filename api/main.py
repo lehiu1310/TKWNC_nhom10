@@ -23,6 +23,7 @@ from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, Field
 
 from config import CORS_ORIGINS, DEVICE, ENABLED_MODELS, MAX_UPLOAD_MB, ROOT, resolve_path
+from core.gift_advisor import recommend_gifts
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("api")
@@ -300,6 +301,22 @@ def gallery(item_id: int):
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=1000)
     history: list[dict] = Field(default_factory=list)
+
+
+class GiftRecommendationRequest(BaseModel):
+    occasion: str = Field(..., min_length=1, max_length=32)
+    recipient: str = Field(..., min_length=1, max_length=32)
+    color: str | None = Field(None, max_length=32)
+    size: str = Field("vừa", min_length=1, max_length=16)
+
+
+@app.post("/api/gifts/recommend")
+def gift_recommendation(req: GiftRecommendationRequest):
+    """Rule/data-based bouquet suggestions; this endpoint does not call an AI model."""
+    try:
+        return recommend_gifts(req.occasion, req.recipient, req.color, req.size)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
 
 
 @app.post("/api/chat")

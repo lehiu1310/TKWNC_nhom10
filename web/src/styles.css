@@ -583,6 +583,82 @@ body{background:#fff;color:var(--ink)}
 @keyframes wake-pulse{to{opacity:.38;transform:scale(.8)}}@keyframes wake-turn{to{transform:rotate(360deg)}}
 @media(max-width:600px){.garden-waking{gap:10px;padding:12px}.waking-flower{width:36px;height:36px}.waking-dots{display:none}.sample-image-button{font-size:9px}.service-waking{padding:6px 8px;font-size:0}.service-waking .state-dot{flex:none}}
 @media(prefers-reduced-motion:reduce){.service-waking .waking-dot,.waking-flower,.waking-dots i,.chat-wait-skeleton i{animation:none}}
+
+/* Gift guidance and the local flower collection */
+.gift-page{padding-top:86px;padding-bottom:110px;min-height:70vh;color:#304a32}
+.gift-hero{max-width:760px;margin:0 auto 34px;text-align:center;padding:28px 18px 18px;position:relative}
+.gift-hero .back-home{position:absolute;left:0;top:0}
+.gift-hero h1{font:500 clamp(44px,6vw,76px)/.98 'Fraunces',Georgia,serif;letter-spacing:-.045em;margin:22px 0 16px}
+.gift-hero h1 em{color:#ed6f89;font-style:normal}
+.gift-hero>p{max-width:580px;margin:0 auto;color:#687964;line-height:1.75}
+.gift-disclaimer{display:inline-flex;margin-top:18px;padding:8px 12px;border-radius:99px;background:#fff1ed;color:#9a685d;font-size:11px}
+.gift-tabs{display:flex;width:max-content;max-width:100%;gap:5px;padding:5px;margin:0 auto 22px;background:#f2f0e8;border-radius:99px}
+.gift-tabs button{border:0;background:transparent;padding:10px 17px;border-radius:99px;color:#66745f;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.gift-tabs button.active{background:#fffdf8;color:#36513a;box-shadow:0 3px 12px #33452a12}
+.gift-tabs button span{margin-left:7px;color:#e76f89}
+.gift-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;align-items:end;padding:20px;border:1px solid #e9e6d9;border-radius:23px;background:#fffdf8;box-shadow:0 12px 38px #5263460b}
+.gift-form label,.gift-greetings label{display:grid;gap:7px;color:#6b795f;font-size:11px;font-weight:800}
+.gift-form select,.gift-greetings input{width:100%;min-height:44px;padding:0 12px;border:1px solid #e1dfd1;border-radius:12px;background:#fff;color:#344a32;font:inherit}
+.gift-form label small{color:#8a9581;font-size:9px;font-weight:500}
+.gift-form>.primary-button{grid-column:1/-1;justify-self:center;margin-top:5px}
+.gift-empty{display:grid;justify-items:center;text-align:center;padding:48px 15px 32px;color:#74816c}
+.gift-empty>span{display:grid;place-items:center;width:58px;height:58px;border-radius:20px;background:#fbe6e8;color:#e8798d;font-size:29px}
+.gift-empty h2,.giftbook-panel h2{font:500 28px 'Fraunces',Georgia,serif;color:#38523a;margin:15px 0 4px}
+.gift-empty p{max-width:500px;font-size:12px;line-height:1.65}
+.gift-suggestion-tabs{display:flex;gap:9px;overflow:auto;padding:18px 2px 12px;scrollbar-width:thin}
+.gift-suggestion-tabs button{flex:1;min-width:150px;display:grid;gap:4px;text-align:left;border:1px solid #e9e4d8;border-radius:15px;padding:12px 14px;background:#fffdf8;color:#83907b;font-size:9px;font-weight:800;cursor:pointer}
+.gift-suggestion-tabs button span{color:#3e583c;font:500 17px 'Fraunces',Georgia,serif}
+.gift-suggestion-tabs button.active{border-color:#8aa17c;background:#f1f6ec;box-shadow:0 7px 18px #596f4715}
+.bouquet-card{display:grid;grid-template-columns:minmax(270px,.9fr) minmax(0,1.1fr);gap:28px;padding:20px;border:1px solid #e9e4d8;border-radius:25px;background:#fffdf9;box-shadow:0 18px 60px #4a55331a}
+.bouquet-photo-composition{position:relative;min-height:380px;overflow:hidden;border-radius:19px;background:radial-gradient(circle at 25% 20%,#f7dcce,#dbe5d5 60%,#c9d6bf);isolation:isolate}
+.bouquet-photo-composition:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 62%,#2333266b);pointer-events:none}
+.bouquet-photo-main,.bouquet-photo-support{position:absolute;width:69%;height:77%;top:9%;left:15%;object-fit:cover;border:5px solid #fffaf0;border-radius:48% 48% 17px 17px;box-shadow:0 17px 40px #24352242;transform:rotate(-5deg)}
+.bouquet-photo-support{width:42%;height:46%;top:43%;left:53%;transform:rotate(7deg);border-width:4px}
+.bouquet-ribbon{position:absolute;z-index:1;bottom:18px;left:18px;padding:8px 12px;border-radius:99px;background:#fffdf2e8;color:#536a4c;font-size:10px;font-weight:800}
+.bouquet-copy{padding:12px 7px 7px}
+.bouquet-copy h2{font:500 clamp(27px,3.4vw,40px)/1.1 'Fraunces',Georgia,serif;margin:12px 0;color:#304b32}
+.bouquet-copy h2 small{display:block;margin-top:5px;color:#77856f;font:500 17px 'Fraunces',Georgia,serif}
+.bouquet-meaning{padding:13px 15px;border-left:3px solid #e88193;border-radius:0 12px 12px 0;background:#fff4f0;color:#705d50;line-height:1.65}
+.bouquet-copy h3,.giftbook-panel h3{font:600 16px 'Fraunces',Georgia,serif;color:#455d42;margin:17px 0 7px}
+.bouquet-copy ul{padding-left:19px;color:#687764;font-size:12px;line-height:1.8}
+.bouquet-palette{display:flex;gap:7px;margin:15px 0}
+.bouquet-palette i{width:25px;height:25px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #d8d9cd}
+.bouquet-caution{padding:11px 13px;background:#fff6dc;border-radius:12px;color:#80682f;font-size:11px;line-height:1.6}
+.draft-note{font-size:10px;color:#8a8c7e;line-height:1.6}
+.bouquet-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.bouquet-actions .button,.bouquet-actions .primary-button,.gift-message .button{border:1px solid #e3e5d9;border-radius:99px;padding:10px 13px;background:#f5f7ef;color:#51684a;font-size:10px;font-weight:800;text-decoration:none;cursor:pointer}
+.bouquet-actions .primary-button{background:#35533a;color:white;border-color:#35533a}
+.bouquet-actions button:disabled{opacity:.55}
+.gift-greetings{display:grid;gap:12px;margin-top:22px;padding:15px;border-radius:18px;background:#f7f7f0}
+.gift-greetings>label{max-width:230px}
+.gift-message{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid #e9e8dc;border-radius:14px;background:#fffdf8}
+.gift-message b{color:#57694f;font:600 15px 'Fraunces',Georgia,serif}
+.gift-message p{max-width:580px;margin:5px 0 0;color:#53654f;font-size:12px;line-height:1.7}
+.giftbook-panel{padding:25px;border:1px solid #e9e4d8;border-radius:24px;background:#fffdf8}
+.giftbook-panel>header{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.giftbook-panel>header p{font-size:12px;color:#75816f}
+.giftbook-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 27px}
+.giftbook-stats>div{display:grid;gap:4px;padding:17px;border-radius:16px;background:#f3f6ee}
+.giftbook-stats b{color:#3b593a;font:500 31px 'Fraunces',Georgia,serif}
+.giftbook-stats span,.giftbook-list small{color:#798672;font-size:10px}
+.giftbook-list{display:grid;gap:8px}
+.giftbook-list article{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid #eeece4;border-radius:13px}
+.giftbook-icon{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:12px;background:#fae8e8;color:#df8290}
+.giftbook-list article>div{display:grid;gap:4px;flex:1}
+.giftbook-list article b{font:500 15px 'Fraunces',Georgia,serif;color:#3e583d}
+.giftbook-list .text-link{border:0;background:none;color:#55714f;font-size:10px;cursor:pointer}
+.giftbook-chips{display:flex;flex-wrap:wrap;gap:8px}
+.giftbook-chips span{padding:8px 12px;border-radius:99px;background:#f4f4ec;color:#586d51;font-size:11px}
+.danger-button{color:#a55b55!important;background:#fff1ed!important}
+.gift-search-hint{margin:10px 0;padding:10px 12px;border-radius:12px;background:#f3f6ed;color:#64775b;font-size:11px;line-height:1.6}
+.gift-search-hint a,.gift-footer-link{margin-left:6px;color:#d86e86;font-weight:800;text-decoration:none}
+.classify-gift-hint{margin-top:18px;padding:14px;border:1px solid #e9e5d8;border-radius:15px;background:#fffaf0}
+.classify-gift-hint p{color:#64745e;font-size:11px;line-height:1.65}
+.classify-gift-hint .row{gap:7px}
+.classify-gift-hint .button{border:1px solid #e3e5d9;border-radius:99px;padding:8px 11px;background:#f2f5eb;color:#4f684a;font-size:10px;font-weight:800;text-decoration:none;cursor:pointer}
+.gift-footer-link{display:block;width:max-content;margin:8px auto;color:#486344;font-size:11px}
+@media(max-width:760px){.gift-page{padding-top:74px;padding-bottom:75px}.gift-hero .back-home{position:static;display:block;margin-bottom:20px}.gift-form{grid-template-columns:repeat(2,minmax(0,1fr));padding:15px}.bouquet-card{grid-template-columns:1fr;gap:10px;padding:13px}.bouquet-photo-composition{min-height:340px}.bouquet-copy{padding:8px 5px}.gift-suggestion-tabs button{min-width:130px}}
+@media(max-width:430px){.gift-hero h1{font-size:47px}.gift-form{gap:10px}.gift-form label{font-size:10px}.gift-form select{min-height:42px;padding-inline:8px;font-size:11px}.bouquet-photo-composition{min-height:300px}.gift-message{align-items:flex-start;flex-direction:column}.giftbook-panel{padding:16px}.giftbook-stats{gap:7px}.giftbook-stats>div{padding:12px 9px}.giftbook-stats span{font-size:9px}.giftbook-panel>header{align-items:flex-start}.main-nav{gap:9px}}
 .feature-module-loading{min-height:240px;display:grid;place-content:center;justify-items:center;gap:8px;color:#70836b;font-size:12px}.feature-module-loading .loading-skeleton{width:min(320px,72vw);height:16px;margin:0}
 .feature-doctor{grid-column:2 / span 2}
 @media(max-width:900px){.feature-doctor{grid-column:auto}}

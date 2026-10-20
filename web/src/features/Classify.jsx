@@ -3,6 +3,8 @@ import speciesData from '../../../data/species.json';
 import classifierDemoSamples from '../../../data/classifier_demo_samples.json';
 import { friendlyFailure, postImage } from '../api.js';
 import ImagePicker from './ImagePicker.jsx';
+import giftMeanings from '../../../data/gift_meanings.json';
+import { readGiftBook, rememberFavorite, rememberRecognition } from '../giftBook.js';
 
 const SPECIES = Object.fromEntries(speciesData.map((flower) => [flower.id, flower]));
 const SAMPLES = classifierDemoSamples.map((sample) => ({ ...SPECIES[sample.id], assetUrl: sample.assetUrl }));
@@ -12,6 +14,7 @@ export default function Classify() {
   const [scores, setScores] = useState([]);
   const [barsReady, setBarsReady] = useState(false);
   const [showGradCam, setShowGradCam] = useState(false);
+  const [favoriteIds, setFavoriteIds] = useState(() => readGiftBook().favorites);
 
   async function run(file, _previewUrl, explain = showGradCam) {
     setScores([]);
@@ -58,6 +61,9 @@ export default function Classify() {
   const predictions = state.status === 'ok' ? state.data.predictions : [];
   const topPrediction = predictions[0];
   const topSpecies = topPrediction ? SPECIES[topPrediction.label] : null;
+  useEffect(() => {
+    if (state.status === 'ok' && state.data.confident && topSpecies?.id) rememberRecognition(topSpecies);
+  }, [state.status, state.data?.predictions, state.data?.confident, topSpecies?.id]);
   const secondPrediction = predictions[1];
   const isAmbiguous = topPrediction && secondPrediction && topPrediction.score - secondPrediction.score < 0.15;
   const imageResult = topPrediction && topSpecies ? {
@@ -95,6 +101,12 @@ export default function Classify() {
         })}
         <p className="muted result-meta">ResNet-18 · {state.data.latency_ms} ms</p>
         {state.data.grad_cam && showGradCam && <figure className="gradcam-result"><img src={state.data.grad_cam} alt="Ảnh gốc phủ heatmap Grad-CAM, vùng màu thể hiện nơi ảnh tác động tới dự đoán"/><figcaption>Grad-CAM · vùng màu là tín hiệu giải thích xấp xỉ cho nhãn top-1, không chứng minh dự đoán đúng.</figcaption></figure>}
+        {topSpecies && state.data.confident && (() => {
+          const gift = giftMeanings.species.find((item) => item.species_id === topSpecies.id);
+          if (!gift?.gift_ok) return null;
+          const favorite = favoriteIds.includes(topSpecies.id);
+          return <section className="classify-gift-hint"><span className="feature-subtitle">GỢI Ý TẶNG HOA · BẢN NHÁP CHƯA XÁC MINH</span><p>{gift.occasions.length ? `Dữ liệu gợi ý các dịp: ${gift.occasions.slice(0, 4).join(', ')}.` : 'Chưa có dịp tặng phù hợp được ghi nhận.'} {gift.avoid_for.length ? `Lưu ý: ${gift.avoid_for.join(' ')}` : ''}</p><div className="row"><a className="button" href={`/tang-hoa?flower=${topSpecies.id}`}>Phối bó với hoa này</a><button type="button" className="button" onClick={() => setFavoriteIds(rememberFavorite(topSpecies.id).favorites)}>{favorite ? 'Bỏ khỏi Sổ hoa' : 'Lưu vào Sổ hoa'}</button></div></section>;
+        })()}
       </>}
     </div>
   </section>;

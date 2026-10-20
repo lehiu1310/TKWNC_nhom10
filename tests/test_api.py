@@ -313,3 +313,23 @@ def test_chat_message_too_long_is_422(client):
     payload = {"message": "hoa " * 251}
     assert client.post("/api/chat", json=payload).status_code == 422
     assert client.post("/api/chat/sync", json=payload).status_code == 422
+
+
+def test_gift_recommendation_ok(client):
+    response = client.post("/api/gifts/recommend", json={"occasion": "chia buồn", "recipient": "mẹ", "size": "vừa"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["label"] == "Gợi ý dựa trên dữ liệu ý nghĩa hoa"
+    assert body["verified"] is False
+    assert len(body["suggestions"]) == 3
+    assert all(item["main"]["id"] in {"marigold", "lotus", "sword-lily"} for item in body["suggestions"])
+
+
+def test_gift_recommendation_rejects_unknown_occasion_as_400(client):
+    response = client.post("/api/gifts/recommend", json={"occasion": "ngày hội hoa", "recipient": "bạn"})
+    assert response.status_code == 400
+
+
+def test_gift_recommendation_missing_fields_is_422(client):
+    response = client.post("/api/gifts/recommend", json={"occasion": "sinh nhật"})
+    assert response.status_code == 422

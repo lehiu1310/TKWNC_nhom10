@@ -7,6 +7,7 @@ const Classify = lazy(() => import('./features/Classify.jsx'));
 const Detect = lazy(() => import('./features/Detect.jsx'));
 const Search = lazy(() => import('./features/Search.jsx'));
 const Chat = lazy(() => import('./features/Chat.jsx'));
+const GiftAdvisor = lazy(() => import('./GiftAdvisor.jsx'));
 import speciesData from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
 
@@ -16,7 +17,7 @@ const FEATURED_FLOWERS = FLOWERS.filter((item) => item.featured).sort((a, b) => 
 const flowerDisplayRecord = (flower) => displayImageData.images[flower.display_image_key || flower.id];
 const flowerDisplayImage = (flower) => flowerDisplayRecord(flower)?.url || `/api/species/${flower.id}/image`;
 const resolvePathname = (pathname) => {
-  const knownRoute = pathname === '/' || pathname === '/bach-khoa' || speciesData.some((flower) => pathname === `/bach-khoa/${flower.id}`);
+  const knownRoute = pathname === '/' || pathname === '/bach-khoa' || pathname === '/tang-hoa' || speciesData.some((flower) => pathname === `/bach-khoa/${flower.id}`);
   if (knownRoute) return pathname;
   window.history.replaceState({}, '', '/');
   return '/';
@@ -245,6 +246,11 @@ export default function App() {
   }, []);
   useEffect(() => { if (!active && !doctorOpen) return; const onKey = (e) => e.key === 'Escape' && (setActive(null), setDoctorOpen(false)); window.addEventListener('keydown', onKey); document.body.classList.add('modal-open'); return () => { window.removeEventListener('keydown', onKey); document.body.classList.remove('modal-open'); }; }, [active, doctorOpen]);
   useEffect(() => {
+    const openChat = () => { setActive('chat'); setDoctorOpen(false); };
+    window.addEventListener('garden:open-chat', openChat);
+    return () => window.removeEventListener('garden:open-chat', openChat);
+  }, []);
+  useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     if (reduceMotion.matches || !finePointer.matches) return undefined;
@@ -280,11 +286,11 @@ export default function App() {
   return <div className="site-shell">
     <header className={`topbar ${scrolled ? 'topbar-scrolled' : ''}`}>
       <a className="brand" href="/" aria-label="Vườn Hoa, về đầu trang"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a>
-      <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khu vườn AI</a><a href="/#vuon-3d">Vườn 3D</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Bách khoa</a></nav>
+      <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khu vườn AI</a><a href="/#vuon-3d">Vườn 3D</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Bách khoa</a><a href="/tang-hoa" onClick={(event) => { event.preventDefault(); navigate('/tang-hoa'); }}>Tặng hoa</a></nav>
       <div className={`service-state ${backendReady ? 'service-ready' : 'service-waking'}`} aria-live="polite"><i className={backendReady ? 'state-dot online' : 'state-dot waking-dot'} />{backendReady ? 'Khu vườn đang mở' : <><span>Khu vườn đang thức dậy, đợi chút nhé…</span><button type="button" onClick={checkBackend} aria-label="Thử kết nối lại với khu vườn AI">↻</button></>}</div>
     </header>
 
-    <main key={route} className="page-transition">{route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
+    <main key={route} className="page-transition">{route === '/tang-hoa' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở sổ quà tặng…</div>}><GiftAdvisor/></Suspense> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
 
       <section className="hero section-wrap" id="home"><NoiseOverlay id="hero-grain"/>
         <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><div className="hero-actions"><a className="primary-button" href="#khu-vuon-ai">Bước vào khu vườn <span>↗</span></a><button className="hero-doctor-shortcut" type="button" disabled={!backendReady} onClick={() => setDoctorOpen(true)}><span aria-hidden="true">✿</span>Bác sĩ hoa <i>↗</i></button></div><div className="hero-note"><span className="note-spark">✦</span><span>{FLOWERS.length} loài AI · {FEATURES.length} trải nghiệm</span></div></div>
@@ -308,9 +314,9 @@ export default function App() {
     <section className="encyclopedia section-wrap" id="bach-khoa"><div className="ency-copy"><span className="eyebrow">BÁCH KHOA · {FLOWERS.length} LOÀI</span><h2>Gặp hoa qua<br/>ảnh chụp <em>thật.</em></h2><p>Tra cứu {FLOWERS.length} loài hoa có trong bộ dữ liệu nhận diện AI, lọc theo màu, mùa hoặc tìm bằng tên.</p><a className="text-link" href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Khám phá {FLOWERS.length} loài hoa <span>→</span></a></div><div className="ency-art"><div className="ency-sun"/>{FEATURED_FLOWERS.filter((flower) => flower.encyclopedia_photo).map((flower, index) => <img key={flower.id} className={`ency-photo-art ency-photo-art-${index + 1} display-flower-photo`} style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(flower)} alt="" loading="lazy"/>)}<span className="ency-note note-two">✳</span></div></section>
     </> }</main>
 
-    <footer className="footer"><div className="footer-leaves" aria-hidden="true">❧ ✿ ❧</div><a className="brand footer-brand" href="/"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a><p>Một khu vườn nhỏ để học, ngắm và khám phá bằng AI.</p><span className="footer-copy">ĐỒ ÁN LẬP TRÌNH WEB NÂNG CAO · NHÓM 10</span></footer>
+    <footer className="footer"><div className="footer-leaves" aria-hidden="true">❧ ✿ ❧</div><a className="brand footer-brand" href="/"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a><p>Một khu vườn nhỏ để học, ngắm và khám phá bằng AI.</p><a className="gift-footer-link" href="/tang-hoa" onClick={(event) => { event.preventDefault(); navigate('/tang-hoa'); }}>Chọn hoa để tặng · Sổ hoa của tôi ↗</a><span className="footer-copy">ĐỒ ÁN LẬP TRÌNH WEB NÂNG CAO · NHÓM 10</span></footer>
 
-    {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body">{!backendReady ? <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>Đang chờ máy chủ AI sẵn sàng. Trang sẽ tự kết nối lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div> : <><div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><Suspense fallback={<div className="feature-module-loading" role="status"><p className="loading-skeleton"/><span>Đang chuẩn bị công cụ AI…</span></div>}><CurrentFeature.Component/></Suspense></FeatureErrorBoundary></>}</div></div></div>}
+    {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body">{!backendReady && active !== 'chat' ? <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>Đang chờ máy chủ AI sẵn sàng. Trang sẽ tự kết nối lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div> : <>{!backendReady && active === 'chat' && <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Chatbot đang thử kết nối</b><p>Bạn vẫn có thể xem câu hỏi và thử gửi; nếu backend chưa sẵn sàng, hệ thống sẽ báo để thử lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div>}<div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><Suspense fallback={<div className="feature-module-loading" role="status"><p className="loading-skeleton"/><span>Đang chuẩn bị công cụ AI…</span></div>}><CurrentFeature.Component/></Suspense></FeatureErrorBoundary></>}</div></div></div>}
     {doctorOpen && <div className="feature-modal doctor-modal" role="dialog" aria-modal="true" aria-label="Bác sĩ hoa" onMouseDown={(event) => event.target === event.currentTarget && setDoctorOpen(false)}><div className="modal-panel feature-green"><div className="modal-header"><div className="modal-title"><span className="doctor-invite-flower" aria-hidden="true">✿</span><div><span className="feature-subtitle">CẨM NANG · TƯ VẤN CÓ NGUỒN</span><h2>Bác sĩ hoa</h2></div></div><button className="close-button" onClick={() => setDoctorOpen(false)} aria-label="Đóng">×</button></div><div className="modal-body"><FeatureErrorBoundary><DoctorCare/></FeatureErrorBoundary></div></div></div>}
   </div>;
 }

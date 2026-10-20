@@ -16,6 +16,13 @@ export default function Chat() {
     typingQueue.current = [];
   }, []);
 
+  useEffect(() => {
+    const question = sessionStorage.getItem('garden-chat-prefill');
+    if (!question) return;
+    sessionStorage.removeItem('garden-chat-prefill');
+    void sendQuestion(question, []);
+  }, []);
+
   function patchLastAssistant(update) {
     setMessages((current) => {
       const last = current[current.length - 1];

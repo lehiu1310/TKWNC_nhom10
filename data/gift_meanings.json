@@ -1,0 +1,2333 @@
+{
+  "schema_version": 1,
+  "status": "draft_unverified",
+  "notes": [
+    "Mọi mục hiện đều là bản nháp chưa được xác minh; không xem là quy tắc văn hoá phổ quát.",
+    "28 loài gift_ok=true là danh sách ứng viên phổ biến để người dùng duyệt, không phải kết luận phù hợp cho mọi dịp.",
+    "Loài gift_ok=false chỉ dùng ý nghĩa chung từ species.json tại giao diện; không suy diễn dịp/người nhận.",
+    "Trường color chỉ tham chiếu màu giao diện trong species.json, không khẳng định màu của mọi giống hoa."
+  ],
+  "occasions": [
+    "sinh nhật",
+    "8/3",
+    "20/10",
+    "20/11",
+    "Valentine",
+    "kỷ niệm",
+    "xin lỗi",
+    "cảm ơn",
+    "chúc mừng",
+    "khai trương",
+    "thăm bệnh",
+    "chia buồn"
+  ],
+  "recipients": [
+    "người yêu",
+    "mẹ",
+    "bố",
+    "bạn",
+    "thầy cô",
+    "đồng nghiệp",
+    "đối tác"
+  ],
+  "species": [
+    {
+      "species_id": "daisy",
+      "name_vi": "Cúc mắt bò",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Vẻ thuần khiết, bình dị và sức sống giữa đồng cỏ."
+      },
+      "occasions": [
+        "sinh nhật",
+        "cảm ơn",
+        "chúc mừng"
+      ],
+      "recipients": [
+        "bạn",
+        "đồng nghiệp",
+        "thầy cô"
+      ],
+      "avoid_for": [
+        "Không đồng nhất loài Cúc mắt bò với các giống cúc thường dùng trong thờ cúng/chia buồn; hỏi rõ giống và phong tục gia đình trước khi tặng dịp vui (cần kiểm chứng)."
+      ],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "dandelion",
+      "name_vi": "Bồ công anh",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ước mơ, tự do và những khởi đầu mới."
+      },
+      "occasions": [
+        "sinh nhật",
+        "cảm ơn",
+        "chúc mừng"
+      ],
+      "recipients": [
+        "bạn",
+        "đồng nghiệp",
+        "thầy cô"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "roses",
+      "name_vi": "Hoa hồng",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Tình yêu, lòng trân trọng và vẻ đẹp đa sắc."
+      },
+      "occasions": [
+        "Valentine",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ],
+      "recipients": [
+        "người yêu",
+        "mẹ",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FF6F91 (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "sunflowers",
+      "name_vi": "Hướng dương",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Lạc quan, sức sống và niềm hy vọng."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "tulips",
+      "name_vi": "Tulip",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Tình cảm chân thành và một khởi đầu mới."
+      },
+      "occasions": [
+        "Valentine",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ],
+      "recipients": [
+        "người yêu",
+        "mẹ",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #9B7EDE (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "pink-primrose",
+      "name_vi": "Anh thảo hồng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "globe-thistle",
+      "name_vi": "Kế cầu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "blanket-flower",
+      "name_vi": "Cúc Gaillardia",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "trumpet-creeper",
+      "name_vi": "Đăng tiêu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "blackberry-lily",
+      "name_vi": "Diên vĩ báo",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "snapdragon",
+      "name_vi": "Hoa mõm sói",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "colt-s-foot",
+      "name_vi": "Khoản đông hoa",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "king-protea",
+      "name_vi": "Protea hoàng đế",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "spear-thistle",
+      "name_vi": "Kế gai",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "yellow-iris",
+      "name_vi": "Diên vĩ vàng",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "globe-flower",
+      "name_vi": "Cầu hoa vàng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "purple-coneflower",
+      "name_vi": "Cúc Echinacea",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "peruvian-lily",
+      "name_vi": "Ly Peru",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "balloon-flower",
+      "name_vi": "Hoa cát cánh",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "hard-leaved-pocket-orchid",
+      "name_vi": "Lan hài",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "giant-white-arum-lily",
+      "name_vi": "Rum trắng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "fire-lily",
+      "name_vi": "Huệ lửa",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "pincushion-flower",
+      "name_vi": "Hoa scabiosa",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "fritillary",
+      "name_vi": "Hoa fritillaria",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "red-ginger",
+      "name_vi": "Gừng đỏ",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "grape-hyacinth",
+      "name_vi": "Dạ hương nho",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "corn-poppy",
+      "name_vi": "Anh túc đỏ",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "cảm ơn",
+        "chúc mừng"
+      ],
+      "recipients": [
+        "bạn",
+        "đồng nghiệp",
+        "thầy cô"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #9B7EDE (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "prince-of-wales-feathers",
+      "name_vi": "Mào gà đuôi phụng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "stemless-gentian",
+      "name_vi": "Long đởm không thân",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "artichoke",
+      "name_vi": "Atisô",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "canterbury-bells",
+      "name_vi": "Chuông Canterbury",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "sweet-william",
+      "name_vi": "Cẩm chướng chùm",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "carnation",
+      "name_vi": "Cẩm chướng",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "garden-phlox",
+      "name_vi": "Phlox vườn",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "love-in-the-mist",
+      "name_vi": "Hoa tình yêu trong sương",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "mexican-aster",
+      "name_vi": "Cúc Mexico",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "alpine-sea-holly",
+      "name_vi": "Kế biển Alpine",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "ruby-lipped-cattleya",
+      "name_vi": "Lan Cattleya môi ruby",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "cape-flower",
+      "name_vi": "Hoa Cape",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "great-masterwort",
+      "name_vi": "Astrantia",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "siam-tulip",
+      "name_vi": "Nghệ Thái",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "sweet-pea",
+      "name_vi": "Đậu thơm",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "Valentine",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ],
+      "recipients": [
+        "người yêu",
+        "mẹ",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "lenten-rose",
+      "name_vi": "Hồng mùa chay",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "barbeton-daisy",
+      "name_vi": "Hoa đồng tiền",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "daffodil",
+      "name_vi": "Thủy tiên vàng",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "sword-lily",
+      "name_vi": "Lay ơn",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "chia buồn"
+      ],
+      "recipients": [
+        "mẹ",
+        "bố",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [
+        "Bản nháp chỉ xếp vào dịp chia buồn; tập quán dùng loài này khác nhau theo vùng và gia đình, cần kiểm chứng trước khi tư vấn."
+      ],
+      "colors": [
+        "màu chủ đạo trong species.json: #6B9DD4 (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": [
+        "20/10",
+        "20/11",
+        "8/3",
+        "Valentine",
+        "chúc mừng",
+        "cảm ơn",
+        "khai trương",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ]
+    },
+    {
+      "species_id": "poinsettia",
+      "name_vi": "Trạng nguyên",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bolero-deep-blue",
+      "name_vi": "Cát tường xanh",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "wallflower",
+      "name_vi": "Hoa wallflower",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "marigold",
+      "name_vi": "Vạn thọ",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "chia buồn"
+      ],
+      "recipients": [
+        "mẹ",
+        "bố",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [
+        "Bản nháp chỉ xếp vào dịp chia buồn; tập quán dùng loài này khác nhau theo vùng và gia đình, cần kiểm chứng trước khi tư vấn."
+      ],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": [
+        "20/10",
+        "20/11",
+        "8/3",
+        "Valentine",
+        "chúc mừng",
+        "cảm ơn",
+        "khai trương",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ]
+    },
+    {
+      "species_id": "buttercup",
+      "name_vi": "Mao lương",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "english-marigold",
+      "name_vi": "Cúc kim tiền",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "petunia",
+      "name_vi": "Dạ yên thảo",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "wild-pansy",
+      "name_vi": "Viola ba màu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "primula",
+      "name_vi": "Anh thảo",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "pelargonium",
+      "name_vi": "Phong lữ thảo",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bishop-of-llandaff",
+      "name_vi": "Thược dược Bishop of Llandaff",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "gaura",
+      "name_vi": "Gaura",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "geranium",
+      "name_vi": "Phong lữ",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "orange-dahlia",
+      "name_vi": "Thược dược cam",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "tiger-lily",
+      "name_vi": "Ly hổ",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "20/11",
+        "cảm ơn",
+        "sinh nhật",
+        "chúc mừng",
+        "thăm bệnh"
+      ],
+      "recipients": [
+        "thầy cô",
+        "mẹ",
+        "bố",
+        "đồng nghiệp",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "pink-yellow-dahlia",
+      "name_vi": "Thược dược hồng vàng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "cautleya-spicata",
+      "name_vi": "Gừng cảnh Cautleya",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "japanese-anemone",
+      "name_vi": "Hải quỳ Nhật",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "black-eyed-susan",
+      "name_vi": "Cúc mắt đen",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "silverbush",
+      "name_vi": "Bìm bạc",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "californian-poppy",
+      "name_vi": "Anh túc California",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "osteospermum",
+      "name_vi": "Cúc châu Phi",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "spring-crocus",
+      "name_vi": "Nghệ tây mùa xuân",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bearded-iris",
+      "name_vi": "Diên vĩ râu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "windflower",
+      "name_vi": "Cỏ chân ngỗng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "moon-orchid",
+      "name_vi": "Lan hồ điệp",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "tree-poppy",
+      "name_vi": "Anh túc thân gỗ",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "gazania",
+      "name_vi": "Cúc Gazania",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "azalea",
+      "name_vi": "Đỗ quyên",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "water-lily",
+      "name_vi": "Hoa súng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "thorn-apple",
+      "name_vi": "Cà độc dược",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "morning-glory",
+      "name_vi": "Bìm bìm",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "passion-flower",
+      "name_vi": "Lạc tiên",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "lotus",
+      "name_vi": "Hoa sen",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "chia buồn"
+      ],
+      "recipients": [
+        "mẹ",
+        "bố",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [
+        "Bản nháp chỉ xếp vào dịp chia buồn; tập quán dùng loài này khác nhau theo vùng và gia đình, cần kiểm chứng trước khi tư vấn."
+      ],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": [
+        "20/10",
+        "20/11",
+        "8/3",
+        "Valentine",
+        "chúc mừng",
+        "cảm ơn",
+        "khai trương",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ]
+    },
+    {
+      "species_id": "toad-lily",
+      "name_vi": "Lily cóc",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bird-of-paradise",
+      "name_vi": "Thiên điểu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "anthurium",
+      "name_vi": "Hồng môn",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "frangipani",
+      "name_vi": "Hoa sứ",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "clematis",
+      "name_vi": "Ông lão",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "hibiscus",
+      "name_vi": "Dâm bụt",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "columbine",
+      "name_vi": "Hoa bồ câu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "desert-rose",
+      "name_vi": "Sứ Thái",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "tree-mallow",
+      "name_vi": "Cẩm quỳ thân gỗ",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "magnolia",
+      "name_vi": "Mộc lan",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "cyclamen",
+      "name_vi": "Anh thảo Cyclamen",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "watercress",
+      "name_vi": "Cải xoong ra hoa",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "monkshood",
+      "name_vi": "Ô đầu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "canna-lily",
+      "name_vi": "Dong riềng cảnh",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "hippeastrum",
+      "name_vi": "Huệ tây",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bee-balm",
+      "name_vi": "Bạc hà ong",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "ball-moss",
+      "name_vi": "Rêu cầu",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "foxglove",
+      "name_vi": "Mao địa hoàng",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bougainvillea",
+      "name_vi": "Hoa giấy",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "sinh nhật",
+        "8/3",
+        "20/10",
+        "chúc mừng",
+        "khai trương"
+      ],
+      "recipients": [
+        "mẹ",
+        "bạn",
+        "đồng nghiệp",
+        "đối tác"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #5BAE6B (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "camellia",
+      "name_vi": "Trà mi",
+      "gift_ok": true,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [
+        "Valentine",
+        "kỷ niệm",
+        "sinh nhật",
+        "xin lỗi"
+      ],
+      "recipients": [
+        "người yêu",
+        "mẹ",
+        "bạn"
+      ],
+      "avoid_for": [],
+      "colors": [
+        "màu chủ đạo trong species.json: #FFC93C (chưa xác minh màu hoa/giống)"
+      ],
+      "size_note": "Chưa có dữ liệu số cành/bó; cần người dùng chọn quy mô.",
+      "sources": [
+        "data/species.json (trường meaning/color; dữ liệu nội bộ, không phải nguồn văn hoá độc lập)",
+        "data/kb/y_nghia_hoa.md (chỉ ý nghĩa chung; chưa xác nhận gợi ý theo dịp/người nhận)",
+        "cần kiểm chứng"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "mallow",
+      "name_vi": "Cẩm quỳ",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "mexican-petunia",
+      "name_vi": "Dạ yên thảo Mexico",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    },
+    {
+      "species_id": "bromelia",
+      "name_vi": "Dứa cảnh",
+      "gift_ok": false,
+      "meanings": {
+        "chung": "Ý nghĩa biểu tượng thay đổi theo màu sắc và văn hóa."
+      },
+      "occasions": [],
+      "recipients": [],
+      "avoid_for": [],
+      "colors": [],
+      "size_note": "",
+      "sources": [
+        "data/species.json (ý nghĩa chung; chưa có nguồn xác minh độc lập)"
+      ],
+      "verified": false,
+      "avoid_occasions": []
+    }
+  ]
+}
