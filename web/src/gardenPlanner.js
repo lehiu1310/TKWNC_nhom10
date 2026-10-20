@@ -12,61 +12,21 @@ function validPlant(value) {
 export function readGarden() {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    return {
-      plants: Array.isArray(parsed.plants) ? parsed.plants.filter(validPlant) : [],
-      reminders: Array.isArray(parsed.reminders) ? parsed.reminders.filter((item) => typeof item?.id === 'string' && typeof item?.title === 'string' && /^\d{2}-\d{2}$/.test(item?.monthDay || '')) : [],
-    };
+    // Migrate old planner data and permanently discard the removed important-date feature.
+    const garden = { plants: Array.isArray(parsed.plants) ? parsed.plants.filter(validPlant) : [] };
+    if (Array.isArray(parsed.reminders)) localStorage.setItem(STORAGE_KEY, JSON.stringify(garden));
+    localStorage.removeItem('vuon-hoa-reminders-sent-v1');
+    return garden;
   } catch {
-    return { plants: [], reminders: [] };
+    return { plants: [] };
   }
 }
 
 export function writeGarden(value) {
-  const current = readGarden();
-  const safe = {
-    plants: Array.isArray(value?.plants) ? value.plants.filter(validPlant).slice(-100) : [],
-    reminders: Array.isArray(value?.reminders) ? value.reminders.slice(-100) : current.reminders,
-  };
+  const safe = { plants: Array.isArray(value?.plants) ? value.plants.filter(validPlant).slice(-100) : [] };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
   window.dispatchEvent(new CustomEvent('garden:planner-updated'));
   return safe;
-}
-
-export function addGardenReminder(title, date, now = new Date()) {
-  const cleanTitle = String(title || '').trim().slice(0, 80);
-  const parsed = /^\d{4}-(\d{2})-(\d{2})$/.exec(String(date || ''));
-  if (!cleanTitle || !parsed) return readGarden();
-  const month = Number(parsed[1]);
-  const day = Number(parsed[2]);
-  const check = new Date(2000, month - 1, day);
-  if (check.getMonth() !== month - 1 || check.getDate() !== day) return readGarden();
-  const garden = readGarden();
-  const unique = globalThis.crypto?.randomUUID?.() || `${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`;
-  return writeGarden({ reminders: [...garden.reminders, { id: `event-${unique}`, title: cleanTitle, monthDay: `${parsed[1]}-${parsed[2]}`, annual: true, createdAt: now.toISOString() }] });
-}
-
-export function removeGardenReminder(reminderId) {
-  return writeGarden({ reminders: readGarden().reminders.filter((reminder) => reminder.id !== reminderId) });
-}
-
-export function nextReminderDate(reminder, now = new Date()) {
-  const match = /^(\d{2})-(\d{2})$/.exec(reminder?.monthDay || '');
-  if (!match) return null;
-  const month = Number(match[1]) - 1;
-  const day = Number(match[2]);
-  for (let year = now.getFullYear(); year <= now.getFullYear() + 8; year += 1) {
-    const candidate = new Date(year, month, day, 9, 0, 0, 0);
-    if (candidate.getMonth() !== month || candidate.getDate() !== day || candidate < now) continue;
-    return candidate;
-  }
-  return null;
-}
-
-export function listUpcomingReminders(garden, now = new Date(), daysAhead = 30) {
-  return (garden?.reminders || []).flatMap((reminder) => {
-    const dueAt = nextReminderDate(reminder, now);
-    return dueAt && dueAt.getTime() <= now.getTime() + daysAhead * 86_400_000 ? [{ ...reminder, dueAt }] : [];
-  }).sort((a, b) => a.dueAt - b.dueAt);
 }
 
 export function addGardenPlant(speciesId, now = new Date()) {

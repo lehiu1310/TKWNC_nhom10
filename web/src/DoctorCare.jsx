@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { friendlyFailure, streamChat } from './api.js';
+import GardenPlanner from './GardenPlanner.jsx';
 
 const QUESTIONS = [
   'Lá có đốm vàng hoặc nâu',
@@ -8,7 +9,8 @@ const QUESTIONS = [
   'Lá non bị xoăn',
 ];
 
-export default function DoctorCare() {
+export default function DoctorCare({ initialView = 'ask' }) {
+  const [view, setView] = useState(initialView);
   const [speciesName, setSpeciesName] = useState('');
   const [symptoms, setSymptoms] = useState('');
   const [answer, setAnswer] = useState('');
@@ -39,6 +41,8 @@ export default function DoctorCare() {
   };
 
   return <div className="doctor-care">
+    <div className="doctor-care-tabs" role="tablist" aria-label="Bác sĩ hoa và sổ chăm cây"><button id="doctor-tab-ask" type="button" role="tab" aria-controls="doctor-panel-ask" aria-selected={view === 'ask'} className={view === 'ask' ? 'is-active' : ''} onClick={() => setView('ask')}>Hỏi Bác sĩ hoa</button><button id="doctor-tab-garden" type="button" role="tab" aria-controls="doctor-panel-garden" aria-selected={view === 'garden'} className={view === 'garden' ? 'is-active' : ''} onClick={() => setView('garden')}>Cây của tôi</button></div>
+    {view === 'garden' ? <div id="doctor-panel-garden" role="tabpanel" aria-labelledby="doctor-tab-garden"><GardenPlanner/></div> : <div id="doctor-panel-ask" role="tabpanel" aria-labelledby="doctor-tab-ask">
     <div className="doctor-care-heading"><span className="doctor-care-icon" aria-hidden="true">✿</span><div><span className="eyebrow">CÔ LÀM VƯỜN · RAG CÓ NGUỒN</span><h2>Hoa đang cần được chăm?</h2><p>Mô tả điều m thấy; trợ lý sẽ tra cẩm nang và gợi ý bước kiểm tra tiếp theo.</p></div></div>
     <form className="doctor-care-form" onSubmit={ask}>
       <label>Tên hoa (nếu biết)<input value={speciesName} onChange={(event) => setSpeciesName(event.target.value)} placeholder="Ví dụ: hoa hồng" maxLength={100}/></label>
@@ -50,5 +54,6 @@ export default function DoctorCare() {
     {error && <div className="doctor-error" role="alert"><p>{error}</p><button type="button" onClick={ask} disabled={busy}>Thử lại</button></div>}
     {answer && <div className="doctor-answer" aria-live="polite"><span className="eyebrow">GỢI Ý TỪ CẨM NANG</span><p>{answer}</p>{sources.length > 0 && <details className="doctor-sources"><summary>{sources.length} nguồn tham khảo</summary><ul>{sources.map((source, index) => <li key={`${source.source || 'nguon'}-${index}`}><b>{source.source}{source.page ? ` · trang ${source.page}` : ''}</b><span>{source.text}</span></li>)}</ul></details>}</div>}
     <p className="doctor-care-disclaimer">Gợi ý chung, không thay thế chuyên gia. Đây là trợ lý tra cứu cẩm nang, không phải mô hình chẩn đoán bệnh qua ảnh. Nếu dấu hiệu lan nhanh hoặc cây suy nặng, hãy hỏi chuyên gia/đơn vị khuyến nông địa phương.</p>
+    </div>}
   </div>;
 }

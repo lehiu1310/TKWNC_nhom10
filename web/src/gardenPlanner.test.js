@@ -5,15 +5,16 @@ const memory = new Map();
 globalThis.localStorage = {
   getItem: (key) => memory.get(key) ?? null,
   setItem: (key, value) => memory.set(key, String(value)),
+  removeItem: (key) => memory.delete(key),
 };
 globalThis.window = { dispatchEvent() {} };
 globalThis.CustomEvent = class CustomEvent { constructor(type) { this.type = type; } };
-const { addGardenPlant, addGardenReminder, completeCare, listCareTasks, nextCareDate, nextReminderDate, readGarden, removeGardenPlant, removeGardenReminder, setCareInterval, writeGarden } = await import('./gardenPlanner.js');
+const { addGardenPlant, completeCare, listCareTasks, nextCareDate, readGarden, removeGardenPlant, setCareInterval, writeGarden } = await import('./gardenPlanner.js');
 
 test('planner safely handles malformed local data and ignores invalid plants', () => {
   memory.set('vuon-hoa-my-garden-v1', '{broken');
-  assert.deepEqual(readGarden(), { plants: [], reminders: [] });
-  assert.deepEqual(writeGarden({ plants: [{ nope: true }] }), { plants: [], reminders: [] });
+  assert.deepEqual(readGarden(), { plants: [] });
+  assert.deepEqual(writeGarden({ plants: [{ nope: true }] }), { plants: [] });
 });
 
 test('adds a flower once and allows the user to set only sensible reminder intervals', () => {
@@ -51,22 +52,12 @@ test('removes plants without affecting the rest of the garden', () => {
   assert.equal(garden.plants[0].speciesId, 'tulips');
 });
 
-test('saves annual reminders, rolls them to the next year, and removes them', () => {
+test('removes legacy important-date reminders while preserving saved plants', () => {
   memory.clear();
-  const now = new Date('2026-06-01T12:00:00.000Z');
-  const garden = addGardenReminder('Sinh nhật mẹ', '2026-06-10', now);
-  assert.equal(garden.reminders.length, 1);
-  assert.equal(garden.reminders[0].monthDay, '06-10');
-  assert.equal(nextReminderDate(garden.reminders[0], now).getDate(), 10);
-  const nextYear = nextReminderDate(garden.reminders[0], new Date('2026-06-11T12:00:00.000Z'));
-  assert.equal(nextYear.getFullYear(), 2027);
-  assert.equal(addGardenReminder('Ngày không hợp lệ', '2026-02-30', now).reminders.length, 1);
-  assert.equal(removeGardenReminder(garden.reminders[0].id).reminders.length, 0);
-});
-
-test('handles annual February 29 reminders by selecting a leap year', () => {
-  const next = nextReminderDate({ monthDay: '02-29' }, new Date('2027-03-01T00:00:00'));
-  assert.equal(next.getFullYear(), 2028);
-  assert.equal(next.getMonth(), 1);
-  assert.equal(next.getDate(), 29);
+  const plant = addGardenPlant('roses', new Date('2026-06-01T12:00:00.000Z')).plants[0];
+  memory.set('vuon-hoa-my-garden-v1', JSON.stringify({ plants: [plant], reminders: [{ id: 'event-old', title: 'Sinh nhật mẹ', monthDay: '06-10' }] }));
+  memory.set('vuon-hoa-reminders-sent-v1', JSON.stringify(['event:event-old:2026-06-10']));
+  assert.deepEqual(readGarden(), { plants: [plant] });
+  assert.deepEqual(JSON.parse(memory.get('vuon-hoa-my-garden-v1')), { plants: [plant] });
+  assert.equal(memory.has('vuon-hoa-reminders-sent-v1'), false);
 });
