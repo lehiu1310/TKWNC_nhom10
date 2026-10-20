@@ -662,6 +662,77 @@ body{background:#fff;color:var(--ink)}
 .gift-footer-link{display:block;width:max-content;margin:8px auto;color:#486344;font-size:11px}
 @media(max-width:760px){.gift-page{padding-top:74px;padding-bottom:75px}.gift-hero .back-home{position:static;display:block;margin-bottom:20px}.gift-form{grid-template-columns:repeat(2,minmax(0,1fr));padding:15px}.bouquet-card{grid-template-columns:1fr;gap:10px;padding:13px}.bouquet-photo-composition{min-height:340px}.bouquet-copy{padding:8px 5px}.gift-suggestion-tabs button{min-width:130px}}
 @media(max-width:430px){.gift-hero h1{font-size:47px}.gift-form{gap:10px}.gift-form label{font-size:10px}.gift-form select{min-height:42px;padding-inline:8px;font-size:11px}.bouquet-photo-composition{min-height:300px}.gift-message{align-items:flex-start;flex-direction:column}.giftbook-panel{padding:16px}.giftbook-stats{gap:7px}.giftbook-stats>div{padding:12px 9px}.giftbook-stats span{font-size:9px}.giftbook-panel>header{align-items:flex-start}.main-nav{gap:9px}}
+
+/* Gift advisor palette: warm paper, botanical green and a confident rose accent. */
+body:has(.gift-page){background:radial-gradient(ellipse at 7% 12%,rgba(244,183,157,.2),transparent 30%),radial-gradient(ellipse at 92% 30%,rgba(176,205,170,.2),transparent 33%),linear-gradient(145deg,#fffaf2 0%,#fff6f0 52%,#f5f5eb 100%);background-attachment:fixed}
+.gift-page{--gift-ink:#294735;--gift-green:#426c4c;--gift-green-soft:#eaf2e7;--gift-rose:#c94e6b;--gift-rose-soft:#fff0ef;--gift-gold:#ac782b;color:var(--gift-ink)}
+.gift-hero .eyebrow{color:#577a59}
+.gift-hero h1{color:#294735}
+.gift-hero h1 em{color:var(--gift-rose)}
+.gift-hero>p{color:#526958}
+.gift-disclaimer{border:1px solid #eadcc2;background:#fff7e5;color:#765b32}
+.gift-tabs{border:1px solid #e5e4d5;background:#e9eee4;box-shadow:inset 0 1px #ffffffb8}
+.gift-tabs button{color:#526956;transition:background .2s,color .2s,box-shadow .2s}
+.gift-tabs button:hover{color:#294735}
+.gift-tabs button.active{background:#fffefa;color:#294735;box-shadow:0 4px 12px #344c3020,inset 0 0 0 1px #dce6d6}
+.gift-tabs button span{color:var(--gift-rose)}
+.gift-form{border-color:#e6dfcf;background:rgba(255,254,250,.9);box-shadow:0 18px 48px rgba(74,69,47,.09),0 2px 6px rgba(74,69,47,.04),inset 0 1px #fff}
+.gift-form label,.gift-greetings label{color:#526956}
+.gift-form select,.gift-greetings input{border-color:#d9dfd2;background:#fffefa;color:#2e4937;transition:border-color .2s,box-shadow .2s}
+.gift-form select:focus-visible,.gift-greetings input:focus-visible{outline:0;border-color:#78966e;box-shadow:0 0 0 3px #78966e2b}
+.gift-form label small{color:#687a69}
+.gift-form>.primary-button,.bouquet-actions .primary-button{background:linear-gradient(135deg,#355d40,#294735);border-color:#355d40;box-shadow:0 8px 18px #2947352b}
+.gift-form>.primary-button:hover,.bouquet-actions .primary-button:hover{background:linear-gradient(135deg,#416c4a,#304f39)}
+.gift-empty{color:#536a58}
+.gift-empty>span{background:linear-gradient(145deg,#ffe0dc,#f8e8c4);color:#c94e6b;box-shadow:0 8px 22px #c94e6b1c}
+.gift-empty h2,.giftbook-panel h2{color:#294735}
+.gift-empty p{color:#5b6e5e}
+.gift-result-context{border-left-color:#75966b;background:linear-gradient(90deg,#edf4e9,#f4f6ed);color:#4d6652}
+.gift-result-context b{color:#294735}
+.gift-suggestion-tabs button{border-color:#e4e5d9;background:#fffefa;color:#607263;box-shadow:0 4px 12px #3d56350a;transition:transform .2s,border-color .2s,background .2s}
+.gift-suggestion-tabs button:hover{transform:translateY(-2px);border-color:#bdcdb7}
+.gift-suggestion-tabs button span{color:#294735}
+.gift-suggestion-tabs button.active{border-color:#cf7f88;background:linear-gradient(145deg,#fff5f1,#f4f5e9);box-shadow:0 7px 18px #a6535815,inset 0 0 0 1px #cf7f8833}
+.bouquet-card{border-color:#e6dfd1;background:rgba(255,254,250,.94);box-shadow:0 22px 58px rgba(63,72,49,.11),0 3px 8px rgba(63,72,49,.04),inset 0 1px #fff}
+.bouquet-photo-composition{background:radial-gradient(ellipse at 25% 18%,#ffe6d4,#f2eee0 48%,#dce9d8 100%)}
+.bouquet-photo-main,.bouquet-photo-support{border-color:#fffdf6;box-shadow:0 18px 40px #263b2d3b}
+.bouquet-ribbon{background:#fffdf2ed;color:#38563d;box-shadow:0 4px 14px #263b2d20}
+.bouquet-copy h2{color:#294735}
+.bouquet-copy h2 small{color:#607560}
+.bouquet-meaning{border-left-color:#d66c7e;background:linear-gradient(100deg,#fff0ed,#fff8ef);color:#604f47}
+.bouquet-copy h3,.giftbook-panel h3{color:#385a3e}
+.bouquet-copy ul{color:#526858}
+.bouquet-palette i{box-shadow:0 0 0 1px #d6d8ca,0 3px 7px #283b2920}
+.bouquet-caution{border:1px solid #f0dfb4;background:#fff8e4;color:#6c542a}
+.draft-note{color:#6e7567}
+.bouquet-actions .button,.gift-message .button{border-color:#d9e1d4;background:#f1f5ed;color:#3f6246;transition:background .2s,border-color .2s,transform .2s}
+.bouquet-actions .button:hover,.gift-message .button:hover{transform:translateY(-1px);border-color:#abc09f;background:#e8f0e4}
+.bouquet-actions .primary-button{color:#fffdf8}
+.gift-greetings{border:1px solid #e0e8dc;background:linear-gradient(145deg,#eef4e9,#f5f3e9)}
+.gift-greetings .eyebrow{color:#547658}
+.gift-message{border-color:#e0e5d9;background:#fffefa;box-shadow:0 4px 13px #42533c08}
+.gift-message b{color:#385a3e}
+.gift-message p{color:#435c49}
+.giftbook-panel{border-color:#e4dfd1;background:rgba(255,254,250,.93);box-shadow:0 18px 48px rgba(74,69,47,.08),inset 0 1px #fff}
+.giftbook-panel>header p{color:#5c705e}
+.giftbook-stats>div{border:1px solid #e0e8dc;background:linear-gradient(145deg,#f0f5ec,#e9f0e4)}
+.giftbook-stats>div:nth-child(2){border-color:#f0dedb;background:linear-gradient(145deg,#fff3ef,#f8e9e7)}
+.giftbook-stats>div:nth-child(3){border-color:#eee4cd;background:linear-gradient(145deg,#fff8e8,#f6f0df)}
+.giftbook-stats b{color:#355b40}
+.giftbook-stats span,.giftbook-list small{color:#586d5b}
+.giftbook-list article{border-color:#e4e7dc;background:#fffefa;transition:border-color .2s,transform .2s}
+.giftbook-list article:hover{transform:translateY(-1px);border-color:#b8cbb0}
+.giftbook-icon{background:#fff0ed;color:#c94e6b}
+.giftbook-list article b{color:#35533b}
+.giftbook-list .text-link{color:#426b49}
+.giftbook-chips span{background:#edf3e9;color:#3f6045}
+.danger-button{border:1px solid #edcfca!important;color:#a1484e!important;background:#fff3f0!important}
+.gift-search-hint,.classify-gift-hint{border:1px solid #e0e8dc;background:#f0f5eb;color:#4d6652}
+.gift-search-hint a,.gift-footer-link,.gift-preferred-flower button{color:#bd4f68}
+.classify-gift-hint p{color:#4d6652}
+.classify-gift-hint .button{border-color:#d9e1d4;background:#eaf2e7;color:#3c5e43}
+.gift-footer-link{color:#3d6243}
+@media(max-width:760px){body:has(.gift-page){background-attachment:scroll}.gift-result-context{margin-top:17px}}
 .feature-module-loading{min-height:240px;display:grid;place-content:center;justify-items:center;gap:8px;color:#70836b;font-size:12px}.feature-module-loading .loading-skeleton{width:min(320px,72vw);height:16px;margin:0}
 .feature-doctor{grid-column:2 / span 2}
 @media(max-width:900px){.feature-doctor{grid-column:auto}}
