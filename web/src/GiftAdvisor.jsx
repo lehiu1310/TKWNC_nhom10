@@ -209,7 +209,7 @@ export default function GiftAdvisor() {
           </div>
         </article>}
       </>}
-      {!result && <div className="gift-empty"><span>✿</span><h2>Chọn điều bạn muốn gửi gắm</h2><p>Kết quả dùng luật và dữ liệu ý nghĩa hoa đã lưu trong dự án, không gọi thêm mô hình AI.</p><button className="primary-button" type="button" onClick={() => getSuggestions({ preventDefault() {} })}>Xem gợi ý mẫu <span>→</span></button></div>}
+      {!result && <div className="gift-empty"><span>✿</span><h2>Chọn điều bạn muốn gửi gắm</h2><p>Kết quả dùng luật và dữ liệu ý nghĩa hoa đã lưu trong dự án, không gọi thêm mô hình AI.</p><button className="primary-button" type="button" disabled={busy} onClick={() => getSuggestions({ preventDefault() {} })}>{busy ? 'Đang phối gợi ý…' : 'Xem gợi ý mẫu'} <span>→</span></button></div>}
     </> : <section className="giftbook-panel">
       <header><div><span className="eyebrow">LƯU CỤC BỘ TRÊN THIẾT BỊ</span><h2>Sổ hoa của tôi</h2><p>Không cần đăng nhập. Dữ liệu chỉ nằm trong trình duyệt này.</p></div><button className="button danger-button" type="button" onClick={clearBook} disabled={!book.recognitions.length && !book.favorites.length && !book.bouquets.length}>Xoá dữ liệu</button></header>
       <div className="giftbook-stats"><div><b>{uniqueRecognized}</b><span>loài đã nhận diện</span></div><div><b>{book.favorites.length}</b><span>hoa yêu thích</span></div><div><b>{book.bouquets.length}</b><span>bó đã phối</span></div></div>
