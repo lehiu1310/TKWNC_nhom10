@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 from core.gift_advisor import OCCASIONS, RECIPIENTS, recommend_gifts
 
 
@@ -14,6 +17,24 @@ def test_every_supported_occasion_and_recipient_has_three_suggestions():
         for recipient in RECIPIENTS:
             result = recommend_gifts(occasion, recipient)
             assert len(result["suggestions"]) == 3, f"{occasion} / {recipient}"
+
+
+def test_each_gift_eligible_flower_stays_primary_for_every_compatible_occasion():
+    data_path = Path(__file__).resolve().parents[1] / "data" / "gift_meanings.json"
+    gift_data = json.loads(data_path.read_text(encoding="utf-8"))
+    for entry in gift_data["species"]:
+        if not entry.get("gift_ok"):
+            continue
+        recipients = entry.get("recipients") or gift_data["recipients"]
+        for occasion in entry.get("occasions", []):
+            if occasion in entry.get("avoid_occasions", []):
+                continue
+            result = recommend_gifts(
+                occasion,
+                recipients[0],
+                preferred_species_id=entry["species_id"],
+            )
+            assert result["suggestions"][0]["main"]["id"] == entry["species_id"]
 
 
 def test_consolation_suggestions_exclude_flowers_flagged_for_joyful_events():
