@@ -25,7 +25,10 @@ const pickerItems = species.map((sourceRecord) => {
 });
 
 export default function InteractiveGarden() {
-  const [selectedId, setSelectedId] = useState(pickerItems[0]?.id || '');
+  const [selectedId, setSelectedId] = useState(() => {
+    const requested = new URLSearchParams(window.location.search).get('flower');
+    return pickerItems.some((item) => item.id === requested) ? requested : pickerItems[0]?.id || '';
+  });
   const selected = pickerItems.find((item) => item.id === selectedId) || pickerItems[0];
   const [open, setOpen] = useState(selected?.open ?? 0.8);
   const [windEnabled, setWindEnabled] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);

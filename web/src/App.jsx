@@ -12,6 +12,7 @@ const GardenPlanner = lazy(() => import('./GardenPlanner.jsx'));
 import speciesData from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
 import { addGardenPlant } from './gardenPlanner.js';
+import { readGiftCardFromHash } from './giftShare.js';
 
 
 const FLOWERS = speciesData.map((item) => ({ ...item, vi: item.name_vi, en: item.name_en, color: item.color, bloom: item.bloom_season, icon: item.icon || '✿' }));
@@ -88,6 +89,13 @@ function FlowerDetailPage({ flower, navigate }) {
   return <main className="flower-detail section-wrap" style={{ '--flower-color': flower.color, '--flower-scene': flower.scene_background }}><NoiseOverlay id="detail-grain"/><a className="back-home" href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>← Bách khoa các loài hoa</a><div className="flower-detail-layout"><div className="flower-detail-art"><img data-parallax className={`flower-detail-main-photo${displayPhoto ? ' display-flower-photo' : ''}`} style={displayPhoto ? { '--display-photo-grade': displayImageData.colorGrading.cssFilter } : undefined} src={flowerDisplayImage(flower)} alt={displayPhoto?.alt || `Ảnh minh hoạ ${flower.name_vi}`}/>{displayPhoto ? displayPhoto.sourcePage ? <a className="flower-detail-photo-credit" href={displayPhoto.sourcePage} target="_blank" rel="noreferrer">ẢNH · {displayPhoto.photographer} / UNSPLASH ↗</a> : <span className="flower-detail-photo-credit">ẢNH · {displayPhoto.photographer}</span> : <span className="flower-detail-photo-credit">MINH HOẠ · {flower.name_en}</span>}</div><article className="flower-detail-copy"><span className="eyebrow">NHẬT KÝ THỰC VẬT · {flower.name_en.toUpperCase()}</span><h1>{flower.name_vi}</h1><p className="flower-detail-lede">{flower.description}</p><div className="flower-detail-facts"><div data-tilt className="tilt-card"><span>MÙA HOA</span><b>{flower.bloom_season}</b></div><div data-tilt className="tilt-card"><span>Ý NGHĨA</span><b>{flower.meaning}</b></div></div><h2>Đôi nét về loài hoa</h2><p>{flower.long_description}</p><h2>Đặc điểm nhận biết</h2><ul>{flower.facts.map((fact) => <li key={fact}>{fact.replace(/^Đặc điểm nhận biết:\s*/i, '')}</li>)}</ul><div className="flower-detail-actions"><button className="primary-button" onClick={() => navigate('/bach-khoa')}>Khám phá loài hoa khác <span>↗</span></button><button className="planner-detail-cta" onClick={() => { addGardenPlant(flower.id); navigate('/vuon-cua-toi'); }}>＋ Thêm {flower.name_vi} vào Vườn của tôi</button></div></article></div></main>;
 }
 
+function SharedGiftCardPage({ card }) {
+  const flower = speciesData.find((item) => item.id === card.speciesId);
+  const photo = flower && (displayImageData.images[flower.display_image_key || flower.id] || null);
+  if (!flower) return <section className="shared-gift-card section-wrap"><span className="eyebrow">THIỆP HOA · VƯỜN HOA</span><h1>Thiệp này không còn khả dụng.</h1><a className="primary-button" href="/">Về khu vườn</a></section>;
+  return <section className="shared-gift-card section-wrap" style={{ '--gift-flower-color': flower.color }}><span className="eyebrow">MỘT LỜI NHẮN GỬI BẠN</span><h1>{card.recipient ? `Gửi ${card.recipient}` : 'Một bó hoa, một lời thương.'}</h1><div className="shared-gift-card-art"><img src={photo?.url || `/images/gift-flowers/${encodeURIComponent(flower.id)}.jpg`} alt={photo?.alt || `Hoa ${flower.name_vi}`} style={photo ? { filter: displayImageData.colorGrading.cssFilter } : undefined}/><span>{flower.name_vi}{card.occasion ? ` · ${card.occasion}` : ''}</span></div><blockquote>{card.message}</blockquote>{card.sender && <p className="shared-gift-sender">Thân mến, <b>{card.sender}</b></p>}<a className="shared-gift-link" href={`/bach-khoa/${encodeURIComponent(flower.id)}`}>Đọc câu chuyện về {flower.name_vi} ↗</a><a className="shared-gift-back" href={`/?flower=${encodeURIComponent(flower.id)}#vuon-3d`}>Ngắm {flower.name_vi} trong vườn 3D ↗</a><small>Thiệp được tạo bằng Vườn Hoa. Nội dung lời nhắn nằm trong liên kết/mã QR mà người gửi chia sẻ.</small></section>;
+}
+
 const FEATURES = [
   { id: 'classify', title: 'Nhận diện loài hoa', subtitle: 'NHÌN ẢNH · GỌI TÊN HOA', desc: 'Gửi một tấm ảnh để xem năm khả năng phù hợp nhất và mức độ tự tin của AI.', prompt: 'Chọn ảnh để bắt đầu', icon: '⌕', model: 'classifier', modelLabel: 'ResNet-18', color: 'pink', Component: Classify },
   { id: 'detect', title: 'Phát hiện đối tượng', subtitle: 'TÌM VẬT THỂ · KHOANH VÙNG', desc: 'Xem AI đánh dấu vị trí các vật thể trong ảnh, kèm nhãn và điểm tin cậy.', prompt: 'Thử với một bức ảnh', icon: '◎', model: 'detector', modelLabel: 'YOLO', color: 'yellow', Component: Detect },
@@ -135,6 +143,7 @@ function Flowerfield() {
 
 export default function App() {
   const [route, setRoute] = useState(() => resolvePathname(window.location.pathname));
+  const [sharedGift, setSharedGift] = useState(() => readGiftCardFromHash(window.location.hash));
   const [health, setHealth] = useState(null);
   const [active, setActive] = useState(null);
   const [doctorOpen, setDoctorOpen] = useState(false);
@@ -145,12 +154,18 @@ export default function App() {
     const nextPath = resolvePathname(path);
     window.history.pushState({}, '', nextPath);
     setRoute(nextPath);
+    setSharedGift(readGiftCardFromHash(window.location.hash));
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
   useEffect(() => {
-    const onPopState = () => setRoute(resolvePathname(window.location.pathname));
+    const onPopState = () => { setRoute(resolvePathname(window.location.pathname)); setSharedGift(readGiftCardFromHash(window.location.hash)); };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+  useEffect(() => {
+    const onHashChange = () => setSharedGift(readGiftCardFromHash(window.location.hash));
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
   useEffect(() => {
     let stopped = false;
@@ -292,7 +307,7 @@ export default function App() {
       <div className={`service-state ${backendReady ? 'service-ready' : 'service-waking'}`} aria-live="polite"><i className={backendReady ? 'state-dot online' : 'state-dot waking-dot'} />{backendReady ? 'Khu vườn đang mở' : <><span>Khu vườn đang thức dậy, đợi chút nhé…</span><button type="button" onClick={checkBackend} aria-label="Thử kết nối lại với khu vườn AI">↻</button></>}</div>
     </header>
 
-    <main key={route} className="page-transition">{route === '/tang-hoa' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở sổ quà tặng…</div>}><GiftAdvisor/></Suspense> : route === '/vuon-cua-toi' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở vườn của bạn…</div>}><GardenPlanner/></Suspense> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
+    <main key={route} className="page-transition">{sharedGift ? <SharedGiftCardPage card={sharedGift}/> : route === '/tang-hoa' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở sổ quà tặng…</div>}><GiftAdvisor/></Suspense> : route === '/vuon-cua-toi' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở vườn của bạn…</div>}><GardenPlanner/></Suspense> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
 
       <section className="hero section-wrap" id="home"><NoiseOverlay id="hero-grain"/>
         <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><div className="hero-actions"><a className="primary-button" href="#khu-vuon-ai">Bước vào khu vườn <span>↗</span></a><button className="hero-doctor-shortcut" type="button" disabled={!backendReady} onClick={() => setDoctorOpen(true)}><span aria-hidden="true">✿</span>Bác sĩ hoa <i>↗</i></button></div><div className="hero-note"><span className="note-spark">✦</span><span>{FLOWERS.length} loài AI · {FEATURES.length} trải nghiệm</span></div></div>
