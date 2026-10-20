@@ -58,6 +58,7 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 - `web/public/images/gift-flowers/`: ảnh đại diện cục bộ của 28 ứng viên; không phụ thuộc backend để hiển thị bó.
 - `/tang-hoa`: gợi ý ba bó theo quy tắc (không gọi model), lời nhắn qua chatbot Gemini hiện có với mẫu offline dự phòng, thiệp PNG/QR và Sổ hoa lưu trong trình duyệt. API luật: `POST /api/gifts/recommend`.
 - `/vuon-cua-toi`: danh sách cây người dùng đang trồng, chu kỳ nhắc do người dùng tự đặt, ghi nhận đã chăm, lịch sinh nhật/kỷ niệm hằng năm và dự báo mưa theo vị trí khi người dùng chủ động cấp quyền. Dữ liệu cây/lịch chỉ ở `localStorage`; thông báo cần quyền trình duyệt và trang web đang mở. Dự báo dùng [Open-Meteo](https://open-meteo.com/), không tự thay đổi lịch tưới.
+- `/thu-thach`: câu đố nhận diện một ảnh hoa mỗi ngày từ bộ ảnh cục bộ có dữ liệu quà tặng, kèm điểm, chuỗi ngày và huy hiệu trên trình duyệt. Đây là trò chơi quy tắc, không gọi AI và không thay thế công cụ phân loại.
 - `data/kb/y_nghia_tang_hoa.md`: ghi chú RAG và nguồn bối cảnh văn hoá. Chưa có nguồn nào trong đó xác minh từng ánh xạ loài–dịp–người nhận; dữ liệu vẫn là bản nháp.
 
 ### Tặng hoa và Sổ hoa

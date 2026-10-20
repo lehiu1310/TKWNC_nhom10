@@ -9,6 +9,7 @@ const Search = lazy(() => import('./features/Search.jsx'));
 const Chat = lazy(() => import('./features/Chat.jsx'));
 const GiftAdvisor = lazy(() => import('./GiftAdvisor.jsx'));
 const GardenPlanner = lazy(() => import('./GardenPlanner.jsx'));
+const FlowerChallenge = lazy(() => import('./FlowerChallenge.jsx'));
 import speciesData from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
 import { addGardenPlant } from './gardenPlanner.js';
@@ -20,7 +21,7 @@ const FEATURED_FLOWERS = FLOWERS.filter((item) => item.featured).sort((a, b) => 
 const flowerDisplayRecord = (flower) => displayImageData.images[flower.display_image_key || flower.id];
 const flowerDisplayImage = (flower) => flowerDisplayRecord(flower)?.url || `/api/species/${flower.id}/image`;
 const resolvePathname = (pathname) => {
-  const knownRoute = pathname === '/' || pathname === '/bach-khoa' || pathname === '/tang-hoa' || pathname === '/vuon-cua-toi' || speciesData.some((flower) => pathname === `/bach-khoa/${flower.id}`);
+  const knownRoute = pathname === '/' || pathname === '/bach-khoa' || pathname === '/tang-hoa' || pathname === '/vuon-cua-toi' || pathname === '/thu-thach' || speciesData.some((flower) => pathname === `/bach-khoa/${flower.id}`);
   if (knownRoute) return pathname;
   window.history.replaceState({}, '', '/');
   return '/';
@@ -303,11 +304,11 @@ export default function App() {
   return <div className="site-shell">
     <header className={`topbar ${scrolled ? 'topbar-scrolled' : ''}`}>
       <a className="brand" href="/" aria-label="Vườn Hoa, về đầu trang"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a>
-      <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khu vườn AI</a><a href="/#vuon-3d">Vườn 3D</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Bách khoa</a><a href="/tang-hoa" onClick={(event) => { event.preventDefault(); navigate('/tang-hoa'); }}>Tặng hoa</a><a href="/vuon-cua-toi" onClick={(event) => { event.preventDefault(); navigate('/vuon-cua-toi'); }}>Vườn của tôi</a></nav>
+      <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khu vườn AI</a><a href="/#vuon-3d">Vườn 3D</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Bách khoa</a><a href="/tang-hoa" onClick={(event) => { event.preventDefault(); navigate('/tang-hoa'); }}>Tặng hoa</a><a href="/vuon-cua-toi" onClick={(event) => { event.preventDefault(); navigate('/vuon-cua-toi'); }}>Vườn của tôi</a><a href="/thu-thach" onClick={(event) => { event.preventDefault(); navigate('/thu-thach'); }}>Thử thách</a></nav>
       <div className={`service-state ${backendReady ? 'service-ready' : 'service-waking'}`} aria-live="polite"><i className={backendReady ? 'state-dot online' : 'state-dot waking-dot'} />{backendReady ? 'Khu vườn đang mở' : <><span>Khu vườn đang thức dậy, đợi chút nhé…</span><button type="button" onClick={checkBackend} aria-label="Thử kết nối lại với khu vườn AI">↻</button></>}</div>
     </header>
 
-    <main key={route} className="page-transition">{sharedGift ? <SharedGiftCardPage card={sharedGift}/> : route === '/tang-hoa' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở sổ quà tặng…</div>}><GiftAdvisor/></Suspense> : route === '/vuon-cua-toi' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở vườn của bạn…</div>}><GardenPlanner/></Suspense> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
+    <main key={route} className="page-transition">{sharedGift ? <SharedGiftCardPage card={sharedGift}/> : route === '/tang-hoa' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở sổ quà tặng…</div>}><GiftAdvisor/></Suspense> : route === '/vuon-cua-toi' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở vườn của bạn…</div>}><GardenPlanner/></Suspense> : route === '/thu-thach' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang gieo thử thách hôm nay…</div>}><FlowerChallenge/></Suspense> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate}/> : <>
 
       <section className="hero section-wrap" id="home"><NoiseOverlay id="hero-grain"/>
         <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><div className="hero-actions"><a className="primary-button" href="#khu-vuon-ai">Bước vào khu vườn <span>↗</span></a><button className="hero-doctor-shortcut" type="button" disabled={!backendReady} onClick={() => setDoctorOpen(true)}><span aria-hidden="true">✿</span>Bác sĩ hoa <i>↗</i></button></div><div className="hero-note"><span className="note-spark">✦</span><span>{FLOWERS.length} loài AI · {FEATURES.length} trải nghiệm</span></div></div>
@@ -324,6 +325,7 @@ export default function App() {
       </div></section>
 
       <FlowerOfMonth navigate={navigate}/>
+      <section className="challenge-teaser section-wrap"><div><span className="eyebrow">MỘT CÂU ĐỐ MỖI NGÀY</span><h2>Nhìn ảnh, gọi tên hoa.</h2><p>Chơi thử thách nhận diện từ ảnh thật, tích điểm và mở huy hiệu nhỏ trong Sổ hoa của bạn.</p><a className="text-link" href="/thu-thach" onClick={(event) => { event.preventDefault(); navigate('/thu-thach'); }}>Thử thách hôm nay <span>↗</span></a></div><span aria-hidden="true">✿</span></section>
       <section className="story-intro section-wrap"><div><span className="eyebrow">NHẬT KÝ THỰC VẬT · {FEATURED_FLOWERS.length} LOÀI NỔI BẬT</span><h2>Sắc hoa,<br/><em>nét duyên riêng.</em></h2></div><p>Cả {FEATURED_FLOWERS.length} loài nổi bật đều có ảnh chụp thật.</p></section>
       <ScrollGarden/>
       <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang chuẩn bị khu vườn tương tác…</div>}><InteractiveGarden/></Suspense>
