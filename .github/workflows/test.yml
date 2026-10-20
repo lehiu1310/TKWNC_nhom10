@@ -1,4 +1,4 @@
-name: API tests
+name: API and web tests
 
 on:
   push:
