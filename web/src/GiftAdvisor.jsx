@@ -5,7 +5,7 @@ import displayData from '../../data/display_images.json';
 import { friendlyFailure, postJson } from './api.js';
 import { openGardenerWith, readGiftBook, recentUniqueRecognitions, rememberFavorite, writeGiftBook } from './giftBook.js';
 import { GIFT_INTENTS, intentForOccasion, isCompatiblePreferredFlower } from './giftFlow.js';
-import { isValidGreetingCache, offlineMessages, parseGeneratedGreetings } from './giftGreetings.js';
+import { offlinePersonalGreeting, parseGeneratedGreeting } from './giftGreetings.js';
 import GiftQrPanel from './GiftQrPanel.jsx';
 
 const OCCASIONS = giftData.occasions;
@@ -13,43 +13,37 @@ const RECIPIENTS = giftData.recipients;
 const SIZES = ['nhỏ', 'vừa', 'lớn'];
 const SPECIES = Object.fromEntries(speciesData.map((flower) => [flower.id, flower]));
 const GIFT_SPECIES = giftData.species.filter((entry) => entry.gift_ok);
-const COLORS = [...new Set(GIFT_SPECIES.flatMap((entry) => entry.colors.map((value) => value.match(/#[0-9a-f]{6}/i)?.[0]).filter(Boolean)))];
 
 function imageFor(flower) {
   const featuredKey = flower.display_image_key || ({ roses: 'rose', sunflowers: 'sunflower', tulips: 'tulip' })[flower.id] || flower.id;
   return displayData.images[featuredKey]?.url || `/images/gift-flowers/${encodeURIComponent(flower.id)}.jpg`;
 }
 
-async function makeMessages(bundle, recipient, occasion) {
-  const cacheKey = `gift-greetings-v2:${bundle.main.id}:${recipient}:${occasion}`;
-  try {
-    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (isValidGreetingCache(cached)) return { messages: cached, cached: true, source: 'Gemini (bản đã lưu)' };
-  } catch { /* Ignore malformed local cache. */ }
-  const fallback = offlineMessages(bundle, recipient, occasion);
+async function makePersonalGreeting(bundle, recipient, occasion, situation, tone) {
+  const fallback = offlinePersonalGreeting(bundle, recipient, occasion, situation, tone);
   const controller = new AbortController();
   // Grounded Gemini latency varies. Give the backend's 60s request window time
   // to finish, while retaining a bounded wait and offline fallback.
   const timeout = window.setTimeout(() => controller.abort(), 65_000);
   try {
-    const response = await postJson('/api/chat/sync', {
-      message: `Hãy viết đúng 3 lời nhắn ngắn bằng tiếng Việt để tặng ${recipient} dịp ${occasion}, kèm bó ${bundle.main.name_vi}${bundle.support ? ` và ${bundle.support.name_vi}` : ''}. Ý nghĩa dữ liệu hiện có: ${bundle.meaning}. Viết thành ba dòng, lần lượt mở đầu bằng “Trìu mến:”, “Trang trọng:” và “Vui vẻ:”. Mỗi lời tối đa 35 từ. Không bịa ý nghĩa văn hoá hoặc nguồn trích dẫn.`,
-      history: [],
+    const response = await postJson('/api/gifts/greeting', {
+      occasion,
+      recipient,
+      flowers: [bundle.main.name_vi, bundle.support?.name_vi, bundle.accent?.name_vi].filter(Boolean),
+      situation,
+      tone,
     }, { signal: controller.signal });
-    const messages = parseGeneratedGreetings(response.answer);
-    if (!messages) {
-      return { messages: fallback, cached: false, source: 'Mẫu offline', note: 'Chatbot chưa tạo đủ ba lời nhắn theo định dạng yêu cầu.' };
-    }
-    localStorage.setItem(cacheKey, JSON.stringify(messages));
-    return { messages, cached: false, source: 'Gemini qua API chatbot' };
+    const message = parseGeneratedGreeting(response.message);
+    if (!message) return { text: fallback, source: 'Mẫu dự phòng offline', note: 'AI chưa trả về lời nhắn dùng được; bạn có thể sửa nội dung trước khi tải thiệp.' };
+    return { text: message, source: 'AI qua API chatbot' };
   } catch (error) {
-    return { messages: fallback, cached: false, source: 'Mẫu offline', note: friendlyFailure(error) };
+    return { text: fallback, source: 'Mẫu dự phòng offline', note: friendlyFailure(error) };
   } finally {
     window.clearTimeout(timeout);
   }
 }
 
-function saveGreetingCard(message, flower, sender, recipientName) {
+function saveGreetingCard(message, flower) {
   const canvas = document.createElement('canvas');
   canvas.width = 1200;
   canvas.height = 1500;
@@ -66,7 +60,6 @@ function saveGreetingCard(message, flower, sender, recipientName) {
     const words = message.split(/\s+/); let line = ''; let y = 1260;
     for (const word of words) { const next = `${line}${word} `; if (context.measureText(next).width > 920) { context.fillText(line.trim(), 600, y); line = `${word} `; y += 64; } else line = next; }
     if (line) context.fillText(line.trim(), 600, y);
-    context.fillStyle = '#72816b'; context.font = '28px Arial'; context.fillText([sender && `Từ ${sender}`, recipientName && `Gửi ${recipientName}`].filter(Boolean).join('  ·  '), 600, 1430);
     canvas.toBlob((blob) => { if (!blob) return; const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `thiep-${flower.id}.png`; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); }, 'image/png');
   };
   const image = new Image();
@@ -95,9 +88,10 @@ async function makeBouquetShareImage(bouquet, context) {
   const context2d = canvas.getContext('2d');
   if (!context2d) throw new Error('Trình duyệt không hỗ trợ tạo ảnh thiệp.');
 
-  const [mainImage, supportImage] = await Promise.all([
+  const [mainImage, supportImage, accentImage] = await Promise.all([
     loadLocalFlowerImage(bouquet.main.id),
     bouquet.support ? loadLocalFlowerImage(bouquet.support.id) : Promise.resolve(null),
+    bouquet.accent ? loadLocalFlowerImage(bouquet.accent.id) : Promise.resolve(null),
   ]);
   const background = context2d.createLinearGradient(0, 0, 1200, 1400);
   background.addColorStop(0, '#fff8ed');
@@ -126,6 +120,19 @@ async function makeBouquetShareImage(bouquet, context) {
     context2d.arc(890, 900, 170, 0, Math.PI * 2);
     context2d.strokeStyle = '#fffdf5';
     context2d.lineWidth = 12;
+    context2d.stroke();
+  }
+  if (accentImage) {
+    context2d.save();
+    context2d.beginPath();
+    context2d.arc(300, 875, 115, 0, Math.PI * 2);
+    context2d.clip();
+    context2d.drawImage(accentImage, 185, 760, 230, 230);
+    context2d.restore();
+    context2d.beginPath();
+    context2d.arc(300, 875, 115, 0, Math.PI * 2);
+    context2d.strokeStyle = '#fffdf6';
+    context2d.lineWidth = 10;
     context2d.stroke();
   }
 
@@ -181,13 +188,16 @@ export default function GiftAdvisor() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [greetings, setGreetings] = useState(null);
+  const [showGreetingComposer, setShowGreetingComposer] = useState(false);
+  const [greetingSituation, setGreetingSituation] = useState('');
+  const [greetingTone, setGreetingTone] = useState('Chân thành, tự nhiên');
+  const [greetingError, setGreetingError] = useState('');
   const [greetingBusy, setGreetingBusy] = useState(false);
-  const [greetingEdits, setGreetingEdits] = useState({});
+  const [greetingEdit, setGreetingEdit] = useState('');
   const [shareBusy, setShareBusy] = useState(false);
   const [shareNotice, setShareNotice] = useState('');
   const [shareError, setShareError] = useState('');
-  const [sender, setSender] = useState('');
-  const [recipientName, setRecipientName] = useState('');
+  const [actionsDone, setActionsDone] = useState({});
   const [book, setBook] = useState(readGiftBook);
   const [tab, setTab] = useState('gift');
   const [intent, setIntent] = useState('');
@@ -221,7 +231,7 @@ export default function GiftAdvisor() {
   }, []);
 
   async function getSuggestions(event, overrides = {}) {
-    event?.preventDefault(); setBusy(true); setError(''); setResult(null); setResultContext(null); setGreetings(null); setSelected(0);
+    event?.preventDefault(); setBusy(true); setError(''); setResult(null); setResultContext(null); setGreetings(null); setShowGreetingComposer(false); setSelected(0); setActionsDone({});
     const requestOccasion = overrides.occasion ?? occasion;
     const requestRecipient = overrides.recipient ?? recipient;
     const requestColor = overrides.color ?? color;
@@ -254,7 +264,7 @@ export default function GiftAdvisor() {
     setIntent(option.id);
     setOccasion(option.occasion);
     setGreetings(null);
-    setGreetingEdits({});
+    setGreetingEdit('');
     setShareNotice('');
     const preferredEntry = GIFT_SPECIES.find((entry) => entry.species_id === preferredFlowerId);
     if (preferredEntry && !isCompatiblePreferredFlower(preferredEntry, option.occasion)) {
@@ -271,8 +281,11 @@ export default function GiftAdvisor() {
 
   async function generateGreetings() {
     if (!current || greetingBusy) return;
-    setGreetingBusy(true); setGreetings(null); setGreetingEdits({});
-    try { setGreetings(await makeMessages(current, resultContext?.recipient || recipient, resultContext?.occasion || occasion)); }
+    setGreetingBusy(true); setGreetings(null); setGreetingError('');
+    try {
+      const generated = await makePersonalGreeting(current, resultContext?.recipient || recipient, resultContext?.occasion || occasion, greetingSituation.trim(), greetingTone);
+      setGreetings(generated); setGreetingEdit(generated.text);
+    } catch (failure) { setGreetingError(friendlyFailure(failure)); }
     finally { setGreetingBusy(false); }
   }
 
@@ -284,6 +297,7 @@ export default function GiftAdvisor() {
         occasion: resultContext?.occasion || occasion,
         recipient: resultContext?.recipient || recipient,
       }));
+      setActionsDone((previous) => ({ ...previous, share: true }));
     } catch (shareFailure) {
       if (shareFailure?.name !== 'AbortError') setShareError(shareFailure?.message || 'Chưa thể tạo ảnh chia sẻ.');
     } finally {
@@ -296,6 +310,7 @@ export default function GiftAdvisor() {
     const next = readGiftBook();
     next.bouquets.unshift({ id: `${Date.now()}`, occasion: resultContext?.occasion || occasion, recipient: resultContext?.recipient || recipient, mainId: current.main.id, supportId: current.support?.id || null, color: resultContext?.color || '', size: resultContext?.size || size, savedAt: new Date().toISOString() });
     setBook(writeGiftBook(next));
+    setActionsDone((previous) => ({ ...previous, save: true }));
   }
 
   function clearBook() {
@@ -307,19 +322,20 @@ export default function GiftAdvisor() {
     const entry = GIFT_SPECIES.find((item) => item.species_id === speciesId);
     if (!entry) {
       setTab('gift');
-      setError('Loài này đã được lưu, nhưng hiện chưa có dữ liệu phối bó phù hợp.');
+      setError('Loài này đã được lưu, nhưng hiện chưa có dữ liệu để gợi ý bó phù hợp.');
       return;
     }
     const nextOccasion = [occasion, ...entry.occasions].find((candidate) => isCompatiblePreferredFlower(entry, candidate));
     if (!nextOccasion) {
       setTab('gift');
-      setError('Loài này chưa có dịp tặng phù hợp trong dữ liệu hiện tại.');
+      setError('Dữ liệu hiện tại chưa ghi nhận dịp phù hợp để tặng loài hoa này.');
       return;
     }
     const nextColor = color || entry.colors[0]?.match(/#[0-9a-f]{6}/i)?.[0] || '';
     setTab('gift');
     setError('');
     setPreferredFlowerId(speciesId);
+    setActionsDone({});
     setOccasion(nextOccasion);
     setIntent(intentForOccasion(nextOccasion)?.id || '');
     setColor(nextColor);
@@ -334,31 +350,32 @@ export default function GiftAdvisor() {
 
   return <main className="gift-page section-wrap">
     <header className="gift-hero"><a className="back-home" href="/#home">← Về khu vườn</a><span className="eyebrow">CHỌN HOA CÓ Ý NGHĨA</span><h1>Một bó hoa,<br/><em>đúng điều muốn nói.</em></h1><p>Chọn dịp và người nhận để khám phá gợi ý bó hoa, lời nhắn và lưu lại trong Sổ hoa của bạn.</p><span className="gift-disclaimer">Gợi ý dựa trên dữ liệu ý nghĩa hoa · chưa thay thế tư vấn phong tục địa phương</span></header>
-    <div className="gift-tabs" role="tablist" aria-label="Tặng hoa và sổ hoa"><button type="button" role="tab" aria-selected={tab === 'gift'} className={tab === 'gift' ? 'active' : ''} onClick={() => setTab('gift')}>Phối bó hoa</button><button type="button" role="tab" aria-selected={tab === 'book'} className={tab === 'book' ? 'active' : ''} onClick={() => setTab('book')}>Sổ hoa của tôi <span>{book.bouquets.length + book.favorites.length}</span></button></div>
+    <div className="gift-tabs" role="tablist" aria-label="Chọn bó hoa và sổ hoa"><button type="button" role="tab" aria-selected={tab === 'gift'} className={tab === 'gift' ? 'active' : ''} onClick={() => setTab('gift')}>Chọn bó hoa</button><button type="button" role="tab" aria-selected={tab === 'book'} className={tab === 'book' ? 'active' : ''} onClick={() => setTab('book')}>Sổ hoa của tôi <span>{book.bouquets.length + book.favorites.length}</span></button></div>
     {tab === 'gift' ? <>
       <form className="gift-form" onSubmit={getSuggestions}>
         <fieldset className="gift-intents"><legend>Bạn muốn gửi gắm điều gì?</legend><div>{GIFT_INTENTS.map((option) => <button key={option.id} type="button" className={intent === option.id ? 'active' : ''} aria-pressed={intent === option.id} onClick={() => chooseIntent(option)}><span aria-hidden="true">{option.icon}</span>{option.title}</button>)}</div></fieldset>
         <label>Dịp<select value={occasion} onChange={(event) => chooseOccasion(event.target.value)}>{OCCASIONS.map((item) => <option key={item}>{item}</option>)}</select></label>
         <label>Người nhận<select value={recipient} onChange={(event) => setRecipient(event.target.value)}>{RECIPIENTS.map((item) => <option key={item}>{item}</option>)}</select></label>
-        <label>Màu yêu thích <select value={color} onChange={(event) => setColor(event.target.value)}><option value="">Tuỳ ý</option>{COLORS.map((value) => <option value={value} key={value}>{value}</option>)}</select></label>
+        <label>Màu yêu thích<input className="gift-color-input" type="text" list="gift-color-suggestions" value={color} onChange={(event) => setColor(event.target.value)} placeholder="Ví dụ: hồng pastel, xanh lá, #FF6F91" aria-describedby="gift-color-help"/><datalist id="gift-color-suggestions"><option value="Hồng pastel"/><option value="Đỏ"/><option value="Cam đào"/><option value="Vàng nắng"/><option value="Tím lavender"/><option value="Xanh lá mint"/><option value="Xanh dương"/><option value="Trắng kem"/></datalist><small id="gift-color-help">Gõ tên màu hoặc mã HEX; hệ thống ưu tiên hoa có tông màu gần nhất.</small></label>
         <label>Quy mô<select value={size} onChange={(event) => setSize(event.target.value)}>{SIZES.map((item) => <option key={item}>{item}</option>)}</select><small>{size === 'nhỏ' ? '5' : size === 'vừa' ? '9' : '15'} cành · không hiển thị giá</small></label>
-        <button className="primary-button" type="submit" disabled={busy}>{busy ? 'Đang phối gợi ý…' : 'Tìm bó hoa phù hợp'} <span>↗</span></button>
+        <button className="primary-button" type="submit" disabled={busy}>{busy ? 'Đang chọn hoa phù hợp…' : 'Gợi ý bó hoa'} <span>↗</span></button>
       </form>
       {preferredFlowerId && SPECIES[preferredFlowerId] && <p className="gift-preferred-flower">Hoa chính đã chọn: <b>{SPECIES[preferredFlowerId].name_vi}</b><button type="button" onClick={clearPreferredFlower}>Bỏ lựa chọn</button></p>}
       {error && <div className="friendly-error" role="alert"><p>{error}</p><button className="button" type="button" onClick={() => getSuggestions({ preventDefault() {} })}>Thử lại</button></div>}
       {result && <>
-        <p className="gift-result-context">Gợi ý này dành cho <b>{resultContext?.recipient || result.recipient}</b> dịp <b>{resultContext?.occasion || result.occasion}</b>{resultContext?.color ? ` · màu ${resultContext.color}` : ''} · bó cỡ <b>{resultContext?.size || result.size}</b>. Đổi lựa chọn phía trên rồi bấm “Tìm bó hoa phù hợp” để cập nhật.</p>
-        <div className="gift-suggestion-tabs" role="tablist" aria-label="Ba gợi ý bó hoa">{result.suggestions.map((suggestion, index) => <button type="button" key={suggestion.id} className={selected === index ? 'active' : ''} onClick={() => { setSelected(index); setGreetings(null); setGreetingEdits({}); setShareNotice(''); }}>Gợi ý 0{index + 1}<span>{suggestion.main.name_vi}</span></button>)}</div>
+        <p className="gift-result-context">Gợi ý này dành cho <b>{resultContext?.recipient || result.recipient}</b> dịp <b>{resultContext?.occasion || result.occasion}</b>{resultContext?.color ? ` · màu ${resultContext.color}` : ''} · bó cỡ <b>{resultContext?.size || result.size}</b>. Đổi lựa chọn phía trên rồi bấm “Gợi ý bó hoa” để cập nhật.</p>{result.color_note && <p className="gift-color-note" role="status">{result.color_note}</p>}
+        <div className="gift-suggestion-tabs" role="tablist" aria-label="Ba gợi ý bó hoa">{result.suggestions.map((suggestion, index) => <button type="button" key={suggestion.id} className={selected === index ? 'active' : ''} onClick={() => { setSelected(index); setGreetings(null); setGreetingEdit(''); setShowGreetingComposer(false); setShareNotice(''); setActionsDone({}); }}>Gợi ý 0{index + 1}<span>{suggestion.main.name_vi}</span></button>)}</div>
         {current && <article className="bouquet-card">
           <div className="bouquet-photo-composition" aria-label={`Ảnh gợi ý bó ${current.main.name_vi}`}>
             <img className="bouquet-photo-main" src={imageFor(current.main)} alt={current.main.name_vi} loading="lazy"/>
             {current.support && <img className="bouquet-photo-support" src={imageFor(current.support)} alt={current.support.name_vi} loading="lazy"/>}
+            {current.accent && <img className="bouquet-photo-accent" src={imageFor(current.accent)} alt={current.accent.name_vi} loading="lazy"/>}
             <span className="bouquet-ribbon">{current.stem_count} cành · {resultContext?.size || size}</span>
           </div>
-          <div className="bouquet-copy"><span className="eyebrow">{result.label.toLocaleUpperCase('vi')}</span><h2>{current.main.name_vi}<small> + {current.support?.name_vi || 'hoa phụ theo mùa'}</small></h2><p className="bouquet-meaning">{current.meaning}</p><h3>Vì sao gợi ý bó này?</h3><ul>{current.reason.map((reason) => <li key={reason}>{reason}</li>)}<li>Phối thêm {current.foliage.toLocaleLowerCase('vi')}</li></ul><div className="bouquet-palette" aria-label="Bảng màu bó hoa">{current.palette.filter(Boolean).map((value) => <i key={value} style={{ background: value }} title={value}/>)}</div>{current.caution.length > 0 && <p className="bouquet-caution"><b>Lưu ý:</b> {current.caution.join(' ')}</p>}<p className="draft-note">Dữ liệu ý nghĩa và phối dịp hiện là bản nháp chưa xác minh.</p>
-            <div className="bouquet-actions"><button type="button" className="primary-button" onClick={saveBouquet}>Lưu bó vào Sổ hoa</button><button type="button" className="button" onClick={() => { const question = `Mình muốn tặng bó ${current.main.name_vi}${current.support ? ` và ${current.support.name_vi}` : ''} cho ${resultContext?.recipient || recipient} dịp ${resultContext?.occasion || occasion}. Ý nghĩa và lưu ý văn hoá nào cần biết?`; openGardenerWith(question); }}>Hỏi cô làm vườn về bó này</button><button type="button" className="button" onClick={generateGreetings} disabled={greetingBusy}>{greetingBusy ? 'Đang viết lời nhắn…' : 'Viết lời nhắn'}</button><button type="button" className="button share-bouquet-button" onClick={shareCurrentBouquet} disabled={shareBusy}>{shareBusy ? 'Đang tạo ảnh…' : 'Chia sẻ bó hoa'}</button></div>
+          <div className="bouquet-copy"><span className="eyebrow">{result.label.toLocaleUpperCase('vi')}</span><h2>{current.main.name_vi}<small> + {current.support?.name_vi || 'hoa phụ theo mùa'}{current.accent ? ` + ${current.accent.name_vi}` : ''}</small></h2><p className="bouquet-meaning">{current.meaning}</p><section className="bouquet-recipe" aria-label="Chi tiết bó hoa"><h3>Bó này gồm</h3><ul>{(current.mix || [{ role: 'Hoa chính', flower: current.main, stems: current.support ? Math.ceil(current.stem_count * .65) : current.stem_count }, ...(current.support && current.stem_count > 1 ? [{ role: 'Hoa phụ', flower: current.support, stems: current.stem_count - Math.ceil(current.stem_count * .65) }] : [])]).map((part) => <li key={`${part.role}-${part.flower.id}`}><span className="recipe-flower-dot" style={{ background: part.flower.color }}/><span><b>{part.role}</b><small>{part.flower.name_vi}</small></span><strong>{part.stems} cành</strong></li>)}</ul><p>{current.foliage} Tổng cộng {current.stem_count} cành.</p></section><h3>Vì sao gợi ý bó này?</h3><ul>{current.reason.map((reason) => <li key={reason}>{reason}</li>)}</ul><div className="bouquet-palette" aria-label="Bảng màu bó hoa">{current.palette.filter(Boolean).map((value, paletteIndex) => <i key={`${value}-${paletteIndex}`} style={{ background: value }} title={value}/>)}</div>{current.caution.length > 0 && <p className="bouquet-caution"><b>Lưu ý:</b> {current.caution.join(' ')}</p>}<p className="draft-note">Dữ liệu ý nghĩa hoa và dịp tặng hiện là bản nháp chưa xác minh.</p>
+            <div className="bouquet-actions"><button type="button" className={`primary-button ${actionsDone.save ? 'is-complete' : ''}`} aria-pressed={Boolean(actionsDone.save)} onClick={saveBouquet}>{actionsDone.save ? '✓ Đã lưu bó hoa' : 'Lưu bó vào Sổ hoa'}</button><button type="button" className={`button ${actionsDone.ask ? 'is-complete' : ''}`} aria-pressed={Boolean(actionsDone.ask)} onClick={() => { const question = `Mình muốn tặng bó ${current.main.name_vi}${current.support ? ` và ${current.support.name_vi}` : ''} cho ${resultContext?.recipient || recipient} dịp ${resultContext?.occasion || occasion}. Ý nghĩa và lưu ý văn hoá nào cần biết?`; openGardenerWith(question); setActionsDone((previous) => ({ ...previous, ask: true })); }}>{actionsDone.ask ? '✓ Đã mở Cô làm vườn' : 'Hỏi cô làm vườn về bó này'}</button><button type="button" className={`button ${actionsDone.greeting ? 'is-complete' : ''}`} aria-pressed={Boolean(actionsDone.greeting)} onClick={() => { setShowGreetingComposer(true); setGreetings(null); setGreetingError(''); setActionsDone((previous) => ({ ...previous, greeting: true })); }} disabled={greetingBusy}>{actionsDone.greeting ? '✓ Lời nhắn riêng' : 'AI viết lời nhắn riêng'}</button><button type="button" className={`button share-bouquet-button ${actionsDone.share ? 'is-complete' : ''}`} aria-pressed={Boolean(actionsDone.share)} onClick={shareCurrentBouquet} disabled={shareBusy}>{shareBusy ? 'Đang tạo ảnh…' : actionsDone.share ? '✓ Đã chia sẻ bó hoa' : 'Chia sẻ bó hoa'}</button></div>
             {shareNotice && <p className="gift-share-status" role="status">{shareNotice}</p>}{shareError && <p className="gift-share-error" role="alert">{shareError}</p>}
-            {greetings && <section className="gift-greetings"><span className="eyebrow">3 LỜI NHẮN · {greetings.source}</span>{greetings.note && <p className="draft-note">Gemini chưa sẵn sàng; đang dùng mẫu offline. {greetings.note}</p>}<label>Tên người gửi<input value={sender} onChange={(event) => setSender(event.target.value)} placeholder="Tuỳ chọn" maxLength={40}/></label><label>Tên người nhận<input value={recipientName} onChange={(event) => setRecipientName(event.target.value)} placeholder="Tuỳ chọn" maxLength={40}/></label>{greetings.messages.map((message) => { const text = greetingEdits[message.tone] ?? message.text; return <article className="gift-message" key={message.tone}><div><b>{message.tone}</b><textarea aria-label={`Sửa lời nhắn ${message.tone}`} value={text} maxLength={500} onChange={(event) => setGreetingEdits((previous) => ({ ...previous, [message.tone]: event.target.value }))}/></div><div className="gift-message-actions"><button type="button" className="button" disabled={!text.trim()} onClick={() => saveGreetingCard(text.trim(), current.main, sender, recipientName)}>Tải thiệp PNG</button><GiftQrPanel payload={{ speciesId: current.main.id, message: text.trim(), sender, recipient: recipientName || resultContext?.recipient || recipient, occasion: resultContext?.occasion || occasion }}/></div></article>; })}</section>}
+            {showGreetingComposer && <section className="gift-greetings"><span className="eyebrow">VIẾT LỜI NHẮN THEO CÂU CHUYỆN CỦA BẠN</span><p>AI sẽ dựa trên bó hoa, dịp tặng và hoàn cảnh bạn kể để viết một lời riêng. Không cần nhập tên người gửi hay người nhận.</p><label>Hoàn cảnh muốn nhắn<textarea className="gift-situation" value={greetingSituation} onChange={(event) => setGreetingSituation(event.target.value)} placeholder="Ví dụ: Mình muốn xin lỗi vì đã lỡ quên ngày kỷ niệm; lời nhắn nên chân thành, không quá sướt mướt." maxLength={500}/></label><label>Giọng điệu<select value={greetingTone} onChange={(event) => setGreetingTone(event.target.value)}><option>Chân thành, tự nhiên</option><option>Ấm áp, trìu mến</option><option>Trang trọng, tinh tế</option><option>Vui vẻ, dí dỏm nhẹ</option></select></label><button className="primary-button" type="button" onClick={generateGreetings} disabled={greetingBusy}>{greetingBusy ? 'AI đang viết riêng cho bạn…' : 'Tạo lời nhắn bằng AI'}</button>{greetingError && <p className="friendly-error" role="alert">{greetingError}</p>}{greetings && <article className="gift-message"><div><b>{greetings.source}</b>{greetings.note && <p className="draft-note">AI chưa kết nối được nên nội dung dưới đây là câu dự phòng, không phải lời AI tạo. {greetings.note}</p>}<textarea aria-label="Lời nhắn cá nhân hoá" value={greetingEdit} maxLength={500} onChange={(event) => setGreetingEdit(event.target.value)}/></div><div className="gift-message-actions"><button type="button" className="button" disabled={!greetingEdit.trim()} onClick={() => saveGreetingCard(greetingEdit.trim(), current.main)}>Tải thiệp PNG</button><GiftQrPanel payload={{ speciesId: current.main.id, message: greetingEdit.trim(), recipient: resultContext?.recipient || recipient, occasion: resultContext?.occasion || occasion }}/></div></article>}</section>}
           </div>
         </article>}
       </>}
@@ -367,8 +384,8 @@ export default function GiftAdvisor() {
       <header><div><span className="eyebrow">LƯU CỤC BỘ TRÊN THIẾT BỊ</span><h2>Sổ hoa của tôi</h2><p>Không cần đăng nhập. Dữ liệu chỉ nằm trong trình duyệt này.</p></div><button className="button danger-button" type="button" onClick={clearBook} disabled={!book.recognitions.length && !book.favorites.length && !book.bouquets.length}>Xoá dữ liệu</button></header>
       <div className="giftbook-stats"><div><b>{uniqueRecognized}</b><span>loài đã nhận diện</span></div><div><b>{book.favorites.length}</b><span>hoa yêu thích</span></div><div><b>{book.bouquets.length}</b><span>bó đã phối</span></div></div>
       <h3>Bó hoa đã lưu</h3>{book.bouquets.length ? <div className="giftbook-list">{book.bouquets.map((bouquet) => <article key={bouquet.id}><span className="giftbook-icon">✿</span><div><b>{recommendationNames(['mainId', bouquet.mainId])}{bouquet.supportId ? ` + ${SPECIES[bouquet.supportId]?.name_vi || ''}` : ''}</b><small>{bouquet.occasion} · {bouquet.recipient} · {bouquet.size}</small></div><button className="text-link" type="button" onClick={() => { setTab('gift'); void getSuggestions(null, { occasion: bouquet.occasion, recipient: bouquet.recipient, color: bouquet.color || '', size: bouquet.size, preferredFlowerId: bouquet.mainId }); }}>Phối lại →</button></article>)}</div> : <p className="muted">Chưa có bó hoa nào được lưu.</p>}
-      <h3>Hoa nhận diện gần đây</h3>{recentRecognized.length ? <div className="giftbook-list giftbook-flowers">{recentRecognized.map((item) => { const flower = SPECIES[item.speciesId]; if (!flower) return null; const date = item.at && !Number.isNaN(Date.parse(item.at)) ? new Date(item.at).toLocaleDateString('vi-VN') : 'Chưa rõ ngày'; return <article key={item.speciesId}><img src={imageFor(flower)} alt="" loading="lazy"/><div><b>{flower.name_vi}</b><small>Nhận diện ngày {date}</small></div>{GIFT_SPECIES.some((entry) => entry.species_id === item.speciesId) ? <button className="text-link" type="button" onClick={() => recommendWithFlower(item.speciesId)}>Phối bó →</button> : <a className="text-link" href={`/bach-khoa/${encodeURIComponent(item.speciesId)}`}>Khám phá →</a>}</article>; })}</div> : <p className="muted">Hoa bạn nhận diện sẽ xuất hiện ở đây.</p>}
-      <h3>Hoa yêu thích</h3>{book.favorites.length ? <div className="giftbook-list giftbook-flowers">{book.favorites.map((id) => { const flower = SPECIES[id]; if (!flower) return null; return <article key={id}><img src={imageFor(flower)} alt="" loading="lazy"/><div><b>{flower.name_vi}</b><small>Đã lưu trong Sổ hoa</small></div>{GIFT_SPECIES.some((entry) => entry.species_id === id) ? <button className="text-link" type="button" onClick={() => recommendWithFlower(id)}>Phối bó →</button> : <a className="text-link" href={`/bach-khoa/${encodeURIComponent(id)}`}>Khám phá →</a>}<button className="giftbook-remove" type="button" aria-label={`Bỏ ${flower.name_vi} khỏi yêu thích`} onClick={() => removeFavorite(id)}>×</button></article>; })}</div> : <p className="muted">Lưu hoa yêu thích từ kết quả nhận diện.</p>}
+      <h3>Hoa nhận diện gần đây</h3>{recentRecognized.length ? <div className="giftbook-list giftbook-flowers">{recentRecognized.map((item) => { const flower = SPECIES[item.speciesId]; if (!flower) return null; const date = item.at && !Number.isNaN(Date.parse(item.at)) ? new Date(item.at).toLocaleDateString('vi-VN') : 'Chưa rõ ngày'; return <article key={item.speciesId}><img src={imageFor(flower)} alt="" loading="lazy"/><div><b>{flower.name_vi}</b><small>Nhận diện ngày {date}</small></div>{GIFT_SPECIES.some((entry) => entry.species_id === item.speciesId) ? <button className="text-link" type="button" onClick={() => recommendWithFlower(item.speciesId)}>Gợi ý bó →</button> : <a className="text-link" href={`/bach-khoa/${encodeURIComponent(item.speciesId)}`}>Khám phá →</a>}</article>; })}</div> : <p className="muted">Hoa bạn nhận diện sẽ xuất hiện ở đây.</p>}
+      <h3>Hoa yêu thích</h3>{book.favorites.length ? <div className="giftbook-list giftbook-flowers">{book.favorites.map((id) => { const flower = SPECIES[id]; if (!flower) return null; return <article key={id}><img src={imageFor(flower)} alt="" loading="lazy"/><div><b>{flower.name_vi}</b><small>Đã lưu trong Sổ hoa</small></div>{GIFT_SPECIES.some((entry) => entry.species_id === id) ? <button className="text-link" type="button" onClick={() => recommendWithFlower(id)}>Gợi ý bó →</button> : <a className="text-link" href={`/bach-khoa/${encodeURIComponent(id)}`}>Khám phá →</a>}<button className="giftbook-remove" type="button" aria-label={`Bỏ ${flower.name_vi} khỏi yêu thích`} onClick={() => removeFavorite(id)}>×</button></article>; })}</div> : <p className="muted">Lưu hoa yêu thích từ kết quả nhận diện.</p>}
     </section>}
   </main>;
 }

@@ -37,10 +37,10 @@ function addWind(material) {
     shader.uniforms.uFlowerWind = { value: 0 };
     const commonChunk = shader.vertexShader.includes('#include <common>') ? '#include <common>' : '#include <uv_pars_vertex>';
     shader.vertexShader = shader.vertexShader.replace(commonChunk, `${commonChunk}\nuniform float uFlowerTime;\nuniform float uFlowerWind;`);
-    shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\ntransformed.x += sin(uFlowerTime + position.y * 2.2) * uFlowerWind * max(position.y, 0.0) * 0.045;');
+    shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nfloat stemHeight = max(position.y - 0.8, 0.0);\ntransformed.x += sin(uFlowerTime * 0.82 + position.y * 1.7) * uFlowerWind * stemHeight * 0.016;\ntransformed.z += sin(uFlowerTime * 0.61 + position.y * 1.15 + 1.1) * uFlowerWind * stemHeight * 0.006;');
     material.userData.flowerShader = shader;
   };
-  material.customProgramCacheKey = () => `${previousCacheKey}|flower-pot-wind-v3`;
+  material.customProgramCacheKey = () => `${previousCacheKey}|flower-pot-wind-v4`;
 }
 
 function contactShadowTexture(strength = 1) {
@@ -71,7 +71,8 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
     const host = hostRef.current;
     if (!host) return undefined;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const compact = window.matchMedia('(max-width: 700px)').matches || window.matchMedia('(pointer: coarse)').matches;
+    // Touch-capable laptops still need the desktop rendering tier.
+    const compact = window.matchMedia('(max-width: 700px)').matches;
     let renderer; let frame = 0; let visible = !document.hidden; let inViewport = true; let lastRender = 0;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 70);
@@ -91,7 +92,9 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
 
     try {
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !compact, powerPreference: 'high-performance' });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, compact ? 1.25 : 1.5));
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      const renderPixelRatio = Math.min(Math.max(devicePixelRatio, compact ? 1 : 1.15), compact ? 1.25 : 1.75);
+      renderer.setPixelRatio(renderPixelRatio);
       renderer.setSize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight), false); renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.04; renderer.shadowMap.enabled = false; keyLight.castShadow = false;
       const initialPixelRatio = renderer.getPixelRatio();
@@ -130,7 +133,7 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
         const distance = Math.max(
           projectedHeight / (2 * Math.tan(verticalHalf)),
           projectedWidth / (2 * Math.tan(horizontalHalf)),
-        ) * 1.34;
+        ) * 1.18;
         const currentView = sceneRef.current?.view || view;
         const direction = currentView.position.clone().sub(currentView.target).normalize();
         controls.target.copy(center);
@@ -152,6 +155,8 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
       document.addEventListener('visibilitychange', onVisibility);
 
       const active = { root: model, id: speciesId, open, dispose: disposeFlower };
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      let lastDiagnosticsAt = 0;
       const animate = (time) => {
         frame = 0; if (!visible || !inViewport) return;
         const stateAtFrameStart = sceneRef.current;
@@ -170,10 +175,23 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
           // prefers-reduced-motion keeps wind off by default; an explicit click
           // on the wind control is a user override and should visibly work.
           const wind = current.root.userData.windEnabled;
-          // Small, visibly readable stem sway; previous 0.008 rad was almost
-          // imperceptible at normal viewing distance.
-          current.root.userData.plantRig.rotation.z = wind ? Math.sin(time * .00048) * .024 : 0;
-          current.root.userData.plantRig.rotation.x = wind ? Math.sin(time * .00037 + .8) * .008 : 0;
+          // Keep the whole plant nearly anchored; the stem bends, the flower
+          // head follows with a delay, and each leaf gets its own wind phase.
+          current.root.userData.plantRig.rotation.z = wind ? Math.sin(time * .00031) * .004 : 0;
+          current.root.userData.plantRig.rotation.x = wind ? Math.sin(time * .00024 + .8) * .002 : 0;
+          const head = current.root.userData.windFlowerHead;
+          if (head) {
+            const base = head.userData.windBaseRotation;
+            const phase = head.userData.windPhase || 0;
+            head.rotation.x = base.x + (wind ? Math.sin(time * .00043 + phase) * .014 : 0);
+            head.rotation.z = base.z + (wind ? Math.sin(time * .00034 + phase + 1.4) * .021 : 0);
+          }
+          for (const leaf of current.root.userData.windLeaves || []) {
+            const base = leaf.userData.windBaseRotation;
+            const phase = leaf.userData.windPhase || 0;
+            leaf.rotation.x = base.x + (wind ? Math.sin(time * .00055 + phase) * .025 : 0);
+            leaf.rotation.z = base.z + (wind ? Math.sin(time * .00039 + phase + 1.1) * .045 : 0);
+          }
         }
         if (current.root.userData.windEnabled) {
           for (const material of current.root.userData.windMaterials || []) {
@@ -182,29 +200,23 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
           }
         }
         controls.update(); renderer.render(scene, camera);
-        host.dataset.gardenDrawCalls = String(renderer.info.render.calls);
-        host.dataset.gardenPixelRatio = String(renderer.getPixelRatio());
-        host.dataset.gardenGeometries = String(renderer.info.memory.geometries);
-        host.dataset.gardenTextures = String(renderer.info.memory.textures);
-        const petalCache = getPetalGeometryCacheStats();
-        host.dataset.gardenPetalGeometryCache = String(petalCache.entries);
-        host.dataset.gardenPetalGeometryReferences = String(petalCache.activeReferences);
         const stats = sceneRef.current;
         if (stats) {
           stats.fpsFrames += 1;
           const fpsNow = Date.now();
-          if (fpsNow - stats.lastFpsAt > 650) {
+          if (fpsNow - stats.lastFpsAt > 1200) {
             if (fpsNow < (stats.fpsWarmupUntil || 0)) {
               stats.fpsFrames = 0; stats.lastFpsAt = fpsNow;
             } else {
               stats.fps = Math.round(stats.fpsFrames * 1000 / (fpsNow - stats.lastFpsAt)); stats.fpsFrames = 0; stats.lastFpsAt = fpsNow; host.dataset.gardenFps = String(stats.fps);
               const activelyAnimating = current.root.userData.windEnabled || performance.now() < stats.interactionUntil;
-              if (stats.fps < 30 && activelyAnimating && stats.qualityStep < 2) {
-                // Keep the user-requested motion; reduce resolution in two
-                // bounded steps if it cannot sustain the 30 FPS target.
-                const targets = compact ? [1.0, 0.8] : [0.9, 0.75];
-                const lowerPixelRatio = Math.min(renderer.getPixelRatio(), targets[stats.qualityStep]);
-                stats.qualityStep += 1;
+              if (stats.fps < 30 && activelyAnimating && stats.qualityStep < 1) {
+                // Keep edges readable: one modest reduction instead of dropping
+                // desktop rendering to a visibly soft 0.75 pixel ratio.
+                const minimumPixelRatio = compact ? 0.9 : 1;
+                const currentPixelRatio = renderer.getPixelRatio();
+                const lowerPixelRatio = Math.max(Math.min(minimumPixelRatio, currentPixelRatio), currentPixelRatio * 0.84);
+                stats.qualityStep = 1;
                 renderer.setPixelRatio(lowerPixelRatio);
                 renderer.setSize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight), false);
                 host.dataset.gardenQuality = `adaptive-${stats.qualityStep}`;
@@ -214,15 +226,27 @@ export default function RoseViewer({ speciesId, speciesRecord, open, windEnabled
             }
           }
         }
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Keep diagnostics out of the hot render loop: updating DOM data attributes
+        // and walking the geometry cache every frame creates needless main-thread work.
+        if (isLocalhost && time - lastDiagnosticsAt >= 1000) {
+          lastDiagnosticsAt = time;
+          const petalCache = getPetalGeometryCacheStats();
+          host.dataset.gardenDrawCalls = String(renderer.info.render.calls);
+          host.dataset.gardenTriangles = String(renderer.info.render.triangles);
+          host.dataset.gardenPixelRatio = String(renderer.getPixelRatio());
+          host.dataset.gardenGeometries = String(renderer.info.memory.geometries);
+          host.dataset.gardenTextures = String(renderer.info.memory.textures);
+          host.dataset.gardenPetalGeometryCache = String(petalCache.entries);
+          host.dataset.gardenPetalGeometryReferences = String(petalCache.activeReferences);
           window.__flowerViewerStats = {
             fps: stats?.fps || 0,
             drawCalls: renderer.info.render.calls,
+            triangles: renderer.info.render.triangles,
             pixelRatio: renderer.getPixelRatio(),
             geometries: renderer.info.memory.geometries,
             textures: renderer.info.memory.textures,
             gpuRenderer,
-            petalCache: getPetalGeometryCacheStats(),
+            petalCache,
           };
         }
         const state = sceneRef.current;

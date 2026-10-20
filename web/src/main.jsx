@@ -2,6 +2,8 @@ import { Component, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './styles.css';
+import './landing-refresh.css';
+import './gift-color.css';
 
 class RootErrorBoundary extends Component {
   state = { error: null };

@@ -230,6 +230,9 @@ function addLeaves(root, config, plant = root) {
     geometry.setIndex(indices);
     geometry.computeVertexNormals();
     const leaf = new THREE.Mesh(geometry, material);
+    leaf.name = `Wind leaf ${i + 1}`;
+    leaf.userData.windBaseRotation = new THREE.Euler();
+    leaf.userData.windPhase = i * 2.17;
     const side = i % 2 ? 1 : -1;
     const daisyOffsets = [[0, 0.97, 0], [0, 0.99, 0], [0, 1.01, 0], [0, 1.03, 0]];
     leaf.position.set(
@@ -242,6 +245,7 @@ function addLeaves(root, config, plant = root) {
       // staying inside the pot rim. Mostly radial tilt prevents a crumpled rosette.
       leaf.rotation.set(-0.08, i * Math.PI / 2, 1.05 + (i % 2) * 0.08);
     } else leaf.rotation.set(-0.18, i * 1.85, side * (0.72 + (i % 2) * 0.2));
+    leaf.userData.windBaseRotation.copy(leaf.rotation);
     leaf.castShadow = true; plant.add(leaf); tracked(root, geometry);
     const veinPoints = [];
     const surfaceZ = (t, across) => (config.id === 'daisy' ? 0.026 : 0.065) * Math.sin(Math.PI * t) * (1 - across * across) + (config.id === 'daisy' ? 0.006 : 0.018) * across * Math.sin(Math.PI * t) + 0.004;
@@ -299,6 +303,9 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
     flowerParent.rotation.x = config.headPitch ?? 0.78;
   }
   plant.add(flowerParent);
+  flowerParent.userData.windBaseRotation = flowerParent.rotation.clone();
+  flowerParent.userData.windPhase = (config.id?.length || 0) * 0.37;
+  root.userData.windFlowerHead = flowerParent;
   let bud = null; let sepals = null; let roseSepals = null; let clusterBuds = null; let seeds = null; let seedGeometry = null; let seedMaterial = null; let seedBaseMatrices = null;
   if (isDaisy) {
     const budGeometry = new THREE.SphereGeometry(config.budRadius || 0.2, 28, 20);
@@ -373,7 +380,6 @@ function addFlowerHead(root, config, initialOpen, plant = root) {
     const geometry = acquirePetalGeometry(root, config.template || config.shape, config.shape, config.tipShape, trueDaisy);
     const petalMaterial = makePetalMaterial(config, trueDaisy);
     tracked(root, null, petalMaterial);
-    root.userData.windMaterials.push(petalMaterial);
     const cluster = isCluster; const floretPetals = layer.count;
     const instanceCount = cluster ? floretPetals * (config.floretCount || 28) : layer.count;
     const mesh = new THREE.InstancedMesh(geometry, petalMaterial, instanceCount); mesh.castShadow = false; mesh.receiveShadow = false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -631,6 +637,7 @@ export function createBotanical(THREE_NS, config, { initialOpen = config.open ??
   }
   const setOpen = addFlowerHead(root, config, initialOpen, plant);
   root.userData.setOpen = setOpen; root.userData.stemCurve = stemCurve; root.userData.plantRig = plant;
+  root.userData.windLeaves = plant.children.filter((child) => child.name.startsWith('Wind leaf '));
   root.userData.dispose = () => {
     root.userData.geometries.forEach((item) => item.dispose());
     root.userData.sharedPetalGeometryKeys.forEach(releasePetalGeometry);

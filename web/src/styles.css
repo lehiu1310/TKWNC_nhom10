@@ -709,8 +709,17 @@ body:has(.gift-page){background:radial-gradient(ellipse at 7% 12%,rgba(244,183,1
 .draft-note{color:#6e7567}
 .bouquet-actions .button,.gift-message .button{border-color:#d9e1d4;background:#f1f5ed;color:#3f6246;transition:background .2s,border-color .2s,transform .2s}
 .bouquet-actions .button:hover,.gift-message .button:hover{transform:translateY(-1px);border-color:#abc09f;background:#e8f0e4}
+.bouquet-actions .is-complete{border-color:#6f9b70;background:linear-gradient(135deg,#e5f2df,#fff4e8);color:#294735;box-shadow:0 0 0 3px #6f9b7026,0 5px 13px #35533a14}
+.bouquet-actions .primary-button.is-complete{border-color:#426e49;background:linear-gradient(135deg,#426e49,#294735);color:#fffdf8;box-shadow:0 0 0 3px #6f9b7030,0 8px 18px #2947352b}
 .bouquet-actions .primary-button{color:#fffdf8}
 .gift-greetings{border:1px solid #e0e8dc;background:linear-gradient(145deg,#eef4e9,#f5f3e9)}
+.gift-greetings>p{margin:0;color:#657561;font-size:12px;line-height:1.65}
+.gift-greetings .gift-situation{width:100%;min-height:96px;padding:11px 12px;resize:vertical;border:1px solid #d9dfd2;border-radius:12px;background:#fffefa;color:#2e4937;font:inherit;font-size:12px;line-height:1.6}
+.gift-greetings select{width:100%;min-height:44px;padding:0 12px;border:1px solid #d9dfd2;border-radius:12px;background:#fffefa;color:#2e4937;font:inherit}
+.gift-greetings .gift-situation:focus-visible,.gift-greetings select:focus-visible{outline:0;border-color:#78966e;box-shadow:0 0 0 3px #78966e2b}
+.gift-greetings>label{max-width:560px}
+.gift-greetings>.primary-button{justify-self:start}
+.gift-greetings .friendly-error{margin:0}
 .gift-greetings .eyebrow{color:#547658}
 .gift-message{border-color:#e0e5d9;background:#fffefa;box-shadow:0 4px 13px #42533c08}
 .gift-message b{color:#385a3e}
@@ -740,7 +749,8 @@ body:has(.gift-page){background:radial-gradient(ellipse at 7% 12%,rgba(244,183,1
 .gift-intents button{display:flex;min-height:54px;align-items:center;justify-content:center;gap:8px;padding:9px 11px;border:1px solid #e1e5d9;border-radius:14px;background:#fffefa;color:#506653;font-size:11px;font-weight:800;line-height:1.35;cursor:pointer;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
 .gift-intents button>span{color:#c94e6b;font-size:17px}
 .gift-intents button:hover{transform:translateY(-2px);border-color:#bdcdb7}
-.gift-intents button.active{border-color:#78966e;background:linear-gradient(145deg,#eef5e9,#fff4ed);color:#294735;box-shadow:0 5px 15px #526b4718,inset 0 0 0 1px #78966e26}
+.gift-intents button.active{border-color:#456d49;background:linear-gradient(145deg,#e1efdc,#fff0e9);color:#203d29;box-shadow:0 0 0 2px #78966e35,0 7px 18px #526b4724,inset 0 0 0 1px #78966e45;transform:translateY(-2px)}
+.gift-intents button.active>span{color:#d94d79}
 .gift-intents button:focus-visible{outline:3px solid #78966e66;outline-offset:2px}
 .gift-message>div{flex:1;min-width:0}
 .gift-message textarea{display:block;width:100%;min-height:76px;margin-top:7px;padding:9px 10px;resize:vertical;border:1px solid #e0e5d9;border-radius:10px;background:#fffefa;color:#435c49;font:inherit;font-size:12px;line-height:1.65}

@@ -22,7 +22,7 @@ from starlette.concurrency import run_in_threadpool
 from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, Field
 
-from config import CORS_ORIGINS, DEVICE, ENABLED_MODELS, MAX_UPLOAD_MB, ROOT, resolve_path
+from config import CORS_ORIGINS, DEVICE, ENABLED_MODELS, LLM_PROVIDER, MAX_UPLOAD_MB, ROOT, resolve_path
 from core.gift_advisor import recommend_gifts
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -123,7 +123,7 @@ async def timing(request: Request, call_next):
     response.headers["X-Process-Time-ms"] = f"{elapsed_ms:.1f}"
     if request.url.path in {
         "/api/classify", "/api/detect", "/api/search", "/api/search/text", "/api/search/image",
-        "/api/chat", "/api/chat/sync", "/api/ask",
+        "/api/chat", "/api/chat/sync", "/api/ask", "/api/gifts/greeting",
     }:
         log.info(
             "API_PERF route=%s status=%s latency_ms=%.1f process_peak_rss_mb=%s",
@@ -311,6 +311,14 @@ class GiftRecommendationRequest(BaseModel):
     preferred_species_id: str | None = Field(None, max_length=128)
 
 
+class GiftGreetingRequest(BaseModel):
+    occasion: str = Field(..., min_length=1, max_length=32)
+    recipient: str = Field(..., min_length=1, max_length=32)
+    flowers: list[str] = Field(..., min_length=1, max_length=3)
+    situation: str = Field("", max_length=500)
+    tone: str = Field("Chân thành, tự nhiên", min_length=1, max_length=40)
+
+
 @app.post("/api/gifts/recommend")
 def gift_recommendation(req: GiftRecommendationRequest):
     """Rule/data-based bouquet suggestions; this endpoint does not call an AI model."""
@@ -318,6 +326,23 @@ def gift_recommendation(req: GiftRecommendationRequest):
         return recommend_gifts(req.occasion, req.recipient, req.color, req.size, req.preferred_species_id)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
+
+
+@app.post("/api/gifts/greeting")
+def gift_greeting(req: GiftGreetingRequest):
+    """Create one direct, occasion-specific greeting without flower-guide retrieval."""
+    if LLM_PROVIDER != "gemini":
+        raise HTTPException(503, "Tính năng viết lời chúc cần cấu hình Gemini.")
+    try:
+        message = _require("llm").generate_greeting(
+            req.occasion, req.recipient, req.flowers, req.situation, req.tone,
+        )
+        return {"message": message, "source": "Gemini"}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        log.warning("Gift greeting generation failed (%s)", type(exc).__name__)
+        raise HTTPException(503, "AI viết lời chúc hiện chưa sẵn sàng. Hãy thử lại hoặc dùng mẫu dự phòng.") from exc
 
 
 @app.post("/api/chat")

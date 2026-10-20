@@ -105,7 +105,7 @@ export default function Classify() {
           const gift = giftMeanings.species.find((item) => item.species_id === topSpecies.id);
           if (!gift?.gift_ok) return null;
           const favorite = favoriteIds.includes(topSpecies.id);
-          return <section className="classify-gift-hint"><span className="feature-subtitle">GỢI Ý TẶNG HOA · BẢN NHÁP CHƯA XÁC MINH</span><p>{gift.occasions.length ? `Dữ liệu gợi ý các dịp: ${gift.occasions.slice(0, 4).join(', ')}.` : 'Chưa có dịp tặng phù hợp được ghi nhận.'} {gift.avoid_for.length ? `Lưu ý: ${gift.avoid_for.join(' ')}` : ''}</p><div className="row"><a className="button" href={`/tang-hoa?flower=${topSpecies.id}`}>Phối bó với hoa này</a><button type="button" className="button" onClick={() => setFavoriteIds(rememberFavorite(topSpecies.id).favorites)}>{favorite ? 'Bỏ khỏi Sổ hoa' : 'Lưu vào Sổ hoa'}</button></div></section>;
+          return <section className="classify-gift-hint"><span className="feature-subtitle">GỢI Ý TẶNG HOA · BẢN NHÁP CHƯA XÁC MINH</span><p>{gift.occasions.length ? `Dữ liệu gợi ý các dịp: ${gift.occasions.slice(0, 4).join(', ')}.` : 'Chưa có dịp tặng phù hợp được ghi nhận.'} {gift.avoid_for.length ? `Lưu ý: ${gift.avoid_for.join(' ')}` : ''}</p><div className="row"><a className="button" href={`/tang-hoa?flower=${topSpecies.id}`}>Tạo bó từ hoa này</a><button type="button" className="button" onClick={() => setFavoriteIds(rememberFavorite(topSpecies.id).favorites)}>{favorite ? 'Bỏ khỏi Sổ hoa' : 'Lưu vào Sổ hoa'}</button></div></section>;
         })()}
       </>}
     </div>

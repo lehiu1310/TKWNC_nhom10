@@ -1,0 +1,34 @@
+/* Clearer product landing page with a warm botanical palette. */
+:root{--ink:#29452f;--cream:#fff9f1;--paper:#fffefa;--pink:#ef7890;--yellow:#f4bd4e;--orange:#df805e;--purple:#8d79bd;--green:#78a879;--soft-shadow:0 18px 48px rgba(57,72,48,.09);color:var(--ink);background:var(--cream)}
+body,.site-shell{background:var(--cream);color:var(--ink)}
+.topbar{background:rgba(255,249,241,.72)}
+.topbar-scrolled{background:rgba(255,250,244,.93);border-bottom:1px solid #eee5d8;box-shadow:0 8px 28px rgba(65,58,43,.07)}
+.brand{font-family:'Nunito',sans-serif;color:#29452f}
+.main-nav{color:#536b50}
+.main-nav a:hover,.main-nav .nav-doctor-button:hover{color:#dc7181}
+.main-nav a:after,.main-nav .nav-doctor-button:after{background:linear-gradient(90deg,#ef7890,#e9b852)}
+.service-state{border-color:#e7e9dc;background:#fffefa;color:#586e52;box-shadow:0 4px 14px rgba(43,69,45,.06)}
+.hero{background:radial-gradient(ellipse at 76% 21%,rgba(255,218,198,.62),transparent 38%),radial-gradient(ellipse at 89% 76%,rgba(205,232,201,.58),transparent 35%),radial-gradient(ellipse at 9% 23%,rgba(255,228,235,.68),transparent 34%),linear-gradient(180deg,#fffaf4 0%,#fff8f0 100%)}
+.hero h1,.section-heading h2,.ency-copy h2,.story-intro h2,.scene-copy h2,.ency-page-hero h1,.flower-detail-copy h1{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.045em;color:#29452f}
+.hero h1,.section-heading h2,.ency-copy h2{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.045em;color:#29452f}
+.hero h1 em,.section-heading h2 em,.ency-copy h2 em,.story-intro h2 em,.ency-page-hero h1 em{color:#e97888;background:none;-webkit-text-fill-color:currentColor}
+.hero-lede,.section-heading>p,.story-intro>p,.ency-page-hero>p{color:#687965}
+.primary-button{background:linear-gradient(110deg,#31583a,#416e47);box-shadow:0 10px 25px rgba(49,88,58,.2);border-radius:999px}
+.primary-button:hover{box-shadow:0 16px 32px rgba(49,88,58,.26)}
+.hero-proof{display:flex;align-items:center;gap:20px;width:max-content;max-width:100%;margin-top:28px;padding:14px 19px;border:1px solid rgba(255,255,255,.94);border-radius:18px;background:rgba(255,255,255,.68);box-shadow:0 7px 24px rgba(67,75,48,.06),inset 0 1px #fff;backdrop-filter:blur(14px)}
+.hero-proof>div{display:grid;gap:2px}
+.hero-proof b{font:600 20px/1 'Fraunces',Georgia,serif;color:#35573a}
+.hero-proof span{font-size:9px;font-weight:800;letter-spacing:.35px;color:#7c8873}
+.hero-proof>i{height:27px;width:1px;background:#e8e1d4}
+.hero-blooms:before{background:radial-gradient(ellipse at 54% 46%,rgba(255,199,180,.76),rgba(255,231,194,.46) 43%,rgba(211,231,203,.42) 66%,transparent 78%);filter:blur(23px)}
+.hero-blooms .flower-photo.display-flower-photo{border-color:#fffefa;box-shadow:0 5px 12px rgba(51,55,38,.06),0 22px 44px rgba(67,57,43,.15),inset 0 1px #fff}
+.ai-section{background:radial-gradient(ellipse at 10% 7%,#ffebdf 0,transparent 37%),radial-gradient(ellipse at 92% 88%,#e6f1df 0,transparent 38%),#fbf7ef}
+.ai-glass-inner{border-color:rgba(255,255,255,.95);background:rgba(255,255,255,.74);box-shadow:0 3px 12px rgba(54,65,44,.035),0 28px 80px rgba(62,73,49,.09),inset 0 1px #fff}
+.ai-heading h2{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.045em;color:#29452f}
+.feature-card{border-color:#ece8de;background:#fffefa;box-shadow:0 2px 8px rgba(50,61,42,.04),0 16px 36px rgba(54,67,43,.075),inset 0 1px #fff}
+.feature-card:hover{box-shadow:0 4px 10px rgba(50,61,42,.05),0 24px 52px rgba(54,67,43,.13),inset 0 1px #fff}
+.feature-text h3{font-family:'Fraunces',Georgia,serif;font-weight:500;color:#304c34}
+.story-intro h2,.ency-copy h2{font-family:'Fraunces',Georgia,serif;color:#29452f}
+@media(max-width:900px){.hero-proof{gap:14px;padding:12px 15px}.hero-proof b{font-size:18px}}
+@media(max-width:600px){.hero{min-height:920px}.hero-proof{gap:15px;margin-top:18px;padding:11px 14px;border-radius:15px}.hero-proof b{font-size:17px}.hero-proof span{font-size:8px}.hero-proof>i{height:24px}.hero-copy{z-index:3}.hero-blooms{top:520px!important}}
+@media(prefers-reduced-motion:reduce){.hero-proof{backdrop-filter:none}}

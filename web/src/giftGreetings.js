@@ -63,6 +63,30 @@ export function offlineMessages(bundle, recipient, occasion) {
   }));
 }
 
+export function offlinePersonalGreeting(bundle, recipient, occasion, situation = '', tone = 'Chân thành, tự nhiên') {
+  const person = recipient === 'người yêu' ? 'người thương' : recipient;
+  const flower = bundle?.main?.name_vi || 'bó hoa này';
+  const context = situation.trim();
+  const formality = tone.includes('Trang trọng') ? 'Xin gửi' : tone.includes('Vui vẻ') ? 'Mình gửi' : 'Mình muốn gửi';
+  const detail = context ? ` ${context.replace(/[.!?]+$/, '')}.` : '';
+  if (occasion === 'xin lỗi') return `Mình xin lỗi ${person} vì chuyện vừa qua.${detail} ${formality} ${person} bó ${flower}, mong mình có thể cùng nói chuyện và làm mọi điều tốt hơn.`;
+  if (occasion === 'cảm ơn') return `Cảm ơn ${person} thật nhiều vì sự quan tâm và những điều tốt đẹp đã dành cho mình.${detail} ${formality} ${person} bó ${flower} thay lời trân trọng.`;
+  if (occasion === 'thăm bệnh') return `Mong ${person} sớm khỏe lại, mỗi ngày thêm nhiều năng lượng và niềm vui.${detail} ${formality} ${person} bó ${flower} cùng lời hỏi thăm chân thành.`;
+  if (occasion === 'chia buồn') return `Mình xin gửi ${person} và gia đình lời chia buồn chân thành. Mong mọi người có thêm bình an và được ở bên nhau trong lúc khó khăn này.${detail}`;
+  if (occasion === 'sinh nhật') return `Chúc ${person} sinh nhật thật vui, tuổi mới nhiều sức khỏe và những điều mình mong chờ.${detail} ${formality} ${person} bó ${flower} với thật nhiều thương mến.`;
+  return `Chúc ${person} có một dịp ${occasion} thật vui và đáng nhớ.${detail} ${formality} ${person} bó ${flower} như một lời chúc chân thành.`;
+}
+
+export function parseGeneratedGreeting(answer) {
+  if (typeof answer !== 'string') return null;
+  const text = answer
+    .replace(/^\s*(?:lời nhắn|lời chúc)\s*:\s*/i, '')
+    .replace(/^\s*[“"'`]|[”"'`]\s*$/g, '')
+    .trim();
+  if (!text || text.length > 700 || /^(?:mình có thể|dưới đây là|lời nhắn:)/i.test(text)) return null;
+  return text;
+}
+
 const GREETING_TONES = ['Trìu mến', 'Trang trọng', 'Vui vẻ'];
 
 export function isValidGreetingCache(value) {

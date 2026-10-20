@@ -41,7 +41,7 @@ export default function DoctorCare({ initialView = 'ask' }) {
   };
 
   return <div className="doctor-care">
-    <div className="doctor-care-tabs" role="tablist" aria-label="Bác sĩ hoa và sổ chăm cây"><button id="doctor-tab-ask" type="button" role="tab" aria-controls="doctor-panel-ask" aria-selected={view === 'ask'} className={view === 'ask' ? 'is-active' : ''} onClick={() => setView('ask')}>Hỏi Bác sĩ hoa</button><button id="doctor-tab-garden" type="button" role="tab" aria-controls="doctor-panel-garden" aria-selected={view === 'garden'} className={view === 'garden' ? 'is-active' : ''} onClick={() => setView('garden')}>Cây của tôi</button></div>
+    <div className="doctor-care-tabs" role="tablist" aria-label="Chăm vườn và sổ cây"><button id="doctor-tab-ask" type="button" role="tab" aria-controls="doctor-panel-ask" aria-selected={view === 'ask'} className={view === 'ask' ? 'is-active' : ''} onClick={() => setView('ask')}>Hỏi cô làm vườn</button><button id="doctor-tab-garden" type="button" role="tab" aria-controls="doctor-panel-garden" aria-selected={view === 'garden'} className={view === 'garden' ? 'is-active' : ''} onClick={() => setView('garden')}>Cây của tôi</button></div>
     {view === 'garden' ? <div id="doctor-panel-garden" role="tabpanel" aria-labelledby="doctor-tab-garden"><GardenPlanner/></div> : <div id="doctor-panel-ask" role="tabpanel" aria-labelledby="doctor-tab-ask">
     <div className="doctor-care-heading"><span className="doctor-care-icon" aria-hidden="true">✿</span><div><span className="eyebrow">CÔ LÀM VƯỜN · RAG CÓ NGUỒN</span><h2>Hoa đang cần được chăm?</h2><p>Mô tả điều m thấy; trợ lý sẽ tra cẩm nang và gợi ý bước kiểm tra tiếp theo.</p></div></div>
     <form className="doctor-care-form" onSubmit={ask}>
