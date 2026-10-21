@@ -9,6 +9,12 @@ services:
     envVars:
       - key: PORT
         value: "7860"
+      - key: MODEL_WARMUP
+        value: "0"
+      - key: RENDER_FREE_MEMORY
+        value: "1"
+      - key: RETRIEVAL_BACKEND
+        value: classifier
       - key: LLM_PROVIDER
         value: gemini
       - key: GEMINI_MODEL

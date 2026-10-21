@@ -106,6 +106,19 @@ def test_health_invalid_component_length_is_422(client):
     assert client.get("/api/health", params={"model": "x" * 33}).status_code == 422
 
 
+def test_render_free_eviction_works_without_linux_malloc_trim(monkeypatch):
+    import ctypes
+    from api import main
+
+    monkeypatch.setattr(main, "RENDER_FREE_MEMORY", True)
+    monkeypatch.setitem(main.MODELS, "detector", object())
+    monkeypatch.setattr(ctypes, "CDLL", lambda *_args, **_kwargs: (_ for _ in ()).throw(TypeError("unsupported")))
+
+    main._evict_for_render_free("classifier")
+
+    assert "detector" not in main.MODELS
+
+
 def test_species_list_query_validation(client):
     assert client.get("/api/species").status_code == 200
     assert client.get("/api/species", params={"limit": 0}).status_code == 400

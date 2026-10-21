@@ -38,6 +38,7 @@ artifacts/**
 !artifacts/retrieval/index.faiss
 !artifacts/retrieval/meta.json
 !artifacts/retrieval/encoder.json
+!artifacts/retrieval/classifier_features.npy
 !artifacts/comparison/
 !artifacts/comparison/mobilenet_v3_small.pt
 !artifacts/comparison/resnet18.onnx

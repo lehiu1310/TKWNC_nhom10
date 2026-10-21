@@ -17,7 +17,8 @@ class ObjectDetector:
 
     def detect(self, image: Image.Image, conf: float = 0.25, iou: float = 0.45, max_det: int = 100):
         result = self.model.predict(
-            image.convert("RGB"), conf=conf, iou=iou, max_det=max_det, device=self.device, verbose=False
+            image.convert("RGB"), conf=conf, iou=iou, max_det=max_det, imgsz=320,
+            device=self.device, verbose=False,
         )[0]
         boxes = result.boxes
         detections = [

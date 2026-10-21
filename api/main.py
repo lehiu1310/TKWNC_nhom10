@@ -1,5 +1,6 @@
 """FastAPI backend: một server giữ cả 4 mô hình, Streamlit và React đều gọi vào đây."""
 import base64
+import gc
 import importlib
 import io
 import json
@@ -40,6 +41,9 @@ LOADERS = {  # tên → (module, lớp); import trễ để chỉ nạp thư vi�
     "llm": ("core.llm", "RAGChatbot"),
 }
 MODEL_LOCKS = {name: threading.Lock() for name in LOADERS}
+HEAVY_MODEL_LOCK = threading.RLock()
+RENDER_FREE_MEMORY = os.environ.get("RENDER_FREE_MEMORY", "0").strip().lower() in {"1", "true", "yes"}
+RETRIEVAL_BACKEND = os.environ.get("RETRIEVAL_BACKEND", "clip").strip().lower()
 MODEL_STATES.update({name: "not_loaded" for name in LOADERS})
 
 
@@ -140,8 +144,22 @@ def _require(name: str):
         with MODEL_LOCKS[name]:
             if name not in MODELS:
                 try:
-                    module, cls = LOADERS[name]
-                    MODELS[name] = getattr(importlib.import_module(module), cls)()
+                    if name == "retrieval" and RETRIEVAL_BACKEND == "classifier":
+                        classifier = MODELS.get("classifier")
+                        if classifier is None:
+                            with MODEL_LOCKS["classifier"]:
+                                classifier = MODELS.get("classifier")
+                                if classifier is None:
+                                    module, cls = LOADERS["classifier"]
+                                    classifier = getattr(importlib.import_module(module), cls)()
+                                    MODELS["classifier"] = classifier
+                                    MODEL_ERRORS.pop("classifier", None)
+                                    _set_model_state("classifier", "ready")
+                        module = importlib.import_module("core.retrieval_light")
+                        MODELS[name] = module.ClassifierFeatureSearch(classifier)
+                    else:
+                        module, cls = LOADERS[name]
+                        MODELS[name] = getattr(importlib.import_module(module), cls)()
                     MODEL_ERRORS.pop(name, None)
                     _set_model_state(name, "ready")
                 except Exception as exc:
@@ -153,6 +171,33 @@ def _require(name: str):
                         detail += " Hãy tải dữ liệu và tạo model/index theo hướng dẫn trong README.md."
                     raise HTTPException(503, detail) from exc
     return MODELS[name]
+
+
+def _evict_for_render_free(next_name: str) -> None:
+    """On Render Free, keep either the detector or the shared classifier/search model resident."""
+    if not RENDER_FREE_MEMORY:
+        return
+    victims = ("classifier", "retrieval") if next_name == "detector" else ("detector",)
+    removed = False
+    with MODEL_STATE_LOCK:
+        for name in victims:
+            if MODELS.pop(name, None) is not None:
+                MODEL_STATES[name] = "not_loaded"
+                removed = True
+    if removed:
+        gc.collect()
+        try:
+            import ctypes
+            ctypes.CDLL(None).malloc_trim(0)
+        except (AttributeError, OSError, TypeError):
+            pass
+
+
+def _run_heavy_model(name: str, operation):
+    """Serialize CPU-heavy calls and switch the resident model on small containers."""
+    with HEAVY_MODEL_LOCK:
+        _evict_for_render_free(name)
+        return operation(_require(name))
 
 
 def _process_peak_rss_mb() -> float | None:
@@ -238,24 +283,26 @@ def species_image(species_id: str = ApiPath(..., max_length=128)):
 # ---------- 1. Phân loại ảnh ----------
 @app.post("/api/classify")
 async def classify(file: UploadFile = File(...), top_k: int = Form(3), explain: bool = Form(False)):
-    model = await run_in_threadpool(_require, "classifier")
     t0 = time.perf_counter()
     image = await _read_image(file)
-    result = await run_in_threadpool(partial(model.predict, image, top_k=max(1, min(top_k, 5))))
-    if explain:
-        result["grad_cam"] = _to_base64(
-            await run_in_threadpool(partial(model.explain, image)), max_dimension=512, quality=80,
-        )
+    def infer(model):
+        result = model.predict(image, top_k=max(1, min(top_k, 5)))
+        if explain:
+            result["grad_cam"] = _to_base64(model.explain(image), max_dimension=512, quality=80)
+        return result
+    result = await run_in_threadpool(partial(_run_heavy_model, "classifier", infer))
     return {**result, "latency_ms": round((time.perf_counter() - t0) * 1000, 1)}
 
 
 # ---------- 2. Phát hiện đối tượng ----------
 @app.post("/api/detect")
 async def detect(file: UploadFile = File(...), conf: float = Form(0.25)):
-    model = await run_in_threadpool(_require, "detector")
     t0 = time.perf_counter()
     image = await _read_image(file)
-    result, annotated = await run_in_threadpool(partial(model.detect, image, conf=min(max(conf, 0.05), 0.95)))
+    result, annotated = await run_in_threadpool(partial(
+        _run_heavy_model, "detector",
+        lambda model: model.detect(image, conf=min(max(conf, 0.05), 0.95)),
+    ))
     return {**result, "image": _to_base64(annotated), "latency_ms": round((time.perf_counter() - t0) * 1000, 1)}
 
 
@@ -275,26 +322,32 @@ def _with_urls(results: list[dict]) -> list[dict]:
 def search_text(q: TextQuery):
     if not q.query.strip():
         raise HTTPException(400, "Câu tìm kiếm không được chỉ chứa khoảng trắng")
-    engine = _require("retrieval")
-    payload = engine.search_text_with_query(q.query, q.k, q.label)
+    payload = _run_heavy_model(
+        "retrieval", lambda engine: engine.search_text_with_query(q.query, q.k, q.label),
+    )
     return {"results": _with_urls(payload["results"]), "query_used": payload["query_used"],
             "translated": payload["translated"]}
 
 
 @app.post("/api/search/image")
 async def search_image(file: UploadFile = File(...), k: int = Form(8), label: str | None = Form(None, min_length=1, max_length=128)):
-    engine = _require("retrieval")
-    return {"results": _with_urls(engine.search_image(await _read_image(file), max(1, min(k, 24)), label))}
+    image = await _read_image(file)
+    results = await run_in_threadpool(partial(
+        _run_heavy_model, "retrieval",
+        lambda engine: engine.search_image(image, max(1, min(k, 24)), label),
+    ))
+    return {"results": _with_urls(results)}
 
 
 @app.get("/api/gallery/{item_id}")
 def gallery(item_id: int):
     if item_id < 0:
         raise HTTPException(400, "Mã ảnh phải là số không âm")
-    engine = _require("retrieval")
-    if not 0 <= item_id < len(engine.meta):
-        raise HTTPException(404, "Không có ảnh này")
-    return FileResponse(resolve_path(engine.meta[item_id]["path"]))
+    def image_path(engine):
+        if not 0 <= item_id < len(engine.meta):
+            raise HTTPException(404, "Không có ảnh này")
+        return resolve_path(engine.meta[item_id]["path"])
+    return FileResponse(_run_heavy_model("retrieval", image_path))
 
 
 # ---------- 4. Chatbot RAG ----------

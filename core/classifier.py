@@ -62,6 +62,26 @@ class ImageClassifier:
             "confidence_threshold": self.min_confidence,
         }
 
+    @torch.inference_mode()
+    def encode_images(self, images: list[Image.Image]) -> np.ndarray:
+        """Return normalized ResNet penultimate-layer features for lightweight retrieval."""
+        if not images:
+            return np.empty((0, self.model.fc.in_features), dtype=np.float32)
+        batch = torch.stack([EVAL_TF(image.convert("RGB")) for image in images]).to(DEVICE)
+        with self._inference_lock, torch.inference_mode():
+            model = self.model
+            features = model.conv1(batch)
+            features = model.bn1(features)
+            features = model.relu(features)
+            features = model.maxpool(features)
+            features = model.layer1(features)
+            features = model.layer2(features)
+            features = model.layer3(features)
+            features = model.layer4(features)
+            features = model.avgpool(features).flatten(1)
+            features = F.normalize(features.float(), p=2, dim=1)
+        return features.cpu().numpy().astype(np.float32, copy=False)
+
     def explain(self, image: Image.Image, class_index: int | None = None) -> Image.Image:
         """Create a Grad-CAM overlay for the selected/predicted ResNet class."""
         activations = []
