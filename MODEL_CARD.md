@@ -40,7 +40,7 @@ Tài liệu này chỉ ghi thông tin có thể đối chiếu trong mã nguồn
 | Chức năng | Chỉ số có trong repo | Tập và giới hạn diễn giải |
 |---|---|---|
 | Phân loại ResNet-18 | Accuracy **90,26%**; macro-F1 **91,56%**; weighted-F1 **90,24%**. Precision/recall/F1/support theo lớp có trong báo cáo. | 2.135 ảnh validation, 103 lớp. Validation được dùng chọn checkpoint; test độc lập **chưa có**. Ma trận nhầm lẫn CSV có; ảnh heatmap **chưa có**. |
-| Phát hiện YOLO11n | mAP50 **73,06%**; mAP50–95 **52,36%**; precision **66,41%**; recall **74,11%**. | Test 84 ảnh/145 hộp; fine-tune 3 epoch, ảnh 320 px. Đo CPU Intel Core i5-13500H, Torch 2.14.0+cpu, Ultralytics 8.4.165. mAP theo lớp ở bảng dưới và `reports/detector_evaluation.json`. |
+| Phát hiện YOLO11n | mAP50 **87,04%**; mAP50–95 **68,02%**; precision **81,04%**; recall **81,99%**. | Test 84 ảnh/145 hộp; fine-tune 12 epoch, ảnh 320 px. Đo CPU Intel Core i5-13500H, Torch 2.14.0+cpu, Ultralytics 8.4.165. mAP theo lớp ở bảng dưới và `reports/detector_evaluation.json`. |
 | Tìm ảnh bằng ảnh | Precision@5 **85,92%** (206 query). | Truy vấn held-out theo đường dẫn từ cùng bộ dữ liệu; không đại diện ảnh ngoài miền. |
 | Tìm ảnh bằng mô tả tiếng Việt | Precision@5 trung bình **22%** (10 query); cả 10 câu đều được dịch. | Bộ câu nhỏ, viết thủ công cho 5 lớp; các ví dụ sai được liệt kê ở mục Dữ liệu. |
 | RAG truy xuất nguồn | Hit@3 **30/30 = 100%**. | Đo việc nguồn mong đợi xuất hiện trong 3 nguồn đầu của BM25, **không đo độ đúng/đầy đủ của câu trả lời Gemini**. Đánh giá ngoài phạm vi **chưa đo**. |
@@ -52,10 +52,10 @@ Các file bằng chứng: `reports/classifier_evaluation.json`, `reports/classif
 
 | Lớp | Precision | Recall | mAP50 | mAP50–95 |
 |---|---:|---:|---:|---:|
-| Daisy | 60,10% | 76,47% | 75,65% | 55,56% |
-| Dandelion | 82,50% | 76,92% | 80,86% | 65,16% |
-| Roses | 57,94% | 65,45% | 68,58% | 42,16% |
-| Sunflowers | 65,11% | 77,59% | 67,17% | 46,56% |
+| Daisy | 70,66% | 92,10% | 89,43% | 66,82% |
+| Dandelion | 88,31% | 100,00% | 97,86% | 87,11% |
+| Roses | 84,54% | 60,00% | 80,30% | 55,60% |
+| Sunflowers | 80,67% | 75,86% | 80,58% | 62,54% |
 
 Tái tạo phép đo: `.venv/Scripts/python scripts/evaluate_flower_detector.py` (Windows: `\.venv\Scripts\python.exe scripts/evaluate_flower_detector.py`).
 
