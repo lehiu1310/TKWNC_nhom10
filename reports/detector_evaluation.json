@@ -2,7 +2,7 @@
   "dataset": "Weirdo-329/flower-detection-dataset",
   "initial_weights": "Ultralytics YOLO11n pretrained COCO",
   "fine_tuned_weights": "artifacts\\detector\\flower_yolo11n.pt",
-  "epochs": 3,
+  "epochs": 12,
   "image_size": 320,
   "test_split": "test (deterministic 10% split; see data/detection_flowers_yolo/dataset_report.json)",
   "test_images": 84,
@@ -14,35 +14,35 @@
     "ultralytics": "8.4.165"
   },
   "metrics": {
-    "mAP50": 0.7306233764721043,
-    "mAP50_95": 0.523580494136851,
-    "precision": 0.6641146470097219,
-    "recall": 0.7410758069394513
+    "mAP50": 0.8704101868843106,
+    "mAP50_95": 0.680193403115459,
+    "precision": 0.8104448751655009,
+    "recall": 0.8199130346058869
   },
   "per_class_metrics": {
     "daisy": {
-      "precision": 0.6009789634222262,
-      "recall": 0.7647058823529411,
-      "mAP50": 0.7564606657800569,
-      "mAP50_95": 0.555566412187867
+      "precision": 0.7066140910886981,
+      "recall": 0.9210314487683757,
+      "mAP50": 0.8942789608714747,
+      "mAP50_95": 0.668240100106202
     },
     "dandelion": {
-      "precision": 0.8249930443442883,
-      "recall": 0.7692307692307693,
-      "mAP50": 0.808614825240441,
-      "mAP50_95": 0.6516385281385281
+      "precision": 0.883110867904307,
+      "recall": 1.0,
+      "mAP50": 0.9785714285714289,
+      "mAP50_95": 0.8710928571428573
     },
     "roses": {
-      "precision": 0.5794316065113618,
-      "recall": 0.6545045072085777,
-      "mAP50": 0.685759402161983,
-      "mAP50_95": 0.4215620318000588
+      "precision": 0.8453817882785332,
+      "recall": 0.6,
+      "mAP50": 0.8029976725657064,
+      "mAP50_95": 0.5560374094897163
     },
     "sunflowers": {
-      "precision": 0.6510549737610112,
-      "recall": 0.7758620689655172,
-      "mAP50": 0.6716586127059364,
-      "mAP50_95": 0.46555500442095055
+      "precision": 0.8066727533904656,
+      "recall": 0.7586206896551724,
+      "mAP50": 0.8057926855286325,
+      "mAP50_95": 0.6254032457230599
     }
   }
 }

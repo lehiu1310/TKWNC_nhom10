@@ -1,4 +1,5 @@
 """Evaluate the saved flower detector on the fixed held-out test split."""
+import argparse
 import json
 import platform
 from pathlib import Path
@@ -14,9 +15,13 @@ OUTPUT = ROOT / "reports" / "detector_evaluation.json"
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--epochs", type=int, default=12, help="Training epochs used for this checkpoint")
+    parser.add_argument("--imgsz", type=int, default=320)
+    args = parser.parse_args()
     model = YOLO(str(WEIGHTS))
     metrics = model.val(
-        data=str(DATA_YAML), split="test", imgsz=320,
+        data=str(DATA_YAML), split="test", imgsz=args.imgsz,
         device="cpu", workers=0, plots=False, verbose=False,
     )
     box = metrics.box
@@ -31,15 +36,21 @@ def main() -> None:
             "mAP50_95": float(box.ap[position]),
         }
 
+    test_dir = ROOT / "data" / "detection_flowers_yolo" / "test"
+    image_suffixes = {".jpg", ".jpeg", ".png", ".webp"}
+    test_images = [path for path in (test_dir / "images").rglob("*")
+                   if path.is_file() and path.suffix.lower() in image_suffixes]
+    test_labels = list((test_dir / "labels").rglob("*.txt"))
     report = {
         "dataset": "Weirdo-329/flower-detection-dataset",
         "initial_weights": "Ultralytics YOLO11n pretrained COCO",
         "fine_tuned_weights": str(WEIGHTS.relative_to(ROOT)),
-        "epochs": 3,
-        "image_size": 320,
+        "epochs": args.epochs,
+        "image_size": args.imgsz,
         "test_split": "test (deterministic 10% split; see data/detection_flowers_yolo/dataset_report.json)",
-        "test_images": 84,
-        "test_instances": 145,
+        "test_images": len(test_images),
+        "test_instances": sum(len(path.read_text(encoding="utf-8").splitlines())
+                               for path in test_labels),
         "hardware": {
             "processor": platform.processor() or platform.uname().processor,
             "device": "CPU",
