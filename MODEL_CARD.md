@@ -42,7 +42,7 @@ Tài liệu này chỉ ghi thông tin có thể đối chiếu trong mã nguồn
 | Phân loại ResNet-18 | Accuracy **90,26%**; macro-F1 **91,56%**; weighted-F1 **90,24%**. Precision/recall/F1/support theo lớp có trong báo cáo. | 2.135 ảnh validation, 103 lớp. Validation được dùng chọn checkpoint; test độc lập **chưa có**. Ma trận nhầm lẫn CSV có; ảnh heatmap **chưa có**. |
 | Phát hiện YOLO11n | mAP50 **87,04%**; mAP50–95 **68,02%**; precision **81,04%**; recall **81,99%**. | Test 84 ảnh/145 hộp; fine-tune 12 epoch, ảnh 320 px. Đo CPU Intel Core i5-13500H, Torch 2.14.0+cpu, Ultralytics 8.4.165. mAP theo lớp ở bảng dưới và `reports/detector_evaluation.json`. |
 | Tìm ảnh bằng ảnh | Precision@5 **85,92%** (206 query). | Truy vấn held-out theo đường dẫn từ cùng bộ dữ liệu; không đại diện ảnh ngoài miền. |
-| Tìm ảnh bằng mô tả tiếng Việt | Precision@5 trung bình **22%** (10 query); cả 10 câu đều được dịch. | Bộ câu nhỏ, viết thủ công cho 5 lớp; các ví dụ sai được liệt kê ở mục Dữ liệu. |
+| Tìm ảnh bằng mô tả tiếng Việt | Benchmark Gemini hiện có: Precision@5 **22%** (10 query). Fallback từ vựng offline mới: **24%** trên cùng 10 câu, khi tắt Gemini. | Bộ câu nhỏ, viết thủ công cho 5 lớp; không đại diện truy vấn thực tế. Kết quả offline tại `reports/vietnamese_search_offline_precision_at5.json`; ví dụ sai ở mục Dữ liệu. |
 | RAG truy xuất nguồn | Hit@3 **30/30 = 100%**. | Đo việc nguồn mong đợi xuất hiện trong 3 nguồn đầu của BM25, **không đo độ đúng/đầy đủ của câu trả lời Gemini**. Đánh giá ngoài phạm vi **chưa đo**. |
 | “Cô làm vườn” — chất lượng câu trả lời | Độ đúng câu trả lời, độ an toàn và chất lượng trích dẫn đầu-cuối: **chưa đo**. | Không có bộ đánh giá đáp án sinh trong repo; Hit@3 chỉ đo truy xuất. |
 
@@ -63,7 +63,7 @@ Tái tạo phép đo: `.venv/Scripts/python scripts/evaluate_flower_detector.py`
 
 - Classifier chỉ dự đoán trong 103 nhãn đã huấn luyện; 76 lớp có ít hơn 100 ảnh. Không có test split độc lập, nên số accuracy/F1 hiện có không phải kết quả test độc lập.
 - Detector chỉ có bốn lớp được nêu ở mục Dữ liệu; không có lớp “hoa” tổng quát. Ảnh ngoài miền hoặc hoa nhỏ/chồng lấp có thể bị bỏ sót hay khoanh sai.
-- Tìm ảnh trả ảnh tương tự theo embedding, không xác nhận danh tính thực vật. P@5 trên mô tả tiếng Việt hiện thấp (22%) theo bộ 10 câu trong repo.
+- Tìm ảnh trả ảnh tương tự theo embedding, không xác nhận danh tính thực vật. P@5 trên mô tả tiếng Việt vẫn thấp (Gemini: 22%; fallback offline: 24%) theo bộ 10 câu nhỏ trong repo; gõ tên loài vẫn đáng tin hơn mô tả hình thái dài.
 - **Cơ chế “Cô làm vườn”:** endpoint `/api/chat` dùng `RAGChatbot` trong `core/llm.py`: BM25 truy xuất chunk từ `data/kb/`, rồi provider Gemini (mặc định `LLM_PROVIDER=gemini` trong `config.py`) sinh câu trả lời có nguồn nếu API khả dụng. Khi không có khóa/provider không dùng được, code có đường fallback trích nội dung truy xuất; vì vậy không phải mọi phản hồi đều là câu trả lời do mô hình sinh. Đây không phải mô hình chuyên biệt đã huấn luyện để chẩn đoán bệnh cây. Độ đúng câu trả lời sinh **chưa đo**.
 - Corpus chỉ có 10 file, trong đó hai PDF đều về hướng dương; phạm vi và tính cập nhật tài liệu không đồng đều. Bộ 30 câu hỏi chỉ đo tìm đúng nguồn, chưa có tập câu hỏi ngoài phạm vi hoặc chấm đáp án.
 - Gợi ý của chatbot chỉ mang tính tham khảo, không thay thế chuyên gia/khuyến nông; không dùng để quyết định cây có độc, ăn/uống được hay điều trị bằng thuốc.

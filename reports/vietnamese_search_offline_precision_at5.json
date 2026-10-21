@@ -1,0 +1,159 @@
+{
+  "checkpoint": "artifacts/retrieval/encoder.json",
+  "query_count": 10,
+  "mean_precision_at_5": 0.24000000000000005,
+  "translated_query_count": 10,
+  "protocol": "Offline local-vocabulary fallback; Gemini translation disabled. Ten manually written Vietnamese flower descriptions, two per expected class among the five homepage classes; precision counts retrieved photos matching the target species_id. Not a random or independently annotated production sample.",
+  "results": [
+    {
+      "query_vi": "cánh trắng mỏng xếp vòng quanh nhụy vàng, đứng giữa cỏ xanh",
+      "query_used": "a photograph of petals white thin arranged in a ring around yellow center standing among green grass",
+      "translated": true,
+      "expected_species_id": "daisy",
+      "retrieved_species_ids": [
+        "daisy",
+        "silverbush",
+        "californian-poppy",
+        "japanese-anemone",
+        "windflower"
+      ],
+      "hits_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_vi": "một bông cúc trắng đơn độc bên mép đồng cỏ",
+      "query_used": "a photograph of daisy white single edge meadow",
+      "translated": true,
+      "expected_species_id": "daisy",
+      "retrieved_species_ids": [
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy"
+      ],
+      "hits_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "đóa vàng nhỏ mọc trên thân xanh mảnh, lá thấp ôm gốc",
+      "query_used": "a photograph of bloom yellow small growing green stem slender low leaves hugging base",
+      "translated": true,
+      "expected_species_id": "dandelion",
+      "retrieved_species_ids": [
+        "english-marigold",
+        "giant-white-arum-lily",
+        "desert-rose",
+        "globe-flower",
+        "english-marigold"
+      ],
+      "hits_at_5": 0,
+      "precision_at_5": 0.0
+    },
+    {
+      "query_vi": "quả cầu hạt trắng li ti bay khỏi một bông vàng dưới gió",
+      "query_used": "a photograph of seed globe white seeds tiny blowing away yellow wind",
+      "translated": true,
+      "expected_species_id": "dandelion",
+      "retrieved_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion"
+      ],
+      "hits_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "cánh hoa đỏ nhung cuộn thành nhiều lớp dày",
+      "query_used": "a photograph of flower petals velvet red curled layered petals dense",
+      "translated": true,
+      "expected_species_id": "roses",
+      "retrieved_species_ids": [
+        "stemless-gentian",
+        "roses",
+        "mexican-petunia",
+        "trumpet-creeper",
+        "toad-lily"
+      ],
+      "hits_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_vi": "một đóa đỏ nổi bật giữa tán lá xanh đậm",
+      "query_used": "a photograph of bloom red vivid foliage dark green",
+      "translated": true,
+      "expected_species_id": "roses",
+      "retrieved_species_ids": [
+        "stemless-gentian",
+        "orange-dahlia",
+        "wallflower",
+        "monkshood",
+        "sweet-william"
+      ],
+      "hits_at_5": 0,
+      "precision_at_5": 0.0
+    },
+    {
+      "query_vi": "đóa vàng lớn với tâm nâu tròn, cánh xếp tỏa ra ngoài",
+      "query_used": "a photograph of bloom yellow large brown center round petals arranged radiating outward",
+      "translated": true,
+      "expected_species_id": "sunflowers",
+      "retrieved_species_ids": [
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy"
+      ],
+      "hits_at_5": 0,
+      "precision_at_5": 0.0
+    },
+    {
+      "query_vi": "cánh hoa vàng rực vây quanh nhụy sẫm, phía sau mờ xanh",
+      "query_used": "a photograph of flower petals bright yellow surrounding center dark background soft focus green",
+      "translated": true,
+      "expected_species_id": "sunflowers",
+      "retrieved_species_ids": [
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "dandelion",
+        "black-eyed-susan",
+        "californian-poppy"
+      ],
+      "hits_at_5": 0,
+      "precision_at_5": 0.0
+    },
+    {
+      "query_vi": "bông hoa hình chén màu hồng trên thân thẳng, lá dài",
+      "query_used": "a photograph of cup shaped pink straight stem long leaves",
+      "translated": true,
+      "expected_species_id": "tulips",
+      "retrieved_species_ids": [
+        "canna-lily",
+        "canna-lily",
+        "toad-lily",
+        "sweet-pea",
+        "camellia"
+      ],
+      "hits_at_5": 0,
+      "precision_at_5": 0.0
+    },
+    {
+      "query_vi": "một đóa hồng phấn cánh khum trong khu vườn mùa xuân",
+      "query_used": "a photograph of bloom pale pink cup shaped petals garden garden spring",
+      "translated": true,
+      "expected_species_id": "tulips",
+      "retrieved_species_ids": [
+        "pink-primrose",
+        "japanese-anemone",
+        "blanket-flower",
+        "pink-primrose",
+        "clematis"
+      ],
+      "hits_at_5": 0,
+      "precision_at_5": 0.0
+    }
+  ]
+}

@@ -5,6 +5,7 @@ measures retrieval against the expected flower category, not human relevance.
 """
 import json
 import sys
+import types
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,8 +28,13 @@ QUERIES = [
 
 
 def main() -> None:
-    output = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "reports" / "vietnamese_search_precision_at5.json"
+    offline = "--offline" in sys.argv[1:]
+    positional = [arg for arg in sys.argv[1:] if arg != "--offline"]
+    default_name = "vietnamese_search_offline_precision_at5.json" if offline else "vietnamese_search_precision_at5.json"
+    output = Path(positional[0]) if positional else ROOT / "reports" / default_name
     search = ImageSearch()
+    if offline:
+        search._english_query = types.MethodType(lambda self, query: self._offline_english_query(query), search)
     rows = []
     for query, expected in QUERIES:
         response = search.search_text_with_query(query, k=5)
@@ -47,7 +53,9 @@ def main() -> None:
         "query_count": len(rows),
         "mean_precision_at_5": sum(row["precision_at_5"] for row in rows) / len(rows),
         "translated_query_count": sum(row["translated"] for row in rows),
-        "protocol": "Ten manually written Vietnamese flower descriptions, two per expected class among the five homepage classes; precision counts retrieved photos matching the target species_id. Not a random or independently annotated production sample.",
+        "protocol": (
+            "Offline local-vocabulary fallback; Gemini translation disabled. " if offline else ""
+        ) + "Ten manually written Vietnamese flower descriptions, two per expected class among the five homepage classes; precision counts retrieved photos matching the target species_id. Not a random or independently annotated production sample.",
         "results": rows,
     }
     output.parent.mkdir(parents=True, exist_ok=True)

@@ -28,7 +28,7 @@ def test_vietnamese_query_translation_is_cached_and_uses_gemini(monkeypatch):
     assert engine._translator_client.models.calls == 1
 
 
-def test_vietnamese_query_translation_falls_back_to_original(monkeypatch):
+def test_vietnamese_query_translation_falls_back_to_local_vocabulary(monkeypatch):
     from collections import OrderedDict
     from threading import Lock
     from core.retrieval import ImageSearch
@@ -44,7 +44,9 @@ def test_vietnamese_query_translation_falls_back_to_original(monkeypatch):
     engine._translator_client.models = Models()
     monkeypatch.setenv("GOOGLE_API_KEY", "test-key")
 
-    assert engine._english_query("hoa cúc trắng") == "hoa cúc trắng"
+    translated = engine._english_query("hoa cúc trắng")
+    assert "daisy" in translated
+    assert "white" in translated
     assert not engine._translation_cache
 
 

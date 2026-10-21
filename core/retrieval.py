@@ -5,6 +5,7 @@ import logging
 import re
 import os
 import threading
+import unicodedata
 from collections import OrderedDict
 from pathlib import Path
 
@@ -15,6 +16,123 @@ from config import ART_DIR, CLIP_MODEL, CLIP_PRETRAINED, DATA_DIR, DEVICE, GEMIN
 from core.search_filter import filter_by_label
 
 log = logging.getLogger(__name__)
+
+
+# A compact, deterministic Vietnamese-to-English vocabulary for visual flower
+# queries. MobileCLIP's text encoder is English-oriented, so passing raw
+# Vietnamese on Gemini outage produces poor rankings. This is deliberately a
+# vocabulary fallback, not a claim of general-purpose machine translation.
+_VI_QUERY_PHRASES = (
+    ("cuc mat bo", "oxeye daisy"),
+    ("bo cong anh", "dandelion"),
+    ("huong duong", "sunflower"),
+    ("hoa hong", "rose"),
+    ("hoa hong phan", "pink rose"),
+    ("hong phan", "pale pink"),
+    ("do nhung", "velvet red"),
+    ("canh hoa", "flower petals"),
+    ("qua cau", "seed globe"),
+    ("bay khoi", "blowing away"),
+    ("noi bat", "vivid"),
+    ("tan la", "foliage"),
+    ("xanh dam", "dark green"),
+    ("vang ruc", "bright yellow"),
+    ("vay quanh", "surrounding"),
+    ("toa ra ngoai", "radiating outward"),
+    ("xep toa ra ngoai", "arranged radiating outward"),
+    ("phia sau", "background"),
+    ("thanh xanh", "green stem"),
+    ("than thang", "straight stem"),
+    ("li ti", "tiny"),
+    ("mo xanh", "soft focus green"),
+    ("canh dong", "field"),
+    ("la dai", "long leaves"),
+    ("xanh la", "green leaves"),
+    ("hat trang", "white seeds"),
+    ("xep vong", "arranged in a ring"),
+    ("dung giua", "standing among"),
+    ("xung quanh", "around"),
+    ("quanh", "around"),
+    ("la thap", "low leaves"),
+    ("than xanh", "green stem"),
+    ("om goc", "hugging the base"),
+    ("nhieu lop", "layered petals"),
+    ("tam nau", "brown center"),
+    ("nhuy vang", "yellow center"),
+    ("hat trang", "white seeds"),
+    ("bay theo gio", "blowing in the wind"),
+    ("co xanh", "green grass"),
+    ("dong co", "meadow"),
+    ("than manh", "slender stem"),
+    ("la xanh", "green leaves"),
+    ("la dai", "long leaves"),
+    ("canh khum", "cup-shaped petals"),
+    ("hinh chen", "cup-shaped"),
+    ("don doc", "single"),
+    ("meo", "edge"),
+    ("canh", "petals"),
+    ("cuc", "daisy"),
+    ("nhuy", "center"),
+    ("tam", "center"),
+    ("trang", "white"),
+    ("vang", "yellow"),
+    ("do", "red"),
+    ("hong", "pink"),
+    ("cam", "orange"),
+    ("tim", "purple"),
+    ("la", "leaves"),
+    ("doa", "bloom"),
+    ("nhung", "velvet"),
+    ("dam", "dark"),
+    ("sam", "dark"),
+    ("tron", "round"),
+    ("vay", "surrounding"),
+    ("ruc", "bright"),
+    ("day", "dense"),
+    ("thang", "upright"),
+    ("manh", "slender"),
+    ("moc", "growing"),
+    ("khu", "garden"),
+    ("mep", "edge"),
+    ("ong", "meadow"),
+    ("gio", "wind"),
+    ("bay", "flying"),
+    ("qua", "seed"),
+    ("hat", "seeds"),
+    ("cau", "globe"),
+    ("toa", "radiating"),
+    ("noi", "prominent"),
+    ("bat", "bright"),
+    ("noi", "prominent"),
+    ("xanh la", "green"),
+    ("xanh duong", "blue"),
+    ("den", "dark"),
+    ("mong", "thin"),
+    ("xoay", "spiral"),
+    ("cuon", "curled"),
+    ("nho", "small"),
+    ("lon", "large"),
+    ("thap", "low"),
+    ("cao", "tall"),
+    ("canh dong", "field"),
+    ("vuon", "garden"),
+    ("mua xuan", "spring"),
+    ("gia ret", "cold weather"),
+    ("nang", "sunlight"),
+)
+_VI_FILLER_WORDS = {
+    "hoa", "bong", "mot", "nhung", "cac", "co", "duoc",
+    "giua", "ben", "trong", "ngoai", "phia", "sau", "truoc", "tren",
+    "duoi", "va", "voi", "tu", "cua", "nay", "kia", "dang",
+    "nhin", "giong", "nao", "gi", "the", "ra", "khoi", "mau", "o", "dung", "thanh",
+}
+
+
+def _strip_vietnamese_marks(value: str) -> str:
+    value = unicodedata.normalize("NFD", value.casefold())
+    value = "".join(ch for ch in value if unicodedata.category(ch) != "Mn")
+    value = value.replace("đ", "d")
+    return re.sub(r"[^a-z0-9]+", " ", value).strip()
 
 
 def _inference_mode(function):
@@ -127,8 +245,12 @@ class ImageSearch:
 
     def _label_from_query(self, query: str) -> str | None:
         """Use an explicit flower name as a category constraint, then CLIP-rank its photos."""
-        text = query.casefold()
-        matches = [(len(name), species_id) for species_id, name in self._species_names if name in text]
+        text = _strip_vietnamese_marks(query)
+        matches = [
+            (len(normalized), species_id)
+            for species_id, name in self._species_names
+            if (normalized := _strip_vietnamese_marks(name)) and f" {normalized} " in f" {text} "
+        ]
         return max(matches)[1] if matches else None
 
     @staticmethod
@@ -150,8 +272,8 @@ class ImageSearch:
                 return cached
             api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
             if not api_key:
-                log.info("Gemini key unavailable for search translation; using original query")
-                return query
+                log.info("Gemini key unavailable for search translation; using local flower vocabulary")
+                return self._offline_english_query(query)
             try:
                 if self._translator_client is None:
                     from core.gemini_client import create_gemini_client
@@ -167,7 +289,7 @@ class ImageSearch:
                 )
                 translated = (response.text or "").strip().strip('"')
                 if not translated or len(translated) > 300:
-                    return query
+                    return self._offline_english_query(query)
                 self._translation_cache[cache_key] = translated
                 self._translation_cache.move_to_end(cache_key)
                 if len(self._translation_cache) > 256:
@@ -175,8 +297,30 @@ class ImageSearch:
                 return translated
             except Exception as exc:
                 # A failed/429 translation is intentionally not cached; the next query may retry.
-                log.warning("Gemini search translation unavailable (%s); using original query", type(exc).__name__)
-                return query
+                log.warning("Gemini search translation unavailable (%s); using local flower vocabulary", type(exc).__name__)
+                return self._offline_english_query(query)
+
+    def _offline_english_query(self, query: str) -> str:
+        """Translate common botanical names/visual terms without network access."""
+        text = _strip_vietnamese_marks(query)
+        # Use the species catalog rather than maintaining a separate list of
+        # flower names. Replacing longest names first avoids partial matches.
+        species_names = getattr(self, "_species_names", [])
+        english_names = getattr(self, "_english_name_by_id", {})
+        for species_id, name in sorted(species_names, key=lambda pair: len(pair[1]), reverse=True):
+            normalized = _strip_vietnamese_marks(name)
+            if not normalized:
+                continue
+            english = english_names.get(species_id, species_id.replace("-", " "))
+            text = re.sub(rf"\b{re.escape(normalized)}\b", f" {english.casefold()} ", text)
+
+        for vi, en in sorted(_VI_QUERY_PHRASES, key=lambda pair: len(pair[0]), reverse=True):
+            text = re.sub(rf"\b{re.escape(vi)}\b", f" {en} ", text)
+        tokens = [word for word in re.findall(r"[a-z0-9]+", text) if word not in _VI_FILLER_WORDS]
+        # Preserve only translated concepts. Unknown Vietnamese words are
+        # usually harmful to an English-only text encoder.
+        translated = " ".join(tokens)
+        return f"a photograph of {translated or 'a flower'}"
 
     def _search(self, query_vec: np.ndarray, k: int, label: str | None = None) -> list[dict]:
         # Filter after ranking so a sparse label still fills the requested page.
