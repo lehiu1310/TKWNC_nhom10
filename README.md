@@ -5,33 +5,14 @@
 **Health check:** https://tkw-nhom10-api.onrender.com/api/health  
 **Cloud Run:** chưa triển khai; hiện chỉ dùng lựa chọn miễn phí và không bật billing Google Cloud.
 
-## Trạng thái xác minh mới nhất (21/10/2026)
+## Trạng thái kiểm tra (22/10/2026)
 
-- Nhánh đang làm: feature-gift-advisor; không sửa main.
-- Demo Vercel https://tkwnc-nhom10.vercel.app/ trả HTTP 200. web/vercel.json rewrite /api/* tới Render.
-- Backend https://tkw-nhom10-api.onrender.com/api/health trả HTTP 200 và status: ok, nhưng cả classifier, detector, llm, retrieval đều not_loaded. Vì vậy health chỉ chứng minh process còn hoạt động; bốn chức năng AI trên production chưa sẵn sàng.
-- CORS preflight từ https://tkwnc-nhom10.vercel.app tới /api/chat/sync trả HTTP 200, Access-Control-Allow-Origin khớp domain. Đã xác minh cấu hình CORS, chưa xác minh thao tác trên điện thoại thật.
-- Google Cloud không có billing account khả dụng và người dùng yêu cầu chỉ dùng dịch vụ miễn phí; Cloud Run chưa triển khai. Không có số liệu hay URL Cloud Run.
-- Local tại commit 4faa654: pytest -q 80 passed, 1 cảnh báo deprecation; pnpm test 21/21 passed; pnpm build thành công. GitHub Actions cho commit này đã success: https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39479609281.
-- Benchmark hiện có trong reports: classifier ResNet-18/MobileNetV3/ONNX trên CPU Intel i5-13500H; Locust Render có số liệu classify (102 request) và detect (51 request). Chưa có benchmark đủ bốn endpoint trên backend đang hoạt động; RAM thực tế của service production chưa đo.
-- Hướng dẫn clone hiện yêu cầu cài backend và chuẩn bị/tải dataset; README ghi rõ phần này cần vài GB và có thể quá 15 phút trên CPU. Vì vậy chưa chứng minh được tiêu chí clone toàn bộ ứng dụng chạy trong ≤15 phút.
-## Trạng thái deploy đã kiểm chứng (01/10/2026)
-
-- Render `/api/health`: HTTP 200, `status: ok`. Ảnh hoa hồng mẫu gọi `POST /api/classify` trả HTTP 200, top-1 `roses` (0,751). CORS preflight từ `https://tkwnc-nhom10.vercel.app` tới chatbot trả HTTP 200 và đúng `Access-Control-Allow-Origin`.
-- `POST /api/chat/sync` hiện trả HTTP 503 trên Render (`Mô hình 'llm' chưa sẵn sàng`); chatbot production chưa đạt. Health báo `model_states.llm: failed`; log khởi tạo cụ thể không có trong endpoint công khai.
-- Dashboard Vercel xác nhận production deployment ở trạng thái Ready trên commit `c8f7ac4`; trang demo trả HTTP 200 và bundle production có CSS một cột/giới hạn chiều rộng cho các thẻ AI trên màn hình nhỏ.
-
-Kiểm tra lại ngày **13/10/2026**: demo Vercel trả HTTP 200; Render `/api/health` trả HTTP 200 (`status: ok`). Ảnh mẫu hoa hồng mới gửi tới `/api/classify` trả HTTP 200, top-1 `roses` với confidence **0,9259**. Dịch vụ production chưa đạt đủ bốn chức năng: `/api/search/text` trả HTTP 502 trong lần gọi kiểm tra, còn `/api/chat/sync` trả HTTP 503 với `{"detail":"Mô hình 'llm' chưa sẵn sàng."}`. Vì vậy chỉ xác nhận classify chạy thật; không tính search/chat là đạt trên deploy.
-
-### Nhánh nâng cấp `ui-upgrade` — kiểm tra preview ngày 13/10/2026
-
-- Preview Vercel: https://tkwnc-nhom10-git-ui-upgrade-tkwnc-nhom10.vercel.app/ — preview đã từng tải thành công và gọi `/api/health` qua rewrite cùng origin ở các lượt kiểm tra trước. Kiểm tra lại ngày 13/10/2026 cho thấy URL hiện chuyển hướng sang Vercel SSO, nên chưa xác minh được bản preview sau các commit mới nhất. Commit preview đã xác minh trước đó là `ab39978`.
-- Nhận diện trên preview: ảnh mẫu Hoa hồng cho top-1 `roses` với confidence **91,7%**, có năm dự đoán và đường dẫn sang chi tiết Hoa hồng. Direct call tới backend Render cùng ảnh trả top-1 `roses` **0,9259**.
-- Album production từng trả HTTP **502 Bad Gateway** sau khoảng 60 giây. Kiểm tra local ngày 13/10/2026: truy vấn `một vườn hoa hướng dương rực nắng` được dịch thành `a photograph of Sunflower flower` và trả 12 ảnh, top similarity 30%.
-- Chatbot production vẫn trả HTTP **503**, `Mô hình 'llm' chưa sẵn sàng`. Một lần gọi trực tiếp local tới Gemini `gemini-3.5-flash-lite` nhận HTTP 503 UNAVAILABLE do quá tải; sau khi giới hạn client còn tối đa 2 lần gọi, timeout 8 giây cho dịch truy vấn và 15 giây cho sinh câu trả lời, UI local đã nhận được câu trả lời Gemini thật cho “Hoa hồng có ý nghĩa gì?” với trích dẫn `[hoa_hong.md]`. Nếu Gemini tiếp tục lỗi, RAG trả nội dung có căn cứ từ cùng tài liệu thay vì giữ spinner.
-- Nhận diện local trên ảnh WebP hoa hồng: top-1 `roses` **82,21%**, thời gian API **341 ms**. Phát hiện local cùng ảnh: một hộp `roses` với confidence **99,98%**, thời gian API **442 ms**. Đây là phép thử đơn lẻ trên máy local, không phải benchmark production.
-- Các commit gần nhất trên `ui-upgrade` đều có GitHub Actions xanh và Vercel báo preview deployment hoàn tất. URL preview hiện chuyển hướng sang Vercel SSO nên chưa thể kiểm tra nội dung deployment ngoài trình duyệt đã đăng nhập. Bộ test local vừa chạy **51 passed**; build production local thành công, Vite còn cảnh báo bundle JavaScript chính lớn hơn 500 kB.
-- Render đang chạy revision cũ, không phải nhánh preview. Không thể kiểm tra build log hoặc trigger deploy Render trong lượt này, nên các kết quả lỗi backend phía trên vẫn là trạng thái deploy hiện tại.
+- Vercel `https://tkwnc-nhom10.vercel.app/` trả HTTP 200. Render đang chạy revision cũ: health 200 báo bốn model `not_loaded`; kiểm tra tuần tự trả classify 200 (18,5 giây), detect 200 (56,5 giây), search 502 (25,6 giây), sau đó health tạm trả 502 rồi hồi lại 200. Vì vậy AI production **chưa đạt**; thay đổi local bên dưới chưa được triển khai.
+- Trên máy local: `pytest -q` **92 passed** (1 cảnh báo Starlette), `pnpm test` **24 passed**, `pnpm build` thành công. Với checkpoint thật, CPU, một worker, `RENDER_FREE_MEMORY=1`, `RETRIEVAL_BACKEND=classifier` và không có Gemini key: classify 200 (5,25 giây), detect 200 (0,64 giây), search 200 (5 kết quả; 0,32 giây), RAG ask 200 (có câu trả lời và nguồn; 4,67 giây). RSS cao nhất trong lượt API là **474,9 MiB**; đây là số local, không đại diện Render.
+- ResNet ở chế độ tiết kiệm RAM BF16 giữ top-1 mẫu Hoa hồng; confidence đo được 0,9283 so với 0,9259 ở FP32. Bài đo riêng classifier + vector ảnh ghi RSS 361,3 MiB; đây không phải RSS của toàn bộ app.
+- Xác thực, cookie phiên và SQLite có kiểm thử backend; frontend có đăng ký/đăng nhập và đồng bộ Sổ hoa/Cây của tôi. SQLite local giữ dữ liệu sau khi tắt app. Render Free dùng filesystem tạm thời, nên dữ liệu production có thể mất sau restart/deploy.
+- Chạy local sau khi cài phụ thuộc bằng `scripts/start_local.ps1`; Compose có cấu hình chạy một lệnh, nhưng chưa build/chạy kiểm chứng được vì Docker Engine trên máy hiện chưa khởi động.
+- Chỉ dùng cấu hình miễn phí; Cloud Run chưa triển khai. Không tuyên bố AI hoặc CSDL production đạt cho đến khi kiểm tra thành công trên URL public.
 
 Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet-18 có 103 nhãn; trang chủ chọn 5 loài làm câu chuyện nổi bật, còn Bách khoa và trang chi tiết bao phủ toàn bộ 103 loài.
 
@@ -48,14 +29,14 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 - `data/gift_meanings.json`: dữ liệu gợi ý tặng hoa cho 28 ứng viên phổ biến; 75 loài còn lại chỉ giữ ý nghĩa chung. Mọi ánh xạ dịp/người nhận hiện `verified=false`.
 - `web/public/images/gift-flowers/`: ảnh đại diện cục bộ của 28 ứng viên; không phụ thuộc backend để hiển thị bó.
 - `/tang-hoa`: gợi ý ba bó theo quy tắc (không gọi model), lời nhắn qua chatbot Gemini hiện có với mẫu offline dự phòng, thiệp PNG/QR và Sổ hoa lưu trong trình duyệt. API luật: `POST /api/gifts/recommend`.
-- Trong hộp thoại **Bác sĩ hoa**, tab **Cây của tôi** lưu danh sách cây đang trồng, chu kỳ chăm do người dùng tự đặt, ghi nhận đã chăm và dự báo mưa theo vị trí khi người dùng chủ động cấp quyền. Dữ liệu cây chỉ lưu trong `localStorage`; thông báo chăm sóc cần quyền trình duyệt và hộp thoại Bác sĩ hoa đang mở. Dự báo dùng [Open-Meteo](https://open-meteo.com/), không tự thay đổi lịch chăm.
+- Trong hộp thoại **Bác sĩ hoa**, tab **Cây của tôi** lưu danh sách cây đang trồng, chu kỳ chăm do người dùng tự đặt, ghi nhận đã chăm và dự báo mưa theo vị trí khi người dùng chủ động cấp quyền. Dữ liệu hoạt động offline trong `localStorage`; khi đăng nhập, Sổ hoa và danh sách cây được đồng bộ với SQLite qua API. Thông báo chăm sóc cần quyền trình duyệt và hộp thoại Bác sĩ hoa đang mở. Dự báo dùng [Open-Meteo](https://open-meteo.com/), không tự thay đổi lịch chăm.
 - `data/kb/y_nghia_tang_hoa.md`: ghi chú RAG và nguồn bối cảnh văn hoá. Chưa có nguồn nào trong đó xác minh từng ánh xạ loài–dịp–người nhận; dữ liệu vẫn là bản nháp.
 
 ### Tặng hoa và Sổ hoa
 
 Trang Tặng hoa phối gợi ý từ dịp, người nhận, màu và quy mô (5/9/15 cành; không hiển thị giá). Kết quả hiển thị hoa chính, hoa phụ, lá trang trí, ý nghĩa chung, lý do chấm điểm, màu và lưu ý. Mở trang từ kết quả nhận diện sẽ giữ loài vừa nhận diện làm hoa chính nếu loài đó có dữ liệu phù hợp với dịp đã chọn. Đây là **hệ thống quy tắc/dữ liệu**, không phải chức năng AI. `verified=false` nghĩa là ánh xạ dịp/người nhận và lưu ý văn hoá chưa được duyệt. Repo có nguồn bối cảnh văn hoá tổng quát, nhưng chưa có nguồn xác minh từng ánh xạ cụ thể. Đặc biệt, gợi ý cho chia buồn/thờ cúng cần hỏi phong tục gia đình và vùng miền.
 
-Lời nhắn gọi `/api/chat/sync` (provider Gemini theo cấu hình backend hiện tại), cache trên trình duyệt theo bó/người nhận/dịp và dùng mẫu offline nếu API lỗi. Người dùng có thể tải ảnh thiệp PNG hoặc tạo mã QR. QR mã hoá lời nhắn vào fragment URL của chính site, không gọi dịch vụ QR bên thứ ba; người nhận mở trang thiệp, xem ảnh hoa/lời nhắn và có đường dẫn tới Bách khoa hoặc mô hình 3D. Vì lời nhắn nằm trong URL, chỉ chia sẻ cho người nhận mong muốn. Trên localhost QR chỉ mở localhost; để người khác quét, hãy tạo mã từ bản site có URL công khai. Sổ hoa lưu hoa nhận diện tự tin, hoa yêu thích và bó đã lưu bằng `localStorage`; dữ liệu chỉ có trên trình duyệt hiện tại, không đồng bộ tài khoản. Tab **Cây của tôi** trong Bác sĩ hoa cũng lưu cây và lịch chăm trên thiết bị. Chu kỳ do người dùng tự chọn, không phải khuyến nghị nông học; cần kiểm tra đất, điều kiện trồng và nhãn phân bón. Nhắc việc không phải push notification nền: thông báo chỉ phát khi trang đang chạy và quyền trình duyệt đã cấp. Dự báo mưa dùng dữ liệu Open-Meteo sau thao tác chủ động lấy vị trí; vị trí không được lưu lại, dự báo chỉ mang tính tham khảo và không thay thế kiểm tra đất tại chậu. Xoá hoa khỏi Sổ hoa không xoá cây trong tab **Cây của tôi**.
+Lời nhắn gọi `/api/chat/sync` (provider Gemini theo cấu hình backend hiện tại), cache trên trình duyệt theo bó/người nhận/dịp và dùng mẫu offline nếu API lỗi. Người dùng có thể tải ảnh thiệp PNG hoặc tạo mã QR. QR mã hoá lời nhắn vào fragment URL của chính site, không gọi dịch vụ QR bên thứ ba; người nhận mở trang thiệp, xem ảnh hoa/lời nhắn và có đường dẫn tới Bách khoa hoặc mô hình 3D. Vì lời nhắn nằm trong URL, chỉ chia sẻ cho người nhận mong muốn. Trên localhost QR chỉ mở localhost; để người khác quét, hãy tạo mã từ bản site có URL công khai. Sổ hoa và tab **Cây của tôi** giữ bản offline trong `localStorage`, tự đồng bộ lên SQLite khi tài khoản đăng nhập. Dữ liệu local được phân biệt theo tài khoản trên cùng trình duyệt; khi logout, dữ liệu vẫn được giữ trên thiết bị. Chu kỳ do người dùng tự chọn, không phải khuyến nghị nông học; cần kiểm tra đất, điều kiện trồng và nhãn phân bón. Nhắc việc không phải push notification nền: thông báo chỉ phát khi trang đang chạy và quyền trình duyệt đã cấp. Dự báo mưa dùng dữ liệu Open-Meteo sau thao tác chủ động lấy vị trí; vị trí không được lưu lại, dự báo chỉ mang tính tham khảo và không thay thế kiểm tra đất tại chậu. Xoá hoa khỏi Sổ hoa không xoá cây trong tab **Cây của tôi**.
 
 ### Tối ưu tải giao diện (13/10/2026)
 
@@ -81,46 +62,43 @@ Lời nhắn gọi `/api/chat/sync` (provider Gemini theo cấu hình backend hi
 - Kết nối Internet lần đầu để tải Flowers và trọng số mô hình
 - GPU giúp khởi tạo nhanh hơn; CPU vẫn chạy được nhưng thời gian chuẩn bị/inference lâu hơn
 
-## Demo và chạy nhanh trong 15 phút
+## Chạy nhanh cả giao diện và API trên Windows
 
-Cách nhanh nhất để xem giao diện là mở [demo trực tiếp](https://tkwnc-nhom10.vercel.app/). Backend Render hiện trả health nhưng báo bốn mô hình `not_loaded`, do đó không thể bảo đảm demo AI public hoạt động. Để chạy giao diện, cần Git, Node.js 22 LTS và Corepack:
+**Một lệnh với Docker:** cần Docker Desktop đang chạy và các checkpoint cần thiết đã có trong repo/Git LFS. Mở terminal tại thư mục gốc:
 
 ```powershell
-git clone https://github.com/lehiu1310/TKWNC_nhom10.git
-cd TKWNC_nhom10/web
-corepack pnpm install --frozen-lockfile
-$env:VITE_API_BASE_URL="https://tkw-nhom10-api.onrender.com"
-corepack pnpm dev -- --host 0.0.0.0 --port 5175
+docker compose -f compose.yaml up --build
 ```
 
-Mở `http://localhost:5175`. Lệnh trên chỉ chạy frontend; các lệnh chạy backend local bên dưới cần Python, model artifacts và khóa Gemini cho chatbot.
+Mở `http://localhost:7860`. Docker volume `vuonhoa-data` giữ CSDL SQLite qua lần khởi động lại container. Cấu hình này dùng truy xuất ảnh dựa trên đặc trưng classifier và chỉ giữ model nặng cần cho request hiện tại để giảm RAM; tìm ảnh bằng câu chữ vẫn hoạt động. Docker Engine trên máy phát triển chưa chạy tại lần xác minh 22/10/2026, nên lệnh build/run này chưa được smoke-test.
 
-## Chạy lần đầu trên Windows
-
-Mở PowerShell ở thư mục dự án:
+**Chạy tiến trình trực tiếp trên Windows:** cần Python 3.11, Node.js 22/Corepack và model/checkpoint thật trong `artifacts/` (nếu dùng Git LFS, chạy `git lfs pull`). Cài phụ thuộc một lần:
 
 ```powershell
 py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-python -m pip install -r requirements.txt
-python scripts/prepare_flowers102.py --epochs 3
-cd web
-pnpm install
-pnpm run build
-cd ..
-python -m uvicorn api.main:app --host 0.0.0.0 --port 8000
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+corepack pnpm --dir web install --frozen-lockfile
 ```
 
-`prepare_flowers102.py` tải Oxford Flowers 102 (8.189 ảnh, 102 lớp), ghép dữ liệu để fine-tune ResNet-18 trên 11.859 ảnh với 103 nhãn. Bách khoa có đủ 103 mục khớp với các nhãn phân loại; năm loài trên trang chủ chỉ là nhóm nổi bật. MobileCLIP2-S0 + FAISS dùng tối đa 12 ảnh đại diện mỗi nhãn (1.236 ảnh hiện tại); index đi cùng mã nguồn và `encoder.json` xác nhận model dùng để tạo vector. Danh sách lớp Oxford chủ yếu gồm hoa phổ biến ở Anh, không đại diện cho mọi loài hoa trên thế giới. Chuẩn bị dữ liệu/trọng số là bước một lần, cần Internet và vài GB dung lượng; thời gian trên CPU phụ thuộc máy và có thể vượt 15 phút. YOLO11, MobileCLIP2-S0 và mô hình dịch Việt–Anh được tải khi mở chức năng lần đầu. Chatbot dùng BM25 trên tài liệu tiếng Việt để giảm RAM, Gemini yêu cầu `GOOGLE_API_KEY`/`GEMINI_API_KEY`; `LLM_PROVIDER=hf_local` dùng Qwen local và có thể đổi model bằng `LLM_MODEL`.
+Sau khi cài xong, chạy API và web bằng một lệnh:
 
-Khi phát triển React riêng, mở **hai terminal và giữ cả hai chạy cùng lúc**:
+```powershell
+.\scripts\start_local.ps1
+```
 
-1. Terminal backend, tại thư mục gốc: `python -m uvicorn api.main:app --host 0.0.0.0 --port 8000`.
-2. Terminal frontend: `cd web` rồi `pnpm exec vite --host 0.0.0.0 --port 5175`.
+Mở `http://localhost:5173`. API chạy tại `http://127.0.0.1:8000`; kiểm tra trạng thái bằng `/api/health`. Lần đầu tìm ảnh CLIP có thể tải checkpoint nếu chưa có trong cache. Không cần khóa để chạy phân loại, phát hiện, tìm ảnh bằng ảnh hoặc RAG; chatbot dùng câu trả lời trích dẫn cục bộ khi thiếu Gemini key. Khóa Gemini chỉ cần cho dịch truy vấn tiếng Việt bằng Gemini và sinh lời chúc bằng Gemini; nếu không có khóa, ứng dụng giữ chế độ dự phòng, không gọi API bên ngoài.
 
-Mở địa chỉ Vite vừa in ra (mặc định ép cổng `5175` theo lệnh trên). Vite proxy `/api` tới FastAPI ở `http://localhost:8000`, vì vậy cấu hình mặc định không cần CORS. Nếu frontend gọi trực tiếp backend, đặt `VITE_API_BASE_URL=http://localhost:8000` trong `web/.env.local`; backend cho phép origin localhost ở cổng 5173 và 5175 theo `CORS_ORIGINS`. Có thể dùng `VITE_API_URL` như tên cũ.
+Đăng ký tài khoản lưu trong SQLite tại `.data/vuonhoa.sqlite3`; phiên dùng cookie `HttpOnly`, mật khẩu được băm bằng scrypt. Nút **Tài khoản** đồng bộ Sổ hoa và Cây của tôi giữa localStorage và CSDL. Sao lưu file SQLite nếu cần giữ dữ liệu. Trên Render Free, hệ thống tệp của service là tạm thời, nên SQLite ở đó không đảm bảo còn sau khi service khởi động lại; không dùng bản Render Free làm CSDL production lâu dài.
+
+Lần build Docker đầu tải gói phụ thuộc và checkpoint được cấu hình trong Dockerfile nên có thể mất thời gian, cần Internet và đủ dung lượng đĩa.
+
+## Demo và chuẩn bị model
+
+Demo giao diện: [Vườn Hoa](https://tkwnc-nhom10.vercel.app/). Backend Render hiện chưa xác nhận bốn AI; xem trạng thái kiểm tra ở đầu README. Để chạy cả frontend và API local, dùng Docker Compose ở phần trên hoặc cài phụ thuộc rồi chạy `scripts/start_local.ps1` — không cần mở terminal thứ hai.
+
+Nếu checkpoint chưa có trong repo, `python scripts/prepare_flowers102.py --epochs 3` tải Oxford Flowers 102 (8.189 ảnh, 102 lớp), ghép dữ liệu để fine-tune ResNet-18 trên 11.859 ảnh với 103 nhãn. Đây là bước chuẩn bị model tùy chọn, không phải lệnh khởi động app; cần Internet, vài GB dung lượng và thời gian có thể vượt 15 phút trên CPU. Bách khoa có đủ 103 mục khớp với nhãn phân loại; năm loài trên trang chủ chỉ là nhóm nổi bật. MobileCLIP2-S0 + FAISS dùng tối đa 12 ảnh đại diện mỗi nhãn (1.236 ảnh hiện tại). Danh sách lớp Oxford chủ yếu gồm hoa phổ biến ở Anh, không đại diện cho mọi loài hoa trên thế giới. YOLO11, MobileCLIP2-S0 và mô hình dịch Việt–Anh được tải khi mở chức năng lần đầu. Chatbot dùng BM25 trên tài liệu tiếng Việt; Gemini chỉ được gọi khi người vận hành tự cấu hình `GOOGLE_API_KEY`/`GEMINI_API_KEY`. `LLM_PROVIDER=hf_local` dùng Qwen local và có thể đổi model bằng `LLM_MODEL`.
 
 ## Bốn chức năng
 
@@ -131,7 +109,7 @@ Mở địa chỉ Vite vừa in ra (mặc định ép cổng `5175` theo lệnh 
 | Album hoa | MobileCLIP2-S0 + FAISS | Tìm ảnh trong bộ Flowers; câu tiếng Việt dùng Gemini để dịch, có từ vựng hoa/thị giác cục bộ khi thiếu key hoặc Gemini lỗi/quota |
 | Cô làm vườn | Gemini API (mặc định) + BM25 | RAG truy xuất tám bản tóm tắt tiếng Việt và hai PDF (K-State 2019: 56 trang; USDA 1901: 38 trang quét) theo từng trang trong `data/kb/`. Ghi chú phạm vi vùng miền và cảnh báo nguồn lịch sử được kèm vào ngữ cảnh. |
 
-API gồm 10 endpoint: `/api/health`, `/api/species`, `/api/species/{id}/image`, `/api/classify`, `/api/detect`, `/api/search/text`, `/api/search/image`, `/api/gallery/{id}`, `/api/chat` (SSE), `/api/chat/sync`. Endpoint `/api/species` hỗ trợ `limit` và `offset`; `/api/health` có thể lọc trạng thái bằng `?model=classifier`.
+API có health/startup, danh mục và ảnh loài, bốn luồng AI (`/api/classify`, `/api/detect`, `/api/search/text`, `/api/search/image`, `/api/chat`, `/api/chat/sync`), gợi ý bó hoa và tài khoản (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`, `/api/account/data/{garden|giftbook}`). `/api/species` hỗ trợ `limit`/`offset`; `/api/health` có thể lọc trạng thái bằng `?model=classifier`.
 
 ## Cấu hình
 

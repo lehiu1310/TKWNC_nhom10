@@ -2,6 +2,8 @@ import { Component, Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { getHealth } from './api.js';
 import ScrollGarden from './ScrollGarden.jsx';
 import DoctorCare from './DoctorCare.jsx';
+import AccountPanel from './AccountPanel.jsx';
+import { startAccountSync } from './accountSync.js';
 const InteractiveGarden = lazy(() => import('./InteractiveGarden.jsx'));
 const Classify = lazy(() => import('./features/Classify.jsx'));
 const Detect = lazy(() => import('./features/Detect.jsx'));
@@ -16,8 +18,9 @@ import { readGiftCardFromHash } from './giftShare.js';
 
 const FLOWERS = speciesData.map((item) => ({ ...item, vi: item.name_vi, en: item.name_en, color: item.color, bloom: item.bloom_season, icon: item.icon || '✿' }));
 const FEATURED_FLOWERS = FLOWERS.filter((item) => item.featured).sort((a, b) => a.featured_order - b.featured_order);
+const GARDEN_SCENES = ['/images/meadow-flowers-1.jpg', '/images/meadow-flowers-2.jpg', '/images/meadow-flowers-3.jpg'];
 const flowerDisplayRecord = (flower) => displayImageData.images[flower.display_image_key || flower.id];
-const flowerDisplayImage = (flower) => flowerDisplayRecord(flower)?.url || `/api/species/${flower.id}/image`;
+const flowerDisplayImage = (flower) => flowerDisplayRecord(flower)?.url || `/images/species/${encodeURIComponent(flower.id)}.webp`;
 const resolvePathname = (pathname) => {
   const knownRoute = pathname === '/' || pathname === '/bach-khoa' || pathname === '/tang-hoa' || speciesData.some((flower) => pathname === `/bach-khoa/${flower.id}`);
   if (knownRoute) return pathname;
@@ -136,8 +139,17 @@ class FeatureErrorBoundary extends Component {
 }
 
 function Flowerfield() {
-  const photos = FEATURED_FLOWERS.filter((flower) => flower.hero_order).sort((a, b) => a.hero_order - b.hero_order);
-  return <div className="hero-blooms" aria-hidden="true"><span className="paper-cloud cloud-a"/><span className="paper-cloud cloud-b"/>{photos.map((flower, index) => <img data-parallax key={flower.id} className={`flower-mark flower-photo flower-photo-${index + 1} display-flower-photo`} style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(flower)} alt=""/>)}<span className="floating-petal petal-a"/><span className="floating-petal petal-b"/><span className="floating-petal petal-c"/></div>;
+  // Landscape garden photos: Natalie Kinnear (OyYc6pZsWnk), Ilona Ivanova (Ybn4ryKH2dk), and Tunafish (Nf6xMJnnOBg), Unsplash License.
+  const gardenScenes = [
+    { src: '/images/meadow-flowers-1.jpg', alt: 'Đồng cỏ hoa dại hồng đỏ trong nắng' },
+    { src: '/images/meadow-flowers-2.jpg', alt: 'Vườn cúc trắng giữa thảm cỏ xanh' },
+    { src: '/images/meadow-flowers-3.jpg', alt: 'Cánh đồng hoa nhiều màu trải rộng' },
+  ];
+  return <div className="hero-blooms hero-meadow" aria-hidden="true">
+    <div className="meadow-gallery">{gardenScenes.map((scene, index) => <img key={scene.src} className={`meadow-scene meadow-scene-${index + 1}`} src={scene.src} alt="" fetchPriority={index === 0 ? 'high' : undefined} loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/>)}</div>
+    <span className="meadow-light"/>
+    <div className="meadow-foreground" aria-hidden="true"><i/><i/><i/><i/><i/><i/><i/></div>
+  </div>;
 }
 
 export default function App() {
@@ -146,6 +158,7 @@ export default function App() {
   const [health, setHealth] = useState(null);
   const [active, setActive] = useState(null);
   const [doctorOpen, setDoctorOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [doctorInitialView, setDoctorInitialView] = useState('ask');
   const [scrolled, setScrolled] = useState(false);
   const [healthError, setHealthError] = useState(false);
@@ -154,6 +167,7 @@ export default function App() {
     readGarden();
     try { localStorage.removeItem('vuon-hoa-daily-challenge-v1'); } catch { /* Storage may be unavailable in a restricted browser context. */ }
   }, []);
+  useEffect(() => startAccountSync(), []);
   const navigate = (path) => {
     const nextPath = resolvePathname(path);
     window.history.pushState({}, '', nextPath);
@@ -271,7 +285,7 @@ export default function App() {
     }).catch((error) => console.error('Không tải được hiệu ứng cuộn:', error));
     return () => { cancelled = true; cleanup?.(); };
   }, []);
-  useEffect(() => { if (!active && !doctorOpen) return; const onKey = (e) => e.key === 'Escape' && (setActive(null), setDoctorOpen(false)); window.addEventListener('keydown', onKey); document.body.classList.add('modal-open'); return () => { window.removeEventListener('keydown', onKey); document.body.classList.remove('modal-open'); }; }, [active, doctorOpen]);
+  useEffect(() => { if (!active && !doctorOpen && !accountOpen) return; const onKey = (e) => e.key === 'Escape' && (setActive(null), setDoctorOpen(false), setAccountOpen(false)); window.addEventListener('keydown', onKey); document.body.classList.add('modal-open'); return () => { window.removeEventListener('keydown', onKey); document.body.classList.remove('modal-open'); }; }, [active, doctorOpen, accountOpen]);
   useEffect(() => {
     const openChat = () => { setActive('chat'); setDoctorOpen(false); };
     window.addEventListener('garden:open-chat', openChat);
@@ -311,18 +325,20 @@ export default function App() {
   // Free Render loads models on demand; health.ready stays false until all models fit simultaneously.
   // Let users open a tool whenever the API is alive; each endpoint loads its own model when called.
   const backendReady = health?.status === 'ok';
+  const spotlightFlower = FEATURED_FLOWERS.find((flower) => flower.hero_order) || FEATURED_FLOWERS[0] || FLOWERS[0];
   const checkBackend = () => healthCheckRef.current?.();
   return <div className="site-shell">
     <header className={`topbar ${scrolled ? 'topbar-scrolled' : ''}`}>
       <a className="brand" href="/" aria-label="Vườn Hoa, về đầu trang"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a>
       <nav className="main-nav" aria-label="Điều hướng chính"><a href="/#the-gioi-hoa">Thế giới hoa</a><a href="/#khu-vuon-ai">Khám phá hoa</a><a href="/#vuon-3d">Chậu hoa 3D</a><a href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Chuyện loài hoa</a><a href="/tang-hoa" onClick={(event) => { event.preventDefault(); navigate('/tang-hoa'); }}>Bó hoa gửi thương</a><button type="button" className="nav-doctor-button" onClick={() => { setDoctorInitialView('ask'); setDoctorOpen(true); }}>Chăm vườn</button></nav>
-      <div className={`service-state ${backendReady ? 'service-ready' : 'service-waking'}`} aria-live="polite"><i className={backendReady ? 'state-dot online' : 'state-dot waking-dot'} />{backendReady ? 'API đã kết nối' : <><span>Khu vườn đang thức dậy, đợi chút nhé…</span><button type="button" onClick={checkBackend} aria-label="Thử kết nối lại với khu vườn AI">↻</button></>}</div>
+      <button type="button" className="account-trigger" onClick={() => setAccountOpen(true)}>Tài khoản</button>
+      <div className={`service-state ${backendReady ? 'service-ready' : 'service-waking'}`} role="status" aria-live="polite" title={backendReady ? 'Máy chủ API đang hoạt động; mô hình được tải khi bạn dùng từng chức năng' : 'Trạng thái kết nối máy chủ AI'}><i className={backendReady ? 'state-dot online' : 'state-dot waking-dot'} />{backendReady ? <span className="service-status-label">Máy chủ đã kết nối</span> : <><span className="service-status-label">{healthError ? 'Máy chủ chưa kết nối' : 'Máy chủ đang kết nối'}</span><button type="button" onClick={checkBackend} aria-label="Thử kết nối lại với máy chủ AI">↻</button></>}</div>
     </header>
 
     <main key={route} className="page-transition">{sharedGift ? <SharedGiftCardPage card={sharedGift}/> : route === '/tang-hoa' ? <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang mở sổ quà tặng…</div>}><GiftAdvisor/></Suspense> : route === '/bach-khoa' ? <EncyclopediaPage navigate={navigate}/> : route.startsWith('/bach-khoa/') ? <FlowerDetailPage flower={speciesData.find((item) => `/bach-khoa/${item.id}` === route)} navigate={navigate} openGardenCare={openGardenCare}/> : <>
 
       <section className="hero section-wrap" id="home"><NoiseOverlay id="hero-grain"/>
-        <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><div className="hero-actions"><a className="primary-button" href="#khu-vuon-ai">Khám phá hoa <span>↗</span></a><button className="hero-doctor-shortcut" type="button" onClick={() => { setDoctorInitialView('ask'); setDoctorOpen(true); }}><span aria-hidden="true">✿</span>Chăm vườn <i>↗</i></button></div><div className="hero-note"><span className="note-spark">✦</span><span>Vườn hoa số · khám phá theo cách của bạn</span></div><div className="hero-proof" aria-label="Tổng quan khu vườn"><div><b>{FLOWERS.length}</b><span>loài hoa</span></div><i aria-hidden="true"/><div><b>{FEATURES.length}</b><span>công cụ AI</span></div><i aria-hidden="true"/><div><b>{FEATURED_FLOWERS.length}</b><span>hoa nổi bật</span></div></div></div>
+        <div className="hero-copy"><span className="eyebrow"><span>✳</span> MỘT KHU VƯỜN CÓ TRÍ TUỆ</span><h1>Mỗi bông hoa<br/>kể một <em>câu chuyện.</em></h1><p className="hero-lede">Cùng AI khám phá sắc màu, tên gọi và những điều kỳ diệu đang nở trong khu vườn nhỏ này.</p><div className="hero-actions"><a className="primary-button" href="#khu-vuon-ai">Khám phá hoa <span>↗</span></a><button className="hero-doctor-shortcut" type="button" onClick={() => { setDoctorInitialView('ask'); setDoctorOpen(true); }}><span aria-hidden="true">✿</span>Chăm vườn <i>↗</i></button></div><div className="hero-note"><span className="note-spark">✦</span><span>Vườn hoa số · khám phá theo cách của bạn</span></div>{spotlightFlower && <a className="hero-spotlight" href={`/bach-khoa/${encodeURIComponent(spotlightFlower.id)}`} onClick={(event) => { event.preventDefault(); navigate(`/bach-khoa/${encodeURIComponent(spotlightFlower.id)}`); }} aria-label={`Khám phá ${spotlightFlower.name_vi}`}><img src={flowerDisplayImage(spotlightFlower)} alt="" loading="lazy"/><span><small>GÓC HOA NỔI BẬT</small><b>{spotlightFlower.name_vi}</b><em>{spotlightFlower.bloom_season}</em></span><i aria-hidden="true">↗</i></a>}<div className="hero-proof" aria-label="Tổng quan khu vườn"><div><b>{FLOWERS.length}</b><span>loài hoa</span></div><i aria-hidden="true"/><div><b>{FEATURES.length}</b><span>công cụ AI</span></div><i aria-hidden="true"/><div><b>{FEATURED_FLOWERS.length}</b><span>hoa nổi bật</span></div></div></div>
         <Flowerfield/>
         <div className="hero-bottom"><span>MỘT CHÚT NẮNG, MỘT CHÚT HOA</span><a href="#the-gioi-hoa" aria-label="Cuộn xuống">↓</a></div>
       </section>
@@ -330,7 +346,7 @@ export default function App() {
 
       <section className="ai-section" id="khu-vuon-ai"><div className="ai-glass-inner section-wrap"><div className="section-heading ai-heading"><div><span className="eyebrow">NĂM CÁCH KHÁM PHÁ KHU VƯỜN</span><h2>Khám phá <em>khu vườn.</em></h2></div><p>Bốn công cụ AI để nhận diện, khoanh vùng, tìm ảnh và hỏi đáp; thêm Chăm vườn để tra cứu cách chăm sóc từ cẩm nang.</p></div>
         {!backendReady && <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>{healthError ? 'Máy chủ đang khởi động lại. Trang sẽ tự kết nối lại trong giây lát.' : 'Đang kết nối với máy chủ AI.'}</p></div><span className="waking-dots" aria-hidden="true"><i/><i/><i/></span></div>}
-        <div className={`feature-grid${backendReady ? '' : ' feature-grid-waking'}`}>{FEATURES.map((item, i) => <button data-tilt className={`feature-card tilt-card feature-${item.color}`} key={item.id} disabled={!backendReady} onClick={() => setActive(item.id)}><div className="feature-top"><span className="feature-icon"><FeatureBotanicalIcon id={item.id}/></span><div className="feature-top-meta"><span className="feature-index">0{i + 1}</span><span className="model-chip">{item.modelLabel}</span></div></div><div className="feature-text"><span className="feature-subtitle">{item.subtitle}</span><h3>{item.title}</h3><p>{item.desc}</p></div><div className="feature-bottom"><span className="feature-prompt">{backendReady ? item.prompt : 'Sẵn sàng sau khi kết nối'}</span><span className="feature-arrow">↗</span></div></button>)}
+        <div className={`feature-grid${backendReady ? '' : ' feature-grid-waking'}`}>{FEATURES.map((item, i) => { const flower = FEATURED_FLOWERS.length ? FEATURED_FLOWERS[i % FEATURED_FLOWERS.length] : FLOWERS[i]; const CardTag = backendReady ? 'button' : 'article'; return <CardTag data-tilt className={`feature-card tilt-card feature-${item.color}`} key={item.id} type={backendReady ? 'button' : undefined} aria-disabled={!backendReady || undefined} onClick={backendReady ? () => setActive(item.id) : undefined}><div className="feature-top"><span className="feature-icon"><FeatureBotanicalIcon id={item.id}/></span><div className="feature-top-meta"><span className="feature-index">0{i + 1}</span><span className="model-chip">{item.modelLabel}</span></div><span className="feature-flower-stamp" aria-hidden="true"><img src={flowerDisplayImage(flower)} alt="" loading="lazy"/><i>✿</i></span></div><div className="feature-text"><span className="feature-subtitle">{item.subtitle}</span><h3>{item.title}</h3><p>{item.desc}</p></div><div className="feature-bottom"><span className="feature-prompt">{backendReady ? item.prompt : 'Sẵn sàng sau khi kết nối'}</span><span className="feature-arrow">↗</span></div></CardTag>; })}
           <button data-tilt className="feature-card tilt-card feature-green feature-doctor" type="button" onClick={() => { setDoctorInitialView('ask'); setDoctorOpen(true); }}><div className="feature-top"><span className="feature-icon"><FeatureBotanicalIcon id="doctor"/></span><div className="feature-top-meta"><span className="feature-index">05</span><span className="model-chip">RAG · CẨM NANG</span></div></div><div className="feature-text"><span className="feature-subtitle">TƯ VẤN CÓ NGUỒN · SỔ CHĂM CÂY</span><h3>Chăm vườn</h3><p>Hỏi về dấu hiệu của cây, xem lịch chăm và theo dõi những chậu hoa đang trồng.</p></div><div className="feature-bottom"><span className="feature-prompt">Mở sổ chăm cây</span><span className="feature-arrow">↗</span></div></button>
         </div>
       </div></section>
@@ -340,12 +356,13 @@ export default function App() {
       <ScrollGarden/>
       <Suspense fallback={<div className="garden3d-fallback section-wrap">Đang chuẩn bị khu vườn tương tác…</div>}><InteractiveGarden/></Suspense>
 
-    <section className="encyclopedia section-wrap" id="bach-khoa"><div className="ency-copy"><span className="eyebrow">CHUYỆN LOÀI HOA · {FLOWERS.length} LOÀI</span><h2>Gặp hoa qua<br/>ảnh chụp <em>thật.</em></h2><p>Tra cứu {FLOWERS.length} loài hoa có trong bộ dữ liệu nhận diện AI, lọc theo màu, mùa hoặc tìm bằng tên.</p><a className="text-link" href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Khám phá {FLOWERS.length} loài hoa <span>→</span></a></div><div className="ency-art"><div className="ency-sun"/>{FEATURED_FLOWERS.filter((flower) => flower.encyclopedia_photo).map((flower, index) => <img key={flower.id} className={`ency-photo-art ency-photo-art-${index + 1} display-flower-photo`} style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(flower)} alt="" loading="lazy"/>)}<span className="ency-note note-two">✳</span></div></section>
+      <section className="encyclopedia section-wrap" id="bach-khoa"><div className="ency-garden-mist" aria-hidden="true">{GARDEN_SCENES.map((src, index) => <img key={src} className={`ency-garden-photo ency-garden-photo-${index + 1}`} src={src} alt="" loading="lazy" decoding="async"/>)}</div><div className="ency-copy"><span className="eyebrow">CHUYỆN LOÀI HOA · {FLOWERS.length} LOÀI</span><h2>Gặp hoa qua<br/>ảnh chụp <em>thật.</em></h2><p>Tra cứu {FLOWERS.length} loài hoa có trong bộ dữ liệu nhận diện AI, lọc theo màu, mùa hoặc tìm bằng tên.</p><a className="text-link" href="/bach-khoa" onClick={(event) => { event.preventDefault(); navigate('/bach-khoa'); }}>Khám phá {FLOWERS.length} loài hoa <span>→</span></a></div><div className="ency-art"><div className="ency-sun"/><img className="ency-main-bloom display-flower-photo" style={{ '--display-photo-grade': displayImageData.colorGrading.cssFilter }} src={flowerDisplayImage(FEATURED_FLOWERS[0])} alt={`Hoa ${FEATURED_FLOWERS[0]?.name_vi}`} loading="lazy"/><span className="ency-note note-two">✳</span></div></section>
     </> }</main>
 
     <footer className="footer"><div className="footer-leaves" aria-hidden="true">❧ ✿ ❧</div><a className="brand footer-brand" href="/"><span className="brand-flower">✿</span><span>Vườn Hoa<span className="brand-dot">.</span></span></a><p>Một khu vườn nhỏ để học, ngắm và khám phá bằng AI.</p><a className="gift-footer-link" href="/tang-hoa" onClick={(event) => { event.preventDefault(); navigate('/tang-hoa'); }}>Bó hoa gửi thương · Sổ hoa của tôi ↗</a><button className="gift-footer-link footer-doctor-button" type="button" onClick={() => { setDoctorInitialView('garden'); setDoctorOpen(true); }}>Mở Chăm vườn · sổ cây ↗</button><span className="footer-copy">ĐỒ ÁN LẬP TRÌNH WEB NÂNG CAO · NHÓM 10</span></footer>
 
     {CurrentFeature && <div className="feature-modal" role="dialog" aria-modal="true" aria-label={CurrentFeature.title} onMouseDown={(e) => e.target === e.currentTarget && setActive(null)}><div className={`modal-panel feature-${CurrentFeature.color}`}><div className="modal-header"><div className="modal-title"><span className="feature-icon">{CurrentFeature.icon}</span><div><span className="feature-subtitle">{CurrentFeature.subtitle}</span><h2>{CurrentFeature.title}</h2></div></div><button className="close-button" onClick={() => setActive(null)} aria-label="Đóng">×</button></div><div className="modal-body">{!backendReady ? <div className="garden-waking" role="status"><span className="waking-flower" aria-hidden="true">✿</span><div><b>Khu vườn đang thức dậy</b><p>Đang chờ kết nối máy chủ. Trang sẽ tự kết nối lại.</p></div><button type="button" className="button" onClick={checkBackend}>Thử lại</button></div> : <><div className="feature-flow" aria-label="Quy trình xử lý">{FEATURE_INTROS[active].map((step, index) => <div className="feature-flow-step" key={step}><span>0{index + 1}</span><b>{step}</b>{index < 2 && <i aria-hidden="true">→</i>}</div>)}</div><FeatureErrorBoundary key={active}><Suspense fallback={<div className="feature-module-loading" role="status"><p className="loading-skeleton"/><span>Đang chuẩn bị công cụ AI…</span></div>}><CurrentFeature.Component/></Suspense></FeatureErrorBoundary></>}</div></div></div>}
     {doctorOpen && <div className="feature-modal doctor-modal" role="dialog" aria-modal="true" aria-label="Chăm vườn" onMouseDown={(event) => event.target === event.currentTarget && setDoctorOpen(false)}><div className="modal-panel feature-green"><div className="modal-header"><div className="modal-title"><span className="doctor-invite-flower" aria-hidden="true">✿</span><div><span className="feature-subtitle">CẨM NANG · TƯ VẤN CÓ NGUỒN</span><h2>Chăm vườn cùng cô làm vườn</h2></div></div><button className="close-button" onClick={() => setDoctorOpen(false)} aria-label="Đóng">×</button></div><div className="modal-body"><FeatureErrorBoundary><DoctorCare initialView={doctorInitialView}/></FeatureErrorBoundary></div></div></div>}
+    {accountOpen && <AccountPanel onClose={() => setAccountOpen(false)}/>}
   </div>;
 }

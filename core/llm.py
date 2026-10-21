@@ -5,6 +5,7 @@ import threading
 import math
 import logging
 import html
+import unicodedata
 from collections import Counter
 from pathlib import Path
 from typing import Iterator
@@ -108,7 +109,7 @@ class Retriever:
             term for counts in self.term_counts for term in counts
         )
 
-    def search(self, query: str, k: int = 3) -> list[dict]:
+    def search(self, query: str, k: int = 3, source_filter: str | None = None) -> list[dict]:
         expanded_query = query
         normalized_query = query.casefold()
         if any(term in normalized_query for term in ("giá rét", "lạnh", "rét", "vùng mát")):
@@ -119,6 +120,8 @@ class Retriever:
         n_docs = len(self.documents)
         scores = []
         for i, counts in enumerate(self.term_counts):
+            if source_filter is not None and self.chunks[i]["source"] != source_filter:
+                continue
             score = 0.0
             length_norm = self.doc_lengths[i] / max(self.avg_doc_length, 1)
             for term in terms:
@@ -157,6 +160,13 @@ class Retriever:
                 phrase_bonus = 0.15
             section = self.chunks[i]["text"].splitlines()[0].casefold().lstrip("# ")
             intent_bonus = 0.25 if any(section.startswith(title) for title in preferred_sections) else 0.0
+            care_intent = any(term in normalized_query for term in ("chăm sóc", "cần chăm", "nuôi", "tưới", "bón phân"))
+            pruning_intent = any(term in normalized_query for term in ("cắt tỉa", "tỉa cành", "hoa tàn", "cắt hoa"))
+            if care_intent:
+                care_evidence = any(term in normalized_text for term in ("tưới", "đất", "ánh sáng", "dinh dưỡng", "sâu bệnh", "thoát nước"))
+                intent_bonus += 0.55 if care_evidence else -0.18
+                if not pruning_intent and any(term in normalized_text for term in ("cắt tỉa", "hoa tàn", "cành chết")):
+                    intent_bonus -= 0.25
             # When a question names one of the covered flowers, prefer that
             # flower's own guide over the general care and meaning summaries.
             flower_sources = (
@@ -183,8 +193,12 @@ class Retriever:
         for score, i, bm25_score in ranked:
             if bm25_score <= 0:
                 continue
+            content = " ".join(line.strip() for line in self.chunks[i]["text"].splitlines()
+                                if line.strip() and not line.lstrip().startswith("#"))
+            if len(content) < 32:
+                continue
             source = self.chunks[i]["source"]
-            if source in seen_sources:
+            if source_filter is None and source in seen_sources:
                 continue
             seen_sources.add(source)
             selected.append((score, i, bm25_score))
@@ -237,19 +251,25 @@ class RAGChatbot:
             )
 
         excerpts = []
-        best_score = max((float(item.get("score", 0)) for item in contexts), default=0.0)
+        # Retrieval can rank a heading-only chunk above its useful paragraph.
+        # Filter those first, otherwise a strong title score suppresses the
+        # relevant evidence below it and the offline answer incorrectly says
+        # the knowledge base has no information.
+        usable = []
         for item in contexts:
+            text = " ".join(line.strip() for line in item.get("text", "").splitlines()
+                            if line.strip() and not line.lstrip().startswith("#"))
+            if len(text) >= 32:
+                usable.append((item, text))
+        best_score = max((float(item.get("score", 0)) for item, _ in usable), default=0.0)
+        for item, text in usable:
             score = float(item.get("score", 0))
             if best_score and score < best_score * 0.70:
                 continue
-            text = " ".join(line.strip() for line in item.get("text", "").splitlines() if line.strip() and not line.lstrip().startswith("#"))
-            # Ignore title-only chunks (for example a broad "meaning of flowers"
-            # heading) so fallback answers do not pad a precise answer with noise.
-            if len(text) >= 32:
-                citation = item["source"]
-                if item.get("page") is not None:
-                    citation += f", trang {item['page']}"
-                excerpts.append(f"{text} [{citation}]")
+            citation = item["source"]
+            if item.get("page") is not None:
+                citation += f", trang {item['page']}"
+            excerpts.append(f"{text} [{citation}]")
             if len(excerpts) == 2:
                 break
         if not excerpts:
@@ -264,6 +284,29 @@ class RAGChatbot:
                 msgs.append({"role": turn["role"], "content": str(turn.get("content", ""))[:2000]})
         msgs.append({"role": "user", "content": question})
         return msgs
+
+    def _focus_named_flower(self, question: str, contexts: list[dict], k: int) -> list[dict]:
+        """When a KB filename names the flower asked about, avoid citing another species."""
+        def terms(value: str) -> set[str]:
+            normalized = unicodedata.normalize("NFD", value.casefold())
+            normalized = "".join(char for char in normalized if unicodedata.category(char) != "Mn")
+            normalized = normalized.replace("đ", "d")
+            return set(re.findall(r"[a-z0-9]+", normalized))
+
+        question_terms = terms(question)
+        generic = {"hoa", "flower", "flowers", "cach", "cham", "soc", "y", "nghia", "mua", "viet", "nam", "guide", "kb"}
+        matching_sources = set()
+        for item in self.retriever.chunks:
+            stem = Path(item.get("source", "")).stem.replace("_", " ")
+            name_terms = terms(stem) - generic
+            if name_terms and name_terms.issubset(question_terms):
+                matching_sources.add(item["source"])
+        if not matching_sources:
+            return contexts
+        source = next((item.get("source") for item in contexts if item.get("source") in matching_sources), None)
+        source = source or sorted(matching_sources)[0]
+        focused = self.retriever.search(question, k=max(1, min(k, 3)), source_filter=source)
+        return focused or [item for item in contexts if item.get("source") == source]
 
     @staticmethod
     def _format_context(context: dict) -> str:
@@ -282,6 +325,7 @@ class RAGChatbot:
     def stream(self, question: str, history: list[dict] | None = None, k: int = 3,
                max_new_tokens: int = 384) -> tuple[list[dict], Iterator[str]]:
         contexts = self.retriever.search(question, k)
+        contexts = self._focus_named_flower(question, contexts, k)
         if any(term in question.casefold() for term in ("giá rét", "lạnh", "rét", "vùng mát")):
             focused = [item for item in contexts if "khí hậu mát" in item["text"].casefold() or "khí hậu lạnh" in item["text"].casefold()]
             if focused:

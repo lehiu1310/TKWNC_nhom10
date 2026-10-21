@@ -14,4 +14,28 @@
 .bouquet-recipe li small{overflow:hidden;color:#7b8674;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
 .bouquet-recipe li strong{flex:none;color:#35583d;font-size:10px}
 .bouquet-recipe>p{margin:10px 2px 0;color:#7b8674;font-size:10px;line-height:1.55}
+.gift-builder-heading{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin:-2px 0 1px;padding:3px 2px 13px;border-bottom:1px solid #eee9dd}
+.gift-builder-step{display:grid;width:42px;height:42px;flex:none;place-items:center;border-radius:15px;background:linear-gradient(145deg,#f8d9d6,#faebd4);color:#a45455;font-family:'Fraunces',Georgia,serif;font-size:19px;box-shadow:inset 0 1px #ffffffb8}
+.gift-builder-heading>div{display:grid;gap:3px;min-width:0}
+.gift-builder-heading b{color:#304c34;font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600}
+.gift-builder-heading small{color:#748170;font-size:10px;line-height:1.45}
+.gift-builder-count{margin-left:auto;padding:7px 10px;border:1px solid #e8e7d9;border-radius:99px;background:#f6f7ef;color:#65745e;font-size:9px;font-weight:850;white-space:nowrap}
+.gift-field{align-self:stretch}
+.gift-field-label{display:flex;align-items:center;gap:7px;min-height:22px}
+.gift-field-label i{display:grid;width:20px;height:20px;place-items:center;border:1px solid #e8e8dc;border-radius:50%;background:#f7f7ef;color:#879276;font-size:8px;font-style:normal;font-weight:900}
+.gift-field-label b{font:inherit}
+.gift-field:focus-within .gift-field-label i{border-color:#aac19f;background:#e9f1e5;color:#456b48;box-shadow:0 0 0 3px #78966e17}
+.gift-intents button.active{position:relative;box-shadow:0 0 0 2px #78966e35,0 9px 20px #526b472b,inset 0 0 0 1px #78966e45}
+.gift-intents button.active:after{content:'✓';display:grid;width:17px;height:17px;flex:none;place-items:center;border-radius:50%;background:#426e49;color:#fff;font-size:10px;font-weight:900}
+@media(max-width:760px){.gift-builder-heading{padding-bottom:11px}.gift-builder-step{width:38px;height:38px;border-radius:13px}.gift-builder-heading b{font-size:16px}.gift-builder-count{font-size:8px;padding:6px 8px}.gift-intents button.active:after{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){.gift-builder-step,.gift-field-label i{transition:none}}
+.gift-intents button{transition:transform .24s cubic-bezier(.2,.75,.2,1),border-color .2s,background .2s,box-shadow .24s,color .2s}
+.gift-intents button:hover{transform:translateY(-4px) scale(1.025);border-color:#9bb793;background:linear-gradient(145deg,#f4f8ee,#fff4ee);box-shadow:0 10px 22px #526b4724}
+.gift-intents button:hover>span{transform:rotate(-9deg) scale(1.12)}
+.gift-intents button>span{transition:transform .24s cubic-bezier(.2,.75,.2,1)}
+.gift-intents button.active:hover{transform:translateY(-4px) scale(1.025);box-shadow:0 0 0 2px #78966e35,0 12px 24px #526b4733,inset 0 0 0 1px #78966e45}
+.gift-field select:hover,.gift-field input:hover{transform:translateY(-1px);border-color:#a9bf9f;box-shadow:0 5px 14px #526b4714}
+.gift-tabs button:not(.active):hover{transform:translateY(-2px);background:#fffefa;color:#294735;box-shadow:0 4px 11px #33452a12}
+.gift-form>.primary-button:hover,.bouquet-actions button:hover:not(:disabled){transform:translateY(-3px) scale(1.025);box-shadow:0 12px 24px #29473533}
+@media(prefers-reduced-motion:reduce){.gift-intents button,.gift-intents button>span,.gift-field select,.gift-field input,.gift-tabs button,.gift-form>.primary-button,.bouquet-actions button{transition:none!important}.gift-intents button:hover,.gift-intents button.active:hover,.gift-field select:hover,.gift-field input:hover,.gift-tabs button:not(.active):hover,.gift-form>.primary-button:hover,.bouquet-actions button:hover:not(:disabled){transform:none!important}}
 @media(max-width:430px){.bouquet-photo-accent{left:7%;bottom:9%;width:29%;height:31%}}

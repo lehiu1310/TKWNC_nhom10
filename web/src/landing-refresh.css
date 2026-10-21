@@ -32,3 +32,116 @@ body,.site-shell{background:var(--cream);color:var(--ink)}
 @media(max-width:900px){.hero-proof{gap:14px;padding:12px 15px}.hero-proof b{font-size:18px}}
 @media(max-width:600px){.hero{min-height:920px}.hero-proof{gap:15px;margin-top:18px;padding:11px 14px;border-radius:15px}.hero-proof b{font-size:17px}.hero-proof span{font-size:8px}.hero-proof>i{height:24px}.hero-copy{z-index:3}.hero-blooms{top:520px!important}}
 @media(prefers-reduced-motion:reduce){.hero-proof{backdrop-filter:none}}
+
+/* Small real-flower portraits make the AI tools feel rooted in the garden. */
+.feature-top{display:grid;grid-template-columns:58px minmax(0,1fr) 52px;align-items:center;gap:10px}
+.feature-top-meta{grid-column:2;grid-row:1;align-items:flex-end}
+.feature-flower-stamp{position:relative;grid-column:3;grid-row:1;width:52px;height:52px;overflow:hidden;border:3px solid rgba(255,255,255,.96);border-radius:17px;background:var(--featurebg);box-shadow:0 5px 15px color-mix(in srgb,var(--feature) 18%,transparent),0 0 0 1px color-mix(in srgb,var(--feature) 17%,transparent)}
+.feature-flower-stamp img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.2,.7,.25,1),filter .45s}
+.feature-flower-stamp i{position:absolute;right:-4px;bottom:-5px;display:grid;width:20px;height:20px;place-items:center;border:2px solid #fffefa;border-radius:50%;background:var(--feature);color:#fff;font-size:10px;font-style:normal;box-shadow:0 2px 6px rgba(39,52,36,.18)}
+.feature-card:hover .feature-flower-stamp img,.feature-card:focus-visible .feature-flower-stamp img{transform:scale(1.12);filter:saturate(1.08)}
+.feature-card:disabled .feature-flower-stamp img{filter:saturate(.72)}
+.feature-card:disabled:hover .feature-flower-stamp img{transform:none}
+.feature-card:focus-visible{outline:3px solid color-mix(in srgb,var(--feature) 55%,white);outline-offset:4px}
+@media(max-width:760px){.feature-top{grid-template-columns:48px minmax(0,1fr) 42px;gap:8px}.feature-flower-stamp{width:42px;height:42px;border-radius:14px}.feature-flower-stamp i{width:17px;height:17px;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.feature-flower-stamp img{transition:none}.feature-card:hover .feature-flower-stamp img,.feature-card:focus-visible .feature-flower-stamp img{transform:none}}
+
+/* A visible, clickable flower feature makes the homepage feel like a living garden. */
+.hero-spotlight{position:relative;z-index:3;display:flex;align-items:center;gap:12px;width:min(370px,100%);min-height:78px;margin:15px 0 0;padding:9px 12px;border:1px solid rgba(255,255,255,.96);border-radius:21px;background:linear-gradient(110deg,rgba(255,255,255,.94),rgba(255,247,239,.86));box-shadow:0 9px 26px rgba(73,76,51,.09),inset 0 1px #fff;color:#29452f;text-decoration:none;backdrop-filter:blur(12px);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.hero-spotlight img{display:block;flex:0 0 58px;width:58px;height:58px;object-fit:cover;border:2px solid #fff;border-radius:16px;box-shadow:0 4px 12px rgba(51,55,38,.15);transition:transform .35s ease}
+.hero-spotlight>span{display:grid;gap:3px;min-width:0;flex:1}
+.hero-spotlight small{font-size:8px;font-weight:900;letter-spacing:1.15px;color:#9d7952}
+.hero-spotlight b{overflow:hidden;font:600 19px/1.1 'Fraunces',Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+.hero-spotlight em{overflow:hidden;color:#78816e;font-size:10px;font-style:normal;text-overflow:ellipsis;white-space:nowrap}
+.hero-spotlight>i{display:grid;flex:0 0 30px;width:30px;height:30px;place-items:center;border:1px solid #e8e3d6;border-radius:50%;background:#fffefa;color:#d87583;font-style:normal;transition:transform .25s ease,background .25s ease,color .25s ease}
+.hero-spotlight:hover{transform:translateY(-4px);border-color:#f2d6ca;box-shadow:0 16px 34px rgba(73,76,51,.15),inset 0 1px #fff}
+.hero-spotlight:hover img{transform:scale(1.06)}
+.hero-spotlight:hover>i{transform:translate(2px,-2px);background:#31583a;color:#fff}
+.hero-spotlight:focus-visible{outline:3px solid #e97888;outline-offset:4px}
+.hero-proof{margin-top:14px}
+@media(max-width:600px){.hero{min-height:990px}.hero-spotlight{width:min(360px,100%);min-height:72px;margin-top:12px;border-radius:18px}.hero-spotlight img{flex-basis:52px;width:52px;height:52px;border-radius:14px}.hero-spotlight b{font-size:18px}.hero-proof{margin-top:12px}.hero-blooms{top:585px!important}}
+@media(prefers-reduced-motion:reduce){.hero-spotlight,.hero-spotlight img,.hero-spotlight>i{transition:none}.hero-spotlight:hover{transform:none}.hero-spotlight:hover img{transform:none}.hero-spotlight:hover>i{transform:none}}
+
+/* Keep the AI cards visibly interactive while the backend reconnects, without making them clickable. */
+.feature-card[aria-disabled="true"]{cursor:default;opacity:.94;filter:saturate(.88);transition:transform .32s cubic-bezier(.2,.7,.25,1),box-shadow .32s,border-color .32s,filter .32s,opacity .32s}
+.feature-card[aria-disabled="true"]:hover{transform:translateY(-7px) scale(1.012)!important;filter:saturate(1);opacity:1;border-color:color-mix(in srgb,var(--feature) 48%,white);box-shadow:0 5px 12px rgba(34,43,68,.06),0 27px 52px color-mix(in srgb,var(--feature) 18%,transparent),inset 0 1px #fff}
+.feature-card[aria-disabled="true"]:hover .feature-icon{transform:translateY(-3px) rotate(-5deg) scale(1.06)}
+.feature-card[aria-disabled="true"] .feature-icon{transition:transform .32s cubic-bezier(.2,.7,.25,1)}
+.feature-card[aria-disabled="true"]:hover .feature-flower-stamp img{transform:scale(1.13) rotate(-3deg);filter:saturate(1.12)}
+.feature-card[aria-disabled="true"]:hover .feature-arrow{transform:translate(3px,-3px);background:var(--feature);color:#fff}
+.feature-card[aria-disabled="true"] .feature-arrow{display:grid;width:30px;height:30px;place-items:center;border-radius:50%;transition:transform .25s ease,background .25s ease,color .25s ease}
+.feature-card[aria-disabled="true"] .feature-flower-stamp{width:58px;height:58px;border-radius:18px}
+@media(max-width:760px){.feature-top{grid-template-columns:48px minmax(0,1fr) 54px}.feature-card[aria-disabled="true"] .feature-flower-stamp{width:52px;height:52px;border-radius:16px}}
+@media(hover:none),(pointer:coarse){.feature-card[aria-disabled="true"]:hover{transform:none!important;box-shadow:0 2px 8px rgba(34,43,68,.045),0 18px 42px rgba(34,43,68,.075),inset 0 1px #fff}.feature-card[aria-disabled="true"]:hover .feature-icon,.feature-card[aria-disabled="true"]:hover .feature-flower-stamp img,.feature-card[aria-disabled="true"]:hover .feature-arrow{transform:none}.feature-card[aria-disabled="true"]:active{transform:scale(.985)!important;filter:saturate(1.06)}.feature-card[aria-disabled="true"]:active .feature-flower-stamp img{transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.feature-card[aria-disabled="true"],.feature-card[aria-disabled="true"]:hover,.feature-card[aria-disabled="true"] .feature-icon,.feature-card[aria-disabled="true"] .feature-arrow{transition:none}.feature-card[aria-disabled="true"]:hover{transform:none!important}.feature-card[aria-disabled="true"]:hover .feature-icon,.feature-card[aria-disabled="true"]:hover .feature-flower-stamp img,.feature-card[aria-disabled="true"]:hover .feature-arrow{transform:none}}
+
+/* Replace the stack of photo tiles with one continuous, gently moving flower meadow. */
+.hero-meadow{position:absolute;z-index:1;top:40px;right:-3.5%;bottom:35px;width:64%;height:auto;overflow:hidden;pointer-events:none;border-radius:48% 0 0 38% / 46% 0 0 42%;mask-image:linear-gradient(90deg,transparent 0%,#000 19%,#000 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 19%,#000 100%)}
+.hero-meadow::before{content:"";position:absolute;z-index:2;inset:0;background:linear-gradient(90deg,var(--cream) 0%,rgba(255,249,241,.72) 9%,transparent 34%),linear-gradient(0deg,rgba(255,249,241,.88),transparent 23%),linear-gradient(180deg,rgba(255,249,241,.6),transparent 20%)}
+.hero-meadow::after{content:"";position:absolute;z-index:2;inset:auto -10% -18%;height:47%;background:radial-gradient(ellipse at 50% 100%,rgba(60,94,57,.24),transparent 68%);pointer-events:none}
+.hero-meadow-photo{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;object-position:67% 52%;filter:saturate(.94) contrast(1.02);animation:meadow-drift 22s ease-in-out infinite alternate;will-change:transform}
+.meadow-photo-drift{position:absolute;z-index:2;inset:4% 0 6%;overflow:hidden;pointer-events:none;mask-image:linear-gradient(90deg,transparent,#000 15%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 92%,transparent)}
+.meadow-photo{position:absolute;width:25%;height:66%;object-fit:cover;opacity:.78;filter:saturate(.94) contrast(1.03);mask-image:radial-gradient(ellipse at 50% 50%,#000 38%,rgba(0,0,0,.86) 56%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 38%,rgba(0,0,0,.86) 56%,transparent 78%);animation:photo-bloom-float var(--photo-duration,13s) ease-in-out var(--photo-delay,0s) infinite alternate;will-change:transform}
+.meadow-photo-1{left:8%;top:9%;--photo-duration:15s;--photo-delay:-4s;transform:rotate(-8deg)}.meadow-photo-2{left:28%;top:29%;width:27%;height:65%;--photo-duration:18s;--photo-delay:-9s;transform:rotate(5deg)}.meadow-photo-3{left:49%;top:4%;width:24%;height:60%;--photo-duration:16s;--photo-delay:-2s;transform:rotate(-5deg)}.meadow-photo-4{right:9%;top:25%;width:27%;height:66%;--photo-duration:19s;--photo-delay:-12s;transform:rotate(7deg)}.meadow-photo-5{left:5%;top:49%;width:22%;height:53%;--photo-duration:17s;--photo-delay:-7s;transform:rotate(4deg)}
+.meadow-light{position:absolute;z-index:1;inset:0;background:radial-gradient(ellipse at 77% 23%,rgba(255,247,214,.38),transparent 38%);mix-blend-mode:screen;animation:meadow-sunlight 9s ease-in-out infinite alternate}
+.meadow-foreground{position:absolute;z-index:3;inset:35% 0 0;overflow:hidden;mask-image:linear-gradient(0deg,#000 0%,transparent 80%);-webkit-mask-image:linear-gradient(0deg,#000 0%,transparent 80%)}
+.meadow-stem{position:absolute;bottom:-3%;width:2px;height:var(--stem-height,32%);transform-origin:50% 100%;animation:meadow-stem-sway 5.8s ease-in-out var(--meadow-delay,0s) infinite alternate;opacity:.55;filter:drop-shadow(1px 2px 2px rgba(41,69,47,.18))}
+.meadow-stem>i{position:absolute;inset:0;background:linear-gradient(0deg,rgba(51,95,54,.1),rgba(67,121,67,.8));border-radius:100%}
+.meadow-stem>b{position:absolute;top:-10px;left:-7px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 50% 50%,#edbd55 0 14%,transparent 17%),conic-gradient(from 0deg,var(--meadow-tint) 0 10%,transparent 10% 20%,var(--meadow-tint) 20% 30%,transparent 30% 40%,var(--meadow-tint) 40% 50%,transparent 50% 60%,var(--meadow-tint) 60% 70%,transparent 70% 80%,var(--meadow-tint) 80% 90%,transparent 90%);filter:blur(.25px)}
+.meadow-stem::before,.meadow-stem::after{content:"";position:absolute;bottom:25%;width:10px;height:5px;border-radius:100% 0 100% 0;background:linear-gradient(120deg,#94b47b,#537d54);transform:rotate(-25deg)}
+.meadow-stem::before{left:-8px}.meadow-stem::after{right:-8px;bottom:43%;transform:rotate(26deg) scaleX(-1)}
+.meadow-stem-1{left:12%;--stem-height:25%}.meadow-stem-2{left:31%;--stem-height:42%}.meadow-stem-3{left:52%;--stem-height:31%}.meadow-stem-4{left:72%;--stem-height:48%}.meadow-stem-5{left:89%;--stem-height:28%}
+@keyframes meadow-drift{from{transform:scale(1.015) translate3d(-.5%,.2%,0)}to{transform:scale(1.075) translate3d(.7%,-.5%,0)}}
+@keyframes meadow-sunlight{from{opacity:.55;transform:translateX(-1%)}to{opacity:.95;transform:translateX(1%)}}
+@keyframes meadow-stem-sway{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+@keyframes photo-bloom-float{from{translate:0 0;scale:1}to{translate:0 -11px;scale:1.035}}
+@media(max-width:900px){.hero-meadow{right:-8%;width:68%;top:70px;bottom:28px}}
+@media(max-width:600px){.hero-meadow{top:585px!important;right:-7%;bottom:24px;width:112%;height:370px;border-radius:45% 45% 0 0 / 22% 22% 0 0;mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 100%)}.hero-meadow::before{background:linear-gradient(180deg,var(--cream) 0%,rgba(255,249,241,.38) 19%,transparent 43%),linear-gradient(0deg,rgba(255,249,241,.28),transparent 28%)}.hero-meadow-photo{object-position:68% 63%}.meadow-foreground{inset:38% 0 0}.meadow-photo-drift{inset:14% -10% 14%}.meadow-photo{height:72%;opacity:.72}.meadow-photo-2{top:24%}.meadow-photo-3{left:47%}.meadow-photo-4{top:24%}.meadow-photo-5{top:42%}}
+@media(prefers-reduced-motion:reduce){.hero-meadow-photo,.meadow-light,.meadow-stem,.meadow-photo{animation:none;will-change:auto}.hero-meadow-photo{transform:none}}
+
+/* Scene wash follows each species without letting a saturated data color flood the whole screen. */
+.cinema-stage{background-color:#fff9f1}
+.cinema-stage:before,.cinema-stage:after{display:none}
+.service-status-label{white-space:nowrap}
+@media(max-width:600px){.service-waking .service-status-label{font-size:8px}}
+
+/* Use real wide garden photos as a slow-moving, crossfading meadow instead of flower cutouts. */
+.meadow-gallery{position:absolute;z-index:0;inset:-2%;overflow:hidden}
+.meadow-scene{position:absolute;inset:0;width:104%;height:104%;object-fit:cover;object-position:center 58%;opacity:0;filter:saturate(.9) contrast(1.02);animation:meadow-scene-cycle 30s ease-in-out infinite,meadow-pan 30s ease-in-out infinite;will-change:opacity,transform}
+.meadow-scene-1{opacity:1;object-position:center 52%;animation-delay:0s,0s}.meadow-scene-2{object-position:center 64%;animation-delay:-10s,-7s}.meadow-scene-3{object-position:center 58%;animation-delay:-20s,-14s}
+.hero-meadow::before{background:linear-gradient(90deg,var(--cream) 0%,rgba(255,249,241,.62) 11%,transparent 39%),linear-gradient(0deg,rgba(255,249,241,.46),transparent 22%),linear-gradient(180deg,rgba(255,249,241,.2),transparent 18%)}
+.meadow-foreground{inset:45% 0 0}
+.meadow-foreground i{position:absolute;bottom:-10%;width:2px;height:var(--grass-height);transform-origin:50% 100%;background:linear-gradient(0deg,transparent,rgba(64,110,66,.58));border-radius:100%;filter:drop-shadow(1px 2px 2px rgba(41,69,47,.12));animation:meadow-grass-sway var(--grass-speed) ease-in-out var(--grass-delay) infinite alternate}
+.meadow-foreground i:nth-child(1){left:13%;--grass-height:46%;--grass-speed:4.7s;--grass-delay:-1s}.meadow-foreground i:nth-child(2){left:27%;--grass-height:70%;--grass-speed:5.4s;--grass-delay:-3s}.meadow-foreground i:nth-child(3){left:42%;--grass-height:53%;--grass-speed:4.2s;--grass-delay:-2s}.meadow-foreground i:nth-child(4){left:56%;--grass-height:76%;--grass-speed:5.8s;--grass-delay:-4s}.meadow-foreground i:nth-child(5){left:69%;--grass-height:48%;--grass-speed:4.9s;--grass-delay:-.5s}.meadow-foreground i:nth-child(6){left:82%;--grass-height:68%;--grass-speed:5.3s;--grass-delay:-2.7s}.meadow-foreground i:nth-child(7){left:94%;--grass-height:42%;--grass-speed:4.5s;--grass-delay:-1.8s}
+@keyframes meadow-scene-cycle{0%,29%{opacity:1}36%,93%{opacity:0}100%{opacity:1}}
+@keyframes meadow-pan{0%{transform:scale(1.04) translate3d(-1.2%,.5%,0)}50%{transform:scale(1.09) translate3d(.8%,-.4%,0)}100%{transform:scale(1.04) translate3d(-1.2%,.5%,0)}}
+@keyframes meadow-grass-sway{from{rotate:-3deg}to{rotate:4deg}}
+@media(max-width:600px){.meadow-scene{object-position:center 65%}.meadow-scene-1{object-position:center 58%}.meadow-scene-2{object-position:center 77%}.meadow-scene-3{object-position:center 63%}.meadow-foreground{inset:44% 0 0}}
+@media(prefers-reduced-motion:reduce){.meadow-scene,.meadow-light,.meadow-foreground i{animation:none!important;will-change:auto}.meadow-scene-1{opacity:1}.meadow-scene-2,.meadow-scene-3{display:none}}
+.flower-scene{isolation:isolate}
+.scene-copy::before{content:"";position:absolute;z-index:-1;inset:-18px -12px -18px -16px;border-radius:22px;background:linear-gradient(90deg,rgba(255,249,241,.38),rgba(255,249,241,.12) 78%,transparent);filter:blur(9px);pointer-events:none}
+.scene-copy{z-index:3}
+@media(max-width:600px){.scene-copy::before{inset:-12px -6px;opacity:.72}}
+.encyclopedia{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(255,255,255,.78);border-radius:32px;padding-inline:clamp(22px,5vw,68px);background:#f7f2e7}
+.encyclopedia::before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,rgba(255,249,241,.78) 0%,rgba(255,249,241,.58) 45%,rgba(255,249,241,.12) 100%);pointer-events:none}
+.encyclopedia::after{z-index:-1;opacity:.18}
+.ency-garden-mist{position:absolute;z-index:-2;inset:-4%;overflow:hidden;pointer-events:none}
+.ency-garden-photo{position:absolute;inset:0;width:104%;height:104%;object-fit:cover;object-position:center 58%;opacity:0;filter:blur(4px) saturate(.94);transform:scale(1.04);animation:ency-garden-cycle 30s ease-in-out infinite,meadow-pan 30s ease-in-out infinite}
+.ency-garden-photo-1{opacity:1;animation-delay:0s,0s}.ency-garden-photo-2{animation-delay:-10s,-7s}.ency-garden-photo-3{animation-delay:-20s,-14s}
+.ency-copy,.ency-art{position:relative;z-index:1}.ency-copy{padding-block:12px}.ency-art{height:350px}.ency-sun{background:radial-gradient(circle at 46% 38%,#fff5d8 0,#ecdca4 55%,rgba(204,215,174,.7) 100%);box-shadow:0 22px 60px rgba(62,86,48,.13)}
+.ency-main-bloom{position:absolute;z-index:2;right:11%;top:4%;width:min(48%,280px);height:88%;object-fit:cover;object-position:center;border:8px solid #fff9f0;border-radius:48% 48% 34% 40% / 34% 36% 24% 29%;box-shadow:0 24px 54px rgba(41,69,47,.26);transform:rotate(4deg);animation:ency-bloom-float 7s ease-in-out infinite alternate}
+@keyframes ency-garden-cycle{0%,29%{opacity:1}36%,93%{opacity:0}100%{opacity:1}}
+@keyframes ency-bloom-float{from{translate:0 0;rotate:2deg}to{translate:0 -8px;rotate:5deg}}
+@media(max-width:760px){.encyclopedia{padding-inline:22px;border-radius:25px}.ency-art{height:270px}.ency-main-bloom{right:13%;width:43%;height:90%}}
+@media(min-width:601px) and (max-width:760px){.cinema-stage{min-height:680px}.stage-scene-stack{inset:112px 24px 72px}.flower-scene{display:block;overflow:hidden}.scene-art{position:absolute;top:0;right:0;left:auto;width:52%;height:62%;min-height:0;max-height:440px;transform:none}.scene-copy{position:absolute;left:0;right:auto;bottom:20px;width:50%;max-width:50%;transform:translateZ(24px)}.scene-copy h2{font-size:clamp(42px,7vw,58px);letter-spacing:-2px}.scene-copy>p{font-size:12px}.scene-flower{left:50%;top:10%;width:78%;height:77%;transform:translateX(-50%) translateZ(50px)}}
+@media(max-width:600px){.encyclopedia{padding:62px 20px 28px;gap:0}.ency-garden-mist{inset:0}.encyclopedia::before{background:linear-gradient(180deg,rgba(255,249,241,.63),rgba(255,249,241,.78) 47%,rgba(255,249,241,.24))}.ency-copy{padding-block:0}.ency-art{height:245px;margin-top:18px}.ency-main-bloom{right:18%;width:47%;height:92%}}
+@media(prefers-reduced-motion:reduce){.ency-garden-photo,.ency-main-bloom{animation:none!important}.ency-garden-photo-1{opacity:1}.ency-garden-photo-2,.ency-garden-photo-3{display:none}}
+
+/* A stage-level layer changes with the active flower, independent of the moving scene cards. */
+.stage-garden-backdrop{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none}
+.stage-garden-photo{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;object-position:center 56%;opacity:0;filter:blur(3px) saturate(.92) contrast(1.01);transform:scale(1.025);transition:opacity .9s ease,transform 6s ease;will-change:opacity}
+.stage-garden-photo.is-active{opacity:1;transform:scale(1.055)}
+.stage-garden-backdrop::after{content:"";position:absolute;inset:0;backdrop-filter:blur(5px);background:linear-gradient(90deg,rgba(255,249,241,.8) 0%,rgba(255,249,241,.65) 25%,rgba(255,249,241,.35) 47%,rgba(255,249,241,.08) 67%,transparent 82%),linear-gradient(0deg,rgba(255,249,241,.2),transparent 30%);mask-image:linear-gradient(90deg,#000 0%,#000 43%,transparent 76%);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 43%,transparent 76%)}
+@media(max-width:600px){.stage-garden-photo{object-position:center 58%}.stage-garden-backdrop::after{backdrop-filter:blur(4px);background:linear-gradient(180deg,rgba(255,249,241,.46),rgba(255,249,241,.7) 39%,rgba(255,249,241,.34) 68%,transparent);mask-image:none;-webkit-mask-image:none}}
+@media(prefers-reduced-motion:reduce){.stage-garden-photo{transition:none;transform:none;will-change:auto}}
+@media(prefers-reduced-motion:reduce){.stage-garden-backdrop{display:none}.flower-scene{position:relative;isolation:isolate;overflow:hidden}.flower-scene::before{content:"";position:absolute;z-index:0;inset:0;background:linear-gradient(90deg,rgba(255,249,241,.84) 0%,rgba(255,249,241,.68) 42%,rgba(255,249,241,.2) 100%),var(--flower-backdrop) center 56%/cover no-repeat;filter:saturate(.96)}.scene-copy{z-index:3}.scene-art{z-index:2}}

@@ -11,6 +11,8 @@ services:
         value: "7860"
       - key: MODEL_WARMUP
         value: "0"
+      - key: APP_DB_PATH
+        value: /app/.data/vuonhoa.sqlite3
       - key: RENDER_FREE_MEMORY
         value: "1"
       - key: RETRIEVAL_BACKEND

@@ -6,6 +6,7 @@ import io
 import json
 import logging
 import os
+import re
 import sys
 import threading
 import time
@@ -15,7 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # để import config, core khi chạy uvicorn
 
-from fastapi import FastAPI, File, Form, HTTPException, Path as ApiPath, Query, Request, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Path as ApiPath, Query, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -23,8 +24,9 @@ from starlette.concurrency import run_in_threadpool
 from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, Field
 
-from config import CORS_ORIGINS, DEVICE, ENABLED_MODELS, LLM_PROVIDER, MAX_UPLOAD_MB, ROOT, resolve_path
+from config import CORS_ORIGINS, DEVICE, ENABLED_MODELS, LLM_PROVIDER, MAX_UPLOAD_MB, RENDER_FREE_MEMORY, ROOT, resolve_path
 from core.gift_advisor import recommend_gifts
+from api import account_store
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("api")
@@ -42,7 +44,6 @@ LOADERS = {  # tên → (module, lớp); import trễ để chỉ nạp thư vi�
 }
 MODEL_LOCKS = {name: threading.Lock() for name in LOADERS}
 HEAVY_MODEL_LOCK = threading.RLock()
-RENDER_FREE_MEMORY = os.environ.get("RENDER_FREE_MEMORY", "0").strip().lower() in {"1", "true", "yes"}
 RETRIEVAL_BACKEND = os.environ.get("RETRIEVAL_BACKEND", "clip").strip().lower()
 MODEL_STATES.update({name: "not_loaded" for name in LOADERS})
 
@@ -104,6 +105,7 @@ async def lifespan(app: FastAPI):
     # Keep HTTP startup responsive while a single background thread warms each
     # model in order. Cloud Run's startup probe waits on /api/startup.
     warmup_enabled = os.environ.get("MODEL_WARMUP", "1").strip().lower() not in {"0", "false", "no"}
+    account_store.initialize()
     warmup_thread = None
     if warmup_enabled:
         warmup_thread = threading.Thread(target=_warm_models, name="model-warmup", daemon=True)
@@ -116,7 +118,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="AI Web Apps API", version="1.0.0", lifespan=lifespan)
-app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*"], allow_headers=["*"], allow_credentials=True)
 
 
 @app.middleware("http")
@@ -130,8 +132,8 @@ async def timing(request: Request, call_next):
         "/api/chat", "/api/chat/sync", "/api/ask", "/api/gifts/greeting",
     }:
         log.info(
-            "API_PERF route=%s status=%s latency_ms=%.1f process_peak_rss_mb=%s",
-            request.url.path, response.status_code, elapsed_ms, _process_peak_rss_mb(),
+            "API_PERF route=%s status=%s latency_ms=%.1f process_rss_mb=%s",
+            request.url.path, response.status_code, elapsed_ms, _process_rss_mb(),
         )
     return response
 
@@ -200,14 +202,19 @@ def _run_heavy_model(name: str, operation):
         return operation(_require(name))
 
 
-def _process_peak_rss_mb() -> float | None:
-    """Return process high-water RSS in MiB where the host exposes resource usage."""
+def _process_rss_mb() -> float | None:
+    """Return current process RSS in MiB, including on Windows development machines."""
+    try:
+        import psutil
+        return round(psutil.Process().memory_info().rss / (1024 * 1024), 1)
+    except (ImportError, OSError):
+        pass
     try:
         import resource
         peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     except (ImportError, AttributeError, OSError):
         return None
-    # Linux reports KiB; macOS reports bytes.
+    # Fallback high-water mark: Linux reports KiB; macOS reports bytes.
     return round(peak / (1024 * 1024 if sys.platform == "darwin" else 1024), 1)
 
 
@@ -255,6 +262,103 @@ def startup_probe():
     if not snapshot["ready"]:
         raise HTTPException(503, "AI models are warming up", headers={"Retry-After": "5"})
     return {"status": "ok", "ready": True}
+
+
+# ---------- Tài khoản và dữ liệu cá nhân ----------
+class RegisterRequest(BaseModel):
+    email: str = Field(..., min_length=5, max_length=254)
+    display_name: str = Field(..., min_length=1, max_length=80)
+    password: str = Field(..., min_length=8, max_length=128)
+
+
+class LoginRequest(BaseModel):
+    email: str = Field(..., min_length=3, max_length=254)
+    password: str = Field(..., min_length=1, max_length=128)
+
+
+class AccountDataRequest(BaseModel):
+    payload: dict
+
+
+def _session_user(request: Request) -> dict:
+    user = account_store.get_user(request.cookies.get("vh_session"))
+    if not user:
+        raise HTTPException(401, "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.")
+    return user
+
+
+def _check_same_origin(request: Request) -> None:
+    origin = request.headers.get("origin")
+    if origin and origin not in CORS_ORIGINS:
+        raise HTTPException(403, "Yêu cầu đến từ website không được phép.")
+
+
+def _set_session_cookie(request: Request, response: Response, token: str) -> None:
+    # Reverse proxies may terminate TLS before the API process.
+    secure = request.url.scheme == "https" or request.headers.get("x-forwarded-proto", "").split(",")[0].strip() == "https"
+    response.set_cookie("vh_session", token, max_age=14 * 24 * 60 * 60, httponly=True,
+                        secure=secure, samesite="lax", path="/")
+
+
+@app.post("/api/auth/register", status_code=201)
+def register(request: Request, response: Response, body: RegisterRequest):
+    _check_same_origin(request)
+    email = body.email.strip().lower()
+    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
+        raise HTTPException(422, "Email chưa đúng định dạng.")
+    display_name = body.display_name.strip()
+    if not display_name:
+        raise HTTPException(422, "Tên hiển thị không được để trống.")
+    try:
+        user, token = account_store.create_user(email, display_name, body.password)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    _set_session_cookie(request, response, token)
+    return {"user": user}
+
+
+@app.post("/api/auth/login")
+def login(request: Request, response: Response, body: LoginRequest):
+    _check_same_origin(request)
+    authenticated = account_store.login(body.email, body.password)
+    if not authenticated:
+        raise HTTPException(401, "Email hoặc mật khẩu chưa chính xác.")
+    user, token = authenticated
+    _set_session_cookie(request, response, token)
+    return {"user": user}
+
+
+@app.post("/api/auth/logout")
+def logout(request: Request, response: Response):
+    _check_same_origin(request)
+    account_store.delete_session(request.cookies.get("vh_session"))
+    response.delete_cookie("vh_session", path="/", httponly=True, samesite="lax")
+    return {"status": "ok"}
+
+
+@app.get("/api/auth/me")
+def account_me(request: Request):
+    return {"user": account_store.get_user(request.cookies.get("vh_session"))}
+
+
+@app.get("/api/account/data/{data_key}")
+def get_account_data(data_key: str, request: Request):
+    if data_key not in {"garden", "giftbook"}:
+        raise HTTPException(404, "Không có loại dữ liệu này.")
+    user = _session_user(request)
+    return {"payload": account_store.read_user_data(user["id"], data_key)}
+
+
+@app.put("/api/account/data/{data_key}")
+def put_account_data(data_key: str, request: Request, body: AccountDataRequest):
+    _check_same_origin(request)
+    if data_key not in {"garden", "giftbook"}:
+        raise HTTPException(404, "Không có loại dữ liệu này.")
+    user = _session_user(request)
+    if len(json.dumps(body.payload, ensure_ascii=False)) > 256_000:
+        raise HTTPException(413, "Dữ liệu lưu vượt quá giới hạn 256 KB.")
+    account_store.write_user_data(user["id"], data_key, body.payload)
+    return {"status": "ok"}
 
 
 @app.get("/api/species")

@@ -1,6 +1,7 @@
 # Python
 .venv/
 .python311/
+/node_modules/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -11,7 +12,10 @@ tmp/
 # Frontend
 web/node_modules/
 web/dist/
+web/dist-baseline/
 **/.pnpm-store/
+current-web*.png
+mobile-colorful.png
 
 # Downloaded data and generated model/index files
 data/flowers/
@@ -44,6 +48,7 @@ artifacts/**
 !artifacts/comparison/resnet18.onnx
 
 # Local runtime
+.data/
 .env
 logs/
 runs/

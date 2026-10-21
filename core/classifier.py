@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from PIL import Image
 from torchvision import models, transforms
 
-from config import ART_DIR, CLASSIFIER_OOD_MIN_CONFIDENCE, DEVICE
+from config import ART_DIR, CLASSIFIER_OOD_MIN_CONFIDENCE, DEVICE, RENDER_FREE_MEMORY
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
@@ -44,15 +44,21 @@ class ImageClassifier:
         self.model = build_model(len(self.classes), pretrained=False)
         state = torch.load(model_dir / "model.pt", map_location=DEVICE, weights_only=True)
         self.model.load_state_dict(state)
+        del state
+        self.low_memory = DEVICE == "cpu" and RENDER_FREE_MEMORY
+        if self.low_memory:
+            # BF16 halves resident parameter memory on modern CPU kernels. The
+            # classifier is validated on CPU; keep probabilities/features FP32.
+            self.model.to(dtype=torch.bfloat16)
         self.model.to(DEVICE).eval()
         self.min_confidence = min_confidence
         self._inference_lock = threading.Lock()
 
     @torch.inference_mode()
     def predict(self, image: Image.Image, top_k: int = 3) -> dict:
-        x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(DEVICE)
+        x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(device=DEVICE, dtype=self.model.fc.weight.dtype)
         with self._inference_lock, torch.inference_mode():
-            probs = self.model(x).softmax(dim=-1)[0]
+            probs = self.model(x).float().softmax(dim=-1)[0]
         scores, idx = probs.topk(min(top_k, len(self.classes)))
         preds = [{"label": self.classes[i], "score": round(float(s), 4)} for s, i in zip(scores.tolist(), idx.tolist())]
         return {
@@ -67,7 +73,9 @@ class ImageClassifier:
         """Return normalized ResNet penultimate-layer features for lightweight retrieval."""
         if not images:
             return np.empty((0, self.model.fc.in_features), dtype=np.float32)
-        batch = torch.stack([EVAL_TF(image.convert("RGB")) for image in images]).to(DEVICE)
+        batch = torch.stack([EVAL_TF(image.convert("RGB")) for image in images]).to(
+            device=DEVICE, dtype=self.model.fc.weight.dtype,
+        )
         with self._inference_lock, torch.inference_mode():
             model = self.model
             features = model.conv1(batch)
@@ -87,7 +95,7 @@ class ImageClassifier:
         activations = []
         gradients = []
         target_layer = self.model.layer4[-1]
-        x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(DEVICE)
+        x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(device=DEVICE, dtype=self.model.fc.weight.dtype)
 
         def capture_activation(_module, _inputs, output):
             activations.append(output)
@@ -99,7 +107,7 @@ class ImageClassifier:
                 self.model.zero_grad(set_to_none=True)
                 with torch.enable_grad():
                     logits = self.model(x)
-                    selected_class = int(logits.argmax(dim=1).item()) if class_index is None else int(class_index)
+                    selected_class = int(logits.float().argmax(dim=1).item()) if class_index is None else int(class_index)
                     logits[0, selected_class].backward()
                 activation = activations[-1].detach()
                 gradient = gradients[-1].detach()
@@ -108,7 +116,7 @@ class ImageClassifier:
                 cam = F.interpolate(cam, size=x.shape[-2:], mode="bilinear", align_corners=False)[0, 0]
                 cam -= cam.min()
                 cam /= cam.max().clamp_min(1e-8)
-                heat = cam.cpu().numpy()
+                heat = cam.float().cpu().numpy()
             finally:
                 handle.remove()
                 self.model.zero_grad(set_to_none=True)

@@ -39,7 +39,7 @@ async function handle(res) {
 async function requestJson(path, options, timeoutMs = API_TIMEOUT_MS) {
   const deadline = createDeadline(options.signal, timeoutMs);
   try {
-    const res = await fetch(`${API_BASE}${path}`, { ...options, signal: deadline.signal });
+    const res = await fetch(`${API_BASE}${path}`, { ...options, credentials: 'include', signal: deadline.signal });
     return await handle(res);
   } catch (error) {
     if (deadline.timedOut()) {
@@ -86,6 +86,17 @@ export function postJson(path, body, options = {}) {
     body: JSON.stringify(body),
     signal: options.signal,
   }, options.timeoutMs ?? API_TIMEOUT_MS);
+}
+
+export const getAccount = () => requestJson('/api/auth/me', {});
+export const registerAccount = (body) => postJson('/api/auth/register', body);
+export const loginAccount = (body) => postJson('/api/auth/login', body);
+export const logoutAccount = () => postJson('/api/auth/logout', {});
+export const getAccountData = (key) => requestJson(`/api/account/data/${encodeURIComponent(key)}`, {});
+export function putAccountData(key, payload) {
+  return requestJson(`/api/account/data/${encodeURIComponent(key)}`, {
+    method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ payload }),
+  });
 }
 
 export const getHealth = (options = {}) => requestJson('/api/health', options, HEALTH_TIMEOUT_MS);
@@ -143,6 +154,7 @@ export async function streamChat({ message, history, onSources, onToken, signal 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message, history }),
+      credentials: 'include',
       signal: deadline.signal,
     });
     if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);

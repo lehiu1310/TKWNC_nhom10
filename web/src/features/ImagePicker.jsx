@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { API_BASE, fetchSampleImage } from '../api.js';
+import { fetchSampleImage } from '../api.js';
 
 // Chọn ảnh + xem trước. Giải phóng object URL khi đổi ảnh để tránh rò bộ nhớ.
 const FLOWER_ICONS = { daisy: '✿', dandelion: '❋', roses: '❀', sunflowers: '✺', tulips: '❁' };
@@ -54,7 +54,7 @@ export default function ImagePicker({ onChange, label = 'Chọn ảnh', result =
       {samples.length > 0 && <div className="sample-images" aria-label="Ảnh mẫu chạy thử">
         <span className="sample-images-title">Thử nhanh với ảnh hoa</span>
         <div className="sample-images-list">{samples.map((sample) => <button type="button" className="sample-image-button" key={sample.id} onClick={() => chooseSample(sample)} disabled={Boolean(sampleLoading)} aria-label={`Chạy thử ${sample.name_vi}`}>
-          <img src={sample.assetUrl || `${API_BASE}/api/species/${encodeURIComponent(sample.id)}/image`} alt="" loading="lazy"/>
+          <img src={sample.assetUrl || `/images/species/${encodeURIComponent(sample.id)}.webp`} alt="" loading="lazy"/>
           <span>{sampleLoading === sample.id ? 'Đang tải…' : sample.name_vi}</span>
         </button>)}</div>
       </div>}

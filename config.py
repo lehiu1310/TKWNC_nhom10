@@ -31,6 +31,7 @@ ART_DIR = ROOT / "artifacts"
 os.environ.setdefault("YOLO_CONFIG_DIR", str(ROOT))
 
 DEVICE = "cuda" if torch is not None and torch.cuda.is_available() else "cpu"
+RENDER_FREE_MEMORY = os.environ.get("RENDER_FREE_MEMORY", "0").strip().lower() in {"1", "true", "yes"}
 
 # Mô hình (đổi tên model = đổi biến môi trường, không sửa code)
 YOLO_WEIGHTS = os.environ.get("YOLO_WEIGHTS", str(ART_DIR / "detector" / "flower_yolo11n.pt"))

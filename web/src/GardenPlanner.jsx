@@ -4,7 +4,7 @@ import displayImages from '../../data/display_images.json';
 import { addGardenPlant, CARE_TYPES, completeCare, listCareTasks, readGarden, removeGardenPlant, setCareInterval } from './gardenPlanner.js';
 
 const FLOWERS = Object.fromEntries(speciesData.map((flower) => [flower.id, flower]));
-const imageFor = (flower) => displayImages.images[flower.display_image_key || flower.id]?.url || `/api/species/${encodeURIComponent(flower.id)}/image`;
+const imageFor = (flower) => displayImages.images[flower.display_image_key || flower.id]?.url || `/images/species/${encodeURIComponent(flower.id)}.webp`;
 const dateLabel = (date) => new Intl.DateTimeFormat('vi-VN', { day: 'numeric', month: 'short' }).format(date);
 
 export default function GardenPlanner() {

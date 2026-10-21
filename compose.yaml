@@ -1,0 +1,21 @@
+services:
+  vuon-hoa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7860:7860"
+    environment:
+      PORT: "7860"
+      APP_DB_PATH: /app/.data/vuonhoa.sqlite3
+      MODEL_WARMUP: "0"
+      RENDER_FREE_MEMORY: "1"
+      RETRIEVAL_BACKEND: classifier
+      LLM_PROVIDER: gemini
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+    volumes:
+      - vuonhoa-data:/app/.data
+    restart: unless-stopped
+
+volumes:
+  vuonhoa-data:

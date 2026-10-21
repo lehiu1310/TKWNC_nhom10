@@ -1,7 +1,6 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import species from '../../data/species.json';
 import displayImageData from '../../data/display_images.json';
-import { API_BASE } from './api.js';
 import { createSpeciesConfig } from './garden/species/index.js';
 
 const FlowerViewer = lazy(() => import('./garden/RoseViewer.jsx'));
@@ -20,7 +19,7 @@ const pickerItems = species.map((sourceRecord) => {
     icon: record?.icon || '✿',
     fallbackPhoto: Boolean(config.flowerTemplateFallback),
     templateConfidence: config.flowerTemplateConfidence ?? 0,
-    image: displayImageData.images[record.display_image_key || record.id]?.url || `${API_BASE}/api/species/${encodeURIComponent(record.id)}/image`,
+    image: displayImageData.images[record.display_image_key || record.id]?.url || `/images/species/${encodeURIComponent(record.id)}.webp`,
   };
 });
 

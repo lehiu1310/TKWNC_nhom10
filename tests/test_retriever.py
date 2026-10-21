@@ -148,6 +148,17 @@ def test_gemini_without_api_key_uses_grounded_rag_fallback(tmp_path, monkeypatch
     assert "hoa_cuc.md" not in answer["answer"]
 
 
+def test_gemini_fallback_skips_heading_only_top_chunk(monkeypatch):
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    answer = RAGChatbot(provider="gemini").answer("Hoa hồng cần chăm sóc thế nào?")
+
+    assert answer["answer"] != "Mình chưa có thông tin này."
+    assert "hoa_hong.md" in answer["answer"]
+    assert any(term in answer["answer"].casefold() for term in ("tưới", "đất", "ánh sáng", "dinh dưỡng", "hoa hồng"))
+
+
 def test_gemini_client_uses_short_timeout_and_bounded_retry(monkeypatch):
     from google import genai
     from core.gemini_client import create_gemini_client
