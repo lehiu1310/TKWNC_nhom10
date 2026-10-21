@@ -30,7 +30,7 @@ COPY scripts/ scripts/
 COPY data/ data/
 COPY artifacts/ artifacts/
 COPY --from=web /web/dist web/dist
-RUN useradd -m app && chown -R app /app
+RUN useradd -m app && mkdir -p /app/.data && chown -R app:app /app/.data /app/.cache
 USER app
 EXPOSE 7860
 CMD ["sh", "-c", "exec uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-7860}"]

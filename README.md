@@ -11,7 +11,7 @@
 - Trên máy local: `pytest -q` **92 passed** (1 cảnh báo Starlette), `pnpm test` **24 passed**, `pnpm build` thành công. Với checkpoint thật, CPU, một worker, `RENDER_FREE_MEMORY=1`, `RETRIEVAL_BACKEND=classifier` và không có Gemini key: classify 200 (5,25 giây), detect 200 (0,64 giây), search 200 (5 kết quả; 0,32 giây), RAG ask 200 (có câu trả lời và nguồn; 4,67 giây). RSS cao nhất trong lượt API là **474,9 MiB**; đây là số local, không đại diện Render.
 - ResNet ở chế độ tiết kiệm RAM BF16 giữ top-1 mẫu Hoa hồng; confidence đo được 0,9283 so với 0,9259 ở FP32. Bài đo riêng classifier + vector ảnh ghi RSS 361,3 MiB; đây không phải RSS của toàn bộ app.
 - Xác thực, cookie phiên và SQLite có kiểm thử backend; frontend có đăng ký/đăng nhập và đồng bộ Sổ hoa/Cây của tôi. SQLite local giữ dữ liệu sau khi tắt app. Render Free dùng filesystem tạm thời, nên dữ liệu production có thể mất sau restart/deploy.
-- Chạy local sau khi cài phụ thuộc bằng `scripts/start_local.ps1`; Compose có cấu hình chạy một lệnh, nhưng chưa build/chạy kiểm chứng được vì Docker Engine trên máy hiện chưa khởi động.
+- Chạy local bằng `scripts/start_local.ps1` hoặc Docker Compose. Compose đã build và chạy thành công ngày 22/10/2026; trên container, health/classify/detect/search/chat đều trả 200, đăng ký tài khoản 201, ghi/đọc SQLite 200. Docker stats tại một thời điểm sau smoke test: **349,6 MiB**; đây là số đo một lần, không phải giới hạn bộ nhớ hay số đo Render. Build context ban đầu là **1,42 GB**; `.dockerignore` hiện loại dataset huấn luyện và cache không dùng trong runtime, nhưng chưa đo lại cold context trên builder sạch.
 - Chỉ dùng cấu hình miễn phí; Cloud Run chưa triển khai. Không tuyên bố AI hoặc CSDL production đạt cho đến khi kiểm tra thành công trên URL public.
 
 Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet-18 có 103 nhãn; trang chủ chọn 5 loài làm câu chuyện nổi bật, còn Bách khoa và trang chi tiết bao phủ toàn bộ 103 loài.
@@ -70,7 +70,7 @@ Lời nhắn gọi `/api/chat/sync` (provider Gemini theo cấu hình backend hi
 docker compose -f compose.yaml up --build
 ```
 
-Mở `http://localhost:7860`. Docker volume `vuonhoa-data` giữ CSDL SQLite qua lần khởi động lại container. Cấu hình này dùng truy xuất ảnh dựa trên đặc trưng classifier và chỉ giữ model nặng cần cho request hiện tại để giảm RAM; tìm ảnh bằng câu chữ vẫn hoạt động. Docker Engine trên máy phát triển chưa chạy tại lần xác minh 22/10/2026, nên lệnh build/run này chưa được smoke-test.
+Mở `http://localhost:7860`. Docker volume `vuonhoa-data` giữ CSDL SQLite qua lần khởi động lại container. Cấu hình này dùng truy xuất ảnh dựa trên đặc trưng classifier và chỉ giữ model nặng cần cho request hiện tại để giảm RAM; tìm ảnh bằng câu chữ vẫn hoạt động. Đã smoke-test Compose ngày 22/10/2026: `/api/health`, `/api/classify`, `/api/detect`, `/api/search/text`, `/api/chat/sync` đều trả 200; `/api/auth/register` trả 201; ghi/đọc dữ liệu tài khoản trả 200 và dữ liệu còn sau hai lần restart container. Thời gian đo trong container ở lượt xác minh gần nhất: classify 3,43 giây, detect 0,54 giây, search 0,41 giây, chat RAG 4,06 giây. Đây là một lượt CPU local, không đại diện latency production.
 
 **Chạy tiến trình trực tiếp trên Windows:** cần Python 3.11, Node.js 22/Corepack và model/checkpoint thật trong `artifacts/` (nếu dùng Git LFS, chạy `git lfs pull`). Cài phụ thuộc một lần:
 
