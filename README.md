@@ -20,7 +20,8 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 ## Kiến trúc
 
 - `core/`: suy luận dùng chung — ResNet-18 (103 nhãn), YOLO11, tìm ảnh production bằng embedding ResNet 512 chiều + lọc loài theo dự đoán, và Gemini + RAG BM25 (có thể chọn Qwen local). MobileCLIP2 còn trong đường chạy thử/Streamlit nhưng không phải backend retrieval của Render Free.
-- `api/`: FastAPI cung cấp REST API cho web và Streamlit, gồm xác thực, lưu dữ liệu và các endpoint AI. Tài khoản được lưu trong SQLite local/Compose hoặc Neon PostgreSQL trên production; mật khẩu băm bằng scrypt và session dùng cookie `HttpOnly`. Khi bật `MODEL_WARMUP`, model được nạp tuần tự; trên Render Free model nặng được nạp theo yêu cầu để giữ trong giới hạn RAM. `/api/health` trả trạng thái nạp thực tế từng model.
+- `api/main.py`: FastAPI cung cấp REST API cho các endpoint AI và giao diện Streamlit; trên Render Free model nặng được nạp theo yêu cầu để giữ trong giới hạn RAM. `/api/health` trả trạng thái nạp thực tế từng model.
+- `api/gateway.js`: Express cung cấp API đăng ký/đăng nhập và lưu Sổ hoa/Cây của tôi vào PostgreSQL khi Vercel có `DATABASE_URL`. Trong lúc chưa cấu hình biến này, gateway chuyển tiếp các route tài khoản về FastAPI trên Render để luồng production hiện tại tiếp tục hoạt động. Local/Compose vẫn dùng FastAPI cùng SQLite hoặc PostgreSQL theo `DATABASE_URL`. Mật khẩu băm bằng scrypt tương thích giữa hai backend; session dùng cookie `HttpOnly`.
 - Lỗi HTTP, validation và lỗi server ngoài dự kiến được chuẩn hoá tập trung ở API; phản hồi validation không lặp lại giá trị input và lỗi 500 không trả chi tiết nội bộ.
 - `web/`: React + Vite, trải nghiệm responsive theo chủ đề vườn hoa.
 - `data/kb/`: tám bản tóm tắt tiếng Việt cùng PDF được chia theo trang; danh mục, số trang và phạm vi nguồn xem tại [`data/kb_sources.md`](data/kb_sources.md).
@@ -120,7 +121,7 @@ Nếu checkpoint chưa có trong repo, `python scripts/prepare_flowers102.py --e
 | Album hoa | Embedding ResNet-18 + FAISS; định tuyến mô tả tiếng Việt bằng cue hình thái và metadata | Tìm ảnh trong gallery 1.236 ảnh. Dùng bộ nhớ thấp để chạy trên Render Free; câu mô tả quá chung không bị ép đoán một loài. Benchmark 10 câu thủ công đạt P@5 100%, chưa phải đánh giá độc lập. |
 | Cô làm vườn | BM25 + câu trả lời trích dẫn cục bộ (mặc định); Gemini tùy chọn | RAG truy xuất tám bản tóm tắt tiếng Việt và hai PDF (K-State 2019: 56 trang; USDA 1901: 38 trang quét) theo từng trang trong `data/kb/`. Ghi chú phạm vi vùng miền và cảnh báo nguồn lịch sử được kèm vào ngữ cảnh. |
 
-API có health/startup, danh mục và ảnh loài, bốn luồng AI (`/api/classify`, `/api/detect`, `/api/search/text`, `/api/search/image`, `/api/chat`, `/api/chat/sync`), gợi ý bó hoa và tài khoản (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`, `/api/account/data/{garden|giftbook}`). `/api/species` hỗ trợ `limit`/`offset`; `/api/health` có thể lọc trạng thái bằng `?model=classifier`.
+API có health/startup, danh mục và ảnh loài, bốn luồng AI (`/api/classify`, `/api/detect`, `/api/search/text`, `/api/search/image`, `/api/chat`, `/api/chat/sync`), gợi ý bó hoa và tài khoản (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`, `/api/account/data/{garden|giftbook}`). `/api/species` hỗ trợ `limit`/`offset`; `/api/health` có thể lọc trạng thái bằng `?model=classifier`. Các test tích hợp API Express cần `TEST_DATABASE_URL`; chạy `npm ci` và `npm run test:api` tại thư mục gốc.
 
 ## Cấu hình
 

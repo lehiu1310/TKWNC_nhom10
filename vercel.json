@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd web && corepack pnpm install --frozen-lockfile",
+  "installCommand": "npm ci && cd web && corepack pnpm install --frozen-lockfile",
   "buildCommand": "cd web && corepack pnpm run build",
   "outputDirectory": "web/dist",
   "build": {
@@ -9,6 +9,14 @@
     }
   },
   "rewrites": [
+    {
+      "source": "/api/auth/:path*",
+      "destination": "/api/gateway?route=/api/auth/:path*"
+    },
+    {
+      "source": "/api/account/data/:path*",
+      "destination": "/api/gateway?route=/api/account/data/:path*"
+    },
     {
       "source": "/api/:path*",
       "destination": "https://tkw-nhom10-api.onrender.com/api/:path*"
