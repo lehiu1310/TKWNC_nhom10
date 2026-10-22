@@ -51,6 +51,15 @@ def test_vietnamese_query_translation_falls_back_to_local_vocabulary(monkeypatch
     assert not engine._translation_cache
 
 
+def test_visual_search_hint_expands_multiple_botanical_cues():
+    from core.retrieval import _visual_search_hint
+
+    assert "sunflower" in _visual_search_hint("đóa vàng lớn, tâm nâu tròn, cánh tỏa ra ngoài")
+    assert "tulip" in _visual_search_hint("bông hình chén màu hồng trên thân thẳng, lá dài")
+    assert "rose" in _visual_search_hint("cánh hoa đỏ nhung cuộn thành nhiều lớp dày")
+    assert _visual_search_hint("một đóa hoa đẹp trong vườn") is None
+
+
 def test_bm25_ranks_relevant_vietnamese_flower_chunks_first():
     retriever = Retriever([
         {"source": "hoa_hong.md", "text": "Hoa hồng tượng trưng cho tình yêu và lòng biết ơn."},

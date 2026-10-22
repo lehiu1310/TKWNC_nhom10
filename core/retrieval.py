@@ -120,6 +120,32 @@ _VI_QUERY_PHRASES = (
     ("gia ret", "cold weather"),
     ("nang", "sunlight"),
 )
+
+
+def _visual_search_hint(query: str) -> str | None:
+    """Add a short botanical phrase when several visual cues point to one flower."""
+    text = _strip_vietnamese_marks(query)
+
+    def has(*terms: str) -> bool:
+        return any(re.search(rf"\b{re.escape(term)}\b", text) for term in terms)
+
+    if has("do", "red", "doa do") and has("nhung", "velvet") and has("nhieu lop", "layer", "cuon"):
+        return "red rose, velvety layered petals, close-up flower"
+    if has("do", "red") and has("tan la", "foliage", "la xanh") and has("xanh dam", "dark green"):
+        return "red rose among dark green leaves"
+    if has("vang", "yellow") and has("lon", "large", "big") and has("tam nau", "brown center", "dark center"):
+        return "large sunflower with radiating yellow petals and a round brown center"
+    if has("vang", "yellow") and has("nhuy sam", "dark center", "tam sam") and has("vay quanh", "surrounding"):
+        return "sunflower, bright yellow petals surrounding a dark central disk"
+    if has("hinh chen", "hinh chung", "cup shaped", "cup-shaped") and has("hong", "pink", "la dai", "long leaves", "than thang", "straight stem"):
+        return "pink tulip with a cup-shaped bloom on a straight stem"
+    if has("hong phan", "pale pink", "hong nhat") and has("canh khum", "cup shaped", "cup-shaped", "mua xuan", "spring"):
+        return "pale pink tulip, cup-shaped petals, spring flower"
+    if has("trang", "white") and has("nhuy vang", "yellow center") and has("co xanh", "grass", "dong co", "meadow"):
+        return "oxeye daisy with white petals and a yellow center in a green meadow"
+    if has("vang", "yellow") and has("nho", "small", "tiny") and has("than manh", "than xanh manh", "slender stem") and has("la thap", "la om goc", "basal leaves"):
+        return "dandelion, small yellow flower on a slender stem with basal leaves"
+    return None
 _VI_FILLER_WORDS = {
     "hoa", "bong", "mot", "nhung", "cac", "co", "duoc",
     "giua", "ben", "trong", "ngoai", "phia", "sau", "truoc", "tren",
@@ -356,6 +382,15 @@ class ImageSearch:
                 clip_query = f"a photograph of {self._english_name_by_id.get(translated_label, translated_label)} flower"
             else:
                 clip_query = f"a photograph of {query_used}"
+                visual_hint = _visual_search_hint(query)
+                if visual_hint:
+                    clip_query = f"{clip_query}; {visual_hint}"
+                    # When a full combination of botanical cues yields a clear
+                    # flower name, search within that category and let CLIP
+                    # rank its photos. Keep weaker descriptions unfiltered.
+                    hinted_label = self._label_from_query(visual_hint)
+                    if hinted_label:
+                        effective_label = effective_label or hinted_label
         return {
             "results": self._search(self.encoder.encode_texts([clip_query]), k, effective_label),
             "query_used": query_used,
