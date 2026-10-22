@@ -7,7 +7,7 @@
 
 ## Trạng thái kiểm tra (22/10/2026)
 
-- Nhánh `feature-gift-advisor`, commit `f38c1ed` đã qua GitHub Actions. Kiểm tra local hiện tại: backend `96 passed, 1 skipped` (PostgreSQL test cần DSN, được chạy trong CI có PostgreSQL service); frontend `24 passed` và production build thành công.
+- Nhánh `feature-gift-advisor`, commit `1736e2d` đã qua GitHub Actions (`pytest` và `web-build-and-tests` đều xanh). Render production hiện vẫn chạy revision `f38c1ed4f488`, nên bản sửa chuẩn hoá lỗi ở `1736e2d` chưa được xác nhận trên production. Kiểm tra local trước commit này: backend `96 passed, 1 skipped` (PostgreSQL test cần DSN, được chạy trong CI có PostgreSQL service); frontend `24 passed` và production build thành công.
 - Render đang chạy revision `f38c1ed4f488` (deploy thành công ngày 22/10/2026). Kiểm tra production cùng ngày: Vercel trả HTTP 200; `/api/health` và `/api/startup` trả 200; `/api/species?limit=103` trả đủ 103 loài. Bốn chức năng AI đã được gọi trực tiếp: phân loại ảnh mẫu daisy trả `daisy` với confidence 0,9898; detector trả hai hộp `daisy` (0,9593 và 0,7773); tìm bằng chữ trả ba kết quả Tulip; tìm bằng ảnh trả kết quả đầu `daisy`; `/api/ask` trả lời kèm ba nguồn RAG ở chế độ offline. Đây là smoke test, không phải benchmark ổn định. Render Free có thể mất thêm thời gian khi khởi động nguội; các model được nạp theo yêu cầu nên health có thể hiện `not_loaded` trước lần gọi chức năng tương ứng.
 - Gemini chỉ được gọi khi chủ động bật `ENABLE_GEMINI_API=1`; Render không bật cờ này. RAG offline trên Compose và public đã trả câu trả lời kèm nguồn. Bản local Compose đã smoke-test các API AI; đăng ký/ghi/đọc dữ liệu tài khoản qua lần restart container đã được kiểm tra với volume SQLite.
 - **CSDL public đã kết nối:** service Render dùng Neon PostgreSQL Free tại Singapore qua secret `DATABASE_URL`; không lưu secret trong Git. Ngày 22/10/2026, đăng ký test qua API trả 201, ghi/đọc dữ liệu trả 200 và payload được xác nhận trực tiếp trong bảng Neon `user_data`; sau đó tài khoản test đã được xóa. Login probe với email không tồn tại trả 401 như dự kiến. Render Free vẫn không có ổ đĩa bền vững cho SQLite, nên SQLite chỉ là fallback local/Compose. Neon Free tự scale về 0 khi nhàn rỗi; theo dõi quota trên Neon và không nâng cấp gói nếu muốn giữ chi phí bằng 0.
@@ -98,7 +98,14 @@ Lần build Docker đầu tải gói phụ thuộc và checkpoint được cấu
 
 ## Demo và chuẩn bị model
 
-Demo giao diện: [Vườn Hoa](https://tkwnc-nhom10.vercel.app/). Các endpoint AI public và luồng lưu tài khoản vào Neon đã được smoke-test theo trạng thái ở đầu README. Để chạy cả frontend và API local, dùng Docker Compose ở phần trên hoặc cài phụ thuộc rồi chạy `scripts/start_local.ps1` — không cần mở terminal thứ hai.
+Demo giao diện: [Vườn Hoa](https://tkwnc-nhom10.vercel.app/). Tài khoản dùng thử có quyền người dùng thông thường:
+
+| Trường | Giá trị |
+|---|---|
+| Email | `demo@vuonhoa-ai.example` |
+| Mật khẩu | `6hchsxRniZ3go0xgvN0Y1BjshaX20wHMAa1!` |
+
+Đây là tài khoản demo công khai, không dùng để lưu dữ liệu riêng tư. Các endpoint AI public và luồng lưu tài khoản vào Neon đã được smoke-test theo trạng thái ở đầu README. Để chạy cả frontend và API local, dùng Docker Compose ở phần trên hoặc cài phụ thuộc rồi chạy `scripts/start_local.ps1` — không cần mở terminal thứ hai.
 
 Nếu checkpoint chưa có trong repo, `python scripts/prepare_flowers102.py --epochs 3` tải Oxford Flowers 102 (8.189 ảnh, 102 lớp), ghép dữ liệu để fine-tune ResNet-18 trên 11.859 ảnh với 103 nhãn. Đây là bước chuẩn bị model tùy chọn, không phải lệnh khởi động app; cần Internet, vài GB dung lượng và thời gian có thể vượt 15 phút trên CPU. Bách khoa có đủ 103 mục khớp với nhãn phân loại; năm loài trên trang chủ chỉ là nhóm nổi bật. MobileCLIP2-S0 + FAISS dùng tối đa 12 ảnh đại diện mỗi nhãn (1.236 ảnh hiện tại). Danh sách lớp Oxford chủ yếu gồm hoa phổ biến ở Anh, không đại diện cho mọi loài hoa trên thế giới. YOLO11, MobileCLIP2-S0 và mô hình dịch Việt–Anh được tải khi mở chức năng lần đầu. Chatbot dùng BM25 trên tài liệu tiếng Việt; Gemini chỉ được gọi khi người vận hành tự cấu hình `GOOGLE_API_KEY`/`GEMINI_API_KEY`. `LLM_PROVIDER=hf_local` dùng Qwen local và có thể đổi model bằng `LLM_MODEL`.
 
