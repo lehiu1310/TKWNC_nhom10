@@ -3,6 +3,8 @@ services:
     name: tkw-nhom10-api
     runtime: docker
     plan: free
+    branch: feature-gift-advisor
+    autoDeployTrigger: checksPass
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/health
