@@ -116,7 +116,9 @@ def create_user(email: str, display_name: str, password: str) -> tuple[dict, str
 
 def login(email: str, password: str) -> tuple[dict, str] | None:
     with _connect() as db:
-        row = db.execute("SELECT * FROM users WHERE email=? COLLATE NOCASE", (email.strip(),)).fetchone()
+        # Emails are normalized at registration, but compare case-insensitively
+        # for existing rows on both SQLite and PostgreSQL.
+        row = db.execute("SELECT * FROM users WHERE LOWER(email)=LOWER(?)", (email.strip(),)).fetchone()
         # Equalize the missing-user path so it does not immediately reveal account existence.
         salt = row["password_salt"] if row else bytes(16)
         actual = _password(password, salt)

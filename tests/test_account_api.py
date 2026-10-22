@@ -69,6 +69,12 @@ def test_optional_postgres_account_roundtrip(monkeypatch):
     try:
         user, token = account_store.create_user(email, "Database check", "garden-pass-123")
         assert account_store.get_user(token)["id"] == user["id"]
+        logged_in = account_store.login(email.upper(), "garden-pass-123")
+        assert logged_in is not None
+        assert logged_in[0]["id"] == user["id"]
+        assert account_store.get_user(logged_in[1])["id"] == user["id"]
+        with pytest.raises(ValueError, match="đã có tài khoản"):
+            account_store.create_user(email.upper(), "Duplicate", "garden-pass-123")
         account_store.write_user_data(user["id"], "garden", {"plants": [{"speciesId": "roses"}]})
         assert account_store.read_user_data(user["id"], "garden") == {"plants": [{"speciesId": "roses"}]}
     finally:
