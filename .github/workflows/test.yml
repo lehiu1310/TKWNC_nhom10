@@ -5,6 +5,30 @@ on:
   pull_request:
 
 jobs:
+  security-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Scan repository history for leaked secrets
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: false
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Audit Express API production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.25.0
+      - name: Audit React production dependencies
+        run: pnpm audit --prod --audit-level high
+        working-directory: web
+
   pytest:
     runs-on: ubuntu-24.04
     services:
