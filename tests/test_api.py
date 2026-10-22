@@ -78,11 +78,26 @@ def test_health(client):
     assert set(r.json()["model_states"].values()) == {"ready"}
 
 
-def test_startup_probe_waits_for_all_models(client):
+def test_startup_probe_waits_for_all_models(client, monkeypatch):
+    monkeypatch.setattr(main, "RENDER_FREE_MEMORY", False)
     main.MODELS.pop("retrieval", None)
     response = client.get("/api/startup")
     assert response.status_code == 503
     assert response.json()["detail"] == "AI models are warming up"
+
+
+def test_free_memory_readiness_allows_lazy_model_loading(client, monkeypatch):
+    monkeypatch.setattr(main, "RENDER_FREE_MEMORY", True)
+    main.MODELS.pop("retrieval", None)
+
+    health = client.get("/api/health")
+    startup = client.get("/api/startup")
+
+    assert health.status_code == 200
+    assert health.json()["ready"] is True
+    assert health.json()["model_states"]["retrieval"] == "not_loaded"
+    assert startup.status_code == 200
+    assert startup.json() == {"status": "ok", "ready": True}
 
 
 def test_startup_probe_passes_when_all_models_are_ready(client):

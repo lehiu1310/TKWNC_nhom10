@@ -60,7 +60,14 @@ def _model_health() -> dict:
                    else MODEL_STATES.get(name, "not_loaded"))
             for name in LOADERS
         }
-    ready = all(name in ENABLED_MODELS and states[name] == "ready" for name in LOADERS)
+    # Render Free cannot keep every model resident at once. In that mode the
+    # service is ready when all four routes are enabled; each model loads on
+    # demand and may be evicted after its request. `models` and `model_states`
+    # continue to report actual residency separately.
+    ready = (
+        all(name in ENABLED_MODELS for name in LOADERS)
+        and (RENDER_FREE_MEMORY or all(states[name] == "ready" for name in LOADERS))
+    )
     return {"ready": ready, "models": {name: state == "ready" for name, state in states.items()},
             "model_states": states}
 
