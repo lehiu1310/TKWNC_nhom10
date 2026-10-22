@@ -8,8 +8,10 @@
 ## Trạng thái kiểm tra (22/10/2026)
 
 - Backend Render đang live ở revision `bf3426237dfb`; GitHub Actions commit này xanh (`pytest`, `web-build-and-tests`, Vercel Preview Comments). Backend local: `98 passed, 1 skipped`; ca PostgreSQL bị skip nếu không đặt `TEST_DATABASE_URL`. CI cấp PostgreSQL 16 và URL riêng cho ca này. Frontend có `24 passed` và production build thành công.
+- Repo GitHub hiện đặt `main` và `feature-gift-advisor` cùng ở commit `562e21c`; CI của commit trên `main` đã xanh. Render vẫn chạy `bf3426237dfb` vì commit `562e21c` chỉ thay tài liệu và kiểm thử tìm kiếm, không đổi runtime backend.
 - Các smoke test production đã ghi nhận: trang Vercel, `/api/health`, `/api/startup`, `/api/species?limit=103` và ảnh loài đều trả HTTP 200; API trả đủ 103 loài. Phân loại ảnh hoa hồng trả `roses` (score 0,7542, trên ngưỡng tin cậy 0,6967); một ảnh cúc khác có score 0,5337 và được API đánh dấu chưa chắc chắn; detector trả một hộp `daisy` (0,7676); tìm bằng ảnh trả `daisy` (0,9999); chatbot RAG trả lời kèm ba đoạn nguồn từ `hoa_cuc.md`. Đây là smoke test, không phải benchmark ổn định. Render Free có thể mất thêm thời gian khi khởi động nguội; chế độ giới hạn RAM nạp model theo yêu cầu và nhả model khác, vì vậy trạng thái cư trú có thể hiện `not_loaded` sau khi một request đã chạy thành công.
 - Tìm kiếm mô tả hình thái trên live revision `bf3426237dfb` đã trả 5/5 hướng dương cho “đóa vàng lớn, tâm nâu tròn, cánh tỏa ra ngoài” và 5/5 tulip cho “bông hình chén màu hồng trên thân thẳng, lá dài”. Đây là hai smoke query, không thay cho benchmark độc lập.
+- Smoke test mới nhất trên cùng revision xác nhận cả bốn API AI public đều HTTP 200 trên ảnh Daisy: classify 12,8 giây, detect 47,7 giây, image search 38,1 giây và RAG chat 39,5 giây (3 nguồn). Mỗi endpoint chỉ được gọi một lượt; thời gian chịu ảnh hưởng cold start/giới hạn Render Free, không phải benchmark.
 - Kiểm tra luồng từ giao diện public: bundle JS/CSS trên Vercel và CORS preflight từ Vercel tới Render trả 200; truy cập dữ liệu tài khoản khi chưa đăng nhập trả 401, loài không tồn tại trả 404, và `limit=0` trả 400.
 - Gemini chỉ được gọi khi chủ động bật `ENABLE_GEMINI_API=1`; Render không bật cờ này. RAG offline trên Compose và public đã trả câu trả lời kèm nguồn. Bản local Compose đã smoke-test các API AI; đăng ký/ghi/đọc dữ liệu tài khoản qua lần restart container đã được kiểm tra với volume SQLite.
 - **CSDL public đã kết nối:** service Render dùng Neon PostgreSQL Free tại Singapore qua secret `DATABASE_URL`; không lưu secret trong Git. Đăng ký, ghi/đọc dữ liệu và lưu vào Neon đã được xác minh; tài khoản demo đăng nhập, đọc Sổ hoa/Sổ quà và đăng xuất thành công. Sổ cây của demo có sẵn một cây hoa hồng làm dữ liệu mẫu. Render Free không có ổ đĩa bền vững cho SQLite nên SQLite chỉ là fallback local/Compose; Neon Free tự scale compute về 0 khi nhàn rỗi.
@@ -160,7 +162,7 @@ Lệnh này fine-tune MobileNetV3-Small, đánh giá ResNet/MobileNet trên cùn
 
 ## Phiên bản mã nguồn
 
-Tag phát hành: [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0).
+Tag đang có: [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0). Đây chưa phải tag nộp `final`; tag nộp chỉ được tạo sau khi nhóm hoàn tất commit bằng tài khoản thật của từng thành viên và duyệt bản bàn giao cuối.
 
 Các số liệu trên là kết quả đo; dòng “chưa đạt” không được xem là đạt chỉ vì API hoặc giao diện đang chạy.
 
