@@ -1,0 +1,31 @@
+{
+  "observed_at_local": "2026-10-23T02:18:54.0423708+07:00",
+  "frontend_origin": "https://tkwnc-nhom10.vercel.app/",
+  "frontend_status": 200,
+  "backend_origin": "https://tkw-nhom10-api.onrender.com",
+  "endpoints": {
+    "health": {
+      "status": 200,
+      "ready": true,
+      "account_database": "postgresql"
+    },
+    "startup": {
+      "status": 200,
+      "ready": true,
+      "model_states_loaded": 0
+    },
+    "species": {
+      "status": 200,
+      "count": 103
+    }
+  },
+  "render": {
+    "service": "tkw-nhom10-api",
+    "plan": "free",
+    "branch": "feature-gift-advisor",
+    "revision": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
+    "deploy_id": "dep-dbd5kt6i0phs73es5v1g",
+    "status": "live"
+  },
+  "secrets_included": false
+}

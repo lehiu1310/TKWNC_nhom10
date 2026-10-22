@@ -1,0 +1,23 @@
+{
+  "service": {
+    "name": "tkw-nhom10-api",
+    "service_id": "srv-dauecmad0e5s73fe5h4g",
+    "url": "https://tkw-nhom10-api.onrender.com",
+    "branch": "feature-gift-advisor",
+    "runtime": "docker",
+    "region": "singapore",
+    "plan": "free",
+    "auto_deploy": true
+  },
+  "current_deploy": {
+    "deploy_id": "dep-dbd5kt6i0phs73es5v1g",
+    "commit": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
+    "message": "fix(detect): allow free-tier inference cold starts",
+    "status": "live",
+    "trigger": "api",
+    "started_at_utc": "2026-10-22T18:48:20.863666Z",
+    "finished_at_utc": "2026-10-22T18:51:18.772759Z"
+  },
+  "verified_on_local_date": "2026-10-23",
+  "source": "Render MCP service and deploy records"
+}

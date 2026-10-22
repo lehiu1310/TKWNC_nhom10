@@ -1,0 +1,16 @@
+{
+  "frontend_origin": "https://tkwnc-nhom10.vercel.app",
+  "api_path": "Vercel same-origin Express gateway; account route may proxy to Render FastAPI",
+  "observed_at_local": "2026-10-23T02:11:46+07:00",
+  "backend_live_revision": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
+  "flow": [
+    { "step": "login", "status": 200 },
+    { "step": "auth_me", "status": 200, "demo_identity_matches": true },
+    { "step": "read_garden", "status": 200 },
+    { "step": "read_giftbook", "status": 200 },
+    { "step": "logout", "status": 200 },
+    { "step": "anonymous_garden_after_logout", "status": 401 }
+  ],
+  "credentials_or_session_tokens_included": false,
+  "scope_note": "End-to-end smoke through the public Vercel same-origin route. Confirms auth/account route behavior and authorization; does not identify whether the Express gateway used direct Neon access or its Render fallback."
+}
