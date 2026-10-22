@@ -1,13 +1,32 @@
 {
   "frontend_origin": "https://tkwnc-nhom10.vercel.app",
-  "api_origin": "same-origin Vercel rewrite to Render",
-  "observed_at_utc": "2026-10-22T13:52Z",
+  "api_origin": "Render, requests sent with Vercel Origin",
+  "observed_at_utc": "2026-10-22T14:29:00.908364+00:00",
+  "backend_revision": "daef0080b8d7",
   "flow": [
-    {"step": "login", "status": 200},
-    {"step": "auth_me", "status": 200, "identity_matches_demo": true},
-    {"step": "read_garden", "status": 200, "response_nonempty": true},
-    {"step": "read_giftbook", "status": 200, "response_nonempty": true},
-    {"step": "logout", "status": 200}
+    {
+      "step": "login",
+      "status": 200
+    },
+    {
+      "step": "auth_me",
+      "status": 200,
+      "identity_matches_demo": true
+    },
+    {
+      "step": "read_garden",
+      "status": 200,
+      "response_nonempty": true
+    },
+    {
+      "step": "read_giftbook",
+      "status": 200,
+      "response_nonempty": true
+    },
+    {
+      "step": "logout",
+      "status": 200
+    }
   ],
   "credentials_or_session_tokens_included": false
 }
