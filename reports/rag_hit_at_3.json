@@ -3,8 +3,14 @@
   "hits": 30,
   "total": 30,
   "score": 1.0,
+  "fallback_answer_source_citation": {
+    "hits": 30,
+    "total": 30,
+    "score": 1.0,
+    "note": "Checks non-empty retrieval fallback cites the hand-labeled expected source; does not judge factual correctness or answer quality."
+  },
   "retriever": "BM25",
-  "kb_files": 10,
+  "kb_files": 11,
   "results": [
     {
       "question": "Hoa hồng đỏ thường được tặng với thông điệp gì?",
@@ -12,9 +18,10 @@
       "retrieved_sources": [
         "hoa_hong.md",
         "y_nghia_hoa.md",
-        "bo_cong_anh.md"
+        "y_nghia_tang_hoa.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Cây hồng cần mỗi ngày bao nhiêu giờ nắng trực tiếp?",
@@ -24,7 +31,8 @@
         "huong_duong.md",
         "cach_cham_soc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Làm thế nào tưới hoa hồng để hạn chế úng rễ?",
@@ -32,9 +40,10 @@
       "retrieved_sources": [
         "hoa_hong.md",
         "huong_duong.md",
-        "tulip.md"
+        "bo_cong_anh.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Hoa hồng trắng và hồng vàng thường gợi ý nghĩa gì?",
@@ -44,7 +53,8 @@
         "huong_duong.md",
         "tulip.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Thời tiết nào giúp hoa hồng phát triển tốt ở Việt Nam?",
@@ -54,7 +64,8 @@
         "tulip.md",
         "mua_hoa_viet_nam.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Đặc điểm lá và thân của cây thuộc chi Rosa là gì?",
@@ -64,7 +75,8 @@
         "huong_duong.md",
         "tulip.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Tulip mọc từ bộ phận nào và có hình dáng hoa ra sao?",
@@ -74,7 +86,8 @@
         "bo_cong_anh.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Tulip thường nở vào mùa nào ở vùng ôn đới?",
@@ -84,7 +97,8 @@
         "mua_hoa_viet_nam.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Trồng tulip ở Việt Nam cần điều kiện khí hậu thế nào?",
@@ -92,9 +106,10 @@
       "retrieved_sources": [
         "tulip.md",
         "mua_hoa_viet_nam.md",
-        "hoa_cuc.md"
+        "bo_cong_anh.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Củ tulip nên được trồng trong loại đất nào?",
@@ -104,7 +119,8 @@
         "mua_hoa_viet_nam.md",
         "hoa_cuc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Hoa tulip thường tượng trưng cho thông điệp nào?",
@@ -114,7 +130,8 @@
         "tulip.md",
         "mua_hoa_viet_nam.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Vì sao không nên để củ tulip bị đọng nước?",
@@ -124,7 +141,8 @@
         "huong_duong.md",
         "bo_cong_anh.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Cụm hoa hướng dương gồm những phần nào?",
@@ -134,7 +152,8 @@
         "y_nghia_hoa.md",
         "hoa_cuc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Hướng dương cần vị trí trồng như thế nào?",
@@ -144,7 +163,8 @@
         "hoa_cuc.md",
         "cach_cham_soc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Ý nghĩa phổ biến của hoa Helianthus annuus là gì?",
@@ -152,9 +172,10 @@
       "retrieved_sources": [
         "hoa_hong.md",
         "huong_duong.md",
-        "y_nghia_hoa.md"
+        "tulip.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Khi cây hướng dương cao gặp gió thì chăm sóc ra sao?",
@@ -164,7 +185,8 @@
         "hoa_cuc.md",
         "tulip.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Ở Việt Nam hoa hướng dương có thể trồng thời gian nào?",
@@ -174,17 +196,19 @@
         "mua_hoa_viet_nam.md",
         "hoa_cuc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Điều gì cần tránh khi tưới cây hướng dương?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
         "huong_duong.md",
-        "hoa_cuc.md",
-        "hoa_hong.md"
+        "hoa_hong.md",
+        "hoa_cuc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Hoa cúc thuộc họ thực vật nào?",
@@ -194,7 +218,8 @@
         "bo_cong_anh.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Cúc họa mi miền Bắc thường xuất hiện vào khoảng tháng nào?",
@@ -202,9 +227,10 @@
       "retrieved_sources": [
         "mua_hoa_viet_nam.md",
         "hoa_cuc.md",
-        "tulip.md"
+        "y_nghia_tang_hoa.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Cắt hoa cúc tàn đem lại lợi ích gì cho cây?",
@@ -214,7 +240,8 @@
         "cach_cham_soc.md",
         "hoa_hong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Hoa cúc thường gắn với ý nghĩa văn hóa nào?",
@@ -224,7 +251,8 @@
         "hoa_hong.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Bông hoa cúc thực chất được tạo thành từ cấu trúc nào?",
@@ -234,7 +262,8 @@
         "huong_duong.md",
         "bo_cong_anh.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Tại sao thời điểm nở của các giống cúc không giống nhau?",
@@ -244,7 +273,8 @@
         "hoa_hong.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Hạt bồ công anh phát tán nhờ đặc điểm nào?",
@@ -252,9 +282,10 @@
       "retrieved_sources": [
         "bo_cong_anh.md",
         "y_nghia_hoa.md",
-        "huong_duong.md"
+        "y_nghia_tang_hoa.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Bồ công anh thường gợi biểu tượng về điều gì?",
@@ -264,7 +295,8 @@
         "y_nghia_hoa.md",
         "hoa_cuc.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Tên bồ công anh có thể chỉ những cây thuộc họ nào?",
@@ -274,7 +306,8 @@
         "y_nghia_hoa.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Một số cây bồ công anh phát triển tốt nơi có ánh sáng ra sao?",
@@ -284,7 +317,8 @@
         "huong_duong.md",
         "y_nghia_hoa.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Vì sao cần nhận dạng chính xác bồ công anh trước khi dùng?",
@@ -292,9 +326,10 @@
       "retrieved_sources": [
         "bo_cong_anh.md",
         "y_nghia_hoa.md",
-        "hoa_cuc.md"
+        "y_nghia_tang_hoa.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     },
     {
       "question": "Sau cụm hoa vàng của bồ công anh thường hình thành bộ phận gì?",
@@ -304,7 +339,8 @@
         "y_nghia_hoa.md",
         "huong_duong.md"
       ],
-      "hit_at_3": true
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
     }
   ]
 }

@@ -13,6 +13,7 @@
 - Tìm kiếm mô tả hình thái trên live revision `bf3426237dfb` đã trả 5/5 hướng dương cho “đóa vàng lớn, tâm nâu tròn, cánh tỏa ra ngoài” và 5/5 tulip cho “bông hình chén màu hồng trên thân thẳng, lá dài”. Đây là hai smoke query, không thay cho benchmark độc lập.
 - Smoke test mới nhất trên cùng revision xác nhận cả bốn API AI public đều HTTP 200 trên ảnh Daisy: classify 12,8 giây, detect 47,7 giây, image search 38,1 giây và RAG chat 39,5 giây (3 nguồn). Mỗi endpoint chỉ được gọi một lượt; thời gian chịu ảnh hưởng cold start/giới hạn Render Free, không phải benchmark.
 - Kiểm tra luồng từ giao diện public: bundle JS/CSS trên Vercel và CORS preflight từ Vercel tới Render trả 200; truy cập dữ liệu tài khoản khi chưa đăng nhập trả 401, loài không tồn tại trả 404, và `limit=0` trả 400.
+- Smoke test tài khoản demo mới nhất qua cùng origin Vercel: login, `/api/auth/me`, đọc garden/giftbook và logout đều HTTP 200. Bằng chứng không chứa mật khẩu hoặc cookie: [`reports/current-production-account-smoke.json`](reports/current-production-account-smoke.json).
 - Gemini chỉ được gọi khi chủ động bật `ENABLE_GEMINI_API=1`; Render không bật cờ này. RAG offline trên Compose và public đã trả câu trả lời kèm nguồn. Bản local Compose đã smoke-test các API AI; đăng ký/ghi/đọc dữ liệu tài khoản qua lần restart container đã được kiểm tra với volume SQLite.
 - **CSDL public đã kết nối:** service Render dùng Neon PostgreSQL Free tại Singapore qua secret `DATABASE_URL`; không lưu secret trong Git. Đăng ký, ghi/đọc dữ liệu và lưu vào Neon đã được xác minh; tài khoản demo đăng nhập, đọc Sổ hoa/Sổ quà và đăng xuất thành công. Sổ cây của demo có sẵn một cây hoa hồng làm dữ liệu mẫu. Render Free không có ổ đĩa bền vững cho SQLite nên SQLite chỉ là fallback local/Compose; Neon Free tự scale compute về 0 khi nhàn rỗi.
 - Cloud Run chưa triển khai; không bật billing Google Cloud.
@@ -26,7 +27,7 @@ Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bố
 - Lỗi HTTP, validation và lỗi server ngoài dự kiến được chuẩn hoá tập trung ở API; phản hồi validation không lặp lại giá trị input và lỗi 500 không trả chi tiết nội bộ.
 - `web/`: React + Vite, trải nghiệm responsive theo chủ đề vườn hoa.
 - `data/kb/`: tám bản tóm tắt tiếng Việt cùng PDF được chia theo trang; danh mục, số trang và phạm vi nguồn xem tại [`data/kb_sources.md`](data/kb_sources.md).
-- `data/kb_eval/rag_hit_at_3.json`: 30 câu hỏi đánh giá nguồn truy xuất RAG.
+- `data/kb_eval/rag_hit_at_3.json`: 30 câu hỏi đánh giá nguồn RAG. `python scripts/evaluate_rag.py` đo Hit@3 và kiểm tra câu trả lời fallback có dẫn tệp nguồn mong đợi; lượt gần nhất đạt 30/30 ở cả hai phép đo. Bộ câu hỏi do nhóm biên soạn; phép đo citation không xác nhận tính đúng của nội dung câu trả lời.
 - `data/species.json`: dữ liệu của 103 loài, khớp với 103 nhãn trong `artifacts/classifier/classes.json`.
 - `data/display_images.json`: nguồn ảnh trưng bày chất lượng cao cho 5 loài nổi bật trên trang chủ; các loài còn lại dùng ảnh đại diện trong dữ liệu Flowers.
 - `data/flower_params.json`: tham số hình học cho 103 loài ở trình xem 3D; 90 loài có mô hình thủ tục và 13 loài hình thái phức tạp ưu tiên ảnh thật. Quy trình sinh, nguồn gợi ý và trang contact sheet duyệt được mô tả tại [`docs/flower-models-103.md`](docs/flower-models-103.md).
