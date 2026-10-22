@@ -22,11 +22,11 @@ Tài liệu này chỉ ghi thông tin có thể đối chiếu trong mã nguồn
 
 ### Tìm ảnh
 
-- **Index:** 1.236 ảnh, MobileCLIP2-S0 (`dfndr2b`), embedding 512 chiều; metadata và số ảnh ghi tại `artifacts/retrieval/meta.json` và `artifacts/retrieval/encoder.json`. Script chuẩn bị index chọn tối đa 12 ảnh/lớp từ dữ liệu hoa hiện có; chi tiết trong `scripts/prepare_flowers102.py`.
-- **Đánh giá truy vấn ảnh:** 206 ảnh truy vấn cùng nguồn dữ liệu, giới hạn tối đa 2 truy vấn/lớp, loại khỏi index theo đường dẫn; một kết quả được tính liên quan khi `species_id` trùng nhãn ảnh truy vấn. Protocol nằm trong `reports/retrieval_precision_at_5.json` và `scripts/evaluate_retrieval.py`.
-- **Đánh giá truy vấn mô tả tiếng Việt:** 10 câu mô tả viết trong `scripts/evaluate_vietnamese_search.py`, 2 câu cho mỗi lớp trong 5 lớp trang chủ; không ngẫu nhiên và không được ghi là đánh giá độc lập.
-- **Ví dụ đúng:** “một bông cúc trắng đơn độc bên mép đồng cỏ” → daisy đứng cả 5 kết quả, P@5 = 1,0.
-- **Ví dụ sai:** “đóa vàng lớn với tâm nâu tròn, cánh xếp tỏa ra ngoài” → sunflower nhưng 5 kết quả là tree-poppy/sword-lily, P@5 = 0; “bông hoa hình chén màu hồng trên thân thẳng, lá dài” → tulips nhưng không có tulip trong top 5, P@5 = 0. Kết quả đầy đủ trong `reports/vietnamese_search_precision_at5.json`.
+- **Backend production:** 1.236 ảnh với đặc trưng penultimate-layer ResNet-18 512 chiều; metadata và đặc trưng ở `artifacts/retrieval/meta.json` và `artifacts/retrieval/classifier_features.npy`. Tìm ảnh dùng ảnh truy vấn để lấy đặc trưng rồi lọc gallery theo lớp dự đoán khi độ tin cậy đạt ngưỡng `CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE=0.4`. Backend này dùng ít bộ nhớ hơn CLIP và hiện được cấu hình cho Render Free.
+- **Đánh giá truy vấn ảnh:** Precision@5 **91,65%**, top-1 classifier accuracy **90,29%** trên 206 ảnh giữ ngoài gallery theo đường dẫn, tối đa 2 truy vấn/lớp. Nguồn truy vấn vẫn thuộc cùng bộ Flowers đã dùng để huấn luyện/chuẩn bị gallery; đây là đánh giá nội bộ, không phải test độc lập ngoài miền. Protocol và từng truy vấn nằm trong `reports/classifier_retrieval_precision_at_5.json`, tái tạo bằng `scripts/evaluate_classifier_retrieval.py`.
+- **Smoke ảnh production:** một ảnh hướng dương không có trong gallery trả 5/5 ảnh hướng dương. Đây là một ca smoke, không thay benchmark.
+- **Đánh giá mô tả tiếng Việt:** Precision@5 **100%** trên 10 câu development viết thủ công, hai câu cho mỗi lớp trong 5 loài nổi bật. Kết quả tái tạo bằng `scripts/evaluate_classifier_text_search.py`, lưu tại `reports/classifier_text_search_precision_at_5.json`. Tập nhỏ này chưa được người đánh giá độc lập gán nhãn và không đại diện truy vấn tự nhiên của toàn bộ 103 loài; loài ngoài 5 lớp nổi bật vẫn dùng tên/metadata và weighted lexical fallback.
+- **Tham chiếu mô hình tùy chọn:** `reports/retrieval_precision_at_5.json` đo MobileCLIP2 + FAISS trong môi trường nhiều RAM hơn; số liệu đó **không phải** backend ảnh của production Render.
 
 ### Hỏi đáp RAG và “Cô làm vườn”
 
@@ -41,12 +41,12 @@ Tài liệu này chỉ ghi thông tin có thể đối chiếu trong mã nguồn
 |---|---|---|
 | Phân loại ResNet-18 | Accuracy **90,26%**; macro-F1 **91,56%**; weighted-F1 **90,24%**. Precision/recall/F1/support theo lớp có trong báo cáo. | 2.135 ảnh validation, 103 lớp. Validation được dùng chọn checkpoint; test độc lập **chưa có**. Ma trận nhầm lẫn CSV có; ảnh heatmap **chưa có**. |
 | Phát hiện YOLO11n | mAP50 **87,04%**; mAP50–95 **68,02%**; precision **81,04%**; recall **81,99%**. | Test 84 ảnh/145 hộp; fine-tune 12 epoch, ảnh 320 px. Đo CPU Intel Core i5-13500H, Torch 2.14.0+cpu, Ultralytics 8.4.165. mAP theo lớp ở bảng dưới và `reports/detector_evaluation.json`. |
-| Tìm ảnh bằng ảnh | Precision@5 **85,92%** (206 query). | Truy vấn held-out theo đường dẫn từ cùng bộ dữ liệu; không đại diện ảnh ngoài miền. |
-| Tìm ảnh bằng mô tả tiếng Việt | Benchmark Gemini hiện có: Precision@5 **22%** (10 query). Fallback từ vựng offline mới: **24%** trên cùng 10 câu, khi tắt Gemini. | Bộ câu nhỏ, viết thủ công cho 5 lớp; không đại diện truy vấn thực tế. Kết quả offline tại `reports/vietnamese_search_offline_precision_at5.json`; ví dụ sai ở mục Dữ liệu. |
+| Tìm ảnh bằng ảnh | Production ResNet-feature Precision@5 **91,65%** (206 query); smoke ảnh hướng dương production **5/5**. | Held-out theo đường dẫn nhưng cùng nguồn dữ liệu Flowers; không đại diện ảnh ngoài miền. Xem `reports/classifier_retrieval_precision_at_5.json`. |
+| Tìm ảnh bằng mô tả tiếng Việt | Production Precision@5 **100%** (10 query). | Bộ development nhỏ, viết thủ công cho 5 lớp, chưa gán nhãn độc lập; không đại diện truy vấn tự nhiên/toàn bộ 103 loài. Xem `reports/classifier_text_search_precision_at_5.json`. |
 | RAG truy xuất nguồn | Hit@3 **30/30 = 100%**. | Đo việc nguồn mong đợi xuất hiện trong 3 nguồn đầu của BM25, **không đo độ đúng/đầy đủ của câu trả lời Gemini**. Đánh giá ngoài phạm vi **chưa đo**. |
-| “Cô làm vườn” — chất lượng câu trả lời | Độ đúng câu trả lời, độ an toàn và chất lượng trích dẫn đầu-cuối: **chưa đo**. | Không có bộ đánh giá đáp án sinh trong repo; Hit@3 chỉ đo truy xuất. |
+| “Cô làm vườn” — chất lượng câu trả lời | Độ đúng câu trả lời, độ an toàn và chất lượng trích dẫn đầu-cuối: **chưa đo**. | Không có bộ đánh giá đáp án sinh trong repo; Hit@3 chỉ đo truy xuất. Gemini là tùy chọn; fallback RAG trích nội dung truy xuất khi chưa bật hoặc khi Gemini không khả dụng. |
 
-Các file bằng chứng: `reports/classifier_evaluation.json`, `reports/classifier_confusion_matrix.csv`, `reports/classifier_per_class.csv`, `reports/detector_evaluation.json`, `reports/retrieval_precision_at_5.json`, `reports/vietnamese_search_precision_at5.json`, `reports/rag_hit_at_3.json`.
+Các file bằng chứng: `reports/classifier_evaluation.json`, `reports/classifier_confusion_matrix.csv`, `reports/classifier_per_class.csv`, `reports/detector_evaluation.json`, `reports/classifier_retrieval_precision_at_5.json`, `reports/classifier_text_search_precision_at_5.json`, `reports/rag_hit_at_3.json`.
 
 ### Phát hiện — kết quả theo lớp trên test split
 
@@ -63,8 +63,8 @@ Tái tạo phép đo: `.venv/Scripts/python scripts/evaluate_flower_detector.py`
 
 - Classifier chỉ dự đoán trong 103 nhãn đã huấn luyện; 76 lớp có ít hơn 100 ảnh. Không có test split độc lập, nên số accuracy/F1 hiện có không phải kết quả test độc lập.
 - Detector chỉ có bốn lớp được nêu ở mục Dữ liệu; không có lớp “hoa” tổng quát. Ảnh ngoài miền hoặc hoa nhỏ/chồng lấp có thể bị bỏ sót hay khoanh sai.
-- Tìm ảnh trả ảnh tương tự theo embedding, không xác nhận danh tính thực vật. P@5 trên mô tả tiếng Việt vẫn thấp (Gemini: 22%; fallback offline: 24%) theo bộ 10 câu nhỏ trong repo; gõ tên loài vẫn đáng tin hơn mô tả hình thái dài.
-- **Cơ chế “Cô làm vườn”:** endpoint `/api/chat` dùng `RAGChatbot` trong `core/llm.py`: BM25 truy xuất chunk từ `data/kb/`, rồi provider Gemini (mặc định `LLM_PROVIDER=gemini` trong `config.py`) sinh câu trả lời có nguồn nếu API khả dụng. Khi không có khóa/provider không dùng được, code có đường fallback trích nội dung truy xuất; vì vậy không phải mọi phản hồi đều là câu trả lời do mô hình sinh. Đây không phải mô hình chuyên biệt đã huấn luyện để chẩn đoán bệnh cây. Độ đúng câu trả lời sinh **chưa đo**.
+- Tìm ảnh trả ảnh tương tự theo embedding, không xác nhận danh tính thực vật. Precision@5 của tuyến mô tả tiếng Việt production đạt 100% trên 10 câu development viết thủ công; tập nhỏ này chưa được gán nhãn độc lập và không đại diện truy vấn tự nhiên hoặc toàn bộ 103 loài.
+- **Cơ chế “Cô làm vườn”:** endpoint `/api/chat` dùng `RAGChatbot` trong `core/llm.py`: BM25 truy xuất chunk từ `data/kb/`; Gemini chỉ sinh câu trả lời khi `ENABLE_GEMINI_API=1`, có API key và provider khả dụng. Nếu không, backend trả fallback dựa trên đoạn truy xuất và trích nguồn. Vì vậy không phải mọi phản hồi đều do mô hình sinh. Đây không phải mô hình chuyên biệt đã huấn luyện để chẩn đoán bệnh cây. Độ đúng câu trả lời sinh **chưa đo**.
 - Corpus chỉ có 10 file, trong đó hai PDF đều về hướng dương; phạm vi và tính cập nhật tài liệu không đồng đều. Bộ 30 câu hỏi chỉ đo tìm đúng nguồn, chưa có tập câu hỏi ngoài phạm vi hoặc chấm đáp án.
 - Gợi ý của chatbot chỉ mang tính tham khảo, không thay thế chuyên gia/khuyến nông; không dùng để quyết định cây có độc, ăn/uống được hay điều trị bằng thuốc.
 
