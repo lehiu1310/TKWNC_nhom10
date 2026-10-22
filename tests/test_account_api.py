@@ -52,6 +52,30 @@ def test_account_data_is_private_and_limited(account_client):
     assert client.put("/api/account/data/garden", json={"payload": {"blob": "x" * 257_000}}).status_code == 413
 
 
+def test_account_data_is_isolated_between_users(account_client):
+    client = account_client
+    password = "correct-horse-1"
+    first = client.post("/api/auth/register", json={
+        "email": "first@example.com", "display_name": "First", "password": password,
+    })
+    assert first.status_code == 201
+    first_payload = {"plants": [{"speciesId": "roses"}]}
+    assert client.put("/api/account/data/garden", json={"payload": first_payload}).status_code == 200
+
+    with TestClient(main.app, raise_server_exceptions=False) as second_client:
+        second = second_client.post("/api/auth/register", json={
+            "email": "second@example.com", "display_name": "Second", "password": password,
+        })
+        assert second.status_code == 201
+        assert second_client.get("/api/account/data/garden").json()["payload"] is None
+
+        second_payload = {"plants": [{"speciesId": "tulips"}]}
+        assert second_client.put("/api/account/data/garden", json={"payload": second_payload}).status_code == 200
+
+        assert client.get("/api/account/data/garden").json()["payload"] == first_payload
+        assert second_client.get("/api/account/data/garden").json()["payload"] == second_payload
+
+
 def test_rejects_cross_origin_auth_mutation(account_client):
     response = account_client.post("/api/auth/register", headers={"Origin": "https://bad.example"}, json={
         "email": "a@example.com", "display_name": "A", "password": "correct-horse-1",
@@ -88,8 +112,10 @@ def test_optional_postgres_account_roundtrip(monkeypatch):
     monkeypatch.setattr(account_store, "DATABASE_URL", dsn)
     account_store.initialize()
     email = f"db-check-{secrets.token_hex(8)}@example.invalid"
+    other_email = f"db-check-other-{secrets.token_hex(8)}@example.invalid"
     try:
         user, token = account_store.create_user(email, "Database check", "garden-pass-123")
+        other_user, _ = account_store.create_user(other_email, "Other database user", "garden-pass-123")
         assert account_store.get_user(token)["id"] == user["id"]
         logged_in = account_store.login(email.upper(), "garden-pass-123")
         assert logged_in is not None
@@ -97,8 +123,12 @@ def test_optional_postgres_account_roundtrip(monkeypatch):
         assert account_store.get_user(logged_in[1])["id"] == user["id"]
         with pytest.raises(ValueError, match="đã có tài khoản"):
             account_store.create_user(email.upper(), "Duplicate", "garden-pass-123")
-        account_store.write_user_data(user["id"], "garden", {"plants": [{"speciesId": "roses"}]})
-        assert account_store.read_user_data(user["id"], "garden") == {"plants": [{"speciesId": "roses"}]}
+        user_payload = {"plants": [{"speciesId": "roses"}]}
+        account_store.write_user_data(user["id"], "garden", user_payload)
+        assert account_store.read_user_data(user["id"], "garden") == user_payload
+        assert account_store.read_user_data(other_user["id"], "garden") is None
+        account_store.write_user_data(other_user["id"], "garden", {"plants": [{"speciesId": "tulips"}]})
+        assert account_store.read_user_data(user["id"], "garden") == user_payload
     finally:
         with account_store._connect() as db:
-            db.execute("DELETE FROM users WHERE email=?", (email,))
+            db.execute("DELETE FROM users WHERE email IN (?,?)", (email, other_email))
