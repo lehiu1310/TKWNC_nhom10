@@ -1,4 +1,4 @@
-"""SQLite-backed accounts and per-user app data; no external service required."""
+"""SQLite-backed local accounts with optional PostgreSQL for hosted persistence."""
 from __future__ import annotations
 
 import hashlib
@@ -12,10 +12,18 @@ from pathlib import Path
 from config import ROOT
 
 DB_PATH = Path(os.environ.get("APP_DB_PATH", str(ROOT / ".data" / "vuonhoa.sqlite3")))
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 SESSION_DAYS = 14
 
 
 def _connect() -> sqlite3.Connection:
+    if DATABASE_URL:
+        try:
+            import psycopg
+            from psycopg.rows import dict_row
+        except ImportError as exc:
+            raise RuntimeError("DATABASE_URL cần psycopg được cài đặt.") from exc
+        return _PostgresConnection(psycopg.connect(DATABASE_URL, row_factory=dict_row, connect_timeout=10))
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     db = sqlite3.connect(DB_PATH, timeout=10)
     db.row_factory = sqlite3.Row
@@ -24,31 +32,60 @@ def _connect() -> sqlite3.Connection:
     return db
 
 
+class _PostgresConnection:
+    """Small adapter so the account store keeps one portable SQL implementation."""
+
+    def __init__(self, connection):
+        self.connection = connection
+
+    def __enter__(self):
+        self.connection.__enter__()
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        return self.connection.__exit__(exc_type, exc, tb)
+
+    def execute(self, sql: str, parameters=()):
+        sql = sql.replace("?", "%s")
+        return self.connection.execute(sql, parameters)
+
+
 def initialize() -> None:
     with _connect() as db:
-        db.executescript("""
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY,
-                email TEXT NOT NULL UNIQUE COLLATE NOCASE,
-                display_name TEXT NOT NULL,
-                password_hash BLOB NOT NULL,
-                password_salt BLOB NOT NULL,
-                created_at TEXT NOT NULL
-            );
-            CREATE TABLE IF NOT EXISTS sessions (
-                token_hash TEXT PRIMARY KEY,
-                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                expires_at TEXT NOT NULL
-            );
-            CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at);
-            CREATE TABLE IF NOT EXISTS user_data (
-                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                data_key TEXT NOT NULL,
-                payload TEXT NOT NULL,
-                updated_at TEXT NOT NULL,
-                PRIMARY KEY (user_id, data_key)
-            );
-        """)
+        if DATABASE_URL:
+            schema = (
+                "CREATE TABLE IF NOT EXISTS users (id BIGSERIAL PRIMARY KEY, email TEXT NOT NULL UNIQUE, "
+                "display_name TEXT NOT NULL, password_hash BYTEA NOT NULL, password_salt BYTEA NOT NULL, created_at TEXT NOT NULL)",
+                "CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at TEXT NOT NULL)",
+                "CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at)",
+                "CREATE TABLE IF NOT EXISTS user_data (user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE, data_key TEXT NOT NULL, payload TEXT NOT NULL, updated_at TEXT NOT NULL, PRIMARY KEY (user_id, data_key))",
+            )
+            for statement in schema:
+                db.execute(statement)
+        else:
+            db.executescript("""
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY,
+                    email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+                    display_name TEXT NOT NULL,
+                    password_hash BLOB NOT NULL,
+                    password_salt BLOB NOT NULL,
+                    created_at TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS sessions (
+                    token_hash TEXT PRIMARY KEY,
+                    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                    expires_at TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at);
+                CREATE TABLE IF NOT EXISTS user_data (
+                    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                    data_key TEXT NOT NULL,
+                    payload TEXT NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    PRIMARY KEY (user_id, data_key)
+                );
+            """)
 
 
 def _password(password: str, salt: bytes) -> bytes:
@@ -62,13 +99,18 @@ def create_user(email: str, display_name: str, password: str) -> tuple[dict, str
     with _connect() as db:
         try:
             cur = db.execute(
-                "INSERT INTO users(email, display_name, password_hash, password_salt, created_at) VALUES(?,?,?,?,?)",
+                "INSERT INTO users(email, display_name, password_hash, password_salt, created_at) VALUES(?,?,?,?,?) RETURNING id",
                 (email, display_name.strip(), _password(password, salt), salt, created),
             )
         except sqlite3.IntegrityError as exc:
             raise ValueError("Email này đã có tài khoản.") from exc
-        user = {"id": cur.lastrowid, "email": email, "display_name": display_name.strip(), "created_at": created}
-        token = _new_session(db, cur.lastrowid)
+        except Exception as exc:
+            if getattr(exc, "sqlstate", None) != "23505":
+                raise
+            raise ValueError("Email này đã có tài khoản.") from exc
+        user_id = cur.fetchone()["id"]
+        user = {"id": user_id, "email": email, "display_name": display_name.strip(), "created_at": created}
+        token = _new_session(db, user_id)
     return user, token
 
 

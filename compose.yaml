@@ -8,6 +8,7 @@ services:
     environment:
       PORT: "7860"
       APP_DB_PATH: /app/.data/vuonhoa.sqlite3
+      DATABASE_URL: ${DATABASE_URL:-}
       MODEL_WARMUP: "0"
       RENDER_FREE_MEMORY: "1"
       RETRIEVAL_BACKEND: classifier

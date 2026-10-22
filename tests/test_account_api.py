@@ -1,5 +1,7 @@
 from fastapi.testclient import TestClient
 import pytest
+import os
+import secrets
 
 from api import account_store, main
 
@@ -55,3 +57,20 @@ def test_rejects_cross_origin_auth_mutation(account_client):
         "email": "a@example.com", "display_name": "A", "password": "correct-horse-1",
     })
     assert response.status_code == 403
+
+
+def test_optional_postgres_account_roundtrip(monkeypatch):
+    dsn = os.environ.get("TEST_DATABASE_URL")
+    if not dsn:
+        pytest.skip("Set TEST_DATABASE_URL to run the PostgreSQL integration check.")
+    monkeypatch.setattr(account_store, "DATABASE_URL", dsn)
+    account_store.initialize()
+    email = f"db-check-{secrets.token_hex(8)}@example.invalid"
+    try:
+        user, token = account_store.create_user(email, "Database check", "garden-pass-123")
+        assert account_store.get_user(token)["id"] == user["id"]
+        account_store.write_user_data(user["id"], "garden", {"plants": [{"speciesId": "roses"}]})
+        assert account_store.read_user_data(user["id"], "garden") == {"plants": [{"speciesId": "roses"}]}
+    finally:
+        with account_store._connect() as db:
+            db.execute("DELETE FROM users WHERE email=?", (email,))
