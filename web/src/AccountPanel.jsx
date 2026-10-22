@@ -50,7 +50,7 @@ export default function AccountPanel({ onClose }) {
       {busy && !user ? <p role="status">Đang kiểm tra phiên đăng nhập…</p> : user ? <>
         <h2 id="account-title">Chào {user.display_name}</h2>
         <p className="account-subtitle">{user.email}</p>
-        <div className="account-sync-card"><b>Dữ liệu khu vườn</b><span>Sổ hoa và danh sách cây được lưu trong SQLite khi đăng nhập.</span></div>
+        <div className="account-sync-card"><b>Dữ liệu khu vườn</b><span>Sổ hoa và danh sách cây được đồng bộ với CSDL tài khoản.</span></div>
         <button className="account-primary" type="button" disabled={busy} onClick={() => syncCollections().catch((reason) => setError(reason.message))}>{busy ? 'Đang đồng bộ…' : 'Đồng bộ dữ liệu'}</button>
         <button className="account-secondary" type="button" disabled={busy} onClick={logout}>Đăng xuất</button>
       </> : <>
@@ -66,7 +66,7 @@ export default function AccountPanel({ onClose }) {
       </>}
       {error && <p className="account-message error" role="alert">{error}</p>}
       {notice && <p className="account-message" role="status">{notice}</p>}
-      <small className="account-note">Không cần thanh toán. Mật khẩu được băm trước khi lưu. Trên Render Free, CSDL có thể bị xoá khi máy chủ khởi động lại.</small>
+      <small className="account-note">Không cần thanh toán. Mật khẩu được băm trước khi lưu. Hãy đăng xuất sau khi dùng trên thiết bị công cộng.</small>
     </section>
   </div>;
 }
