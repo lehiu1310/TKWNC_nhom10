@@ -267,7 +267,7 @@ async def _read_image(file: UploadFile) -> Image.Image:
         image = Image.open(io.BytesIO(data))
         image.load()
         return image.convert("RGB")
-    except (UnidentifiedImageError, OSError):
+    except (UnidentifiedImageError, OSError, ImportError):
         raise HTTPException(400, "File không phải ảnh hợp lệ (jpg, png, webp)")
 
 
