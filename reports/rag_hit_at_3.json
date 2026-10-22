@@ -1,11 +1,11 @@
 {
   "metric": "Hit@3",
-  "hits": 30,
-  "total": 30,
+  "hits": 31,
+  "total": 31,
   "score": 1.0,
   "fallback_answer_source_citation": {
-    "hits": 30,
-    "total": 30,
+    "hits": 31,
+    "total": 31,
     "score": 1.0,
     "note": "Checks non-empty retrieval fallback cites the hand-labeled expected source; does not judge factual correctness or answer quality."
   },
@@ -151,6 +151,17 @@
         "huong_duong.md",
         "y_nghia_hoa.md",
         "hoa_cuc.md"
+      ],
+      "hit_at_3": true,
+      "fallback_answer_cites_expected_source": true
+    },
+    {
+      "question": "Hoa hướng dương thường có màu gì?",
+      "expected_source": "huong_duong.md",
+      "retrieved_sources": [
+        "huong_duong.md",
+        "y_nghia_hoa.md",
+        "y_nghia_tang_hoa.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -304,7 +315,7 @@
       "retrieved_sources": [
         "bo_cong_anh.md",
         "y_nghia_hoa.md",
-        "huong_duong.md"
+        "hoa_cuc.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -337,7 +348,7 @@
       "retrieved_sources": [
         "bo_cong_anh.md",
         "y_nghia_tang_hoa.md",
-        "huong_duong.md"
+        "y_nghia_hoa.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true

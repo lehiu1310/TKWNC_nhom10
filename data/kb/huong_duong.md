@@ -3,6 +3,8 @@
 ## Nhận biết
 Hướng dương trồng phổ biến là *Helianthus annuus*, cây thân thảo một năm thuộc họ Cúc. Phần thường được gọi là “bông” thực ra là một cụm gồm nhiều hoa nhỏ trên đế chung: các hoa tia ở rìa tạo hình cánh, các hoa đĩa ở giữa tạo vùng nhụy và sau thụ phấn có thể hình thành hạt. Cây có lá rộng, thân đứng; chiều cao, số đầu hoa và kích thước thay đổi theo giống. Không thể suy ra giống chỉ từ màu vàng của cánh.
 
+Ở hướng dương trồng phổ biến, hoa tia thường có màu vàng; các giống làm cảnh và hoa cắt cành cũng có thể có màu cam, kem hoặc trắng, đỏ rượu vang và phối màu. Màu sắc thay đổi theo giống, nên không dùng riêng màu cánh để xác định giống.
+
 ## Ánh sáng và đất
 Cây cần vị trí nhiều nắng. Đất tơi, thoát nước giúp rễ phát triển và hạn chế úng. Tài liệu USDA hướng dẫn gieo trực tiếp khi đất đủ ấm, làm luống sạch cỏ, tưới nhẹ sau gieo và tỉa cây con nếu mọc quá dày. USDA nêu khoảng cách theo quy mô và giống; khoảng cách sản xuất hạt không phải công thức cắm hoa trang trí.
 
@@ -28,4 +30,5 @@ Hướng dương thường gợi sự lạc quan, sức sống và niềm hy v�
 - K-State Research and Extension, *High Plains Sunflower Production Handbook*, 56 trang: https://www.southeast.k-state.edu/program_areas/crop_production/sunflower/MF2384.pdf
 - South Dakota Cooperative Extension, Kathleen Grady, *Sunflower Production*, Circular 911, 11 trang: https://openprairie.sdstate.edu/extension_circ/478/
 - USDA NRCS, *Annual Sunflower Plant Guide*, 5 trang: https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/cs_hean3.pdf
+- Utah State University Extension, *Sunflower Cut Flower Production in Utah*: https://extension.usu.edu/productionhort/research/sunflower-cut-flower-production-in-utah
 
