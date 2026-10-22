@@ -60,6 +60,41 @@ def test_visual_search_hint_expands_multiple_botanical_cues():
     assert _visual_search_hint("một đóa hoa đẹp trong vườn") is None
 
 
+def test_visual_hint_routes_high_confidence_category_before_clip_ranking():
+    import numpy as np
+    from core.retrieval import ImageSearch
+
+    class Encoder:
+        query = None
+
+        def encode_texts(self, queries):
+            self.query = queries[0]
+            return np.asarray([[1.0, 0.0]], dtype=np.float32)
+
+    class Index:
+        ntotal = 3
+
+        def search(self, _query, _count):
+            return np.asarray([[0.9, 0.8, 0.7]], dtype=np.float32), np.asarray([[0, 1, 2]])
+
+    engine = object.__new__(ImageSearch)
+    engine._species_names = [("sunflowers", "sunflower"), ("daisy", "oxeye daisy")]
+    engine._english_name_by_id = {"sunflowers": "common sunflower", "daisy": "oxeye daisy"}
+    engine.encoder = Encoder()
+    engine.index = Index()
+    engine.meta = [
+        {"species_id": "sunflowers", "label": "sunflower"},
+        {"species_id": "daisy", "label": "daisy"},
+        {"species_id": "sunflowers", "label": "sunflower"},
+    ]
+    engine._english_query = lambda _query: "a photograph of a large yellow flower with brown center"
+
+    result = engine.search_text_with_query("đóa vàng lớn, tâm nâu tròn, cánh tỏa ra ngoài", k=3)
+
+    assert [item["species_id"] for item in result["results"]] == ["sunflowers", "sunflowers"]
+    assert "sunflower" in engine.encoder.query
+
+
 def test_bm25_ranks_relevant_vietnamese_flower_chunks_first():
     retriever = Retriever([
         {"source": "hoa_hong.md", "text": "Hoa hồng tượng trưng cho tình yêu và lòng biết ơn."},
