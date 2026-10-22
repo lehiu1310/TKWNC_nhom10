@@ -4,7 +4,7 @@ from collections import OrderedDict
 
 import numpy as np
 
-from core.retrieval_light import ClassifierFeatureSearch
+from core.retrieval_light import ClassifierFeatureSearch, _normalize
 from core.retrieval import ImageSearch
 
 
@@ -48,6 +48,18 @@ def _search(tmp_path):
     return ClassifierFeatureSearch(_Encoder(), index_dir=tmp_path)
 
 
+def _search_featured_flowers(tmp_path):
+    species_ids = ("daisy", "dandelion", "roses", "sunflowers", "tulips")
+    metadata = [
+        {"path": f"{species_id}-{index}.jpg", "label": species_id, "species_id": species_id}
+        for species_id in species_ids
+        for index in range(5)
+    ]
+    (tmp_path / "meta.json").write_text(json.dumps(metadata), encoding="utf-8")
+    np.save(tmp_path / "classifier_features.npy", np.tile([[1.0, 0.0]], (len(metadata), 1)))
+    return ClassifierFeatureSearch(_Encoder(), index_dir=tmp_path)
+
+
 def test_image_query_ranks_similar_classifier_features(tmp_path):
     result = _search(tmp_path).search_image(object(), k=2)
     assert [item["species_id"] for item in result] == ["roses", "roses"]
@@ -76,6 +88,33 @@ def test_vietnamese_name_query_returns_matching_species(tmp_path):
 
 def test_unmatched_text_query_does_not_return_unrelated_photos(tmp_path):
     assert _search(tmp_path).search_text("qzxv nonsense", k=5) == []
+
+
+def test_text_search_normalizes_vietnamese_d_and_diacritics():
+    assert _normalize("đồng cỏ") == "dong co"
+
+
+def test_text_search_routes_visual_descriptions_using_multiple_flower_cues(tmp_path):
+    search = _search_featured_flowers(tmp_path)
+    queries = (
+        ("cánh trắng mỏng xếp vòng quanh nhụy vàng, đứng giữa cỏ xanh", "daisy"),
+        ("đóa vàng nhỏ mọc trên thân xanh mảnh, lá thấp ôm gốc", "dandelion"),
+        ("quả cầu hạt trắng li ti bay khỏi một bông vàng dưới gió", "dandelion"),
+        ("cánh hoa đỏ nhung cuộn thành nhiều lớp dày", "roses"),
+        ("một đóa đỏ nổi bật giữa tán lá xanh đậm", "roses"),
+        ("đóa vàng lớn với tâm nâu tròn, cánh xếp tỏa ra ngoài", "sunflowers"),
+        ("cánh hoa vàng rực vây quanh nhụy sẫm, phía sau mờ xanh", "sunflowers"),
+        ("bông hoa hình chén màu hồng trên thân thẳng, lá dài", "tulips"),
+        ("một đóa hồng phấn cánh khum trong khu vườn mùa xuân", "tulips"),
+    )
+    for query, expected in queries:
+        results = search.search_text(query, k=5)
+        assert len(results) == 5
+        assert {item["species_id"] for item in results} == {expected}
+
+
+def test_vague_color_only_query_does_not_guess_a_flower(tmp_path):
+    assert _search_featured_flowers(tmp_path).search_text("một bông hoa màu vàng", k=5) == []
 
 
 def test_offline_query_translation_maps_visual_terms_and_species_names(monkeypatch):

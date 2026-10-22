@@ -1,0 +1,141 @@
+{
+  "metric": "Precision@5",
+  "backend": "production ClassifierFeatureSearch text routing",
+  "query_count": 10,
+  "class_count": 5,
+  "top1_accuracy": 1.0,
+  "mean_precision_at_5": 1.0,
+  "protocol": "Ten manually written Vietnamese descriptions, two per class among five featured flowers. This development set is not independently authored or a general-purpose relevance benchmark.",
+  "results": [
+    {
+      "query_vi": "cánh trắng mỏng xếp vòng quanh nhụy vàng, đứng giữa cỏ xanh",
+      "expected_species_id": "daisy",
+      "retrieved_species_ids": [
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "một bông cúc trắng đơn độc bên mép đồng cỏ",
+      "expected_species_id": "daisy",
+      "retrieved_species_ids": [
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "đóa vàng nhỏ mọc trên thân xanh mảnh, lá thấp ôm gốc",
+      "expected_species_id": "dandelion",
+      "retrieved_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "quả cầu hạt trắng li ti bay khỏi một bông vàng dưới gió",
+      "expected_species_id": "dandelion",
+      "retrieved_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "cánh hoa đỏ nhung cuộn thành nhiều lớp dày",
+      "expected_species_id": "roses",
+      "retrieved_species_ids": [
+        "roses",
+        "roses",
+        "roses",
+        "roses",
+        "roses"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "một đóa đỏ nổi bật giữa tán lá xanh đậm",
+      "expected_species_id": "roses",
+      "retrieved_species_ids": [
+        "roses",
+        "roses",
+        "roses",
+        "roses",
+        "roses"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "đóa vàng lớn với tâm nâu tròn, cánh xếp tỏa ra ngoài",
+      "expected_species_id": "sunflowers",
+      "retrieved_species_ids": [
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "cánh hoa vàng rực vây quanh nhụy sẫm, phía sau mờ xanh",
+      "expected_species_id": "sunflowers",
+      "retrieved_species_ids": [
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "bông hoa hình chén màu hồng trên thân thẳng, lá dài",
+      "expected_species_id": "tulips",
+      "retrieved_species_ids": [
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_vi": "một đóa hồng phấn cánh khum trong khu vườn mùa xuân",
+      "expected_species_id": "tulips",
+      "retrieved_species_ids": [
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips"
+      ],
+      "top1_correct": true,
+      "precision_at_5": 1.0
+    }
+  ]
+}

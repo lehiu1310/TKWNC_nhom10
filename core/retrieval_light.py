@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import unicodedata
 from pathlib import Path
@@ -12,9 +13,30 @@ from PIL import Image
 from config import ART_DIR, CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE, DATA_DIR
 
 
+# Phrase cues resolve descriptions that omit a flower's name. Keep them
+# discriminative and combine multiple cues instead of routing on color alone.
+_FEATURED_TEXT_CUES = {
+    "daisy": (("canh hoa trang", 1.0), ("nhuy vang", 1.0), ("tam vang", 1.0), ("dong co", 0.5)),
+    "dandelion": (("doa vang nho", 1.3), ("qua cau hat", 1.3), ("chum long", 1.0),
+                  ("hat bay theo gio", 1.2), ("la thap om goc", 0.7)),
+    "roses": (("canh hoa do nhung", 1.2), ("nhieu lop canh", 1.2), ("than gai", 1.2),
+              ("la kep", 1.0), ("tan la xanh dam", 0.8), ("doa do", 0.4)),
+    "sunflowers": (("doa vang lon", 1.2), ("tam nau", 1.2), ("nhuy sam", 1.0),
+                   ("canh xep toa", 0.8), ("dia lon o giua", 1.2)),
+    "tulips": (("hinh chen", 1.3), ("hinh coc", 1.3), ("canh khum", 1.0),
+               ("than thang", 0.5), ("la dai", 0.5), ("tu mua xuan", 0.7)),
+}
+_GENERIC_TEXT_TERMS = {
+    "hoa", "flower", "doa", "bong", "canh", "mau", "noi", "bat", "lon", "nho",
+    "xanh", "vang", "do", "hong", "trang", "dep", "giua", "trong", "mot",
+    "nhieu", "thanh", "phan", "co", "la", "day", "cay", "hinh", "dang",
+}
+
+
 def _normalize(value: str) -> str:
     value = unicodedata.normalize("NFD", value.casefold())
     value = "".join(char for char in value if unicodedata.category(char) != "Mn")
+    value = value.replace("đ", "d")
     return re.sub(r"[^a-z0-9]+", " ", value).strip()
 
 
@@ -44,6 +66,19 @@ class ClassifierFeatureSearch:
                 normalized = _normalize(str(alias))
                 if len(normalized) >= 3 and normalized not in {"hoa", "flower"}:
                     self._aliases.append((normalized, species_id))
+        self._terms_by_id = {
+            species_id: set(text.split()) - _GENERIC_TEXT_TERMS
+            for species_id, text in self._text_by_id.items()
+        }
+        document_frequency = {}
+        for terms in self._terms_by_id.values():
+            for term in terms:
+                document_frequency[term] = document_frequency.get(term, 0) + 1
+        count = max(1, len(self._terms_by_id))
+        self._term_weights = {
+            term: math.log((count + 1) / (frequency + 1)) + 1.0
+            for term, frequency in document_frequency.items()
+        }
 
     def _rank(self, query: np.ndarray, k: int, label: str | None = None) -> list[dict]:
         ids = np.arange(len(self.meta))
@@ -83,14 +118,30 @@ class ClassifierFeatureSearch:
                 matched = max(matches)[1]
 
         if matched is None:
-            terms = {term for term in normalized.split() if len(term) > 2 and term not in {"hoa", "flower", "mau"}}
-            lexical = []
-            for species_id, text in self._text_by_id.items():
-                overlap = len(terms.intersection(text.split()))
-                if overlap:
-                    lexical.append((overlap, species_id))
-            if lexical:
-                matched = max(lexical)[1]
+            cue_scores = {
+                species_id: sum(weight for phrase, weight in cues if phrase in normalized)
+                for species_id, cues in _FEATURED_TEXT_CUES.items()
+            }
+            ranked_cues = sorted(
+                ((score, species_id) for species_id, score in cue_scores.items()), reverse=True
+            )
+            best_cue, best_species = ranked_cues[0]
+            second_cue = ranked_cues[1][0] if len(ranked_cues) > 1 else 0.0
+            if best_cue >= 1.0 and best_cue - second_cue >= 0.25:
+                matched = best_species
+
+        if matched is None:
+            terms = {term for term in normalized.split()
+                     if len(term) > 2 and term not in _GENERIC_TEXT_TERMS}
+            lexical = [
+                (sum(self._term_weights.get(term, 0.0) for term in terms & species_terms), species_id)
+                for species_id, species_terms in self._terms_by_id.items()
+            ]
+            score, species_id = max(lexical, default=(0.0, ""))
+            # Avoid returning an arbitrary flower for vague descriptions such
+            # as "một bông hoa vàng"; ask for a more distinctive cue instead.
+            if score >= 2.0:
+                matched = species_id
 
         if matched is None:
             return {"results": [], "query_used": query, "translated": False}
