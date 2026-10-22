@@ -55,6 +55,11 @@ MAX_UPLOAD_MB = int(os.environ.get("MAX_UPLOAD_MB", "8"))
 CLASSIFIER_OOD_MIN_CONFIDENCE = float(os.environ.get("CLASSIFIER_OOD_MIN_CONFIDENCE", "0.6967"))
 if not 0.0 <= CLASSIFIER_OOD_MIN_CONFIDENCE <= 1.0:
     raise ValueError("CLASSIFIER_OOD_MIN_CONFIDENCE must be between 0 and 1")
+CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE = float(
+    os.environ.get("CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE", "0.4")
+)
+if not 0.0 <= CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE <= 1.0:
+    raise ValueError("CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE must be between 0 and 1")
 CORS_ORIGINS = [
     origin.strip()
     for origin in os.environ.get(

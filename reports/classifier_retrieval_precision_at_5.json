@@ -1,0 +1,4754 @@
+{
+  "metric": "Precision@5",
+  "backend": "ResNet-18 penultimate-layer features (RETRIEVAL_BACKEND=classifier)",
+  "query_count": 206,
+  "queries_per_class_max": 2,
+  "class_count": 103,
+  "index_count": 1236,
+  "seed": 42,
+  "classifier_confidence_threshold": 0.4,
+  "global_precision_at_5": 0.8757281553398057,
+  "predicted_class_filtered_precision_at_5": 0.9165048543689321,
+  "top1_class_accuracy": 0.9029126213592233,
+  "method": "Held-out by file path from the same public flower sources used for training/index construction. The candidate strategy constrains gallery results to the classifier top-1 class only when confidence meets the production threshold; otherwise it uses global feature ranking.",
+  "per_query": [
+    {
+      "query_path": "data/flowers-102/jpg/image_05594.jpg",
+      "expected_species_id": "alpine-sea-holly",
+      "predicted_species_id": "wild-pansy",
+      "classifier_confidence": 0.162,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "alpine-sea-holly",
+        "alpine-sea-holly",
+        "alpine-sea-holly",
+        "alpine-sea-holly",
+        "alpine-sea-holly"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "alpine-sea-holly",
+        "alpine-sea-holly",
+        "alpine-sea-holly",
+        "alpine-sea-holly",
+        "alpine-sea-holly"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05586.jpg",
+      "expected_species_id": "alpine-sea-holly",
+      "predicted_species_id": "frangipani",
+      "classifier_confidence": 0.2625,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "alpine-sea-holly",
+        "frangipani",
+        "alpine-sea-holly",
+        "frangipani",
+        "alpine-sea-holly"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "alpine-sea-holly",
+        "frangipani",
+        "alpine-sea-holly",
+        "frangipani",
+        "alpine-sea-holly"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01689.jpg",
+      "expected_species_id": "anthurium",
+      "predicted_species_id": "anthurium",
+      "classifier_confidence": 0.4347,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01623.jpg",
+      "expected_species_id": "anthurium",
+      "predicted_species_id": "anthurium",
+      "classifier_confidence": 0.946,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium",
+        "anthurium"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06581.jpg",
+      "expected_species_id": "artichoke",
+      "predicted_species_id": "artichoke",
+      "classifier_confidence": 0.6692,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "artichoke",
+        "carnation",
+        "artichoke",
+        "artichoke",
+        "artichoke"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "artichoke",
+        "artichoke",
+        "artichoke",
+        "artichoke",
+        "artichoke"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06577.jpg",
+      "expected_species_id": "artichoke",
+      "predicted_species_id": "artichoke",
+      "classifier_confidence": 0.4554,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "artichoke",
+        "artichoke",
+        "artichoke",
+        "artichoke",
+        "artichoke"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "artichoke",
+        "artichoke",
+        "artichoke",
+        "artichoke",
+        "artichoke"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00280.jpg",
+      "expected_species_id": "azalea",
+      "predicted_species_id": "azalea",
+      "classifier_confidence": 0.8996,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "azalea",
+        "azalea",
+        "azalea",
+        "azalea",
+        "azalea"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "azalea",
+        "azalea",
+        "azalea",
+        "azalea",
+        "azalea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00436.jpg",
+      "expected_species_id": "azalea",
+      "predicted_species_id": "azalea",
+      "classifier_confidence": 0.2457,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "azalea",
+        "cyclamen",
+        "azalea",
+        "azalea",
+        "toad-lily"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "azalea",
+        "cyclamen",
+        "azalea",
+        "azalea",
+        "toad-lily"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07673.jpg",
+      "expected_species_id": "ball-moss",
+      "predicted_species_id": "ball-moss",
+      "classifier_confidence": 0.1215,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "ball-moss",
+        "ball-moss",
+        "water-lily",
+        "ball-moss",
+        "water-lily"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "ball-moss",
+        "ball-moss",
+        "water-lily",
+        "ball-moss",
+        "water-lily"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07607.jpg",
+      "expected_species_id": "ball-moss",
+      "predicted_species_id": "ball-moss",
+      "classifier_confidence": 0.2406,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "daffodil",
+        "ball-moss",
+        "ball-moss",
+        "japanese-anemone",
+        "daffodil"
+      ],
+      "global_precision_at_5": 0.4,
+      "filtered_top_5_species_ids": [
+        "daffodil",
+        "ball-moss",
+        "ball-moss",
+        "japanese-anemone",
+        "daffodil"
+      ],
+      "filtered_precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06085.jpg",
+      "expected_species_id": "balloon-flower",
+      "predicted_species_id": "balloon-flower",
+      "classifier_confidence": 0.5615,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06052.jpg",
+      "expected_species_id": "balloon-flower",
+      "predicted_species_id": "balloon-flower",
+      "classifier_confidence": 0.779,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower",
+        "balloon-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07008.jpg",
+      "expected_species_id": "barbeton-daisy",
+      "predicted_species_id": "barbeton-daisy",
+      "classifier_confidence": 0.2398,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "barbeton-daisy",
+        "barbeton-daisy",
+        "desert-rose",
+        "barbeton-daisy",
+        "desert-rose"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "barbeton-daisy",
+        "barbeton-daisy",
+        "desert-rose",
+        "barbeton-daisy",
+        "desert-rose"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07010.jpg",
+      "expected_species_id": "barbeton-daisy",
+      "predicted_species_id": "barbeton-daisy",
+      "classifier_confidence": 0.3149,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "barbeton-daisy",
+        "barbeton-daisy",
+        "barbeton-daisy",
+        "trumpet-creeper",
+        "bolero-deep-blue"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "barbeton-daisy",
+        "barbeton-daisy",
+        "barbeton-daisy",
+        "trumpet-creeper",
+        "bolero-deep-blue"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05920.jpg",
+      "expected_species_id": "bearded-iris",
+      "predicted_species_id": "tree-mallow",
+      "classifier_confidence": 0.0981,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "spear-thistle",
+        "bearded-iris",
+        "spear-thistle",
+        "blanket-flower",
+        "trumpet-creeper"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "spear-thistle",
+        "bearded-iris",
+        "spear-thistle",
+        "blanket-flower",
+        "trumpet-creeper"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05921.jpg",
+      "expected_species_id": "bearded-iris",
+      "predicted_species_id": "bearded-iris",
+      "classifier_confidence": 0.7728,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bearded-iris",
+        "bearded-iris",
+        "bearded-iris",
+        "globe-flower",
+        "bearded-iris"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "bearded-iris",
+        "bearded-iris",
+        "bearded-iris",
+        "bearded-iris",
+        "bearded-iris"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07537.jpg",
+      "expected_species_id": "bee-balm",
+      "predicted_species_id": "bee-balm",
+      "classifier_confidence": 0.8472,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bee-balm",
+        "bee-balm",
+        "bee-balm",
+        "bee-balm",
+        "wallflower"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "bee-balm",
+        "bee-balm",
+        "bee-balm",
+        "bee-balm",
+        "bee-balm"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07551.jpg",
+      "expected_species_id": "bee-balm",
+      "predicted_species_id": "bee-balm",
+      "classifier_confidence": 0.4433,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bee-balm",
+        "wallflower",
+        "wallflower",
+        "bee-balm",
+        "mexican-petunia"
+      ],
+      "global_precision_at_5": 0.4,
+      "filtered_top_5_species_ids": [
+        "bee-balm",
+        "bee-balm",
+        "bee-balm",
+        "bee-balm",
+        "bee-balm"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00788.jpg",
+      "expected_species_id": "bird-of-paradise",
+      "predicted_species_id": "bird-of-paradise",
+      "classifier_confidence": 0.7213,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00935.jpg",
+      "expected_species_id": "bird-of-paradise",
+      "predicted_species_id": "bird-of-paradise",
+      "classifier_confidence": 0.6556,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise",
+        "bird-of-paradise"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04711.jpg",
+      "expected_species_id": "bishop-of-llandaff",
+      "predicted_species_id": "bishop-of-llandaff",
+      "classifier_confidence": 0.2586,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "bishop-of-llandaff",
+        "bishop-of-llandaff",
+        "bishop-of-llandaff",
+        "bishop-of-llandaff",
+        "bishop-of-llandaff"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bishop-of-llandaff",
+        "bishop-of-llandaff",
+        "bishop-of-llandaff",
+        "bishop-of-llandaff",
+        "bishop-of-llandaff"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04750.jpg",
+      "expected_species_id": "bishop-of-llandaff",
+      "predicted_species_id": "bee-balm",
+      "classifier_confidence": 0.1168,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "trumpet-creeper",
+        "blanket-flower",
+        "hippeastrum",
+        "bishop-of-llandaff",
+        "foxglove"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "trumpet-creeper",
+        "blanket-flower",
+        "hippeastrum",
+        "bishop-of-llandaff",
+        "foxglove"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05901.jpg",
+      "expected_species_id": "black-eyed-susan",
+      "predicted_species_id": "black-eyed-susan",
+      "classifier_confidence": 0.7928,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05893.jpg",
+      "expected_species_id": "black-eyed-susan",
+      "predicted_species_id": "black-eyed-susan",
+      "classifier_confidence": 0.4111,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan",
+        "black-eyed-susan"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05179.jpg",
+      "expected_species_id": "blackberry-lily",
+      "predicted_species_id": "blackberry-lily",
+      "classifier_confidence": 0.9271,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05165.jpg",
+      "expected_species_id": "blackberry-lily",
+      "predicted_species_id": "blackberry-lily",
+      "classifier_confidence": 0.4971,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "tiger-lily",
+        "blackberry-lily"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily",
+        "blackberry-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06632.jpg",
+      "expected_species_id": "blanket-flower",
+      "predicted_species_id": "blanket-flower",
+      "classifier_confidence": 0.3033,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "blanket-flower",
+        "blanket-flower",
+        "marigold",
+        "spear-thistle",
+        "spear-thistle"
+      ],
+      "global_precision_at_5": 0.4,
+      "filtered_top_5_species_ids": [
+        "blanket-flower",
+        "blanket-flower",
+        "marigold",
+        "spear-thistle",
+        "spear-thistle"
+      ],
+      "filtered_precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06638.jpg",
+      "expected_species_id": "blanket-flower",
+      "predicted_species_id": "bee-balm",
+      "classifier_confidence": 0.0954,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "trumpet-creeper",
+        "barbeton-daisy",
+        "blanket-flower",
+        "blanket-flower",
+        "marigold"
+      ],
+      "global_precision_at_5": 0.4,
+      "filtered_top_5_species_ids": [
+        "trumpet-creeper",
+        "barbeton-daisy",
+        "blanket-flower",
+        "blanket-flower",
+        "marigold"
+      ],
+      "filtered_precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02355.jpg",
+      "expected_species_id": "bolero-deep-blue",
+      "predicted_species_id": "bolero-deep-blue",
+      "classifier_confidence": 0.8823,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02429.jpg",
+      "expected_species_id": "bolero-deep-blue",
+      "predicted_species_id": "bolero-deep-blue",
+      "classifier_confidence": 0.5303,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "poinsettia",
+        "bolero-deep-blue",
+        "poinsettia",
+        "cyclamen",
+        "cyclamen"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue",
+        "bolero-deep-blue"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07752.jpg",
+      "expected_species_id": "bougainvillea",
+      "predicted_species_id": "bougainvillea",
+      "classifier_confidence": 0.4657,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bougainvillea",
+        "trumpet-creeper",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07775.jpg",
+      "expected_species_id": "bougainvillea",
+      "predicted_species_id": "bougainvillea",
+      "classifier_confidence": 0.8408,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea",
+        "bougainvillea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08036.jpg",
+      "expected_species_id": "bromelia",
+      "predicted_species_id": "bromelia",
+      "classifier_confidence": 0.7875,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08028.jpg",
+      "expected_species_id": "bromelia",
+      "predicted_species_id": "bromelia",
+      "classifier_confidence": 0.3087,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia",
+        "bromelia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01023.jpg",
+      "expected_species_id": "buttercup",
+      "predicted_species_id": "buttercup",
+      "classifier_confidence": 0.6787,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00989.jpg",
+      "expected_species_id": "buttercup",
+      "predicted_species_id": "buttercup",
+      "classifier_confidence": 0.1952,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup",
+        "buttercup"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03213.jpg",
+      "expected_species_id": "californian-poppy",
+      "predicted_species_id": "californian-poppy",
+      "classifier_confidence": 0.1427,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "english-marigold"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "english-marigold"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03231.jpg",
+      "expected_species_id": "californian-poppy",
+      "predicted_species_id": "californian-poppy",
+      "classifier_confidence": 0.8386,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy",
+        "californian-poppy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07841.jpg",
+      "expected_species_id": "camellia",
+      "predicted_species_id": "camellia",
+      "classifier_confidence": 0.9174,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07840.jpg",
+      "expected_species_id": "camellia",
+      "predicted_species_id": "camellia",
+      "classifier_confidence": 0.419,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia",
+        "camellia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06043.jpg",
+      "expected_species_id": "canna-lily",
+      "predicted_species_id": "canna-lily",
+      "classifier_confidence": 0.587,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06020.jpg",
+      "expected_species_id": "canna-lily",
+      "predicted_species_id": "canna-lily",
+      "classifier_confidence": 0.7434,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily",
+        "canna-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06503.jpg",
+      "expected_species_id": "canterbury-bells",
+      "predicted_species_id": "canterbury-bells",
+      "classifier_confidence": 0.6732,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06525.jpg",
+      "expected_species_id": "canterbury-bells",
+      "predicted_species_id": "canterbury-bells",
+      "classifier_confidence": 0.3323,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells",
+        "canterbury-bells"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06945.jpg",
+      "expected_species_id": "cape-flower",
+      "predicted_species_id": "cape-flower",
+      "classifier_confidence": 0.0903,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06956.jpg",
+      "expected_species_id": "cape-flower",
+      "predicted_species_id": "cape-flower",
+      "classifier_confidence": 0.2579,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower",
+        "cape-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05232.jpg",
+      "expected_species_id": "carnation",
+      "predicted_species_id": "carnation",
+      "classifier_confidence": 0.2257,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05274.jpg",
+      "expected_species_id": "carnation",
+      "predicted_species_id": "carnation",
+      "classifier_confidence": 0.3992,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation",
+        "carnation"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06250.jpg",
+      "expected_species_id": "cautleya-spicata",
+      "predicted_species_id": "cautleya-spicata",
+      "classifier_confidence": 0.9356,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06285.jpg",
+      "expected_species_id": "cautleya-spicata",
+      "predicted_species_id": "cautleya-spicata",
+      "classifier_confidence": 0.9853,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata",
+        "cautleya-spicata"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02632.jpg",
+      "expected_species_id": "clematis",
+      "predicted_species_id": "windflower",
+      "classifier_confidence": 0.0724,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "windflower",
+        "geranium",
+        "clematis",
+        "japanese-anemone",
+        "windflower"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "windflower",
+        "geranium",
+        "clematis",
+        "japanese-anemone",
+        "windflower"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02571.jpg",
+      "expected_species_id": "clematis",
+      "predicted_species_id": "clematis",
+      "classifier_confidence": 0.2802,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "clematis",
+        "daffodil",
+        "clematis",
+        "clematis",
+        "clematis"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "clematis",
+        "daffodil",
+        "clematis",
+        "clematis",
+        "clematis"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07217.jpg",
+      "expected_species_id": "colt-s-foot",
+      "predicted_species_id": "colt-s-foot",
+      "classifier_confidence": 0.8206,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07203.jpg",
+      "expected_species_id": "colt-s-foot",
+      "predicted_species_id": "colt-s-foot",
+      "classifier_confidence": 0.3968,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot",
+        "colt-s-foot"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02906.jpg",
+      "expected_species_id": "columbine",
+      "predicted_species_id": "columbine",
+      "classifier_confidence": 0.9555,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02885.jpg",
+      "expected_species_id": "columbine",
+      "predicted_species_id": "columbine",
+      "classifier_confidence": 0.4284,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine",
+        "columbine"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05390.jpg",
+      "expected_species_id": "corn-poppy",
+      "predicted_species_id": "corn-poppy",
+      "classifier_confidence": 0.2907,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05389.jpg",
+      "expected_species_id": "corn-poppy",
+      "predicted_species_id": "corn-poppy",
+      "classifier_confidence": 0.2884,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy",
+        "corn-poppy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04455.jpg",
+      "expected_species_id": "cyclamen",
+      "predicted_species_id": "cyclamen",
+      "classifier_confidence": 0.6087,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "cyclamen",
+        "bee-balm",
+        "cyclamen",
+        "cyclamen",
+        "cyclamen"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "cyclamen",
+        "cyclamen",
+        "cyclamen",
+        "cyclamen",
+        "cyclamen"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04429.jpg",
+      "expected_species_id": "cyclamen",
+      "predicted_species_id": "cyclamen",
+      "classifier_confidence": 0.766,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "cyclamen",
+        "cyclamen",
+        "cyclamen",
+        "hard-leaved-pocket-orchid",
+        "cyclamen"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "cyclamen",
+        "cyclamen",
+        "cyclamen",
+        "cyclamen",
+        "cyclamen"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04613.jpg",
+      "expected_species_id": "daffodil",
+      "predicted_species_id": "daffodil",
+      "classifier_confidence": 0.4798,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04563.jpg",
+      "expected_species_id": "daffodil",
+      "predicted_species_id": "daffodil",
+      "classifier_confidence": 0.7264,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil",
+        "daffodil"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05000.jpg",
+      "expected_species_id": "daisy",
+      "predicted_species_id": "daisy",
+      "classifier_confidence": 0.6617,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "daisy",
+        "moon-orchid",
+        "sweet-william",
+        "moon-orchid",
+        "daisy"
+      ],
+      "global_precision_at_5": 0.4,
+      "filtered_top_5_species_ids": [
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/daisy/9346508462_f0af3163f4.jpg",
+      "expected_species_id": "daisy",
+      "predicted_species_id": "daisy",
+      "classifier_confidence": 0.726,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "daisy",
+        "daisy",
+        "daisy",
+        "dandelion",
+        "daisy"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy",
+        "daisy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/dandelion/16817037661_2980d823e1_n.jpg",
+      "expected_species_id": "dandelion",
+      "predicted_species_id": "dandelion",
+      "classifier_confidence": 0.9572,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/dandelion/7280217714_fb9ffccf2d_n.jpg",
+      "expected_species_id": "dandelion",
+      "predicted_species_id": "dandelion",
+      "classifier_confidence": 0.6933,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "daisy"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion",
+        "dandelion"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05482.jpg",
+      "expected_species_id": "desert-rose",
+      "predicted_species_id": "roses",
+      "classifier_confidence": 0.2998,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "desert-rose",
+        "desert-rose",
+        "colt-s-foot",
+        "desert-rose",
+        "tree-mallow"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "desert-rose",
+        "desert-rose",
+        "colt-s-foot",
+        "desert-rose",
+        "tree-mallow"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05467.jpg",
+      "expected_species_id": "desert-rose",
+      "predicted_species_id": "tree-mallow",
+      "classifier_confidence": 0.1794,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "desert-rose",
+        "desert-rose",
+        "desert-rose",
+        "desert-rose",
+        "desert-rose"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "desert-rose",
+        "desert-rose",
+        "desert-rose",
+        "desert-rose",
+        "desert-rose"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04690.jpg",
+      "expected_species_id": "english-marigold",
+      "predicted_species_id": "english-marigold",
+      "classifier_confidence": 0.6083,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04642.jpg",
+      "expected_species_id": "english-marigold",
+      "predicted_species_id": "english-marigold",
+      "classifier_confidence": 0.5395,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold",
+        "english-marigold"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03842.jpg",
+      "expected_species_id": "fire-lily",
+      "predicted_species_id": "fire-lily",
+      "classifier_confidence": 0.3353,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "osteospermum"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "osteospermum"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03884.jpg",
+      "expected_species_id": "fire-lily",
+      "predicted_species_id": "fire-lily",
+      "classifier_confidence": 0.4535,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "fire-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "fire-lily",
+        "fire-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07706.jpg",
+      "expected_species_id": "foxglove",
+      "predicted_species_id": "foxglove",
+      "classifier_confidence": 0.3263,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "foxglove",
+        "foxglove",
+        "ball-moss",
+        "foxglove",
+        "foxglove"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "foxglove",
+        "foxglove",
+        "ball-moss",
+        "foxglove",
+        "foxglove"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07721.jpg",
+      "expected_species_id": "foxglove",
+      "predicted_species_id": "foxglove",
+      "classifier_confidence": 0.282,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "foxglove",
+        "foxglove",
+        "ball-moss",
+        "foxglove",
+        "foxglove"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "foxglove",
+        "foxglove",
+        "ball-moss",
+        "foxglove",
+        "foxglove"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01785.jpg",
+      "expected_species_id": "frangipani",
+      "predicted_species_id": "frangipani",
+      "classifier_confidence": 0.7717,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "frangipani"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "frangipani"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01812.jpg",
+      "expected_species_id": "frangipani",
+      "predicted_species_id": "frangipani",
+      "classifier_confidence": 0.3849,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "pincushion-flower"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "frangipani",
+        "pincushion-flower"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06179.jpg",
+      "expected_species_id": "fritillary",
+      "predicted_species_id": "fritillary",
+      "classifier_confidence": 0.3797,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06163.jpg",
+      "expected_species_id": "fritillary",
+      "predicted_species_id": "fritillary",
+      "classifier_confidence": 0.567,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "bishop-of-llandaff",
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary",
+        "fritillary"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04136.jpg",
+      "expected_species_id": "garden-phlox",
+      "predicted_species_id": "yellow-iris",
+      "classifier_confidence": 0.3243,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "garden-phlox",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "balloon-flower"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "garden-phlox",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "balloon-flower"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04134.jpg",
+      "expected_species_id": "garden-phlox",
+      "predicted_species_id": "garden-phlox",
+      "classifier_confidence": 0.1765,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "garden-phlox",
+        "balloon-flower",
+        "yellow-iris",
+        "balloon-flower",
+        "balloon-flower"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "garden-phlox",
+        "balloon-flower",
+        "yellow-iris",
+        "balloon-flower",
+        "balloon-flower"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02783.jpg",
+      "expected_species_id": "gaura",
+      "predicted_species_id": "gaura",
+      "classifier_confidence": 0.4444,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02848.jpg",
+      "expected_species_id": "gaura",
+      "predicted_species_id": "gaura",
+      "classifier_confidence": 0.7052,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura",
+        "gaura"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03584.jpg",
+      "expected_species_id": "gazania",
+      "predicted_species_id": "gazania",
+      "classifier_confidence": 0.6221,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03638.jpg",
+      "expected_species_id": "gazania",
+      "predicted_species_id": "gazania",
+      "classifier_confidence": 0.9689,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania",
+        "gazania"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07239.jpg",
+      "expected_species_id": "geranium",
+      "predicted_species_id": "geranium",
+      "classifier_confidence": 0.7592,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "geranium",
+        "geranium",
+        "geranium",
+        "geranium",
+        "geranium"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "geranium",
+        "geranium",
+        "geranium",
+        "geranium",
+        "geranium"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08130.jpg",
+      "expected_species_id": "geranium",
+      "predicted_species_id": "tulips",
+      "classifier_confidence": 0.0845,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "geranium",
+        "geranium",
+        "pincushion-flower",
+        "geranium",
+        "fritillary"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "geranium",
+        "geranium",
+        "pincushion-flower",
+        "geranium",
+        "fritillary"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06680.jpg",
+      "expected_species_id": "giant-white-arum-lily",
+      "predicted_species_id": "tulips",
+      "classifier_confidence": 0.2637,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06660.jpg",
+      "expected_species_id": "giant-white-arum-lily",
+      "predicted_species_id": "tulips",
+      "classifier_confidence": 0.3782,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "english-marigold",
+        "english-marigold"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "giant-white-arum-lily",
+        "english-marigold",
+        "english-marigold"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03174.jpg",
+      "expected_species_id": "globe-flower",
+      "predicted_species_id": "globe-flower",
+      "classifier_confidence": 0.5053,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "globe-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "globe-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03131.jpg",
+      "expected_species_id": "globe-flower",
+      "predicted_species_id": "globe-flower",
+      "classifier_confidence": 0.3589,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "trumpet-creeper"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "globe-flower",
+        "trumpet-creeper"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05100.jpg",
+      "expected_species_id": "globe-thistle",
+      "predicted_species_id": "globe-thistle",
+      "classifier_confidence": 0.5278,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05123.jpg",
+      "expected_species_id": "globe-thistle",
+      "predicted_species_id": "globe-thistle",
+      "classifier_confidence": 0.869,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle",
+        "globe-thistle"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06791.jpg",
+      "expected_species_id": "grape-hyacinth",
+      "predicted_species_id": "grape-hyacinth",
+      "classifier_confidence": 0.564,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06786.jpg",
+      "expected_species_id": "grape-hyacinth",
+      "predicted_species_id": "grape-hyacinth",
+      "classifier_confidence": 0.4,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth",
+        "grape-hyacinth"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08086.jpg",
+      "expected_species_id": "great-masterwort",
+      "predicted_species_id": "great-masterwort",
+      "classifier_confidence": 0.7682,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06997.jpg",
+      "expected_species_id": "great-masterwort",
+      "predicted_species_id": "great-masterwort",
+      "classifier_confidence": 0.7914,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort",
+        "great-masterwort"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06392.jpg",
+      "expected_species_id": "hard-leaved-pocket-orchid",
+      "predicted_species_id": "hard-leaved-pocket-orchid",
+      "classifier_confidence": 0.4021,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06365.jpg",
+      "expected_species_id": "hard-leaved-pocket-orchid",
+      "predicted_species_id": "hard-leaved-pocket-orchid",
+      "classifier_confidence": 0.2882,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "poinsettia",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "poinsettia",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid",
+        "hard-leaved-pocket-orchid"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04820.jpg",
+      "expected_species_id": "hibiscus",
+      "predicted_species_id": "hibiscus",
+      "classifier_confidence": 0.5322,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04792.jpg",
+      "expected_species_id": "hibiscus",
+      "predicted_species_id": "hibiscus",
+      "classifier_confidence": 0.5196,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus",
+        "hibiscus"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07320.jpg",
+      "expected_species_id": "hippeastrum",
+      "predicted_species_id": "hippeastrum",
+      "classifier_confidence": 0.4774,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07367.jpg",
+      "expected_species_id": "hippeastrum",
+      "predicted_species_id": "hippeastrum",
+      "classifier_confidence": 0.5085,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum",
+        "hippeastrum"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07271.jpg",
+      "expected_species_id": "japanese-anemone",
+      "predicted_species_id": "japanese-anemone",
+      "classifier_confidence": 0.1727,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "spring-crocus"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "spring-crocus"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08161.jpg",
+      "expected_species_id": "japanese-anemone",
+      "predicted_species_id": "japanese-anemone",
+      "classifier_confidence": 0.436,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone",
+        "japanese-anemone"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03343.jpg",
+      "expected_species_id": "king-protea",
+      "predicted_species_id": "king-protea",
+      "classifier_confidence": 0.6119,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03324.jpg",
+      "expected_species_id": "king-protea",
+      "predicted_species_id": "king-protea",
+      "classifier_confidence": 0.7473,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea",
+        "king-protea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05799.jpg",
+      "expected_species_id": "lenten-rose",
+      "predicted_species_id": "lenten-rose",
+      "classifier_confidence": 0.8784,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05810.jpg",
+      "expected_species_id": "lenten-rose",
+      "predicted_species_id": "lenten-rose",
+      "classifier_confidence": 0.3732,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose",
+        "lenten-rose"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06719.jpg",
+      "expected_species_id": "lotus",
+      "predicted_species_id": "lotus",
+      "classifier_confidence": 0.258,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06732.jpg",
+      "expected_species_id": "lotus",
+      "predicted_species_id": "lotus",
+      "classifier_confidence": 0.4868,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus",
+        "lotus"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03507.jpg",
+      "expected_species_id": "love-in-the-mist",
+      "predicted_species_id": "love-in-the-mist",
+      "classifier_confidence": 0.8679,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03492.jpg",
+      "expected_species_id": "love-in-the-mist",
+      "predicted_species_id": "love-in-the-mist",
+      "classifier_confidence": 0.7272,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist",
+        "love-in-the-mist"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00776.jpg",
+      "expected_species_id": "magnolia",
+      "predicted_species_id": "magnolia",
+      "classifier_confidence": 0.9593,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00734.jpg",
+      "expected_species_id": "magnolia",
+      "predicted_species_id": "magnolia",
+      "classifier_confidence": 0.6991,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia",
+        "magnolia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07926.jpg",
+      "expected_species_id": "mallow",
+      "predicted_species_id": "mallow",
+      "classifier_confidence": 0.6863,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07931.jpg",
+      "expected_species_id": "mallow",
+      "predicted_species_id": "mallow",
+      "classifier_confidence": 0.9118,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow",
+        "mallow"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07129.jpg",
+      "expected_species_id": "marigold",
+      "predicted_species_id": "marigold",
+      "classifier_confidence": 0.386,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "marigold",
+        "marigold",
+        "primula",
+        "marigold",
+        "spring-crocus"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "marigold",
+        "marigold",
+        "primula",
+        "marigold",
+        "spring-crocus"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07135.jpg",
+      "expected_species_id": "marigold",
+      "predicted_species_id": "marigold",
+      "classifier_confidence": 0.4018,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "marigold",
+        "marigold",
+        "marigold",
+        "marigold",
+        "marigold"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "marigold",
+        "marigold",
+        "marigold",
+        "marigold",
+        "marigold"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06901.jpg",
+      "expected_species_id": "mexican-aster",
+      "predicted_species_id": "mexican-aster",
+      "classifier_confidence": 0.5963,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "mexican-aster",
+        "mexican-aster",
+        "mexican-aster",
+        "mexican-aster",
+        "mexican-aster"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "mexican-aster",
+        "mexican-aster",
+        "mexican-aster",
+        "mexican-aster",
+        "mexican-aster"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06910.jpg",
+      "expected_species_id": "mexican-aster",
+      "predicted_species_id": "roses",
+      "classifier_confidence": 0.201,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "marigold",
+        "roses"
+      ],
+      "global_precision_at_5": 0.0,
+      "filtered_top_5_species_ids": [
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "marigold",
+        "roses"
+      ],
+      "filtered_precision_at_5": 0.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07986.jpg",
+      "expected_species_id": "mexican-petunia",
+      "predicted_species_id": "mexican-petunia",
+      "classifier_confidence": 0.6089,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07985.jpg",
+      "expected_species_id": "mexican-petunia",
+      "predicted_species_id": "mexican-petunia",
+      "classifier_confidence": 0.5629,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia",
+        "mexican-petunia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03049.jpg",
+      "expected_species_id": "monkshood",
+      "predicted_species_id": "monkshood",
+      "classifier_confidence": 0.4859,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03086.jpg",
+      "expected_species_id": "monkshood",
+      "predicted_species_id": "monkshood",
+      "classifier_confidence": 0.2662,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood",
+        "monkshood"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05324.jpg",
+      "expected_species_id": "moon-orchid",
+      "predicted_species_id": "moon-orchid",
+      "classifier_confidence": 0.648,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05312.jpg",
+      "expected_species_id": "moon-orchid",
+      "predicted_species_id": "moon-orchid",
+      "classifier_confidence": 0.3654,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid",
+        "moon-orchid"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00241.jpg",
+      "expected_species_id": "morning-glory",
+      "predicted_species_id": "morning-glory",
+      "classifier_confidence": 0.7458,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "anthurium"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00157.jpg",
+      "expected_species_id": "morning-glory",
+      "predicted_species_id": "morning-glory",
+      "classifier_confidence": 0.6065,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory",
+        "morning-glory"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02696.jpg",
+      "expected_species_id": "orange-dahlia",
+      "predicted_species_id": "orange-dahlia",
+      "classifier_confidence": 0.7256,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02691.jpg",
+      "expected_species_id": "orange-dahlia",
+      "predicted_species_id": "orange-dahlia",
+      "classifier_confidence": 0.7749,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia",
+        "orange-dahlia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05541.jpg",
+      "expected_species_id": "osteospermum",
+      "predicted_species_id": "osteospermum",
+      "classifier_confidence": 0.8103,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05533.jpg",
+      "expected_species_id": "osteospermum",
+      "predicted_species_id": "osteospermum",
+      "classifier_confidence": 0.4982,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum",
+        "osteospermum"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01898.jpg",
+      "expected_species_id": "passion-flower",
+      "predicted_species_id": "passion-flower",
+      "classifier_confidence": 0.4074,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01896.jpg",
+      "expected_species_id": "passion-flower",
+      "predicted_species_id": "passion-flower",
+      "classifier_confidence": 0.5785,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower",
+        "passion-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05406.jpg",
+      "expected_species_id": "pelargonium",
+      "predicted_species_id": "pelargonium",
+      "classifier_confidence": 0.5644,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "pelargonium"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "pelargonium"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05458.jpg",
+      "expected_species_id": "pelargonium",
+      "predicted_species_id": "pelargonium",
+      "classifier_confidence": 0.7661,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "sunflowers",
+        "pelargonium"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "pelargonium",
+        "pelargonium"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05749.jpg",
+      "expected_species_id": "peruvian-lily",
+      "predicted_species_id": "peruvian-lily",
+      "classifier_confidence": 0.532,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05754.jpg",
+      "expected_species_id": "peruvian-lily",
+      "predicted_species_id": "peruvian-lily",
+      "classifier_confidence": 0.4838,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily",
+        "peruvian-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06319.jpg",
+      "expected_species_id": "petunia",
+      "predicted_species_id": "petunia",
+      "classifier_confidence": 0.6074,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06320.jpg",
+      "expected_species_id": "petunia",
+      "predicted_species_id": "petunia",
+      "classifier_confidence": 0.6322,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia",
+        "petunia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04307.jpg",
+      "expected_species_id": "pincushion-flower",
+      "predicted_species_id": "pincushion-flower",
+      "classifier_confidence": 0.8909,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04254.jpg",
+      "expected_species_id": "pincushion-flower",
+      "predicted_species_id": "pincushion-flower",
+      "classifier_confidence": 0.698,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "frangipani"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower",
+        "pincushion-flower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06751.jpg",
+      "expected_species_id": "pink-primrose",
+      "predicted_species_id": "pink-primrose",
+      "classifier_confidence": 0.4145,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06761.jpg",
+      "expected_species_id": "pink-primrose",
+      "predicted_species_id": "pink-primrose",
+      "classifier_confidence": 0.9297,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose",
+        "pink-primrose"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02986.jpg",
+      "expected_species_id": "pink-yellow-dahlia",
+      "predicted_species_id": "pink-yellow-dahlia",
+      "classifier_confidence": 0.5182,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02995.jpg",
+      "expected_species_id": "pink-yellow-dahlia",
+      "predicted_species_id": "pink-yellow-dahlia",
+      "classifier_confidence": 0.437,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia",
+        "pink-yellow-dahlia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05705.jpg",
+      "expected_species_id": "poinsettia",
+      "predicted_species_id": "poinsettia",
+      "classifier_confidence": 0.1695,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "giant-white-arum-lily"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "giant-white-arum-lily"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05729.jpg",
+      "expected_species_id": "poinsettia",
+      "predicted_species_id": "poinsettia",
+      "classifier_confidence": 0.5058,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "poinsettia"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "poinsettia",
+        "poinsettia"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04161.jpg",
+      "expected_species_id": "primula",
+      "predicted_species_id": "primula",
+      "classifier_confidence": 0.4907,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "primula",
+        "primula",
+        "primula",
+        "primula",
+        "primula"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "primula",
+        "primula",
+        "primula",
+        "primula",
+        "primula"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04176.jpg",
+      "expected_species_id": "primula",
+      "predicted_species_id": "primula",
+      "classifier_confidence": 0.4521,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "primula",
+        "primula",
+        "primula",
+        "primula",
+        "primula"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "primula",
+        "primula",
+        "primula",
+        "primula",
+        "primula"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03447.jpg",
+      "expected_species_id": "prince-of-wales-feathers",
+      "predicted_species_id": "prince-of-wales-feathers",
+      "classifier_confidence": 0.8445,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03408.jpg",
+      "expected_species_id": "prince-of-wales-feathers",
+      "predicted_species_id": "prince-of-wales-feathers",
+      "classifier_confidence": 0.9516,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers",
+        "prince-of-wales-feathers"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04044.jpg",
+      "expected_species_id": "purple-coneflower",
+      "predicted_species_id": "purple-coneflower",
+      "classifier_confidence": 0.3103,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04011.jpg",
+      "expected_species_id": "purple-coneflower",
+      "predicted_species_id": "purple-coneflower",
+      "classifier_confidence": 0.8959,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower",
+        "purple-coneflower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04920.jpg",
+      "expected_species_id": "red-ginger",
+      "predicted_species_id": "red-ginger",
+      "classifier_confidence": 0.9873,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "trumpet-creeper"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04931.jpg",
+      "expected_species_id": "red-ginger",
+      "predicted_species_id": "red-ginger",
+      "classifier_confidence": 0.3671,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger",
+        "red-ginger"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/roses/14166797345_d2ab9da518.jpg",
+      "expected_species_id": "roses",
+      "predicted_species_id": "roses",
+      "classifier_confidence": 0.9283,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "roses",
+        "roses",
+        "water-lily",
+        "roses",
+        "roses"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "roses",
+        "roses",
+        "roses",
+        "roses",
+        "roses"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/roses/388405293_4db1d71f21_n.jpg",
+      "expected_species_id": "roses",
+      "predicted_species_id": "roses",
+      "classifier_confidence": 0.7982,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "roses",
+        "roses",
+        "roses",
+        "roses",
+        "roses"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "roses",
+        "roses",
+        "roses",
+        "roses",
+        "roses"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06442.jpg",
+      "expected_species_id": "ruby-lipped-cattleya",
+      "predicted_species_id": "ruby-lipped-cattleya",
+      "classifier_confidence": 0.4068,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya",
+        "ruby-lipped-cattleya"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06463.jpg",
+      "expected_species_id": "ruby-lipped-cattleya",
+      "predicted_species_id": "great-masterwort",
+      "classifier_confidence": 0.1448,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "great-masterwort",
+        "ruby-lipped-cattleya",
+        "great-masterwort",
+        "great-masterwort",
+        "ruby-lipped-cattleya"
+      ],
+      "global_precision_at_5": 0.4,
+      "filtered_top_5_species_ids": [
+        "great-masterwort",
+        "ruby-lipped-cattleya",
+        "great-masterwort",
+        "great-masterwort",
+        "ruby-lipped-cattleya"
+      ],
+      "filtered_precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04399.jpg",
+      "expected_species_id": "siam-tulip",
+      "predicted_species_id": "siam-tulip",
+      "classifier_confidence": 0.5302,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04364.jpg",
+      "expected_species_id": "siam-tulip",
+      "predicted_species_id": "red-ginger",
+      "classifier_confidence": 0.1833,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip",
+        "colt-s-foot",
+        "siam-tulip"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "siam-tulip",
+        "siam-tulip",
+        "siam-tulip",
+        "colt-s-foot",
+        "siam-tulip"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06112.jpg",
+      "expected_species_id": "silverbush",
+      "predicted_species_id": "silverbush",
+      "classifier_confidence": 0.3617,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06138.jpg",
+      "expected_species_id": "silverbush",
+      "predicted_species_id": "silverbush",
+      "classifier_confidence": 0.2043,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush",
+        "silverbush"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07171.jpg",
+      "expected_species_id": "snapdragon",
+      "predicted_species_id": "snapdragon",
+      "classifier_confidence": 0.751,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07188.jpg",
+      "expected_species_id": "snapdragon",
+      "predicted_species_id": "snapdragon",
+      "classifier_confidence": 0.6172,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon",
+        "snapdragon"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06438.jpg",
+      "expected_species_id": "spear-thistle",
+      "predicted_species_id": "spear-thistle",
+      "classifier_confidence": 0.5935,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "marigold"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06412.jpg",
+      "expected_species_id": "spear-thistle",
+      "predicted_species_id": "spear-thistle",
+      "classifier_confidence": 0.8892,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "blanket-flower"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle",
+        "spear-thistle"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07052.jpg",
+      "expected_species_id": "spring-crocus",
+      "predicted_species_id": "spring-crocus",
+      "classifier_confidence": 0.5614,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "spring-crocus",
+        "spring-crocus",
+        "spring-crocus",
+        "spring-crocus",
+        "spring-crocus"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "spring-crocus",
+        "spring-crocus",
+        "spring-crocus",
+        "spring-crocus",
+        "spring-crocus"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07062.jpg",
+      "expected_species_id": "spring-crocus",
+      "predicted_species_id": "spring-crocus",
+      "classifier_confidence": 0.2729,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "spring-crocus",
+        "spring-crocus",
+        "pink-primrose",
+        "spring-crocus",
+        "spring-crocus"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "spring-crocus",
+        "spring-crocus",
+        "pink-primrose",
+        "spring-crocus",
+        "spring-crocus"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06847.jpg",
+      "expected_species_id": "stemless-gentian",
+      "predicted_species_id": "stemless-gentian",
+      "classifier_confidence": 0.6512,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06822.jpg",
+      "expected_species_id": "stemless-gentian",
+      "predicted_species_id": "stemless-gentian",
+      "classifier_confidence": 0.6212,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian",
+        "stemless-gentian"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/sunflowers/5037531593_e2daf4c7f1.jpg",
+      "expected_species_id": "sunflowers",
+      "predicted_species_id": "sunflowers",
+      "classifier_confidence": 0.7616,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/sunflowers/5007598545_90e08e81c1_n.jpg",
+      "expected_species_id": "sunflowers",
+      "predicted_species_id": "sunflowers",
+      "classifier_confidence": 0.7689,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "sunflowers",
+        "sunflowers",
+        "prince-of-wales-feathers",
+        "foxglove",
+        "sunflowers"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers",
+        "sunflowers"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03735.jpg",
+      "expected_species_id": "sweet-pea",
+      "predicted_species_id": "sweet-pea",
+      "classifier_confidence": 0.3409,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03819.jpg",
+      "expected_species_id": "sweet-pea",
+      "predicted_species_id": "sweet-pea",
+      "classifier_confidence": 0.9448,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea",
+        "sweet-pea"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06865.jpg",
+      "expected_species_id": "sweet-william",
+      "predicted_species_id": "sweet-william",
+      "classifier_confidence": 0.7536,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06872.jpg",
+      "expected_species_id": "sweet-william",
+      "predicted_species_id": "sweet-william",
+      "classifier_confidence": 0.8354,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william",
+        "sweet-william"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02192.jpg",
+      "expected_species_id": "sword-lily",
+      "predicted_species_id": "daisy",
+      "classifier_confidence": 0.0962,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "sword-lily",
+        "blackberry-lily",
+        "sword-lily",
+        "blackberry-lily",
+        "sword-lily"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "sword-lily",
+        "blackberry-lily",
+        "sword-lily",
+        "blackberry-lily",
+        "sword-lily"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02205.jpg",
+      "expected_species_id": "sword-lily",
+      "predicted_species_id": "sword-lily",
+      "classifier_confidence": 0.2691,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "sword-lily",
+        "sword-lily",
+        "blackberry-lily",
+        "sword-lily",
+        "tiger-lily"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "sword-lily",
+        "sword-lily",
+        "blackberry-lily",
+        "sword-lily",
+        "tiger-lily"
+      ],
+      "filtered_precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02498.jpg",
+      "expected_species_id": "thorn-apple",
+      "predicted_species_id": "thorn-apple",
+      "classifier_confidence": 0.4557,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02490.jpg",
+      "expected_species_id": "thorn-apple",
+      "predicted_species_id": "thorn-apple",
+      "classifier_confidence": 0.7192,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "carnation",
+        "carnation"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple",
+        "thorn-apple"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05039.jpg",
+      "expected_species_id": "tiger-lily",
+      "predicted_species_id": "blackberry-lily",
+      "classifier_confidence": 0.0932,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05024.jpg",
+      "expected_species_id": "tiger-lily",
+      "predicted_species_id": "tree-poppy",
+      "classifier_confidence": 0.0767,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily",
+        "tiger-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01998.jpg",
+      "expected_species_id": "toad-lily",
+      "predicted_species_id": "toad-lily",
+      "classifier_confidence": 0.2186,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "desert-rose",
+        "tree-mallow",
+        "tree-mallow",
+        "toad-lily",
+        "red-ginger"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "desert-rose",
+        "tree-mallow",
+        "tree-mallow",
+        "toad-lily",
+        "red-ginger"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02045.jpg",
+      "expected_species_id": "toad-lily",
+      "predicted_species_id": "toad-lily",
+      "classifier_confidence": 0.7382,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "toad-lily",
+        "toad-lily",
+        "toad-lily",
+        "toad-lily",
+        "prince-of-wales-feathers"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "toad-lily",
+        "toad-lily",
+        "toad-lily",
+        "toad-lily",
+        "toad-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00468.jpg",
+      "expected_species_id": "tree-mallow",
+      "predicted_species_id": "tree-mallow",
+      "classifier_confidence": 0.6717,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "tree-mallow",
+        "tree-mallow",
+        "red-ginger",
+        "red-ginger",
+        "tree-mallow"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "tree-mallow",
+        "tree-mallow",
+        "tree-mallow",
+        "tree-mallow",
+        "tree-mallow"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00469.jpg",
+      "expected_species_id": "tree-mallow",
+      "predicted_species_id": "tree-mallow",
+      "classifier_confidence": 0.3963,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "tree-mallow",
+        "red-ginger",
+        "desert-rose",
+        "red-ginger",
+        "red-ginger"
+      ],
+      "global_precision_at_5": 0.2,
+      "filtered_top_5_species_ids": [
+        "tree-mallow",
+        "red-ginger",
+        "desert-rose",
+        "red-ginger",
+        "red-ginger"
+      ],
+      "filtered_precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04554.jpg",
+      "expected_species_id": "tree-poppy",
+      "predicted_species_id": "tree-poppy",
+      "classifier_confidence": 0.5259,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04491.jpg",
+      "expected_species_id": "tree-poppy",
+      "predicted_species_id": "tree-poppy",
+      "classifier_confidence": 0.9731,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy",
+        "tree-poppy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05672.jpg",
+      "expected_species_id": "trumpet-creeper",
+      "predicted_species_id": "tree-mallow",
+      "classifier_confidence": 0.0674,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "siam-tulip",
+        "trumpet-creeper",
+        "trumpet-creeper"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "siam-tulip",
+        "trumpet-creeper",
+        "trumpet-creeper"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05640.jpg",
+      "expected_species_id": "trumpet-creeper",
+      "predicted_species_id": "trumpet-creeper",
+      "classifier_confidence": 0.7279,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "trumpet-creeper"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "trumpet-creeper",
+        "trumpet-creeper"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/tulips/14015957646_8317a0f1d9_n.jpg",
+      "expected_species_id": "tulips",
+      "predicted_species_id": "tulips",
+      "classifier_confidence": 0.7689,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "tulips",
+        "roses",
+        "tulips",
+        "silverbush",
+        "tulips"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/tulips/7481204112_e3c57dd40a_n.jpg",
+      "expected_species_id": "tulips",
+      "predicted_species_id": "tulips",
+      "classifier_confidence": 0.8203,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips",
+        "tulips"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01560.jpg",
+      "expected_species_id": "wallflower",
+      "predicted_species_id": "wallflower",
+      "classifier_confidence": 0.2246,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "bougainvillea",
+        "wallflower",
+        "wallflower",
+        "wallflower",
+        "wallflower"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "bougainvillea",
+        "wallflower",
+        "wallflower",
+        "wallflower",
+        "wallflower"
+      ],
+      "filtered_precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01571.jpg",
+      "expected_species_id": "wallflower",
+      "predicted_species_id": "wallflower",
+      "classifier_confidence": 0.5825,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "wallflower",
+        "wallflower",
+        "wallflower",
+        "wallflower",
+        "wallflower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "wallflower",
+        "wallflower",
+        "wallflower",
+        "wallflower",
+        "wallflower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01188.jpg",
+      "expected_species_id": "water-lily",
+      "predicted_species_id": "water-lily",
+      "classifier_confidence": 0.5041,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "water-lily",
+        "water-lily",
+        "globe-flower",
+        "water-lily",
+        "cyclamen"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "water-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01215.jpg",
+      "expected_species_id": "water-lily",
+      "predicted_species_id": "water-lily",
+      "classifier_confidence": 0.4322,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "grape-hyacinth",
+        "water-lily"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "water-lily",
+        "water-lily"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04893.jpg",
+      "expected_species_id": "watercress",
+      "predicted_species_id": "watercress",
+      "classifier_confidence": 0.911,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "watercress",
+        "watercress",
+        "watercress",
+        "watercress",
+        "watercress"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "watercress",
+        "watercress",
+        "watercress",
+        "watercress",
+        "watercress"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04861.jpg",
+      "expected_species_id": "watercress",
+      "predicted_species_id": "watercress",
+      "classifier_confidence": 0.4684,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "watercress",
+        "bolero-deep-blue",
+        "watercress",
+        "watercress",
+        "watercress"
+      ],
+      "global_precision_at_5": 0.8,
+      "filtered_top_5_species_ids": [
+        "watercress",
+        "watercress",
+        "watercress",
+        "watercress",
+        "watercress"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03984.jpg",
+      "expected_species_id": "wild-pansy",
+      "predicted_species_id": "wild-pansy",
+      "classifier_confidence": 0.917,
+      "label_filter_used": true,
+      "global_top_5_species_ids": [
+        "wild-pansy",
+        "wild-pansy",
+        "wild-pansy",
+        "alpine-sea-holly",
+        "magnolia"
+      ],
+      "global_precision_at_5": 0.6,
+      "filtered_top_5_species_ids": [
+        "wild-pansy",
+        "wild-pansy",
+        "wild-pansy",
+        "wild-pansy",
+        "wild-pansy"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01459.jpg",
+      "expected_species_id": "wild-pansy",
+      "predicted_species_id": "roses",
+      "classifier_confidence": 0.121,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "bearded-iris",
+        "fritillary",
+        "fritillary",
+        "bougainvillea",
+        "roses"
+      ],
+      "global_precision_at_5": 0.0,
+      "filtered_top_5_species_ids": [
+        "bearded-iris",
+        "fritillary",
+        "fritillary",
+        "bougainvillea",
+        "roses"
+      ],
+      "filtered_precision_at_5": 0.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05973.jpg",
+      "expected_species_id": "windflower",
+      "predicted_species_id": "windflower",
+      "classifier_confidence": 0.2084,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05982.jpg",
+      "expected_species_id": "windflower",
+      "predicted_species_id": "windflower",
+      "classifier_confidence": 0.2913,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower",
+        "windflower"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07120.jpg",
+      "expected_species_id": "yellow-iris",
+      "predicted_species_id": "yellow-iris",
+      "classifier_confidence": 0.2595,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris"
+      ],
+      "filtered_precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07117.jpg",
+      "expected_species_id": "yellow-iris",
+      "predicted_species_id": "yellow-iris",
+      "classifier_confidence": 0.244,
+      "label_filter_used": false,
+      "global_top_5_species_ids": [
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris"
+      ],
+      "global_precision_at_5": 1.0,
+      "filtered_top_5_species_ids": [
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris",
+        "yellow-iris"
+      ],
+      "filtered_precision_at_5": 1.0
+    }
+  ]
+}

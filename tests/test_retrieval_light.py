@@ -23,6 +23,18 @@ class _Encoder:
         return np.asarray([[1.0, 0.0] for _ in images], dtype=np.float32)
 
 
+class _ClassifyingEncoder(_Encoder):
+    min_confidence = 0.7
+
+    def __init__(self, label, score, vector):
+        self.label = label
+        self.score = score
+        self.vector = np.asarray(vector, dtype=np.float32)
+
+    def predict_and_encode(self, image, top_k=1):
+        return {"predictions": [{"label": self.label, "score": self.score}]}, self.vector
+
+
 def _search(tmp_path):
     metadata = [
         {"path": "rose-a.jpg", "label": "Hoa hồng", "species_id": "roses"},
@@ -39,6 +51,20 @@ def _search(tmp_path):
 def test_image_query_ranks_similar_classifier_features(tmp_path):
     result = _search(tmp_path).search_image(object(), k=2)
     assert [item["species_id"] for item in result] == ["roses", "roses"]
+
+
+def test_confident_image_class_constrains_lightweight_gallery(tmp_path):
+    search = _search(tmp_path)
+    search.classifier = _ClassifyingEncoder("roses", 0.91, [0.0, 1.0])
+    result = search.search_image(object(), k=2)
+    assert [item["species_id"] for item in result] == ["roses", "roses"]
+
+
+def test_uncertain_image_class_keeps_global_feature_ranking(tmp_path):
+    search = _search(tmp_path)
+    search.classifier = _ClassifyingEncoder("roses", 0.3, [0.0, 1.0])
+    result = search.search_image(object(), k=1)
+    assert [item["species_id"] for item in result] == ["daisy"]
 
 
 def test_vietnamese_name_query_returns_matching_species(tmp_path):

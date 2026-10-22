@@ -90,6 +90,37 @@ class ImageClassifier:
             features = F.normalize(features.float(), p=2, dim=1)
         return features.cpu().numpy().astype(np.float32, copy=False)
 
+    @torch.inference_mode()
+    def predict_and_encode(self, image: Image.Image, top_k: int = 3) -> tuple[dict, np.ndarray]:
+        """Classify an image and return its normalized feature vector in one model pass."""
+        x = EVAL_TF(image.convert("RGB")).unsqueeze(0).to(
+            device=DEVICE, dtype=self.model.fc.weight.dtype,
+        )
+        with self._inference_lock, torch.inference_mode():
+            model = self.model
+            features = model.conv1(x)
+            features = model.bn1(features)
+            features = model.relu(features)
+            features = model.maxpool(features)
+            features = model.layer1(features)
+            features = model.layer2(features)
+            features = model.layer3(features)
+            features = model.layer4(features)
+            features = model.avgpool(features).flatten(1)
+            probs = model.fc(features).float().softmax(dim=-1)[0]
+            scores, indices = probs.topk(min(top_k, len(self.classes)))
+            vector = F.normalize(features.float(), p=2, dim=1)[0].cpu().numpy().astype(np.float32, copy=False)
+        predictions = [{
+            "label": self.classes[int(index)],
+            "score": round(float(score), 4),
+        } for score, index in zip(scores.tolist(), indices.tolist())]
+        prediction = {
+            "predictions": predictions,
+            "confident": predictions[0]["score"] >= self.min_confidence,
+            "confidence_threshold": self.min_confidence,
+        }
+        return prediction, vector
+
     def explain(self, image: Image.Image, class_index: int | None = None) -> Image.Image:
         """Create a Grad-CAM overlay for the selected/predicted ResNet class."""
         activations = []

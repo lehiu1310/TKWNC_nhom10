@@ -1,0 +1,65 @@
+{
+  "revision": "c3ef8607d13b",
+  "status": 200,
+  "elapsed_seconds": 24.350369,
+  "query_image": "data/flowers/flower_photos/sunflowers/1008566138_6927679c8a.jpg",
+  "query_is_in_retrieval_index": false,
+  "ground_truth": "sunflowers",
+  "top_species_ids": [
+    "sunflowers",
+    "pelargonium",
+    "pelargonium",
+    "pelargonium",
+    "pelargonium"
+  ],
+  "scores": [
+    0.9041,
+    0.8952,
+    0.8895,
+    0.8772,
+    0.8739
+  ],
+  "precision_at_5": 0.2,
+  "results": [
+    {
+      "id": 1038,
+      "score": 0.9041,
+      "label": "Hướng dương",
+      "species_id": "sunflowers",
+      "source": "TF Flowers",
+      "url": "/api/gallery/1038"
+    },
+    {
+      "id": 804,
+      "score": 0.8952,
+      "label": "Phong lữ thảo",
+      "species_id": "pelargonium",
+      "source": "Oxford Flowers 102",
+      "url": "/api/gallery/804"
+    },
+    {
+      "id": 809,
+      "score": 0.8895,
+      "label": "Phong lữ thảo",
+      "species_id": "pelargonium",
+      "source": "Oxford Flowers 102",
+      "url": "/api/gallery/809"
+    },
+    {
+      "id": 815,
+      "score": 0.8772,
+      "label": "Phong lữ thảo",
+      "species_id": "pelargonium",
+      "source": "Oxford Flowers 102",
+      "url": "/api/gallery/815"
+    },
+    {
+      "id": 811,
+      "score": 0.8739,
+      "label": "Phong lữ thảo",
+      "species_id": "pelargonium",
+      "source": "Oxford Flowers 102",
+      "url": "/api/gallery/811"
+    }
+  ]
+}

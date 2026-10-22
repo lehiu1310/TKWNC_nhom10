@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from config import ART_DIR, DATA_DIR
+from config import ART_DIR, CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE, DATA_DIR
 
 
 def _normalize(value: str) -> str:
@@ -59,8 +59,19 @@ class ClassifierFeatureSearch:
                 for pos, i in ((int(pos), int(ids[pos])) for pos in order)]
 
     def search_image(self, image: Image.Image, k: int = 8, label: str | None = None) -> list[dict]:
-        query = self.classifier.encode_images([image])[0]
-        return self._rank(query, k, label)
+        predicted_label = None
+        if hasattr(self.classifier, "predict_and_encode"):
+            prediction, query = self.classifier.predict_and_encode(image, top_k=1)
+            top = prediction.get("predictions", [{}])[0]
+            if not label and float(top.get("score", 0)) >= CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE:
+                predicted_label = str(top.get("label", "")) or None
+        else:
+            query = self.classifier.encode_images([image])[0]
+        # On small deployments, the ResNet embedding is less discriminative
+        # across flower species than CLIP. For a confident top-1 class, restrict
+        # the similar-photo gallery to that class; keep global ranking when the
+        # classifier is uncertain or the user explicitly supplies a label.
+        return self._rank(query, k, label or predicted_label)
 
     def search_text_with_query(self, query: str, k: int = 8, label: str | None = None) -> dict:
         normalized = _normalize(query)
