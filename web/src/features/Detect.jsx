@@ -22,6 +22,7 @@ function labelColor(label) {
 
 export default function Detect() {
   const [state, setState] = useState({ status: 'idle' });
+  const [slowRequest, setSlowRequest] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
   const [imageSize, setImageSize] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -32,10 +33,17 @@ export default function Detect() {
     setImagePreview(previewUrl);
     setImageSize(null);
     setSelected(null);
+    setSlowRequest(false);
     setState({ status: 'loading' });
     try { setState({ status: 'ok', data: await postImage('/api/detect', file, { conf: 0.25 }) }); }
     catch (err) { setState({ status: 'error', error: friendlyFailure(err), file, previewUrl }); }
   }
+
+  useEffect(() => {
+    if (state.status !== 'loading') return undefined;
+    const timer = window.setTimeout(() => setSlowRequest(true), 12_000);
+    return () => window.clearTimeout(timer);
+  }, [state.status]);
 
   useEffect(() => {
     if (!selected || !imagePreview || !canvasRef.current) return;
@@ -64,7 +72,7 @@ export default function Detect() {
     <div><h2>Tìm vật thể trong ảnh</h2><p className="muted">Tải ảnh lên hoặc chọn ảnh hoa mẫu để xem các vật thể được khoanh vùng.</p><ImagePicker label="Chọn ảnh để tìm vật thể" onChange={run} samples={SAMPLES}/><p className="search-hint">Đây là mô hình YOLO được fine-tune riêng cho các nhãn hoa trong bộ huấn luyện, không phải các lớp hoa có sẵn của YOLO gốc. Các đối tượng ngoài nhãn đã học có thể bị bỏ sót hoặc nhận nhầm.</p></div>
     <div className="result-panel"><span className="feature-subtitle">BẢN ĐỒ KHU VƯỜN</span>
       {state.status === 'idle' && <div className="empty-state"><span>◎</span><p>Khung ảnh và các vùng phát hiện sẽ hiện ở đây.</p></div>}
-      {state.status === 'loading' && <><p className="loading-skeleton"/><p className="loading-skeleton"/><p className="muted">AI đang tìm các đối tượng…</p></>}
+      {state.status === 'loading' && <><p className="loading-skeleton"/><p className="loading-skeleton"/><p className="muted">AI đang tìm các đối tượng…</p>{slowRequest && <p className="search-hint">Lần đầu sau một lúc không hoạt động có thể xử lý lâu hơn. Giữ trang mở, không cần tải ảnh lại.</p>}</>}
       {state.status === 'error' && <div className="friendly-error" role="alert"><p>Chưa phân tích được ảnh. {state.error}</p><button type="button" className="button" onClick={() => run(state.file, state.previewUrl)}>Thử lại</button></div>}
       {state.status === 'ok' && <>
         {imagePreview && <div className="detect-stage" style={imageSize ? { aspectRatio: `${imageSize.width}/${imageSize.height}` } : undefined}>

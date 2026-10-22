@@ -1,11 +1,13 @@
 // Vercel's /api rewrite keeps auth cookies on the site origin. A direct URL to
 // Render turns the cookie into a cross-site cookie and browsers reject it with
 // SameSite=Lax, even though the login request itself succeeds.
-const configuredApiBase = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
-const useSameOriginApi = import.meta.env.VITE_API_SAME_ORIGIN === 'true'
+const apiEnvironment = import.meta.env ?? {};
+const configuredApiBase = apiEnvironment.VITE_API_BASE_URL ?? apiEnvironment.VITE_API_URL ?? '';
+const useSameOriginApi = apiEnvironment.VITE_API_SAME_ORIGIN === 'true'
   || (typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app'));
 export const API_BASE = useSameOriginApi ? '' : configuredApiBase;
 const API_TIMEOUT_MS = 70_000;
+const AI_IMAGE_TIMEOUT_MS = 120_000;
 const HEALTH_TIMEOUT_MS = 15_000;
 
 function createDeadline(parentSignal, timeoutMs) {
@@ -80,7 +82,9 @@ export async function postImage(path, file, fields = {}) {
   const form = new FormData();
   form.append('file', preparedFile);
   Object.entries(fields).forEach(([k, v]) => form.append(k, String(v)));
-  return requestJson(path, { method: 'POST', body: form });
+  // Render Free can cold-start the service and reload the detector after
+  // switching models; allow that first image request to finish before failing.
+  return requestJson(path, { method: 'POST', body: form }, AI_IMAGE_TIMEOUT_MS);
 }
 
 export function postJson(path, body, options = {}) {
