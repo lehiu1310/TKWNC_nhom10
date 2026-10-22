@@ -9,7 +9,7 @@ from api import account_store, main
 @pytest.fixture
 def account_client(tmp_path, monkeypatch):
     monkeypatch.setattr(account_store, "DB_PATH", tmp_path / "accounts.sqlite3")
-    with TestClient(main.app) as client:
+    with TestClient(main.app, raise_server_exceptions=False) as client:
         yield client
 
 
@@ -57,6 +57,28 @@ def test_rejects_cross_origin_auth_mutation(account_client):
         "email": "a@example.com", "display_name": "A", "password": "correct-horse-1",
     })
     assert response.status_code == 403
+
+
+def test_validation_response_does_not_echo_submitted_password(account_client):
+    response = account_client.post("/api/auth/register", json={
+        "display_name": "A", "password": "sensitive-password-value",
+    })
+
+    assert response.status_code == 422
+    assert "sensitive-password-value" not in response.text
+    assert response.json()["detail"][0]["loc"] == ["body", "email"]
+
+
+def test_unexpected_error_returns_sanitized_response(account_client, monkeypatch):
+    def fail_lookup(_token):
+        raise RuntimeError("sensitive database diagnostic")
+
+    monkeypatch.setattr(account_store, "get_user", fail_lookup)
+    response = account_client.get("/api/auth/me")
+
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Lỗi máy chủ nội bộ. Vui lòng thử lại sau."}
+    assert "sensitive database diagnostic" not in response.text
 
 
 def test_optional_postgres_account_roundtrip(monkeypatch):

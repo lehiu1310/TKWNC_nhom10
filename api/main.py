@@ -17,8 +17,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # để import config, core khi chạy uvicorn
 
 from fastapi import FastAPI, File, Form, HTTPException, Path as ApiPath, Query, Request, Response, UploadFile
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 from PIL import Image, UnidentifiedImageError
@@ -126,6 +129,37 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="AI Web Apps API", version="1.0.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*"], allow_headers=["*"], allow_credentials=True)
+
+
+@app.exception_handler(StarletteHTTPException)
+async def handle_http_error(request: Request, exc: StarletteHTTPException):
+    """Keep HTTP error responses consistent while preserving status and headers."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": jsonable_encoder(exc.detail)},
+        headers=exc.headers,
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def handle_validation_error(request: Request, exc: RequestValidationError):
+    """Return useful field errors without echoing submitted values into the response."""
+    details = [
+        {
+            "type": error.get("type", "value_error"),
+            "loc": [str(part) for part in error.get("loc", ())],
+            "msg": error.get("msg", "Dữ liệu không hợp lệ."),
+        }
+        for error in exc.errors()
+    ]
+    return JSONResponse(status_code=422, content={"detail": details})
+
+
+@app.exception_handler(Exception)
+async def handle_unexpected_error(request: Request, exc: Exception):
+    """Log a safe diagnostic and keep implementation details out of API responses."""
+    log.error("unhandled API exception path=%s type=%s", request.url.path, type(exc).__name__)
+    return JSONResponse(status_code=500, content={"detail": "Lỗi máy chủ nội bộ. Vui lòng thử lại sau."})
 
 
 @app.middleware("http")
