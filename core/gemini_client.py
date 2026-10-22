@@ -1,6 +1,21 @@
 """Shared Gemini client configuration with bounded latency under transient errors."""
+import os
+
 from google import genai
 from google.genai import types
+
+
+def configured_gemini_api_key() -> str | None:
+    """Return a key only after an explicit opt-in to external Gemini requests.
+
+    API keys can remain in local or hosted secret stores after a feature is
+    disabled. Requiring an explicit flag prevents those stale keys from causing
+    unexpected paid API calls.
+    """
+    enabled = os.environ.get("ENABLE_GEMINI_API", "0").strip().lower() in {"1", "true", "yes"}
+    if not enabled:
+        return None
+    return os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY") or None
 
 
 def create_gemini_client(api_key: str, timeout_ms: int) -> genai.Client:

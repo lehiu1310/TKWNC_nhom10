@@ -218,7 +218,8 @@ class RAGChatbot:
         self._lock = threading.Lock()
         self.client = None
         if provider == "gemini":
-            api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+            from core.gemini_client import configured_gemini_api_key
+            api_key = configured_gemini_api_key()
             if api_key:
                 from core.gemini_client import create_gemini_client
                 # Grounded responses can vary significantly in latency; keep a

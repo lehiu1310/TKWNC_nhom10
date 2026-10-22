@@ -270,7 +270,8 @@ class ImageSearch:
             if cached:
                 self._translation_cache.move_to_end(cache_key)
                 return cached
-            api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+            from core.gemini_client import configured_gemini_api_key
+            api_key = configured_gemini_api_key()
             if not api_key:
                 log.info("Gemini key unavailable for search translation; using local flower vocabulary")
                 return self._offline_english_query(query)

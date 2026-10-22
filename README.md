@@ -95,7 +95,7 @@ Sau khi cài xong, chạy API và web bằng một lệnh:
 .\scripts\start_local.ps1
 ```
 
-Mở `http://localhost:5173`. API chạy tại `http://127.0.0.1:8000`; kiểm tra trạng thái bằng `/api/health`. Lần đầu tìm ảnh CLIP có thể tải checkpoint nếu chưa có trong cache. Không cần khóa để chạy phân loại, phát hiện, tìm ảnh bằng ảnh hoặc RAG; chatbot dùng câu trả lời trích dẫn cục bộ khi thiếu Gemini key. Khóa Gemini chỉ cần cho dịch truy vấn tiếng Việt bằng Gemini và sinh lời chúc bằng Gemini; nếu không có khóa, ứng dụng giữ chế độ dự phòng, không gọi API bên ngoài.
+Mở `http://localhost:5173`. API chạy tại `http://127.0.0.1:8000`; kiểm tra trạng thái bằng `/api/health`. Lần đầu tìm ảnh CLIP có thể tải checkpoint nếu chưa có trong cache. Mặc định ứng dụng không gọi Gemini kể cả khi secret còn lưu trong môi trường; dịch truy vấn, chatbot và lời chúc dùng chế độ dự phòng cục bộ. Chỉ bật gọi API ngoài khi chủ động đặt `ENABLE_GEMINI_API=1` cùng `GOOGLE_API_KEY` hoặc `GEMINI_API_KEY` và đã xác nhận giới hạn chi phí ở tài khoản Google.
 
 Đăng ký tài khoản lưu trong SQLite tại `.data/vuonhoa.sqlite3`; phiên dùng cookie `HttpOnly`, mật khẩu được băm bằng scrypt. Nút **Tài khoản** đồng bộ Sổ hoa và Cây của tôi giữa localStorage và CSDL. SQLite vẫn là mặc định cho local và Compose; volume `vuonhoa-data` giữ dữ liệu khi container khởi động lại. Để dùng PostgreSQL trong Compose, đặt `DATABASE_URL` trong file `.env` (không commit file này); khi bỏ trống, Compose dùng SQLite.
 
@@ -116,13 +116,13 @@ Nếu checkpoint chưa có trong repo, `python scripts/prepare_flowers102.py --e
 | Kính lúp hoa | ResNet-18 | 103 lớp: Oxford Flowers 102 + lớp tulip từ TF Flowers |
 | Mắt thần vườn | YOLO11n fine-tuned | Bản mã nguồn mặc định dùng `artifacts/detector/flower_yolo11n.pt` (4 lớp hoa). Dịch vụ Render live lần kiểm tra gần nhất vẫn trả nhãn COCO cũ; xem bảng tình trạng deploy bên dưới. |
 | Album hoa | MobileCLIP2-S0 + FAISS | Tìm ảnh trong bộ Flowers; câu tiếng Việt dùng Gemini để dịch, có từ vựng hoa/thị giác cục bộ khi thiếu key hoặc Gemini lỗi/quota |
-| Cô làm vườn | Gemini API (mặc định) + BM25 | RAG truy xuất tám bản tóm tắt tiếng Việt và hai PDF (K-State 2019: 56 trang; USDA 1901: 38 trang quét) theo từng trang trong `data/kb/`. Ghi chú phạm vi vùng miền và cảnh báo nguồn lịch sử được kèm vào ngữ cảnh. |
+| Cô làm vườn | BM25 + câu trả lời trích dẫn cục bộ (mặc định); Gemini tùy chọn | RAG truy xuất tám bản tóm tắt tiếng Việt và hai PDF (K-State 2019: 56 trang; USDA 1901: 38 trang quét) theo từng trang trong `data/kb/`. Ghi chú phạm vi vùng miền và cảnh báo nguồn lịch sử được kèm vào ngữ cảnh. |
 
 API có health/startup, danh mục và ảnh loài, bốn luồng AI (`/api/classify`, `/api/detect`, `/api/search/text`, `/api/search/image`, `/api/chat`, `/api/chat/sync`), gợi ý bó hoa và tài khoản (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`, `/api/account/data/{garden|giftbook}`). `/api/species` hỗ trợ `limit`/`offset`; `/api/health` có thể lọc trạng thái bằng `?model=classifier`.
 
 ## Cấu hình
 
-Các biến môi trường backend chính: `ENABLED_MODELS`, `LLM_PROVIDER` (`gemini` mặc định hoặc `hf_local`), `GEMINI_MODEL`, `GOOGLE_API_KEY` (hoặc `GEMINI_API_KEY`), `LLM_MODEL`, `CLIP_MODEL` (mặc định `MobileCLIP2-S0`), `CLIP_PRETRAINED` (mặc định `dfndr2b`), `TRANSLATION_MODEL`, `EMBED_MODEL`, `MAX_UPLOAD_MB`, `CORS_ORIGINS`, `APP_ROOT`. Không đặt khóa Gemini trong frontend. Frontend hỗ trợ `VITE_API_BASE_URL` (ưu tiên) và `VITE_API_URL`; để trống thì dùng proxy `/api` của Vite tới cổng 8000.
+Các biến môi trường backend chính: `ENABLED_MODELS`, `LLM_PROVIDER` (`gemini` mặc định cho chế độ fallback hoặc `hf_local`), `ENABLE_GEMINI_API` (mặc định `0`; chỉ gọi API Gemini khi đặt `1`), `GEMINI_MODEL`, `GOOGLE_API_KEY` (hoặc `GEMINI_API_KEY`), `LLM_MODEL`, `CLIP_MODEL` (mặc định `MobileCLIP2-S0`), `CLIP_PRETRAINED` (mặc định `dfndr2b`), `TRANSLATION_MODEL`, `EMBED_MODEL`, `MAX_UPLOAD_MB`, `CORS_ORIGINS`, `APP_ROOT`. Không đặt khóa Gemini trong frontend. Frontend hỗ trợ `VITE_API_BASE_URL` (ưu tiên) và `VITE_API_URL`; để trống thì dùng proxy `/api` của Vite tới cổng 8000.
 
 Model Card và giới hạn/chỉ số hiện có: [MODEL_CARD.md](MODEL_CARD.md). Chạy lại metric ResNet trên validation split bằng `python scripts/evaluate_classifier.py`; đo image retrieval bằng query không có trong index với `python scripts/evaluate_retrieval.py --queries-per-class 2`; đo RAG Hit@3 trên bộ 30 câu hỏi bằng `python scripts/evaluate_rag.py`. Chạy API tests bằng `python -m pip install -r requirements-test.txt` rồi `python -m pytest -q`; bộ test dùng model giả nên không tải checkpoint hay cần GPU. Bộ test bao phủ 10 endpoint, mỗi endpoint có tình huống hợp lệ, lỗi yêu cầu (400) và lỗi schema (422). Frontend dùng test runner có sẵn trong Node.js, không cần thư viện test ngoài: từ `web/`, chạy `pnpm test` và `pnpm build`. GitHub Actions chạy cả pytest, test frontend và production build khi push/pull request.
 

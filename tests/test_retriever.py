@@ -22,6 +22,7 @@ def test_vietnamese_query_translation_is_cached_and_uses_gemini(monkeypatch):
     engine._translator_client = type("Client", (), {})()
     engine._translator_client.models = Models()
     monkeypatch.setenv("GOOGLE_API_KEY", "test-key")
+    monkeypatch.setenv("ENABLE_GEMINI_API", "1")
 
     assert engine._english_query("một bông hoa vàng dưới nắng") == "yellow flower in sunlight"
     assert engine._english_query("một bông hoa vàng dưới nắng") == "yellow flower in sunlight"
@@ -148,6 +149,23 @@ def test_gemini_without_api_key_uses_grounded_rag_fallback(tmp_path, monkeypatch
     assert "hoa_cuc.md" not in answer["answer"]
 
 
+def test_stored_gemini_key_is_ignored_without_explicit_opt_in(tmp_path, monkeypatch):
+    (tmp_path / "hoa_hong.md").write_text(
+        "## Ý nghĩa\n\nHoa hồng đỏ thường tượng trưng cho tình yêu và sự trân trọng.",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("GOOGLE_API_KEY", "test-key-must-not-be-used")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("ENABLE_GEMINI_API", raising=False)
+
+    bot = RAGChatbot(kb_dir=tmp_path, provider="gemini")
+    answer = bot.answer("Hoa hồng có ý nghĩa gì?")
+
+    assert bot.client is None
+    assert "tình yêu" in answer["answer"]
+    assert answer["sources"][0]["source"] == "hoa_hong.md"
+
+
 def test_gemini_fallback_skips_heading_only_top_chunk(monkeypatch):
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
@@ -168,6 +186,7 @@ def test_gemini_client_uses_short_timeout_and_bounded_retry(monkeypatch):
             self.options = kwargs["http_options"]
 
     monkeypatch.setattr(genai, "Client", FakeClient)
+    monkeypatch.setenv("ENABLE_GEMINI_API", "1")
 
     client = create_gemini_client("test-key", timeout_ms=12_000)
 

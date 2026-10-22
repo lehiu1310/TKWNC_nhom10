@@ -13,7 +13,7 @@ services:
       RENDER_FREE_MEMORY: "1"
       RETRIEVAL_BACKEND: classifier
       LLM_PROVIDER: gemini
-      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      ENABLE_GEMINI_API: "0"
     volumes:
       - vuonhoa-data:/app/.data
     restart: unless-stopped
