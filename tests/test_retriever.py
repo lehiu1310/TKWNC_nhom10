@@ -221,6 +221,28 @@ def test_gemini_fallback_skips_heading_only_top_chunk(monkeypatch):
     assert any(term in answer["answer"].casefold() for term in ("tưới", "đất", "ánh sáng", "dinh dưỡng", "hoa hồng"))
 
 
+def test_grounded_fallback_answers_target_the_asked_fact(monkeypatch):
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    bot = RAGChatbot(provider="gemini")
+
+    cases = [
+        ("Hoa hồng cần bao nhiêu giờ nắng trực tiếp mỗi ngày?", "không nêu số giờ", "hoa_hong.md"),
+        ("Thời tiết nào phù hợp cho hoa hồng ở Việt Nam?", "khí hậu địa phương", "hoa_hong.md"),
+        ("Đất nào phù hợp trồng củ tulip?", "giá thể", "tulip.md"),
+        ("Ý nghĩa của Helianthus annuus là gì?", "lạc quan", "huong_duong.md"),
+        ("Cúc họa mi miền Bắc thường nở vào tháng nào?", "tháng 11", "mua_hoa_viet_nam.md"),
+        ("Vì sao các giống hoa cúc nở vào những thời điểm khác nhau?", "vĩ độ và nhiệt độ", "hoa_cuc.md"),
+    ]
+
+    for question, expected_fact, expected_source in cases:
+        result = bot.answer(question)
+        answer = result["answer"].casefold()
+        assert expected_fact in answer, (question, result["answer"])
+        assert f"[{expected_source}]" in result["answer"]
+        assert expected_source in {source["source"] for source in result["sources"]}
+
+
 def test_gemini_client_uses_short_timeout_and_bounded_retry(monkeypatch):
     from google import genai
     from core.gemini_client import create_gemini_client

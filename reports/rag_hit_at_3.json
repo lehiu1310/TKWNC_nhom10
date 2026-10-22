@@ -27,9 +27,9 @@
       "question": "Cây hồng cần mỗi ngày bao nhiêu giờ nắng trực tiếp?",
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
-        "hoa_hong.md",
-        "huong_duong.md",
-        "cach_cham_soc.md"
+        "hoa_cuc.md",
+        "cach_cham_soc.md",
+        "hoa_hong.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -38,9 +38,9 @@
       "question": "Làm thế nào tưới hoa hồng để hạn chế úng rễ?",
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
-        "hoa_hong.md",
         "huong_duong.md",
-        "bo_cong_anh.md"
+        "hoa_hong.md",
+        "hoa_cuc.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -61,8 +61,8 @@
       "expected_source": "hoa_hong.md",
       "retrieved_sources": [
         "hoa_hong.md",
-        "tulip.md",
-        "mua_hoa_viet_nam.md"
+        "mua_hoa_viet_nam.md",
+        "tulip.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -93,8 +93,8 @@
       "question": "Tulip thường nở vào mùa nào ở vùng ôn đới?",
       "expected_source": "tulip.md",
       "retrieved_sources": [
-        "tulip.md",
         "mua_hoa_viet_nam.md",
+        "tulip.md",
         "huong_duong.md"
       ],
       "hit_at_3": true,
@@ -105,8 +105,8 @@
       "expected_source": "tulip.md",
       "retrieved_sources": [
         "tulip.md",
-        "mua_hoa_viet_nam.md",
-        "bo_cong_anh.md"
+        "hoa_hong.md",
+        "mua_hoa_viet_nam.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -116,7 +116,7 @@
       "expected_source": "tulip.md",
       "retrieved_sources": [
         "tulip.md",
-        "mua_hoa_viet_nam.md",
+        "hoa_hong.md",
         "hoa_cuc.md"
       ],
       "hit_at_3": true,
@@ -128,7 +128,7 @@
       "retrieved_sources": [
         "y_nghia_hoa.md",
         "tulip.md",
-        "mua_hoa_viet_nam.md"
+        "hoa_cuc.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -139,7 +139,7 @@
       "retrieved_sources": [
         "tulip.md",
         "huong_duong.md",
-        "bo_cong_anh.md"
+        "hoa_hong.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -159,8 +159,8 @@
       "question": "Hướng dương cần vị trí trồng như thế nào?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
+        "hoa_hong.md",
         "huong_duong.md",
-        "hoa_cuc.md",
         "cach_cham_soc.md"
       ],
       "hit_at_3": true,
@@ -181,8 +181,8 @@
       "question": "Khi cây hướng dương cao gặp gió thì chăm sóc ra sao?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
-        "huong_duong.md",
         "hoa_cuc.md",
+        "huong_duong.md",
         "tulip.md"
       ],
       "hit_at_3": true,
@@ -192,9 +192,9 @@
       "question": "Ở Việt Nam hoa hướng dương có thể trồng thời gian nào?",
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
+        "hoa_hong.md",
         "huong_duong.md",
-        "mua_hoa_viet_nam.md",
-        "hoa_cuc.md"
+        "tulip.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -204,8 +204,8 @@
       "expected_source": "huong_duong.md",
       "retrieved_sources": [
         "huong_duong.md",
-        "hoa_hong.md",
-        "hoa_cuc.md"
+        "hoa_cuc.md",
+        "hoa_hong.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -223,11 +223,11 @@
     },
     {
       "question": "Cúc họa mi miền Bắc thường xuất hiện vào khoảng tháng nào?",
-      "expected_source": "hoa_cuc.md",
+      "expected_source": "mua_hoa_viet_nam.md",
       "retrieved_sources": [
         "mua_hoa_viet_nam.md",
         "hoa_cuc.md",
-        "y_nghia_tang_hoa.md"
+        "huong_duong.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -269,9 +269,9 @@
       "question": "Tại sao thời điểm nở của các giống cúc không giống nhau?",
       "expected_source": "hoa_cuc.md",
       "retrieved_sources": [
-        "hoa_cuc.md",
-        "hoa_hong.md",
-        "huong_duong.md"
+        "mua_hoa_viet_nam.md",
+        "huong_duong.md",
+        "hoa_cuc.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -292,8 +292,8 @@
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
         "bo_cong_anh.md",
-        "y_nghia_hoa.md",
-        "hoa_cuc.md"
+        "hoa_cuc.md",
+        "hoa_hong.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -313,9 +313,9 @@
       "question": "Một số cây bồ công anh phát triển tốt nơi có ánh sáng ra sao?",
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
-        "bo_cong_anh.md",
         "huong_duong.md",
-        "y_nghia_hoa.md"
+        "bo_cong_anh.md",
+        "cach_cham_soc.md"
       ],
       "hit_at_3": true,
       "fallback_answer_cites_expected_source": true
@@ -336,7 +336,7 @@
       "expected_source": "bo_cong_anh.md",
       "retrieved_sources": [
         "bo_cong_anh.md",
-        "y_nghia_hoa.md",
+        "y_nghia_tang_hoa.md",
         "huong_duong.md"
       ],
       "hit_at_3": true,

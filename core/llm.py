@@ -89,6 +89,8 @@ class Retriever:
     _STOP_WORDS = {
         "là", "và", "của", "có", "cho", "các", "những", "một", "này", "đó",
         "thì", "với", "trong", "khi", "nào", "gì", "hãy", "được", "để", "từ",
+        "cần", "mỗi", "ngày", "trực", "tiếp", "bao", "nhiêu", "giờ", "tốt",
+        "thường", "nên", "loại", "tại", "sao", "phổ", "biến",
     }
 
     @classmethod
@@ -138,16 +140,24 @@ class Retriever:
         query_terms = set(terms)
         normalized_query = " ".join(query.casefold().split())
         preferred_sections = []
-        if any(term in normalized_query for term in ("chăm sóc", "trồng", "tưới", "bón phân", "đất")):
+        if any(term in normalized_query for term in ("chăm sóc", "tưới", "bón phân")):
             preferred_sections.append("cách chăm sóc")
         if any(term in normalized_query for term in ("tưới", "ngập", "úng nước")):
             preferred_sections.append("cách tưới")
+        if any(term in normalized_query for term in ("đất", "giá thể", "thoát nước")):
+            preferred_sections.extend(("giá thể", "đất", "vị trí và đất", "đất, tưới"))
+        if "trồng" in normalized_query:
+            preferred_sections.extend(("vị trí trồng", "chọn giống", "giá thể", "đất"))
+        if any(term in normalized_query for term in ("nắng", "ánh sáng", "giờ nắng", "nhiều nắng")):
+            preferred_sections.extend(("ánh sáng", "vị trí trồng", "chọn giống", "vị trí và đất"))
+        if any(term in normalized_query for term in ("thời tiết", "khí hậu", "nhiệt độ", "phát triển tốt")):
+            preferred_sections.extend(("khí hậu", "nhiệt độ", "vị trí trồng", "chọn giống", "lưu ý theo vùng"))
         if any(term in normalized_query for term in ("cắt", "hoa tàn", "hoa héo", "deadhead")):
             preferred_sections.append("cách chăm sóc")
         if any(term in normalized_query for term in ("ý nghĩa", "biểu tượng", "tặng hoa")):
             preferred_sections.append("ý nghĩa")
         if any(term in normalized_query for term in ("mùa", "nở", "khi nào", "tháng")):
-            preferred_sections.append("mùa hoa")
+            preferred_sections.extend(("mùa hoa", "mùa nở", "mùa đông", "loài hoa ở vùng khí hậu", "lưu ý theo vùng"))
         if any(term in normalized_query for term in ("đặc điểm", "nhận biết", "hình dáng")):
             preferred_sections.append("đặc điểm")
         reranked = []
@@ -159,7 +169,7 @@ class Retriever:
             if len(normalized_query) >= 6 and normalized_query in normalized_text:
                 phrase_bonus = 0.15
             section = self.chunks[i]["text"].splitlines()[0].casefold().lstrip("# ")
-            intent_bonus = 0.25 if any(section.startswith(title) for title in preferred_sections) else 0.0
+            intent_bonus = 0.75 if any(section.startswith(title) for title in preferred_sections) else 0.0
             care_intent = any(term in normalized_query for term in ("chăm sóc", "cần chăm", "nuôi", "tưới", "bón phân"))
             pruning_intent = any(term in normalized_query for term in ("cắt tỉa", "tỉa cành", "hoa tàn", "cắt hoa"))
             if care_intent:
@@ -251,6 +261,25 @@ class RAGChatbot:
                 "nhưng tài liệu chưa xác nhận khả năng chịu rét sâu của loài này. [tulip.md] [mua_hoa_viet_nam.md]"
             )
 
+        if re.search(r"\bbao nhiêu\s+(?:giờ|tiếng)\b", question_folded):
+            exact_hours = re.compile(r"\b\d+(?:[.,]\d+)?\s*(?:giờ|tiếng)\b", re.IGNORECASE)
+            passages = []
+            for item in contexts:
+                text = " ".join(line.strip() for line in item.get("text", "").splitlines()
+                                if line.strip() and not line.lstrip().startswith("#"))
+                passages.extend((sentence, item["source"]) for sentence in re.split(r"(?<=[.!?])\s+", text))
+            exact = next(((sentence, source) for sentence, source in passages if exact_hours.search(sentence)), None)
+            if exact:
+                sentence, citation = exact
+                return f"Theo tài liệu: {sentence} [{citation}]"
+            for sentence, citation in passages:
+                if any(term in sentence.casefold() for term in ("nắng", "ánh sáng")):
+                    return (
+                        "Tài liệu hiện có không nêu số giờ nắng trực tiếp cụ thể. "
+                        f"Hướng dẫn chỉ ghi: {sentence} [{citation}]"
+                    )
+            return "Tài liệu hiện có không nêu số giờ nắng trực tiếp cụ thể."
+
         excerpts = []
         # Retrieval can rank a heading-only chunk above its useful paragraph.
         # Filter those first, otherwise a strong title score suppresses the
@@ -263,6 +292,15 @@ class RAGChatbot:
             if len(text) >= 32:
                 usable.append((item, text))
         best_score = max((float(item.get("score", 0)) for item, _ in usable), default=0.0)
+        query_terms = set(Retriever._terms(question))
+        folded_question = question.casefold()
+        if any(term in folded_question for term in ("thời tiết", "khí hậu", "nhiệt độ")):
+            query_terms.update(Retriever._terms("khí hậu thời tiết nhiệt độ mưa ẩm nắng thoáng vùng"))
+        if any(term in folded_question for term in ("đất", "giá thể", "củ tulip")):
+            query_terms.update(Retriever._terms("giá thể đất tơi sạch thoát nước"))
+        if any(term in folded_question for term in ("thời điểm", "khác nhau", "mùa hoa")):
+            query_terms.update(Retriever._terms("loài giống vĩ độ nhiệt độ lịch mùa nở"))
+        sentence_candidates = []
         for item, text in usable:
             score = float(item.get("score", 0))
             if best_score and score < best_score * 0.70:
@@ -270,9 +308,16 @@ class RAGChatbot:
             citation = item["source"]
             if item.get("page") is not None:
                 citation += f", trang {item['page']}"
-            excerpts.append(f"{text} [{citation}]")
-            if len(excerpts) == 2:
-                break
+            # Chunks can contain several facts. Quote the sentence with the
+            # strongest lexical match so fallback answers don't mix a correct
+            # fact with unrelated material from the same paragraph.
+            sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+", text) if part.strip()]
+            for sentence in sentences or [text]:
+                overlap = len(query_terms & set(Retriever._terms(sentence)))
+                sentence_candidates.append((overlap, score, sentence, citation))
+        if sentence_candidates:
+            _overlap, _score, best_sentence, citation = max(sentence_candidates, key=lambda row: (row[0], row[1]))
+            excerpts.append(f"{best_sentence} [{citation}]")
         if not excerpts:
             return "Mình chưa có thông tin này."
         return "Theo thông tin trong cẩm nang hoa: " + " ".join(excerpts)
@@ -299,10 +344,26 @@ class RAGChatbot:
         matching_sources = set()
         for item in self.retriever.chunks:
             stem = Path(item.get("source", "")).stem.replace("_", " ")
-            name_terms = terms(stem) - generic
-            if name_terms and name_terms.issubset(question_terms):
+            source = item.get("source", "")
+            aliases = {
+                "hoa_hong.md": ("rose", "rosa"),
+                "huong_duong.md": ("sunflower", "helianthus", "helianthus annuus"),
+                "tulip.md": ("tulipa",),
+                "hoa_cuc.md": ("daisy", "asteraceae", "leucanthemum"),
+                "bo_cong_danh.md": ("dandelion", "taraxacum"),
+                "bo_cong_anh.md": ("dandelion", "taraxacum"),
+            }.get(source, ())
+            names = [terms(stem) - generic, *(terms(alias) for alias in aliases)]
+            if any(name_terms and name_terms.issubset(question_terms) for name_terms in names):
                 matching_sources.add(item["source"])
         if not matching_sources:
+            return contexts
+        normalized_question = " ".join(question.casefold().split())
+        # Seasonal, regional, climate, and exact-month questions often need a
+        # cross-species source (for example the Vietnam flower calendar).
+        if any(term in normalized_question for term in (
+            "tháng", "mùa", "khi nào", "thời tiết", "khí hậu", "nhiệt độ",
+        )):
             return contexts
         source = next((item.get("source") for item in contexts if item.get("source") in matching_sources), None)
         source = source or sorted(matching_sources)[0]
