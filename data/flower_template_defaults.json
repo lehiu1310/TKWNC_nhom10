@@ -1,0 +1,343 @@
+{
+  "disk": {
+    "label": "Hoa đĩa",
+    "kind": "daisy",
+    "phase": 1,
+    "params": {
+      "petalCount": 24,
+      "layerCount": 1,
+      "curvature": 0.055,
+      "petalLength": 0.76,
+      "petalWidth": 0.12,
+      "tip": "spatulate",
+      "petalColor": "#f7f5df",
+      "edgeColor": "#fffdf8",
+      "undersideColor": "#e6f5f0",
+      "centerColor": "#f6cf32",
+      "centerSize": 0.245,
+      "stemLength": 2.43,
+      "leafCount": 3,
+      "leafColor": "#78966f"
+    }
+  },
+  "bowl": {
+    "label": "Hoa chén",
+    "kind": "tulip",
+    "phase": 1,
+    "params": {
+      "petalCount": 6,
+      "layerCount": 1,
+      "curvature": 0.28,
+      "petalLength": 0.86,
+      "petalWidth": 0.3,
+      "tip": "round",
+      "petalColor": "#d96b81",
+      "edgeColor": "#f4b0b5",
+      "undersideColor": "#f8d9cf",
+      "centerColor": "#f2cf85",
+      "centerSize": 0.13,
+      "stemLength": 1.6,
+      "leafCount": 2,
+      "leafColor": "#78916c"
+    }
+  },
+  "layered": {
+    "label": "Nhiều lớp · hoa hồng",
+    "kind": "rose",
+    "phase": 1,
+    "params": {
+      "petalCount": 37,
+      "layerCount": 4,
+      "curvature": 0.32,
+      "petalLength": 0.72,
+      "petalWidth": 0.29,
+      "tip": "round",
+      "petalColor": "#8b1938",
+      "edgeColor": "#ec7584",
+      "undersideColor": "#f2c3c7",
+      "centerColor": "#8f1933",
+      "centerSize": 0.16,
+      "stemLength": 1.78,
+      "leafCount": 4,
+      "leafColor": "#71845d"
+    }
+  },
+  "swirl5": {
+    "label": "Năm cánh xoáy",
+    "kind": "plumeria",
+    "phase": 1,
+    "params": {
+      "petalCount": 5,
+      "layerCount": 1,
+      "curvature": 0.18,
+      "petalLength": 0.7,
+      "petalWidth": 0.28,
+      "tip": "round",
+      "petalColor": "#f4d998",
+      "edgeColor": "#fff5dd",
+      "undersideColor": "#fff0da",
+      "centerColor": "#e6a94c",
+      "centerSize": 0.12,
+      "stemLength": 1.75,
+      "leafCount": 3,
+      "leafColor": "#78946c"
+    }
+  },
+  "bell": {
+    "label": "Hoa chuông",
+    "kind": "bell",
+    "phase": 1,
+    "params": {
+      "petalCount": 6,
+      "layerCount": 1,
+      "curvature": 0.25,
+      "petalLength": 0.8,
+      "petalWidth": 0.25,
+      "tip": "scallop",
+      "petalColor": "#a68bd0",
+      "edgeColor": "#d9c9f2",
+      "undersideColor": "#eee7fa",
+      "centerColor": "#e9cf8b",
+      "centerSize": 0.12,
+      "stemLength": 1.76,
+      "leafCount": 3,
+      "leafColor": "#77916f"
+    }
+  },
+  "cluster": {
+    "label": "Cụm tròn",
+    "kind": "cluster",
+    "phase": 1,
+    "params": {
+      "petalCount": 5,
+      "layerCount": 1,
+      "floretCount": 28,
+      "curvature": 0.06,
+      "petalLength": 0.105,
+      "petalWidth": 0.038,
+      "tip": "round",
+      "petalColor": "#a8b86d",
+      "edgeColor": "#d4dda0",
+      "undersideColor": "#dce5b1",
+      "centerColor": "#e8c76a",
+      "centerSize": 0.32,
+      "stemLength": 1.66,
+      "leafCount": 4,
+      "leafColor": "#718b63"
+    }
+  },
+  "star": {
+    "label": "Sao nhọn / hoa ly",
+    "kind": "plumeria",
+    "phase": 4,
+    "params": {
+      "petalCount": 6,
+      "layerCount": 1,
+      "curvature": 0.17,
+      "petalLength": 0.86,
+      "petalWidth": 0.2,
+      "tip": "pointed",
+      "petalColor": "#f2dce6",
+      "edgeColor": "#fff5f0",
+      "undersideColor": "#eadde9",
+      "centerColor": "#e4ba6b",
+      "centerSize": 0.11,
+      "stemLength": 1.72,
+      "leafCount": 3,
+      "leafColor": "#77916f"
+    }
+  },
+  "spike": {
+    "label": "Cụm hoa dài",
+    "kind": "cluster",
+    "phase": 4,
+    "params": {
+      "petalCount": 5,
+      "layerCount": 1,
+      "floretCount": 52,
+      "curvature": 0.08,
+      "petalLength": 0.12,
+      "petalWidth": 0.045,
+      "tip": "round",
+      "petalColor": "#b77883",
+      "edgeColor": "#e5adb0",
+      "undersideColor": "#f1d0ce",
+      "centerColor": "#e0b66a",
+      "centerSize": 0.12,
+      "stemLength": 1.9,
+      "leafCount": 3,
+      "leafColor": "#748d67"
+    }
+  },
+  "rose_rolled": {
+    "label": "Hoa hồng cuộn",
+    "kind": "rose",
+    "phase": 2,
+    "params": {
+      "petalCount": 30,
+      "layerCount": 3,
+      "curvature": 0.22,
+      "petalLength": 0.62,
+      "petalWidth": 0.36,
+      "tip": "round",
+      "petalColor": "#b52d4a",
+      "edgeColor": "#e95c70",
+      "undersideColor": "#edacb3",
+      "centerColor": "#6f1f30",
+      "centerSize": 0.12,
+      "stemLength": 1.72,
+      "leafCount": 4,
+      "leafColor": "#64845b"
+    }
+  },
+  "round_cluster": {
+    "label": "Cụm tròn / hoa cầu",
+    "kind": "cluster_round",
+    "phase": 2,
+    "params": {
+      "petalCount": 6,
+      "layerCount": 1,
+      "floretCount": 42,
+      "curvature": 0.08,
+      "petalLength": 0.16,
+      "petalWidth": 0.055,
+      "tip": "round",
+      "petalColor": "#d6a16d",
+      "edgeColor": "#f0d3a2",
+      "undersideColor": "#f3dfc2",
+      "centerColor": "#bc7945",
+      "centerSize": 0.28,
+      "stemLength": 1.68,
+      "leafCount": 4,
+      "leafColor": "#71906a"
+    }
+  },
+  "small_cluster": {
+    "label": "Cụm hoa nhỏ",
+    "kind": "cluster_small",
+    "phase": 2,
+    "params": {
+      "petalCount": 5,
+      "layerCount": 1,
+      "floretCount": 36,
+      "curvature": 0.06,
+      "petalLength": 0.11,
+      "petalWidth": 0.04,
+      "tip": "round",
+      "petalColor": "#dd9aa7",
+      "edgeColor": "#f4c7cc",
+      "undersideColor": "#f5dfe0",
+      "centerColor": "#e9c45b",
+      "centerSize": 0.21,
+      "stemLength": 1.75,
+      "leafCount": 4,
+      "leafColor": "#718b63"
+    }
+  },
+  "orchid": {
+    "label": "Hoa lan",
+    "kind": "orchid",
+    "phase": 2,
+    "params": {
+      "petalCount": 5,
+      "layerCount": 1,
+      "curvature": 0.2,
+      "petalLength": 0.72,
+      "petalWidth": 0.3,
+      "tip": "round",
+      "petalColor": "#c47ab4",
+      "edgeColor": "#efd1e6",
+      "undersideColor": "#eedbea",
+      "centerColor": "#e4b64e",
+      "centerSize": 0.18,
+      "stemLength": 1.7,
+      "leafCount": 2,
+      "leafColor": "#64845b"
+    }
+  },
+  "iris": {
+    "label": "Hoa iris",
+    "kind": "iris",
+    "phase": 2,
+    "params": {
+      "petalCount": 6,
+      "layerCount": 1,
+      "curvature": 0.2,
+      "petalLength": 0.79,
+      "petalWidth": 0.22,
+      "tip": "round",
+      "petalColor": "#7872c1",
+      "edgeColor": "#b8aedc",
+      "undersideColor": "#e4d8e9",
+      "centerColor": "#e8c45a",
+      "centerSize": 0.12,
+      "stemLength": 1.75,
+      "leafCount": 3,
+      "leafColor": "#668252"
+    }
+  },
+  "water_lily": {
+    "label": "Sen / súng",
+    "kind": "water_lily",
+    "phase": 2,
+    "params": {
+      "petalCount": 32,
+      "layerCount": 4,
+      "curvature": 0.16,
+      "petalLength": 0.72,
+      "petalWidth": 0.16,
+      "tip": "round",
+      "petalColor": "#e58d9f",
+      "edgeColor": "#fad2d0",
+      "undersideColor": "#f6e4db",
+      "centerColor": "#e6bb45",
+      "centerSize": 0.17,
+      "stemLength": 1.42,
+      "leafCount": 3,
+      "leafColor": "#5d905a"
+    }
+  },
+  "spadix": {
+    "label": "Mo hoa và trụ hoa",
+    "kind": "spadix",
+    "phase": 2,
+    "params": {
+      "petalCount": 1,
+      "layerCount": 1,
+      "curvature": 0.36,
+      "petalLength": 0.94,
+      "petalWidth": 0.74,
+      "tip": "round",
+      "petalColor": "#df7790",
+      "edgeColor": "#f4bbc5",
+      "undersideColor": "#f6dfe2",
+      "centerColor": "#f0d47c",
+      "centerSize": 0.09,
+      "stemLength": 1.64,
+      "leafCount": 2,
+      "leafColor": "#5c8452"
+    }
+  },
+  "thistle": {
+    "label": "Hoa gai / atisô",
+    "kind": "thistle",
+    "phase": 2,
+    "params": {
+      "petalCount": 6,
+      "layerCount": 1,
+      "floretCount": 44,
+      "curvature": 0.08,
+      "petalLength": 0.2,
+      "petalWidth": 0.052,
+      "tip": "pointed",
+      "petalColor": "#9875ba",
+      "edgeColor": "#d3b1dd",
+      "undersideColor": "#e7d7ec",
+      "centerColor": "#d2a74e",
+      "centerSize": 0.28,
+      "stemLength": 1.77,
+      "leafCount": 4,
+      "leafColor": "#718767"
+    }
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "name": "TKWNC_nhom10 — Vườn Hoa AI",
-  "description": "Nền tảng tra cứu 103 loài hoa và 4 ứng dụng AI thực vật học: Kính lúp hoa (phân loại), Mắt thần vườn (phát hiện đối tượng/webcam), Album hoa (tìm kiếm ngữ nghĩa/ảnh), và Cô làm vườn (trợ lý RAG tiếng Việt).",
-  "permissions": [],
-  "capabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}

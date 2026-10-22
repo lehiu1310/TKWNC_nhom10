@@ -1,0 +1,729 @@
+{
+  "schema_version": 1,
+  "generated_by": "deterministic local name and morphology rules; no Gemini/API calls",
+  "source": "data/species.json names, descriptions and facts; low-confidence or complex forms use reference photos",
+  "count": 103,
+  "species": [
+    {
+      "id": "daisy",
+      "archetype": "disk",
+      "confidence": 0.99,
+      "reason": "Oxeye daisy: một đầu hoa dạng đĩa với hoa tia và tâm vàng.",
+      "fallback_photo": false
+    },
+    {
+      "id": "dandelion",
+      "archetype": "disk",
+      "confidence": 0.99,
+      "reason": "Dandelion: đầu hoa dạng đĩa gồm nhiều hoa nhỏ hình ống.",
+      "fallback_photo": false
+    },
+    {
+      "id": "roses",
+      "archetype": "rose_rolled",
+      "confidence": 0.99,
+      "reason": "Rose: cánh nhiều lớp cuộn xoắn quanh nụ trung tâm.",
+      "fallback_photo": false
+    },
+    {
+      "id": "sunflowers",
+      "archetype": "disk",
+      "confidence": 0.99,
+      "reason": "Sunflower: đầu hoa lớn dạng đĩa, tia vàng và tâm hạt.",
+      "fallback_photo": false
+    },
+    {
+      "id": "tulips",
+      "archetype": "bowl",
+      "confidence": 0.99,
+      "reason": "Tulip: sáu cánh lớn khép thành chén.",
+      "fallback_photo": false
+    },
+    {
+      "id": "pink-primrose",
+      "archetype": "swirl5",
+      "confidence": 0.92,
+      "reason": "Anh thảo hồng có tràng năm thùy tỏa quanh tâm.",
+      "fallback_photo": false
+    },
+    {
+      "id": "globe-thistle",
+      "archetype": "thistle",
+      "confidence": 0.99,
+      "reason": "Globe thistle: đầu hoa hình cầu với nhiều hoa nhỏ và lá bắc nhọn.",
+      "fallback_photo": false
+    },
+    {
+      "id": "blanket-flower",
+      "archetype": "round_cluster",
+      "confidence": 0.9,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm round_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "trumpet-creeper",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "blackberry-lily",
+      "archetype": "iris",
+      "confidence": 0.98,
+      "reason": "Blackberry lily: dạng hoa sáu phần gần nhóm iris.",
+      "fallback_photo": false
+    },
+    {
+      "id": "snapdragon",
+      "archetype": "long_spike",
+      "confidence": 0.98,
+      "reason": "Hoa mõm sói xếp dọc trên trục dài.",
+      "fallback_photo": false
+    },
+    {
+      "id": "colt-s-foot",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "king-protea",
+      "archetype": "exotic",
+      "confidence": 0.99,
+      "reason": "Protea có lớp lá bắc lớn và hình thái đặc trưng; ưu tiên ảnh thật.",
+      "fallback_photo": true
+    },
+    {
+      "id": "spear-thistle",
+      "archetype": "thistle",
+      "confidence": 0.99,
+      "reason": "Spear thistle: đầu hoa có lá bắc gai nhọn.",
+      "fallback_photo": false
+    },
+    {
+      "id": "yellow-iris",
+      "archetype": "iris",
+      "confidence": 0.99,
+      "reason": "Yellow iris: ba cánh rủ và ba cánh đứng đặc trưng.",
+      "fallback_photo": false
+    },
+    {
+      "id": "globe-flower",
+      "archetype": "bowl",
+      "confidence": 0.93,
+      "reason": "Cầu hoa vàng có cánh dày khép thành chén.",
+      "fallback_photo": false
+    },
+    {
+      "id": "purple-coneflower",
+      "archetype": "round_cluster",
+      "confidence": 0.9,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm round_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "peruvian-lily",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "balloon-flower",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "hard-leaved-pocket-orchid",
+      "archetype": "orchid",
+      "confidence": 0.99,
+      "reason": "Lan hài có môi hình túi đặc trưng; ưu tiên ảnh thật.",
+      "fallback_photo": true
+    },
+    {
+      "id": "giant-white-arum-lily",
+      "archetype": "spadix",
+      "confidence": 0.99,
+      "reason": "Rum trắng có mo bao quanh trụ hoa.",
+      "fallback_photo": false
+    },
+    {
+      "id": "fire-lily",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "pincushion-flower",
+      "archetype": "round_cluster",
+      "confidence": 0.9,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm round_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "fritillary",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "red-ginger",
+      "archetype": "long_spike",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm long_spike; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "grape-hyacinth",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "corn-poppy",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "prince-of-wales-feathers",
+      "archetype": "long_spike",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm long_spike; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "stemless-gentian",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "artichoke",
+      "archetype": "thistle",
+      "confidence": 0.99,
+      "reason": "Artichoke: cụm hoa dạng đầu lớn được bao bởi lá bắc nhọn.",
+      "fallback_photo": false
+    },
+    {
+      "id": "canterbury-bells",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "sweet-william",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "carnation",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "garden-phlox",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "love-in-the-mist",
+      "archetype": "exotic",
+      "confidence": 0.35,
+      "reason": "Không đủ dấu hiệu tên/mô tả để gán khuôn an toàn; dùng ảnh thật cho đến khi duyệt.",
+      "fallback_photo": true
+    },
+    {
+      "id": "mexican-aster",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "alpine-sea-holly",
+      "archetype": "thistle",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm thistle; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "ruby-lipped-cattleya",
+      "archetype": "orchid",
+      "confidence": 0.99,
+      "reason": "Lan Cattleya có môi hoa nổi bật; ưu tiên ảnh thật.",
+      "fallback_photo": true
+    },
+    {
+      "id": "cape-flower",
+      "archetype": "exotic",
+      "confidence": 0.35,
+      "reason": "Không đủ dấu hiệu tên/mô tả để gán khuôn an toàn; dùng ảnh thật cho đến khi duyệt.",
+      "fallback_photo": true
+    },
+    {
+      "id": "great-masterwort",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "siam-tulip",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "sweet-pea",
+      "archetype": "exotic",
+      "confidence": 0.35,
+      "reason": "Không đủ dấu hiệu tên/mô tả để gán khuôn an toàn; dùng ảnh thật cho đến khi duyệt.",
+      "fallback_photo": true
+    },
+    {
+      "id": "lenten-rose",
+      "archetype": "bowl",
+      "confidence": 0.88,
+      "reason": "Hellebore (hồng mùa chay) có cánh hoa dạng chén, không phải hoa hồng cuộn.",
+      "fallback_photo": false
+    },
+    {
+      "id": "barbeton-daisy",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "daffodil",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "sword-lily",
+      "archetype": "long_spike",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm long_spike; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "poinsettia",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bolero-deep-blue",
+      "archetype": "swirl5",
+      "confidence": 0.88,
+      "reason": "Cát tường có tràng năm thùy rộng; khuôn năm cánh là xấp xỉ hình học.",
+      "fallback_photo": false
+    },
+    {
+      "id": "wallflower",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "marigold",
+      "archetype": "disk",
+      "confidence": 0.92,
+      "reason": "Vạn thọ có đầu hoa dạng đĩa nhiều cánh.",
+      "fallback_photo": false
+    },
+    {
+      "id": "buttercup",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "english-marigold",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "petunia",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "wild-pansy",
+      "archetype": "swirl5",
+      "confidence": 0.84,
+      "reason": "Viola có năm cánh rộng; khuôn năm cánh là xấp xỉ hình học.",
+      "fallback_photo": false
+    },
+    {
+      "id": "primula",
+      "archetype": "swirl5",
+      "confidence": 0.92,
+      "reason": "Anh thảo có tràng năm thùy tỏa quanh tâm.",
+      "fallback_photo": false
+    },
+    {
+      "id": "pelargonium",
+      "archetype": "swirl5",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm swirl5; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bishop-of-llandaff",
+      "archetype": "round_cluster",
+      "confidence": 0.82,
+      "reason": "Thược dược có nhiều lớp dày khác hoa hồng; tạm ưu tiên ảnh thật đến khi có khuôn riêng.",
+      "fallback_photo": true
+    },
+    {
+      "id": "gaura",
+      "archetype": "long_spike",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm long_spike; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "geranium",
+      "archetype": "swirl5",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm swirl5; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "orange-dahlia",
+      "archetype": "round_cluster",
+      "confidence": 0.82,
+      "reason": "Thược dược có nhiều lớp dày khác hoa hồng; tạm ưu tiên ảnh thật đến khi có khuôn riêng.",
+      "fallback_photo": true
+    },
+    {
+      "id": "tiger-lily",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "pink-yellow-dahlia",
+      "archetype": "round_cluster",
+      "confidence": 0.82,
+      "reason": "Thược dược có nhiều lớp dày khác hoa hồng; tạm ưu tiên ảnh thật đến khi có khuôn riêng.",
+      "fallback_photo": true
+    },
+    {
+      "id": "cautleya-spicata",
+      "archetype": "long_spike",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm long_spike; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "japanese-anemone",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "black-eyed-susan",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "silverbush",
+      "archetype": "bell",
+      "confidence": 0.8,
+      "reason": "Silverbush thuộc nhóm bìm, tràng hoa dạng phễu.",
+      "fallback_photo": false
+    },
+    {
+      "id": "californian-poppy",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "osteospermum",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "spring-crocus",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bearded-iris",
+      "archetype": "iris",
+      "confidence": 0.99,
+      "reason": "Bearded iris: cánh rủ, cánh đứng và mào hoa riêng biệt.",
+      "fallback_photo": false
+    },
+    {
+      "id": "windflower",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "moon-orchid",
+      "archetype": "orchid",
+      "confidence": 0.99,
+      "reason": "Lan hồ điệp có cánh và môi bất đối xứng tinh vi; ưu tiên ảnh thật.",
+      "fallback_photo": true
+    },
+    {
+      "id": "tree-poppy",
+      "archetype": "bowl",
+      "confidence": 0.95,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bowl; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "gazania",
+      "archetype": "disk",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm disk; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "azalea",
+      "archetype": "swirl5",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm swirl5; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "water-lily",
+      "archetype": "water_lily",
+      "confidence": 0.99,
+      "reason": "Water lily: nhiều vòng cánh tỏa trên lá nổi tròn.",
+      "fallback_photo": false
+    },
+    {
+      "id": "thorn-apple",
+      "archetype": "bell",
+      "confidence": 0.94,
+      "reason": "Cà độc dược có tràng hoa hình loa kèn.",
+      "fallback_photo": false
+    },
+    {
+      "id": "morning-glory",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "passion-flower",
+      "archetype": "passionflower",
+      "confidence": 0.99,
+      "reason": "Lạc tiên có vòng tua và cấu trúc trung tâm phức tạp; ưu tiên ảnh thật.",
+      "fallback_photo": true
+    },
+    {
+      "id": "lotus",
+      "archetype": "water_lily",
+      "confidence": 0.99,
+      "reason": "Lotus: nhiều vòng cánh tỏa, hình thái phù hợp khuôn sen/súng.",
+      "fallback_photo": false
+    },
+    {
+      "id": "toad-lily",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bird-of-paradise",
+      "archetype": "exotic",
+      "confidence": 0.99,
+      "reason": "Thiên điểu có lá bắc mỏ chim riêng biệt, chưa dựng khuôn an toàn.",
+      "fallback_photo": true
+    },
+    {
+      "id": "anthurium",
+      "archetype": "spadix",
+      "confidence": 0.99,
+      "reason": "Hồng môn có mo bao quanh trụ hoa.",
+      "fallback_photo": false
+    },
+    {
+      "id": "frangipani",
+      "archetype": "swirl5",
+      "confidence": 0.99,
+      "reason": "Hoa sứ có năm cánh bầu xoáy quanh họng hoa.",
+      "fallback_photo": false
+    },
+    {
+      "id": "clematis",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "hibiscus",
+      "archetype": "swirl5",
+      "confidence": 0.99,
+      "reason": "Dâm bụt có năm cánh tỏa và trụ nhị nổi.",
+      "fallback_photo": false
+    },
+    {
+      "id": "columbine",
+      "archetype": "exotic",
+      "confidence": 0.93,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm exotic; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": true
+    },
+    {
+      "id": "desert-rose",
+      "archetype": "swirl5",
+      "confidence": 0.9,
+      "reason": "Sứ Thái có hoa năm cánh xoè, không thuộc chi hoa hồng.",
+      "fallback_photo": false
+    },
+    {
+      "id": "tree-mallow",
+      "archetype": "swirl5",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm swirl5; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "magnolia",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "cyclamen",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "watercress",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "monkshood",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "canna-lily",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "hippeastrum",
+      "archetype": "star_lily",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm star_lily; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bee-balm",
+      "archetype": "long_spike",
+      "confidence": 0.94,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm long_spike; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "ball-moss",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "foxglove",
+      "archetype": "long_spike",
+      "confidence": 0.98,
+      "reason": "Mao địa hoàng tạo chuỗi chuông dọc một trục dài.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bougainvillea",
+      "archetype": "small_cluster",
+      "confidence": 0.92,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm small_cluster; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "camellia",
+      "archetype": "swirl5",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm swirl5; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "mallow",
+      "archetype": "swirl5",
+      "confidence": 0.97,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm swirl5; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "mexican-petunia",
+      "archetype": "bell",
+      "confidence": 0.96,
+      "reason": "Quy tắc cục bộ khớp tên/mô tả hình thái với nhóm bell; chưa có hiệu chỉnh bằng Gemini.",
+      "fallback_photo": false
+    },
+    {
+      "id": "bromelia",
+      "archetype": "exotic",
+      "confidence": 0.99,
+      "reason": "Dứa cảnh có cụm lá bắc phức tạp; ưu tiên ảnh thật.",
+      "fallback_photo": true
+    }
+  ]
+}

@@ -1,0 +1,2062 @@
+[
+  {
+    "id": "daisy",
+    "photo_color": "#E7AE14",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 1336,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06223.jpg"
+  },
+  {
+    "id": "dandelion",
+    "photo_color": "#EED013",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 1005,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06561.jpg"
+  },
+  {
+    "id": "roses",
+    "photo_color": "#C11529",
+    "photo_hue": 354.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 8.2,
+    "mismatch": false,
+    "samples": 1758,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_01171.jpg"
+  },
+  {
+    "id": "sunflowers",
+    "photo_color": "#CF900C",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 933,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers/flower_photos/sunflowers/8563099326_8be9177101.jpg"
+  },
+  {
+    "id": "tulips",
+    "photo_color": "#991C45",
+    "photo_hue": 342.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 83.9,
+    "mismatch": true,
+    "samples": 242,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers/flower_photos/tulips/8523133474_d2c0845b54.jpg"
+  },
+  {
+    "id": "pink-primrose",
+    "photo_color": "#D0C742",
+    "photo_hue": 54.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 77.6,
+    "mismatch": true,
+    "samples": 353,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06759.jpg"
+  },
+  {
+    "id": "globe-thistle",
+    "photo_color": "#7B805A",
+    "photo_hue": 66.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 65.6,
+    "mismatch": true,
+    "samples": 163,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_08095.jpg"
+  },
+  {
+    "id": "blanket-flower",
+    "photo_color": "#85180B",
+    "photo_hue": 6.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 107.9,
+    "mismatch": true,
+    "samples": 1010,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07903.jpg"
+  },
+  {
+    "id": "trumpet-creeper",
+    "photo_color": "#C73324",
+    "photo_hue": 6.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 125.6,
+    "mismatch": true,
+    "samples": 1947,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07984.jpg"
+  },
+  {
+    "id": "blackberry-lily",
+    "photo_color": "#A75F15",
+    "photo_hue": 30.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 13.4,
+    "mismatch": false,
+    "samples": 1071,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_08047.jpg"
+  },
+  {
+    "id": "snapdragon",
+    "photo_color": "#C0D33D",
+    "photo_hue": 66.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 22.6,
+    "mismatch": false,
+    "samples": 776,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03178.jpg"
+  },
+  {
+    "id": "colt-s-foot",
+    "photo_color": "#DEAC2B",
+    "photo_hue": 42.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 89.6,
+    "mismatch": true,
+    "samples": 1673,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04045.jpg"
+  },
+  {
+    "id": "king-protea",
+    "photo_color": "#A5504A",
+    "photo_hue": 6.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 125.6,
+    "mismatch": true,
+    "samples": 530,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05791.jpg"
+  },
+  {
+    "id": "spear-thistle",
+    "photo_color": "#E774DE",
+    "photo_hue": 306.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 97.4,
+    "mismatch": true,
+    "samples": 124,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06095.jpg"
+  },
+  {
+    "id": "yellow-iris",
+    "photo_color": "#C6B228",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 634,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06346.jpg"
+  },
+  {
+    "id": "globe-flower",
+    "photo_color": "#DCC510",
+    "photo_hue": 54.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 77.6,
+    "mismatch": true,
+    "samples": 1941,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06659.jpg"
+  },
+  {
+    "id": "purple-coneflower",
+    "photo_color": "#636A32",
+    "photo_hue": 66.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 22.6,
+    "mismatch": false,
+    "samples": 354,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03894.jpg"
+  },
+  {
+    "id": "peruvian-lily",
+    "photo_color": "#9C5A3F",
+    "photo_hue": 18.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 113.6,
+    "mismatch": true,
+    "samples": 761,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04245.jpg"
+  },
+  {
+    "id": "balloon-flower",
+    "photo_color": "#4C347A",
+    "photo_hue": 258.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 87.8,
+    "mismatch": true,
+    "samples": 1076,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06191.jpg"
+  },
+  {
+    "id": "hard-leaved-pocket-orchid",
+    "photo_color": "#A65F42",
+    "photo_hue": 18.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 25.4,
+    "mismatch": false,
+    "samples": 270,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05087.jpg"
+  },
+  {
+    "id": "giant-white-arum-lily",
+    "photo_color": "#727A31",
+    "photo_hue": 66.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 22.6,
+    "mismatch": false,
+    "samples": 247,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04936.jpg"
+  },
+  {
+    "id": "fire-lily",
+    "photo_color": "#CE4C16",
+    "photo_hue": 18.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 25.4,
+    "mismatch": false,
+    "samples": 560,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06791.jpg"
+  },
+  {
+    "id": "pincushion-flower",
+    "photo_color": "#AA83D0",
+    "photo_hue": 270.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 133.4,
+    "mismatch": true,
+    "samples": 1140,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05360.jpg"
+  },
+  {
+    "id": "fritillary",
+    "photo_color": "#9D3E48",
+    "photo_hue": 354.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 49.4,
+    "mismatch": false,
+    "samples": 726,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03426.jpg"
+  },
+  {
+    "id": "red-ginger",
+    "photo_color": "#D92430",
+    "photo_hue": 354.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 49.4,
+    "mismatch": false,
+    "samples": 820,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06842.jpg"
+  },
+  {
+    "id": "grape-hyacinth",
+    "photo_color": "#647ECA",
+    "photo_hue": 222.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 90.4,
+    "mismatch": true,
+    "samples": 649,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06594.jpg"
+  },
+  {
+    "id": "corn-poppy",
+    "photo_color": "#CB0710",
+    "photo_hue": 354.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 95.9,
+    "mismatch": true,
+    "samples": 1596,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06505.jpg"
+  },
+  {
+    "id": "prince-of-wales-feathers",
+    "photo_color": "#CB0C22",
+    "photo_hue": 354.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 49.4,
+    "mismatch": false,
+    "samples": 1552,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06872.jpg"
+  },
+  {
+    "id": "stemless-gentian",
+    "photo_color": "#989250",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 651,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05221.jpg"
+  },
+  {
+    "id": "artichoke",
+    "photo_color": "#8C45D1",
+    "photo_hue": 270.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 133.4,
+    "mismatch": true,
+    "samples": 576,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04104.jpg"
+  },
+  {
+    "id": "canterbury-bells",
+    "photo_color": "#9EB944",
+    "photo_hue": 78.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 179.9,
+    "mismatch": true,
+    "samples": 77,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06640.jpg"
+  },
+  {
+    "id": "sweet-william",
+    "photo_color": "#C5325E",
+    "photo_hue": 342.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 61.4,
+    "mismatch": true,
+    "samples": 1577,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03528.jpg"
+  },
+  {
+    "id": "carnation",
+    "photo_color": "#C68D4E",
+    "photo_hue": 30.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 13.4,
+    "mismatch": false,
+    "samples": 635,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_08065.jpg"
+  },
+  {
+    "id": "garden-phlox",
+    "photo_color": "#D960B4",
+    "photo_hue": 318.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 173.6,
+    "mismatch": true,
+    "samples": 479,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05606.jpg"
+  },
+  {
+    "id": "love-in-the-mist",
+    "photo_color": "#405FBC",
+    "photo_hue": 222.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 36.1,
+    "mismatch": false,
+    "samples": 578,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06474.jpg"
+  },
+  {
+    "id": "mexican-aster",
+    "photo_color": "#CE991B",
+    "photo_hue": 42.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 56.2,
+    "mismatch": false,
+    "samples": 118,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06932.jpg"
+  },
+  {
+    "id": "alpine-sea-holly",
+    "photo_color": "#7866A6",
+    "photo_hue": 258.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 126.4,
+    "mismatch": true,
+    "samples": 587,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06989.jpg"
+  },
+  {
+    "id": "ruby-lipped-cattleya",
+    "photo_color": "#D359E1",
+    "photo_hue": 294.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 109.4,
+    "mismatch": true,
+    "samples": 624,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04376.jpg"
+  },
+  {
+    "id": "cape-flower",
+    "photo_color": "#D294A7",
+    "photo_hue": 342.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 149.6,
+    "mismatch": true,
+    "samples": 1327,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03811.jpg"
+  },
+  {
+    "id": "great-masterwort",
+    "photo_color": "#7D373F",
+    "photo_hue": 354.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 137.6,
+    "mismatch": true,
+    "samples": 751,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05823.jpg"
+  },
+  {
+    "id": "siam-tulip",
+    "photo_color": "#464D10",
+    "photo_hue": 66.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 22.6,
+    "mismatch": false,
+    "samples": 177,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07042.jpg"
+  },
+  {
+    "id": "sweet-pea",
+    "photo_color": "#BC2A1D",
+    "photo_hue": 6.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 125.6,
+    "mismatch": true,
+    "samples": 1820,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05649.jpg"
+  },
+  {
+    "id": "lenten-rose",
+    "photo_color": "#9B304F",
+    "photo_hue": 342.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 61.4,
+    "mismatch": true,
+    "samples": 1342,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04558.jpg"
+  },
+  {
+    "id": "barbeton-daisy",
+    "photo_color": "#D89823",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 2364,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02267.jpg"
+  },
+  {
+    "id": "daffodil",
+    "photo_color": "#D0C42A",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 2277,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05726.jpg"
+  },
+  {
+    "id": "sword-lily",
+    "photo_color": "#E1CD53",
+    "photo_hue": 54.0,
+    "species_color": "#6B9DD4",
+    "hue_difference": 157.4,
+    "mismatch": true,
+    "samples": 576,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02429.jpg"
+  },
+  {
+    "id": "poinsettia",
+    "photo_color": "#E1839F",
+    "photo_hue": 342.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 61.4,
+    "mismatch": true,
+    "samples": 693,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_01503.jpg"
+  },
+  {
+    "id": "bolero-deep-blue",
+    "photo_color": "#562D7B",
+    "photo_hue": 270.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 11.9,
+    "mismatch": false,
+    "samples": 863,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07147.jpg"
+  },
+  {
+    "id": "wallflower",
+    "photo_color": "#EBAD08",
+    "photo_hue": 42.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 143.9,
+    "mismatch": true,
+    "samples": 848,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_00972.jpg"
+  },
+  {
+    "id": "marigold",
+    "photo_color": "#DABF19",
+    "photo_hue": 54.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 77.6,
+    "mismatch": true,
+    "samples": 2029,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04977.jpg"
+  },
+  {
+    "id": "buttercup",
+    "photo_color": "#B7AF10",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 748,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04694.jpg"
+  },
+  {
+    "id": "english-marigold",
+    "photo_color": "#EED005",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 985,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05187.jpg"
+  },
+  {
+    "id": "petunia",
+    "photo_color": "#AC5BA2",
+    "photo_hue": 306.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 97.4,
+    "mismatch": true,
+    "samples": 569,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03987.jpg"
+  },
+  {
+    "id": "wild-pansy",
+    "photo_color": "#CABE22",
+    "photo_hue": 54.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 155.9,
+    "mismatch": true,
+    "samples": 357,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04208.jpg"
+  },
+  {
+    "id": "primula",
+    "photo_color": "#EEDD27",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 514,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03669.jpg"
+  },
+  {
+    "id": "pelargonium",
+    "photo_color": "#D6A5EB",
+    "photo_hue": 282.0,
+    "species_color": "#FF8A5B",
+    "hue_difference": 95.2,
+    "mismatch": true,
+    "samples": 983,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04745.jpg"
+  },
+  {
+    "id": "bishop-of-llandaff",
+    "photo_color": "#C51B24",
+    "photo_hue": 354.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 137.6,
+    "mismatch": true,
+    "samples": 2177,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02774.jpg"
+  },
+  {
+    "id": "gaura",
+    "photo_color": "#535922",
+    "photo_hue": 66.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 80.2,
+    "mismatch": true,
+    "samples": 87,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_08125.jpg"
+  },
+  {
+    "id": "geranium",
+    "photo_color": "#CE4C40",
+    "photo_hue": 6.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 37.4,
+    "mismatch": false,
+    "samples": 2159,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02656.jpg"
+  },
+  {
+    "id": "orange-dahlia",
+    "photo_color": "#E1A424",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 987,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05055.jpg"
+  },
+  {
+    "id": "tiger-lily",
+    "photo_color": "#CD3019",
+    "photo_hue": 6.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 37.4,
+    "mismatch": false,
+    "samples": 2028,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_08111.jpg"
+  },
+  {
+    "id": "pink-yellow-dahlia",
+    "photo_color": "#DCA365",
+    "photo_hue": 30.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 13.4,
+    "mismatch": false,
+    "samples": 1225,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03020.jpg"
+  },
+  {
+    "id": "cautleya-spicata",
+    "photo_color": "#7F2A20",
+    "photo_hue": 6.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 37.4,
+    "mismatch": false,
+    "samples": 509,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06288.jpg"
+  },
+  {
+    "id": "japanese-anemone",
+    "photo_color": "#BF56B2",
+    "photo_hue": 306.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 174.4,
+    "mismatch": true,
+    "samples": 1172,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_08154.jpg"
+  },
+  {
+    "id": "black-eyed-susan",
+    "photo_color": "#CD9A07",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 493,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05860.jpg"
+  },
+  {
+    "id": "silverbush",
+    "photo_color": "#333A1C",
+    "photo_hue": 78.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 34.6,
+    "mismatch": false,
+    "samples": 301,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06122.jpg"
+  },
+  {
+    "id": "californian-poppy",
+    "photo_color": "#ED7A04",
+    "photo_hue": 30.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 13.4,
+    "mismatch": false,
+    "samples": 261,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03271.jpg"
+  },
+  {
+    "id": "osteospermum",
+    "photo_color": "#D75DC4",
+    "photo_hue": 306.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 47.9,
+    "mismatch": false,
+    "samples": 857,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05552.jpg"
+  },
+  {
+    "id": "spring-crocus",
+    "photo_color": "#544E24",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 268,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07059.jpg"
+  },
+  {
+    "id": "bearded-iris",
+    "photo_color": "#581D46",
+    "photo_hue": 318.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 85.4,
+    "mismatch": true,
+    "samples": 395,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05943.jpg"
+  },
+  {
+    "id": "windflower",
+    "photo_color": "#C2B130",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 1114,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05959.jpg"
+  },
+  {
+    "id": "moon-orchid",
+    "photo_color": "#907638",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 213,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07213.jpg"
+  },
+  {
+    "id": "tree-poppy",
+    "photo_color": "#EAAA17",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 315,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05303.jpg"
+  },
+  {
+    "id": "gazania",
+    "photo_color": "#D0450B",
+    "photo_hue": 18.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 32.2,
+    "mismatch": false,
+    "samples": 286,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04509.jpg"
+  },
+  {
+    "id": "azalea",
+    "photo_color": "#DD5175",
+    "photo_hue": 342.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 61.4,
+    "mismatch": true,
+    "samples": 1258,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03617.jpg"
+  },
+  {
+    "id": "water-lily",
+    "photo_color": "#D38CBE",
+    "photo_hue": 318.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 27.8,
+    "mismatch": false,
+    "samples": 329,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_00365.jpg"
+  },
+  {
+    "id": "thorn-apple",
+    "photo_color": "#9CA463",
+    "photo_hue": 66.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 167.9,
+    "mismatch": true,
+    "samples": 366,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02133.jpg"
+  },
+  {
+    "id": "morning-glory",
+    "photo_color": "#6C6248",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 84,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02538.jpg"
+  },
+  {
+    "id": "passion-flower",
+    "photo_color": "#9BA92A",
+    "photo_hue": 66.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 65.6,
+    "mismatch": true,
+    "samples": 449,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_00123.jpg"
+  },
+  {
+    "id": "lotus",
+    "photo_color": "#C6A760",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 374,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_01848.jpg"
+  },
+  {
+    "id": "toad-lily",
+    "photo_color": "#A77B66",
+    "photo_hue": 18.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 25.4,
+    "mismatch": false,
+    "samples": 367,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06709.jpg"
+  },
+  {
+    "id": "bird-of-paradise",
+    "photo_color": "#CF9519",
+    "photo_hue": 42.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 1.4,
+    "mismatch": false,
+    "samples": 417,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03299.jpg"
+  },
+  {
+    "id": "anthurium",
+    "photo_color": "#D8253D",
+    "photo_hue": 354.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 137.6,
+    "mismatch": true,
+    "samples": 350,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_01995.jpg"
+  },
+  {
+    "id": "frangipani",
+    "photo_color": "#C6B62B",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 878,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_00782.jpg"
+  },
+  {
+    "id": "clematis",
+    "photo_color": "#7E1735",
+    "photo_hue": 342.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 149.6,
+    "mismatch": true,
+    "samples": 1474,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_01693.jpg"
+  },
+  {
+    "id": "hibiscus",
+    "photo_color": "#E3313B",
+    "photo_hue": 354.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 137.6,
+    "mismatch": true,
+    "samples": 1352,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_01782.jpg"
+  },
+  {
+    "id": "columbine",
+    "photo_color": "#8F202A",
+    "photo_hue": 354.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 8.2,
+    "mismatch": false,
+    "samples": 1792,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02596.jpg"
+  },
+  {
+    "id": "desert-rose",
+    "photo_color": "#E5245D",
+    "photo_hue": 342.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 61.4,
+    "mismatch": true,
+    "samples": 256,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04816.jpg"
+  },
+  {
+    "id": "tree-mallow",
+    "photo_color": "#C8558E",
+    "photo_hue": 330.0,
+    "species_color": "#FF6F91",
+    "hue_difference": 15.8,
+    "mismatch": false,
+    "samples": 2874,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_02881.jpg"
+  },
+  {
+    "id": "magnolia",
+    "photo_color": "#A33D60",
+    "photo_hue": 342.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 149.6,
+    "mismatch": true,
+    "samples": 1042,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_05502.jpg"
+  },
+  {
+    "id": "cyclamen",
+    "photo_color": "#97052F",
+    "photo_hue": 342.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 149.6,
+    "mismatch": true,
+    "samples": 1623,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_00522.jpg"
+  },
+  {
+    "id": "watercress",
+    "photo_color": "#DBC74F",
+    "photo_hue": 54.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 10.6,
+    "mismatch": false,
+    "samples": 667,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_00680.jpg"
+  },
+  {
+    "id": "monkshood",
+    "photo_color": "#403589",
+    "photo_hue": 246.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 157.4,
+    "mismatch": true,
+    "samples": 586,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06408.jpg"
+  },
+  {
+    "id": "canna-lily",
+    "photo_color": "#F37F0C",
+    "photo_hue": 30.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 101.6,
+    "mismatch": true,
+    "samples": 325,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04436.jpg"
+  },
+  {
+    "id": "hippeastrum",
+    "photo_color": "#E7779A",
+    "photo_hue": 342.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 61.4,
+    "mismatch": true,
+    "samples": 276,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_04886.jpg"
+  },
+  {
+    "id": "bee-balm",
+    "photo_color": "#A72A21",
+    "photo_hue": 6.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 107.9,
+    "mismatch": true,
+    "samples": 1185,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_03054.jpg"
+  },
+  {
+    "id": "ball-moss",
+    "photo_color": "#9F583B",
+    "photo_hue": 18.0,
+    "species_color": "#9B7EDE",
+    "hue_difference": 119.9,
+    "mismatch": true,
+    "samples": 1100,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_06044.jpg"
+  },
+  {
+    "id": "foxglove",
+    "photo_color": "#DF70A6",
+    "photo_hue": 330.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 73.4,
+    "mismatch": true,
+    "samples": 408,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07372.jpg"
+  },
+  {
+    "id": "bougainvillea",
+    "photo_color": "#B60E20",
+    "photo_hue": 354.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 137.6,
+    "mismatch": true,
+    "samples": 1092,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07485.jpg"
+  },
+  {
+    "id": "camellia",
+    "photo_color": "#920810",
+    "photo_hue": 354.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 49.4,
+    "mismatch": false,
+    "samples": 2467,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07642.jpg"
+  },
+  {
+    "id": "mallow",
+    "photo_color": "#C1180E",
+    "photo_hue": 6.0,
+    "species_color": "#5BAE6B",
+    "hue_difference": 125.6,
+    "mismatch": true,
+    "samples": 999,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07712.jpg"
+  },
+  {
+    "id": "mexican-petunia",
+    "photo_color": "#652C9F",
+    "photo_hue": 270.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 133.4,
+    "mismatch": true,
+    "samples": 910,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07790.jpg"
+  },
+  {
+    "id": "bromelia",
+    "photo_color": "#B92218",
+    "photo_hue": 6.0,
+    "species_color": "#FFC93C",
+    "hue_difference": 37.4,
+    "mismatch": false,
+    "samples": 1282,
+    "roi": {
+      "x": [
+        0.3,
+        0.7
+      ],
+      "y": [
+        0.2,
+        0.68
+      ]
+    },
+    "image": "data/deploy_images/flowers-102/jpg/image_07864.jpg"
+  }
+]

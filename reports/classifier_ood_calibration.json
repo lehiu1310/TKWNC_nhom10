@@ -1,0 +1,146 @@
+{
+  "checkpoint": "artifacts/classifier/model.pt",
+  "flower_count": 10,
+  "non_flower_count": 10,
+  "flower_input_dir": "tmp/ood-calibration-20261013/flowers",
+  "non_flower_input_dir": "tmp/ood-calibration-20261013/nonflowers",
+  "threshold_selection": "maximum balanced accuracy; ties prefer higher non-flower rejection then lower threshold",
+  "best": {
+    "threshold": 0.6967,
+    "balanced_accuracy": 0.7,
+    "flower_recall": 0.4,
+    "non_flower_rejection": 1.0,
+    "tp": 4,
+    "fn": 6,
+    "tn": 10,
+    "fp": 0
+  },
+  "samples": [
+    {
+      "is_flower": true,
+      "file": "01_morning-glory.jpg",
+      "score": 0.7117,
+      "top_label": "morning-glory"
+    },
+    {
+      "is_flower": true,
+      "file": "02_azalea.jpg",
+      "score": 0.076,
+      "top_label": "azalea"
+    },
+    {
+      "is_flower": true,
+      "file": "03_tree-mallow.jpg",
+      "score": 0.6967,
+      "top_label": "tree-mallow"
+    },
+    {
+      "is_flower": true,
+      "file": "04_magnolia.jpg",
+      "score": 0.2615,
+      "top_label": "magnolia"
+    },
+    {
+      "is_flower": true,
+      "file": "05_bird-of-paradise.jpg",
+      "score": 0.8309,
+      "top_label": "bird-of-paradise"
+    },
+    {
+      "is_flower": true,
+      "file": "06_buttercup.jpg",
+      "score": 0.8102,
+      "top_label": "buttercup"
+    },
+    {
+      "is_flower": true,
+      "file": "07_water-lily.jpg",
+      "score": 0.4883,
+      "top_label": "water-lily"
+    },
+    {
+      "is_flower": true,
+      "file": "08_wild-pansy.jpg",
+      "score": 0.1547,
+      "top_label": "bee-balm"
+    },
+    {
+      "is_flower": true,
+      "file": "09_wallflower.jpg",
+      "score": 0.3607,
+      "top_label": "wallflower"
+    },
+    {
+      "is_flower": true,
+      "file": "10_anthurium.jpg",
+      "score": 0.3139,
+      "top_label": "anthurium"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000009.jpg",
+      "score": 0.4002,
+      "top_label": "tulips"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000034.jpg",
+      "score": 0.1497,
+      "top_label": "daisy"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000042.jpg",
+      "score": 0.2018,
+      "top_label": "roses"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000064.jpg",
+      "score": 0.5631,
+      "top_label": "roses"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000071.jpg",
+      "score": 0.5958,
+      "top_label": "tulips"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000073.jpg",
+      "score": 0.3302,
+      "top_label": "roses"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000078.jpg",
+      "score": 0.3963,
+      "top_label": "roses"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000081.jpg",
+      "score": 0.2472,
+      "top_label": "daisy"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000086.jpg",
+      "score": 0.5647,
+      "top_label": "roses"
+    },
+    {
+      "is_flower": false,
+      "file": "000000000089.jpg",
+      "score": 0.4186,
+      "top_label": "roses"
+    }
+  ],
+  "note": "Threshold-selection metrics are measured on the supplied calibration images; use a separate held-out image set for an unbiased final estimate.",
+  "data_source_details": {
+    "flowers": "Oxford Flowers 102 validation split (random_state=42, test_size=0.18); these validation images were used for checkpoint selection, so selection score may be optimistic.",
+    "non_flowers": "10 visually reviewed COCO128 images from COCO train2017; excluded samples with YOLO class 58 (potted plant); image IDs retained in samples list.",
+    "distribution_note": "The binary positive label means the image contains a flower, not that the model top-1 botanical class is correct."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "validation_accuracy": 0.9025761124121779,
+  "validation_size": 2135,
+  "epochs": 3,
+  "classes": 103
+}

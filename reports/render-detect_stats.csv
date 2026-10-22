@@ -1,0 +1,2 @@
+Type,Name,Request Count,Failure Count,Mean Response Time,Min Response Time,Max Response Time,p50 nearest-rank,p95 nearest-rank
+POST,/api/detect,51,0,43524.994,32073.080,130271.502,38743.091,55451.779

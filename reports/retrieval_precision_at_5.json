@@ -1,0 +1,1254 @@
+{
+  "metric": "Precision@5",
+  "precision_at_5": 0.8592233009708737,
+  "query_count": 206,
+  "queries_per_class_max": 2,
+  "class_count": 103,
+  "index_count": 1236,
+  "encoder": {
+    "model": "MobileCLIP2-S0",
+    "pretrained": "dfndr2b",
+    "embedding_dimension": 512,
+    "images": 1236
+  },
+  "seed": 42,
+  "method": "Queries are images from the same public flower dataset but are excluded from the FAISS index by path; relevance means retrieved species_id equals query class_id.",
+  "per_query": [
+    {
+      "query_path": "data/flowers-102/jpg/image_05594.jpg",
+      "class_id": "alpine-sea-holly",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05586.jpg",
+      "class_id": "alpine-sea-holly",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01689.jpg",
+      "class_id": "anthurium",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01623.jpg",
+      "class_id": "anthurium",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06581.jpg",
+      "class_id": "artichoke",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06577.jpg",
+      "class_id": "artichoke",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00280.jpg",
+      "class_id": "azalea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00436.jpg",
+      "class_id": "azalea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07673.jpg",
+      "class_id": "ball-moss",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07607.jpg",
+      "class_id": "ball-moss",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06085.jpg",
+      "class_id": "balloon-flower",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06052.jpg",
+      "class_id": "balloon-flower",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07008.jpg",
+      "class_id": "barbeton-daisy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07010.jpg",
+      "class_id": "barbeton-daisy",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05920.jpg",
+      "class_id": "bearded-iris",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05921.jpg",
+      "class_id": "bearded-iris",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07537.jpg",
+      "class_id": "bee-balm",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07551.jpg",
+      "class_id": "bee-balm",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00788.jpg",
+      "class_id": "bird-of-paradise",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00935.jpg",
+      "class_id": "bird-of-paradise",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04711.jpg",
+      "class_id": "bishop-of-llandaff",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04750.jpg",
+      "class_id": "bishop-of-llandaff",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05901.jpg",
+      "class_id": "black-eyed-susan",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05893.jpg",
+      "class_id": "black-eyed-susan",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05179.jpg",
+      "class_id": "blackberry-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05165.jpg",
+      "class_id": "blackberry-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06632.jpg",
+      "class_id": "blanket-flower",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06638.jpg",
+      "class_id": "blanket-flower",
+      "relevant_at_5": 0,
+      "precision_at_5": 0.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02355.jpg",
+      "class_id": "bolero-deep-blue",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02429.jpg",
+      "class_id": "bolero-deep-blue",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07752.jpg",
+      "class_id": "bougainvillea",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07775.jpg",
+      "class_id": "bougainvillea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08036.jpg",
+      "class_id": "bromelia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08028.jpg",
+      "class_id": "bromelia",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01023.jpg",
+      "class_id": "buttercup",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00989.jpg",
+      "class_id": "buttercup",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03213.jpg",
+      "class_id": "californian-poppy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03231.jpg",
+      "class_id": "californian-poppy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07841.jpg",
+      "class_id": "camellia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07840.jpg",
+      "class_id": "camellia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06043.jpg",
+      "class_id": "canna-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06020.jpg",
+      "class_id": "canna-lily",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06503.jpg",
+      "class_id": "canterbury-bells",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06525.jpg",
+      "class_id": "canterbury-bells",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06945.jpg",
+      "class_id": "cape-flower",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06956.jpg",
+      "class_id": "cape-flower",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05232.jpg",
+      "class_id": "carnation",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05274.jpg",
+      "class_id": "carnation",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06250.jpg",
+      "class_id": "cautleya-spicata",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06285.jpg",
+      "class_id": "cautleya-spicata",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02632.jpg",
+      "class_id": "clematis",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02571.jpg",
+      "class_id": "clematis",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07217.jpg",
+      "class_id": "colt-s-foot",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07203.jpg",
+      "class_id": "colt-s-foot",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02906.jpg",
+      "class_id": "columbine",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02885.jpg",
+      "class_id": "columbine",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05390.jpg",
+      "class_id": "corn-poppy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05389.jpg",
+      "class_id": "corn-poppy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04455.jpg",
+      "class_id": "cyclamen",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04429.jpg",
+      "class_id": "cyclamen",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04613.jpg",
+      "class_id": "daffodil",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04563.jpg",
+      "class_id": "daffodil",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05000.jpg",
+      "class_id": "daisy",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers/flower_photos/daisy/9346508462_f0af3163f4.jpg",
+      "class_id": "daisy",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers/flower_photos/dandelion/16817037661_2980d823e1_n.jpg",
+      "class_id": "dandelion",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/dandelion/7280217714_fb9ffccf2d_n.jpg",
+      "class_id": "dandelion",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05482.jpg",
+      "class_id": "desert-rose",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05467.jpg",
+      "class_id": "desert-rose",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04690.jpg",
+      "class_id": "english-marigold",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04642.jpg",
+      "class_id": "english-marigold",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03842.jpg",
+      "class_id": "fire-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03884.jpg",
+      "class_id": "fire-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07706.jpg",
+      "class_id": "foxglove",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07721.jpg",
+      "class_id": "foxglove",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01785.jpg",
+      "class_id": "frangipani",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01812.jpg",
+      "class_id": "frangipani",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06179.jpg",
+      "class_id": "fritillary",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06163.jpg",
+      "class_id": "fritillary",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04136.jpg",
+      "class_id": "garden-phlox",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04134.jpg",
+      "class_id": "garden-phlox",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02783.jpg",
+      "class_id": "gaura",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02848.jpg",
+      "class_id": "gaura",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03584.jpg",
+      "class_id": "gazania",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03638.jpg",
+      "class_id": "gazania",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07239.jpg",
+      "class_id": "geranium",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08130.jpg",
+      "class_id": "geranium",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06680.jpg",
+      "class_id": "giant-white-arum-lily",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06660.jpg",
+      "class_id": "giant-white-arum-lily",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03174.jpg",
+      "class_id": "globe-flower",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03131.jpg",
+      "class_id": "globe-flower",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05100.jpg",
+      "class_id": "globe-thistle",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05123.jpg",
+      "class_id": "globe-thistle",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06791.jpg",
+      "class_id": "grape-hyacinth",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06786.jpg",
+      "class_id": "grape-hyacinth",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08086.jpg",
+      "class_id": "great-masterwort",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06997.jpg",
+      "class_id": "great-masterwort",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06392.jpg",
+      "class_id": "hard-leaved-pocket-orchid",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06365.jpg",
+      "class_id": "hard-leaved-pocket-orchid",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04820.jpg",
+      "class_id": "hibiscus",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04792.jpg",
+      "class_id": "hibiscus",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07320.jpg",
+      "class_id": "hippeastrum",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07367.jpg",
+      "class_id": "hippeastrum",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07271.jpg",
+      "class_id": "japanese-anemone",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_08161.jpg",
+      "class_id": "japanese-anemone",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03343.jpg",
+      "class_id": "king-protea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03324.jpg",
+      "class_id": "king-protea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05799.jpg",
+      "class_id": "lenten-rose",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05810.jpg",
+      "class_id": "lenten-rose",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06719.jpg",
+      "class_id": "lotus",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06732.jpg",
+      "class_id": "lotus",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03507.jpg",
+      "class_id": "love-in-the-mist",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03492.jpg",
+      "class_id": "love-in-the-mist",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00776.jpg",
+      "class_id": "magnolia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00734.jpg",
+      "class_id": "magnolia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07926.jpg",
+      "class_id": "mallow",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07931.jpg",
+      "class_id": "mallow",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07129.jpg",
+      "class_id": "marigold",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07135.jpg",
+      "class_id": "marigold",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06901.jpg",
+      "class_id": "mexican-aster",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06910.jpg",
+      "class_id": "mexican-aster",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07986.jpg",
+      "class_id": "mexican-petunia",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07985.jpg",
+      "class_id": "mexican-petunia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03049.jpg",
+      "class_id": "monkshood",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03086.jpg",
+      "class_id": "monkshood",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05324.jpg",
+      "class_id": "moon-orchid",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05312.jpg",
+      "class_id": "moon-orchid",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00241.jpg",
+      "class_id": "morning-glory",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00157.jpg",
+      "class_id": "morning-glory",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02696.jpg",
+      "class_id": "orange-dahlia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02691.jpg",
+      "class_id": "orange-dahlia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05541.jpg",
+      "class_id": "osteospermum",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05533.jpg",
+      "class_id": "osteospermum",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01898.jpg",
+      "class_id": "passion-flower",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01896.jpg",
+      "class_id": "passion-flower",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05406.jpg",
+      "class_id": "pelargonium",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05458.jpg",
+      "class_id": "pelargonium",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05749.jpg",
+      "class_id": "peruvian-lily",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05754.jpg",
+      "class_id": "peruvian-lily",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06319.jpg",
+      "class_id": "petunia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06320.jpg",
+      "class_id": "petunia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04307.jpg",
+      "class_id": "pincushion-flower",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04254.jpg",
+      "class_id": "pincushion-flower",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06751.jpg",
+      "class_id": "pink-primrose",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06761.jpg",
+      "class_id": "pink-primrose",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02986.jpg",
+      "class_id": "pink-yellow-dahlia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02995.jpg",
+      "class_id": "pink-yellow-dahlia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05705.jpg",
+      "class_id": "poinsettia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05729.jpg",
+      "class_id": "poinsettia",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04161.jpg",
+      "class_id": "primula",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04176.jpg",
+      "class_id": "primula",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03447.jpg",
+      "class_id": "prince-of-wales-feathers",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03408.jpg",
+      "class_id": "prince-of-wales-feathers",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04044.jpg",
+      "class_id": "purple-coneflower",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04011.jpg",
+      "class_id": "purple-coneflower",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04920.jpg",
+      "class_id": "red-ginger",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04931.jpg",
+      "class_id": "red-ginger",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/roses/14166797345_d2ab9da518.jpg",
+      "class_id": "roses",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers/flower_photos/roses/388405293_4db1d71f21_n.jpg",
+      "class_id": "roses",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06442.jpg",
+      "class_id": "ruby-lipped-cattleya",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06463.jpg",
+      "class_id": "ruby-lipped-cattleya",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04399.jpg",
+      "class_id": "siam-tulip",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04364.jpg",
+      "class_id": "siam-tulip",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06112.jpg",
+      "class_id": "silverbush",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06138.jpg",
+      "class_id": "silverbush",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07171.jpg",
+      "class_id": "snapdragon",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07188.jpg",
+      "class_id": "snapdragon",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06438.jpg",
+      "class_id": "spear-thistle",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06412.jpg",
+      "class_id": "spear-thistle",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07052.jpg",
+      "class_id": "spring-crocus",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07062.jpg",
+      "class_id": "spring-crocus",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06847.jpg",
+      "class_id": "stemless-gentian",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06822.jpg",
+      "class_id": "stemless-gentian",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/sunflowers/5037531593_e2daf4c7f1.jpg",
+      "class_id": "sunflowers",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/sunflowers/5007598545_90e08e81c1_n.jpg",
+      "class_id": "sunflowers",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03735.jpg",
+      "class_id": "sweet-pea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03819.jpg",
+      "class_id": "sweet-pea",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06865.jpg",
+      "class_id": "sweet-william",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_06872.jpg",
+      "class_id": "sweet-william",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02192.jpg",
+      "class_id": "sword-lily",
+      "relevant_at_5": 1,
+      "precision_at_5": 0.2
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02205.jpg",
+      "class_id": "sword-lily",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02498.jpg",
+      "class_id": "thorn-apple",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02490.jpg",
+      "class_id": "thorn-apple",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05039.jpg",
+      "class_id": "tiger-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05024.jpg",
+      "class_id": "tiger-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01998.jpg",
+      "class_id": "toad-lily",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_02045.jpg",
+      "class_id": "toad-lily",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00468.jpg",
+      "class_id": "tree-mallow",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_00469.jpg",
+      "class_id": "tree-mallow",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04554.jpg",
+      "class_id": "tree-poppy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04491.jpg",
+      "class_id": "tree-poppy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05672.jpg",
+      "class_id": "trumpet-creeper",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05640.jpg",
+      "class_id": "trumpet-creeper",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers/flower_photos/tulips/14015957646_8317a0f1d9_n.jpg",
+      "class_id": "tulips",
+      "relevant_at_5": 3,
+      "precision_at_5": 0.6
+    },
+    {
+      "query_path": "data/flowers/flower_photos/tulips/7481204112_e3c57dd40a_n.jpg",
+      "class_id": "tulips",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01560.jpg",
+      "class_id": "wallflower",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01571.jpg",
+      "class_id": "wallflower",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01188.jpg",
+      "class_id": "water-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01215.jpg",
+      "class_id": "water-lily",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04893.jpg",
+      "class_id": "watercress",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_04861.jpg",
+      "class_id": "watercress",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_03984.jpg",
+      "class_id": "wild-pansy",
+      "relevant_at_5": 2,
+      "precision_at_5": 0.4
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_01459.jpg",
+      "class_id": "wild-pansy",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05973.jpg",
+      "class_id": "windflower",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_05982.jpg",
+      "class_id": "windflower",
+      "relevant_at_5": 4,
+      "precision_at_5": 0.8
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07120.jpg",
+      "class_id": "yellow-iris",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    },
+    {
+      "query_path": "data/flowers-102/jpg/image_07117.jpg",
+      "class_id": "yellow-iris",
+      "relevant_at_5": 5,
+      "precision_at_5": 1.0
+    }
+  ]
+}

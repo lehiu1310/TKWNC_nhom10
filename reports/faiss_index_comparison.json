@@ -1,0 +1,35 @@
+{
+  "metric": "FAISS index comparison",
+  "index_count": 1236,
+  "query_count": 206,
+  "encoder": {
+    "model": "MobileCLIP2-S0",
+    "pretrained": "dfndr2b",
+    "embedding_dimension": 512,
+    "images": 1236
+  },
+  "seed": 42,
+  "hardware": {
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "python": "3.11.9",
+    "faiss": "1.15.1"
+  },
+  "flat_ip": {
+    "type": "IndexFlatIP exact search on normalized vectors",
+    "precision_at_5_same_species": 0.8427184466019417,
+    "search_ms_p50": 0.097849995654542,
+    "search_ms_p95": 0.19417500516283326,
+    "serialized_bytes": 2531373
+  },
+  "hnsw_flat": {
+    "type": "IndexHNSWFlat approximate inner-product search",
+    "M": 32,
+    "efSearch": 64,
+    "precision_at_5_same_species": 0.8427184466019417,
+    "search_ms_p50": 0.13324999599717557,
+    "search_ms_p95": 0.4003749963885639,
+    "recall_at_5_vs_flat": 1.0,
+    "serialized_bytes": 2867154
+  },
+  "method": "Queries are a seeded sample of vectors already in this index; the query's own item is removed from Precision@5. Recall@5 compares approximate neighbors to exact Flat neighbors. This isolates ANN/index behavior, is not a held-out semantic evaluation, and excludes image encoding/network/API latency."
+}

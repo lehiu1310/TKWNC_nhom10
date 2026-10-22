@@ -1,0 +1,31 @@
+# Lightweight local Compose image for classifier-feature retrieval.
+# The production Dockerfile retains CLIP/FAISS and its full dependency stack.
+FROM node:22-slim AS web
+WORKDIR /web
+COPY web/package.json web/pnpm-lock.yaml ./
+RUN corepack enable pnpm && pnpm install --frozen-lockfile
+COPY web/ ./
+COPY data/ /data/
+RUN npm run build
+
+FROM python:3.11-slim
+WORKDIR /app
+ENV APP_ROOT=/app APP_DB_PATH=/app/.data/vuonhoa.sqlite3 HF_HOME=/app/.cache \
+    TORCH_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+    NUMEXPR_NUM_THREADS=1 MALLOC_ARENA_MAX=2 MODEL_WARMUP=0 LLM_PROVIDER=gemini
+RUN apt-get update && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements-compose.txt ./
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu \
+    && python -c "import torch, torchvision; open('/tmp/torch-constraints.txt', 'w').write(f'torch=={torch.__version__}\\ntorchvision=={torchvision.__version__}\\n')" \
+    && PIP_CONSTRAINT=/tmp/torch-constraints.txt pip install --no-cache-dir -r requirements-compose.txt
+COPY config.py ./
+COPY core/ core/
+COPY api/ api/
+COPY data/ data/
+COPY artifacts/ artifacts/
+COPY --from=web /web/dist web/dist
+RUN useradd -m app && mkdir -p /app/.data /app/.cache && chown app:app /app/.data /app/.cache
+USER app
+EXPOSE 7860
+CMD ["sh", "-c", "exec uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-7860}"]

@@ -1,0 +1,36 @@
+.gcloudignore
+.git
+.git/**
+.venv/
+.python311/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+web/node_modules/
+web/dist/
+**/.pnpm-store/
+.env
+.env.*
+!.env.example
+logs/
+runs/
+tmp/
+tests/
+docs/
+*.log
+*.log.*
+reports/**/__pycache__/
+current-web*.png
+mobile-colorful.png
+
+# Training and evaluation corpora are not used by the hosted API.
+data/flowers/
+data/flowers-102/
+data/coco128/
+data/detection_flowers/
+data/detection_flowers_yolo/
+data/kb_eval/
+
+# Optional model-comparison and cached torchvision weights are not runtime assets.
+artifacts/comparison/
+artifacts/torch/

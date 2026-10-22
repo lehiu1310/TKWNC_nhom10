@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 220" role="img" aria-hidden="true">
+<defs><filter id="wash" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="8" result="grain"/><feDisplacementMap in="SourceGraphic" in2="grain" scale="1.5" xChannelSelector="R" yChannelSelector="G"/></filter></defs>
+<g stroke="#654D45" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M80 91 C82 126 72 163 80 205" fill="none" stroke="#47734C" stroke-width="7"/>
+ <path d="M78 155 C57 127 35 137 47 159 C56 174 72 174 80 168 C78 163 77 159 78 155Z" fill="#70B779" stroke-width="3.5"/>
+ <path d="M79 137 C99 106 125 111 119 134 C115 151 96 160 79 150 C79 145 79 141 79 137Z" fill="#5BAE6B" stroke-width="3.5"/>
+ <path d="M77 160 C63 153 55 148 46 143 M83 145 C95 137 105 130 115 123" fill="none" stroke="#A8D38B" stroke-width="2.5"/>
+ <path d="M25 78 C32 42 48 20 79 17 C115 13 139 38 140 68 C142 100 119 119 91 124" fill="none" stroke="#8D6D68" stroke-width="2.3" stroke-dasharray="2 7" opacity=".72"/>
+ <path d="M36 105 C21 97 17 85 26 79 C34 74 41 83 37 90 C35 94 30 93 29 89" fill="none" stroke="#E64F76" stroke-width="5"/>
+ <path d="M130 123 C118 116 113 106 120 101 C127 97 134 103 131 109" fill="none" stroke="#FF6F91" stroke-width="5"/>
+ <g filter="url(#wash)"><g><path d="M80 100 C42 104 31 77 43 55 C48 27 77 17 101 32 C128 38 137 68 119 91 C109 111 91 112 80 100Z" fill="#E64F76" stroke="#654D45" stroke-width="3.8" stroke-linejoin="round"/>
+<path d="M79 96 C53 91 48 68 60 48 C69 33 93 34 106 49 C120 65 111 88 97 98 C90 103 84 102 79 96Z" fill="#FF8FA3" stroke="#654D45" stroke-width="3.4" stroke-linejoin="round"/>
+<path d="M78 86 C68 73 75 54 88 53 C105 54 108 72 97 84 C91 90 84 90 78 86Z" fill="#FFB0BC" stroke="#654D45" stroke-width="3.2" stroke-linejoin="round"/>
+<path d="M79 82 C77 71 88 65 94 72 C98 78 91 85 85 83" fill="none" stroke="#B93F63" stroke-width="4" stroke-linecap="round"/></g></g>
+ <path d="M65 66 Q71 57 77 55 M94 58 Q101 64 100 72" fill="none" stroke="#FFFFFF" stroke-width="2.4" opacity=".68"/>
+ <path d="M80 205 l-3 7 M81 205 l4 7" fill="none" stroke="#47734C" stroke-width="4"/>
+</g>
+<g fill="#E64F76" stroke="#654D45" stroke-width="1.7"><path d="M30 125 C18 115 19 106 31 110 C40 113 40 121 30 125Z"/><path d="M137 82 C148 73 153 80 145 90 C141 94 136 90 137 82Z"/><circle cx="48" cy="53" r="3"/><circle cx="124" cy="47" r="2.5"/></g>
+</svg>

@@ -1,6 +1,7 @@
 # Python
 .venv/
 .python311/
+/node_modules/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -11,7 +12,10 @@ tmp/
 # Frontend
 web/node_modules/
 web/dist/
+web/dist-baseline/
 **/.pnpm-store/
+current-web*.png
+mobile-colorful.png
 
 # Downloaded data and generated model/index files
 data/flowers/
@@ -38,11 +42,13 @@ artifacts/**
 !artifacts/retrieval/index.faiss
 !artifacts/retrieval/meta.json
 !artifacts/retrieval/encoder.json
+!artifacts/retrieval/classifier_features.npy
 !artifacts/comparison/
 !artifacts/comparison/mobilenet_v3_small.pt
 !artifacts/comparison/resnet18.onnx
 
 # Local runtime
+.data/
 .env
 logs/
 runs/
