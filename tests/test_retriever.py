@@ -193,6 +193,22 @@ def test_gemini_without_api_key_uses_grounded_rag_fallback(tmp_path, monkeypatch
     assert "hoa_cuc.md" not in answer["answer"]
 
 
+def test_gemini_client_uses_short_timeout_on_free_hosting(tmp_path, monkeypatch):
+    from core import gemini_client
+
+    captured = {}
+    monkeypatch.setattr(gemini_client, "configured_gemini_api_key", lambda: "test-key")
+    monkeypatch.setattr(
+        gemini_client,
+        "create_gemini_client",
+        lambda api_key, timeout_ms: captured.update(api_key=api_key, timeout_ms=timeout_ms) or object(),
+    )
+
+    RAGChatbot(kb_dir=tmp_path, provider="gemini")
+
+    assert captured == {"api_key": "test-key", "timeout_ms": 15_000}
+
+
 def test_stored_gemini_key_is_ignored_without_explicit_opt_in(tmp_path, monkeypatch):
     (tmp_path / "hoa_hong.md").write_text(
         "## Ý nghĩa\n\nHoa hồng đỏ thường tượng trưng cho tình yêu và sự trân trọng.",

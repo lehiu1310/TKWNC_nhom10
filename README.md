@@ -5,13 +5,13 @@
 **Health check:** https://tkw-nhom10-api.onrender.com/api/health  
 **Cloud Run:** chưa triển khai; hiện chỉ dùng lựa chọn miễn phí và không bật billing Google Cloud.
 
-## Trạng thái kiểm tra (22/10/2026)
+## Trạng thái kiểm tra (23/10/2026)
 
-- Backend Render đang live ở revision `a5054d417f9f` (deploy `dep-dbd3dceq1p3s73dq89lg`); frontend production: `https://tkwnc-nhom10.vercel.app/`. Cả ba CI checks của commit đều xanh: `pytest`, `web-build-and-tests`, Vercel Preview Comments. Backend local: **104 passed, 1 skipped**; PostgreSQL integration test được chạy trong CI với PostgreSQL 16.
-- Bốn API AI đều đã trả HTTP 200 trên production: phân loại, phát hiện, tìm ảnh, chatbot RAG. Gemini trả HTTP 200 trong lần gọi RAG gần nhất. Render Free có thể mất thêm thời gian khi khởi động nguội; detector/chat từng mất khoảng 48/47 giây trong smoke test, nên đây là giới hạn hiệu năng của gói miễn phí chứ không phải benchmark ổn định.
+- Backend Render đang live ở revision `eceaf1899ad9` (deploy `dep-dbd47d29lscs73e5u0d0`); `/api/health` và `/api/startup` trả HTTP 200, health xác nhận tài khoản dùng PostgreSQL. Frontend production: `https://tkwnc-nhom10.vercel.app/`. CI của commit hiện tại xanh: `pytest`, `web-build-and-tests`, Vercel Preview Comments. Backend local: **105 passed, 1 skipped**; PostgreSQL integration test được chạy trong CI với PostgreSQL 16.
+- Smoke test production trên revision hiện tại: classify, detect, tìm ảnh, tìm văn bản và chatbot RAG đều trả HTTP 200. Chatbot trích nguồn từ `hoa_hong.md`; Gemini trả lỗi máy chủ nên app đưa câu trả lời dự phòng từ tài liệu. Google AI Studio xác nhận project đang ở Free tier và chưa thiết lập billing; Gemini 3.5 Flash-Lite có token miễn phí ở Free tier. Render Free có thể mất thêm thời gian khi khởi động nguội; detector/chat từng mất khoảng 48/42 giây trong smoke test, nên đây là giới hạn hiệu năng của gói miễn phí chứ không phải benchmark ổn định.
 - Tìm kiếm ảnh: ảnh hướng dương chưa có trong gallery trả về 5/5 ảnh hướng dương trên production. Benchmark ResNet-feature hiện tại đạt Precision@5 **91,65%** trên 206 truy vấn held-out theo đường dẫn, nhưng các ảnh vẫn đến từ cùng nguồn dữ liệu Flowers, vì vậy chưa chứng minh tổng quát với ảnh tự chụp ngoài bộ dữ liệu.
 - Tìm kiếm bằng mô tả tiếng Việt: 10/10 câu development thủ công trả đúng loài và 5/5 ảnh đúng trong smoke test production. Đây là bộ câu nhỏ do nhóm viết, chưa phải đánh giá độc lập hay đại diện cho toàn bộ 103 loài.
-- Xác thực/CSDL public đã thử qua cùng origin Vercel: login, `/api/auth/me`, đọc hai bộ dữ liệu mẫu và logout đều HTTP 200; dữ liệu demo được ghi/đọc từ Neon PostgreSQL Free ở Singapore qua `DATABASE_URL`. Giá trị bí mật không nằm trong Git.
+- Xác thực/CSDL public đã thử qua cùng origin Vercel: đăng ký, login, `/api/auth/me`, ghi/đọc Cây của tôi, logout, chặn truy cập khi đăng xuất và đăng nhập lại đều cho kết quả mong đợi; dữ liệu còn nguyên sau khi đăng nhập lại. Health/startup thành công sau khi app khởi tạo schema PostgreSQL. Giá trị bí mật không nằm trong Git.
 - Tài khoản demo để chấm: `demo@vuonhoa.example.com` / `VuonHoa-Demo-2026!`. Đây là tài khoản dùng chung với dữ liệu mẫu, không lưu thông tin cá nhân. Bằng chứng smoke không chứa mật khẩu/cookie tại [`reports/current-production-demo-account-smoke.json`](reports/current-production-demo-account-smoke.json).
 - Toàn bộ hạ tầng đang dùng gói miễn phí; chưa bật billing Google Cloud hoặc dịch vụ trả phí. SQLite chỉ dùng local/Compose; Neon Free tự scale compute về 0 khi nhàn rỗi.
 

@@ -232,10 +232,10 @@ class RAGChatbot:
             api_key = configured_gemini_api_key()
             if api_key:
                 from core.gemini_client import create_gemini_client
-                # Grounded responses can vary significantly in latency; keep a
-                # longer transport window so transient slow starts do not force
-                # an avoidable retrieval-only fallback.
-                self.client = create_gemini_client(api_key, timeout_ms=60_000)
+                # Render Free can leave a request waiting on a congested external
+                # inference service. Fall back to retrieved sources promptly so
+                # a transient Gemini failure does not stall the chat for a minute.
+                self.client = create_gemini_client(api_key, timeout_ms=15_000)
             else:
                 # A missing hosted secret must not take the entire RAG endpoint
                 # down. Keep lexical retrieval usable and return sourced evidence.
