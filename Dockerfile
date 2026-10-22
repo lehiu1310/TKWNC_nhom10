@@ -15,7 +15,15 @@ RUN npm run build
 # ---- Tầng 2: API Python + mô hình ----
 FROM python:3.11-slim
 WORKDIR /app
-ENV APP_ROOT=/app APP_DB_PATH=/app/.data/vuonhoa.sqlite3 HF_HOME=/app/.cache LLM_MODEL=Qwen/Qwen2.5-0.5B-Instruct TORCH_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 MALLOC_ARENA_MAX=2 MODEL_WARMUP=1 LLM_PROVIDER=gemini GEMINI_MODEL=gemini-3.5-flash-lite CORS_ORIGINS=https://tkwnc-nhom10.vercel.app,https://tkwnc-nhom10-aq7ahbp1b-tkwnc-nhom10.vercel.app
+ENV APP_ROOT=/app APP_DB_PATH=/app/.data/vuonhoa.sqlite3 HF_HOME=/app/.cache \
+    LLM_MODEL=Qwen/Qwen2.5-0.5B-Instruct TORCH_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+    MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 MALLOC_ARENA_MAX=2
+# Conservative defaults for the Render Free 512 MiB instance. render.yaml also
+# sets these explicitly, but Docker defaults keep the service safe if the
+# dashboard's environment group has not synced the blueprint values.
+ENV MODEL_WARMUP=0 RENDER_FREE_MEMORY=1 RETRIEVAL_BACKEND=classifier
+ENV LLM_PROVIDER=gemini GEMINI_MODEL=gemini-3.5-flash-lite \
+    CORS_ORIGINS=https://tkwnc-nhom10.vercel.app,https://tkwnc-nhom10-aq7ahbp1b-tkwnc-nhom10.vercel.app
 RUN apt-get update && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu \
