@@ -291,6 +291,7 @@ def health(model: str | None = Query(None, max_length=32, description="Optional 
     return {
         "status": "ok", "device": DEVICE,
         "revision": revision[:12] if revision else None,
+        "account_database": account_store.backend_type(),
         "ready": snapshot["ready"],
         "models": {m: snapshot["models"][m] for m in enabled},
         "model_states": {m: snapshot["model_states"][m] for m in enabled},

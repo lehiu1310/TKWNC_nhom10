@@ -76,6 +76,18 @@ def test_health(client):
     assert r.status_code == 200 and r.json()["status"] == "ok"
     assert r.json()["ready"] is True
     assert set(r.json()["model_states"].values()) == {"ready"}
+    assert r.json()["account_database"] in {"postgresql", "sqlite"}
+
+
+def test_health_reports_postgresql_mode_without_exposing_the_url(client, monkeypatch):
+    secret = "postgresql://test-user:fake-password@example.test/neondb"
+    monkeypatch.setattr(main.account_store, "DATABASE_URL", secret)
+
+    response = client.get("/api/health")
+
+    assert response.status_code == 200
+    assert response.json()["account_database"] == "postgresql"
+    assert secret not in response.text
 
 
 def test_startup_probe_waits_for_all_models(client, monkeypatch):

@@ -16,6 +16,11 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 SESSION_DAYS = 14
 
 
+def backend_type() -> str:
+    """Report the configured account database without exposing its URL."""
+    return "postgresql" if DATABASE_URL else "sqlite"
+
+
 def _connect() -> sqlite3.Connection:
     if DATABASE_URL:
         try:
