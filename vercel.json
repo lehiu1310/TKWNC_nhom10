@@ -3,6 +3,11 @@
   "installCommand": "cd web && corepack pnpm install --frozen-lockfile",
   "buildCommand": "cd web && corepack pnpm run build",
   "outputDirectory": "web/dist",
+  "build": {
+    "env": {
+      "VITE_API_SAME_ORIGIN": "true"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",

@@ -1,6 +1,10 @@
-// Prefer the configured public API URL (Cloud Run in production). When unset,
-// local development and the Vercel /api rewrite use a same-origin request.
-export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
+// Vercel's /api rewrite keeps auth cookies on the site origin. A direct URL to
+// Render turns the cookie into a cross-site cookie and browsers reject it with
+// SameSite=Lax, even though the login request itself succeeds.
+const configuredApiBase = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? '';
+const useSameOriginApi = import.meta.env.VITE_API_SAME_ORIGIN === 'true'
+  || (typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app'));
+export const API_BASE = useSameOriginApi ? '' : configuredApiBase;
 const API_TIMEOUT_MS = 70_000;
 const HEALTH_TIMEOUT_MS = 15_000;
 
