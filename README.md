@@ -12,7 +12,7 @@
 - Tìm kiếm ảnh: ảnh hướng dương chưa có trong gallery trả về 5/5 ảnh hướng dương trên production. Benchmark ResNet-feature hiện tại đạt Precision@5 **91,65%** trên 206 truy vấn held-out theo đường dẫn, nhưng các ảnh vẫn đến từ cùng nguồn dữ liệu Flowers, vì vậy chưa chứng minh tổng quát với ảnh tự chụp ngoài bộ dữ liệu.
 - Tìm kiếm bằng mô tả tiếng Việt: 10/10 câu development thủ công trả đúng loài và 5/5 ảnh đúng trong smoke test production. Đây là bộ câu nhỏ do nhóm viết, chưa phải đánh giá độc lập hay đại diện cho toàn bộ 103 loài.
 - Xác thực/CSDL public đã thử qua cùng origin Vercel: đăng ký, login, `/api/auth/me`, ghi/đọc Cây của tôi, logout, chặn truy cập khi đăng xuất và đăng nhập lại đều cho kết quả mong đợi; dữ liệu còn nguyên sau khi đăng nhập lại. Health/startup thành công sau khi app khởi tạo schema PostgreSQL. Giá trị bí mật không nằm trong Git.
-- Tài khoản demo để chấm: `demo@vuonhoa.example.com` / `VuonHoa-Demo-2026!`. Đây là tài khoản dùng chung với dữ liệu mẫu, không lưu thông tin cá nhân. Bằng chứng smoke không chứa mật khẩu/cookie tại [`reports/current-production-demo-account-smoke.json`](reports/current-production-demo-account-smoke.json).
+- Tài khoản demo ở mục **Demo và chuẩn bị model** đã được xác minh login và truy cập `/api/auth/me`; tài khoản dùng chung dữ liệu mẫu, không lưu thông tin cá nhân. Bằng chứng smoke không chứa mật khẩu/cookie tại [`reports/current-production-demo-account-smoke.json`](reports/current-production-demo-account-smoke.json).
 - Toàn bộ hạ tầng đang dùng gói miễn phí; chưa bật billing Google Cloud hoặc dịch vụ trả phí. SQLite chỉ dùng local/Compose; Neon Free tự scale compute về 0 khi nhàn rỗi.
 
 Website tra cứu 103 loài hoa trong bộ dữ liệu nhận diện, với bốn chức năng AI lấy từ notebook môn học: phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh bằng chữ hoặc ảnh, và chatbot RAG tiếng Việt. ResNet-18 có 103 nhãn; trang chủ chọn 5 loài làm câu chuyện nổi bật, còn Bách khoa và trang chi tiết bao phủ toàn bộ 103 loài.
@@ -105,8 +105,8 @@ Demo giao diện: [Vườn Hoa](https://tkwnc-nhom10.vercel.app/). Tài khoản 
 
 | Trường | Giá trị |
 |---|---|
-| Email | `demo@vuonhoa-ai.example` |
-| Mật khẩu | `6hchsxRniZ3go0xgvN0Y1BjshaX20wHMAa1!` |
+| Email | `demo@vuonhoa.example.com` |
+| Mật khẩu | `VuonHoa-Demo-2026!` |
 
 Đây là tài khoản demo công khai, không dùng để lưu dữ liệu riêng tư. Các endpoint AI public và luồng lưu tài khoản vào Neon đã được smoke-test theo trạng thái ở đầu README. Để chạy cả frontend và API local, dùng Docker Compose ở phần trên hoặc cài phụ thuộc rồi chạy `scripts/start_local.ps1` — không cần mở terminal thứ hai.
 
