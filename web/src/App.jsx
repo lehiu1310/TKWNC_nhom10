@@ -101,7 +101,7 @@ function SharedGiftCardPage({ card }) {
 const FEATURES = [
   { id: 'classify', title: 'Nhận diện loài hoa', subtitle: 'NHÌN ẢNH · GỌI TÊN HOA', desc: 'Gửi một tấm ảnh để xem năm khả năng phù hợp nhất và mức độ tự tin của AI.', prompt: 'Chọn ảnh để bắt đầu', icon: '⌕', model: 'classifier', modelLabel: 'ResNet-18', color: 'pink', Component: Classify },
   { id: 'detect', title: 'Phát hiện đối tượng', subtitle: 'TÌM VẬT THỂ · KHOANH VÙNG', desc: 'Xem AI đánh dấu vị trí các vật thể trong ảnh, kèm nhãn và điểm tin cậy.', prompt: 'Thử với một bức ảnh', icon: '◎', model: 'detector', modelLabel: 'YOLO', color: 'yellow', Component: Detect },
-  { id: 'search', title: 'Tìm ảnh trong album', subtitle: 'MÔ TẢ · KHÁM PHÁ ẢNH', desc: 'Viết điều bạn muốn tìm hoặc gửi ảnh mẫu để khám phá những bức hình gần giống.', prompt: 'Tìm một khung hình', icon: '▦', model: 'retrieval', modelLabel: 'CLIP + FAISS', color: 'green', Component: Search },
+  { id: 'search', title: 'Tìm ảnh trong album', subtitle: 'MÔ TẢ · KHÁM PHÁ ẢNH', desc: 'Viết điều bạn muốn tìm hoặc gửi ảnh mẫu để khám phá những bức hình gần giống.', prompt: 'Tìm một khung hình', icon: '▦', model: 'retrieval', modelLabel: 'ResNet + FAISS', color: 'green', Component: Search },
   { id: 'chat', title: 'Trò chuyện về hoa', subtitle: 'HỎI CHUYỆN · TÌM HIỂU HOA', desc: 'Hỏi về đặc điểm, mùa nở hay ý nghĩa; mỗi câu trả lời đều dựa trên cẩm nang hoa.', prompt: 'Gửi câu hỏi của bạn', icon: '☻', model: 'llm', modelLabel: 'RAG', color: 'purple', Component: Chat },
 ];
 
