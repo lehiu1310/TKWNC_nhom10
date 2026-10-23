@@ -157,7 +157,7 @@ Lệnh này fine-tune MobileNetV3-Small, đánh giá ResNet/MobileNet trên cùn
 
 ## Phiên bản mã nguồn
 
-Tag đang có: [`v1.0`](https://github.com/lehiu1310/TKWNC_nhom10/tree/v1.0). Đây chưa phải tag nộp `final`; tag nộp chỉ được tạo sau khi nhóm hoàn tất commit bằng tài khoản thật của từng thành viên và duyệt bản bàn giao cuối.
+Tag nộp: [`final`](https://github.com/lehiu1310/TKWNC_nhom10/tree/final), trỏ tới commit chứa bộ hồ sơ nộp cuối kỳ trên `main`. Lịch sử commit hiện có thể hiện tài khoản GitHub `lehiu1310`; mỗi thành viên khác tự tạo commit bằng tài khoản của mình theo yêu cầu môn học.
 
 Các số liệu trên là kết quả đo; dòng “chưa đạt” không được xem là đạt chỉ vì API hoặc giao diện đang chạy.
 

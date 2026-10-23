@@ -9,4 +9,4 @@ Mở theo thứ tự:
 6. Tu-ra-soat-rubric.md và README-gioi-han-ban-nhap.md: đối chiếu yêu cầu, cách chạy và giới hạn đã biết.
 7. Thư mục Bang-chung: kết quả kiểm tra deploy/AI/CI, script smoke và ảnh mẫu.
 
-Các yêu cầu sản phẩm/web nằm trong phạm vi làm việc đã được chuẩn bị và kiểm tra theo bằng chứng ở bộ hồ sơ. Tag GitHub `final` đã được tạo tại commit `202769e` sau khi xác nhận CI xanh và mã ứng dụng trùng với revision backend đang chạy (khác phần tài liệu/bằng chứng). Biểu mẫu phân công đề xuất phần việc và tỷ lệ cân bằng 34% / 33% / 33%; nhóm đối chiếu với thực tế rồi ký. Những phần cá nhân từng thành viên tự làm không phải điều kiện đánh giá trạng thái kỹ thuật của project trong bản rà soát này.
+Tag GitHub `final` trỏ tới commit chứa bộ hồ sơ nộp cuối kỳ trên `main`. CI của commit nộp đã xanh; mã ứng dụng giữ nguyên so với revision backend đã kiểm tra, commit nộp này bổ sung tài liệu và bằng chứng. Biểu mẫu phân công đề xuất phần việc và tỷ lệ cân bằng 34% / 33% / 33%; nhóm đối chiếu với thực tế rồi ký. Những phần cá nhân từng thành viên tự làm không phải điều kiện đánh giá trạng thái kỹ thuật của project trong bản rà soát này.
