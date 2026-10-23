@@ -1,5 +1,5 @@
 {
-  "observed_at_local": "2026-10-23T02:24:08.558063+07:00",
+  "observed_at_local": "2026-10-23T10:21:51.641275+07:00",
   "revision": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
   "deploy_id": "dep-dbd5kt6i0phs73es5v1g",
   "api_origin": "https://tkwnc-nhom10.vercel.app",
@@ -10,7 +10,7 @@
       "name": "classify",
       "path": "/api/classify",
       "status": 200,
-      "elapsed_seconds": 24.51,
+      "elapsed_seconds": 26.26,
       "top_labels": [
         "sunflowers",
         "pelargonium",
@@ -21,7 +21,7 @@
       "name": "detect",
       "path": "/api/detect",
       "status": 200,
-      "elapsed_seconds": 57.75,
+      "elapsed_seconds": 41.75,
       "detection_count": 3,
       "labels": [
         "sunflowers",
@@ -33,7 +33,7 @@
       "name": "image_search",
       "path": "/api/search/image",
       "status": 200,
-      "elapsed_seconds": 34.05,
+      "elapsed_seconds": 32.09,
       "result_count": 5,
       "top_species_ids": [
         "sunflowers",
@@ -47,7 +47,7 @@
       "name": "text_search_vi",
       "path": "/api/search/text",
       "status": 200,
-      "elapsed_seconds": 0.25,
+      "elapsed_seconds": 0.59,
       "result_count": 5,
       "top_species_ids": [
         "sunflowers",
@@ -61,7 +61,7 @@
       "name": "rag_chat",
       "path": "/api/chat/sync",
       "status": 200,
-      "elapsed_seconds": 45.81,
+      "elapsed_seconds": 45.65,
       "answer_present": true,
       "source_count": 3,
       "provider": null
