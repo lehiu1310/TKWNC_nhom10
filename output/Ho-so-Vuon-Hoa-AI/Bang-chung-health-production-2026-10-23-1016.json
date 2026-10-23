@@ -1,0 +1,44 @@
+{
+  "checked_at_utc": "2026-10-23T03:16:19Z",
+  "scope": "HTTP availability and readiness only; this check did not run model inference or authentication flows.",
+  "render_service": {
+    "name": "tkw-nhom10-api",
+    "id": "srv-dauecmad0e5s73fe5h4g",
+    "deploy_id": "dep-dbd5kt6i0phs73es5v1g",
+    "revision": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
+    "status": "live",
+    "plan": "free"
+  },
+  "checks": [
+    {
+      "url": "https://tkwnc-nhom10.vercel.app/",
+      "http_status": 200
+    },
+    {
+      "url": "https://tkwnc-nhom10.vercel.app/api/health",
+      "http_status": 200,
+      "status": "ok",
+      "ready": true,
+      "account_database": "postgresql"
+    },
+    {
+      "url": "https://tkwnc-nhom10.vercel.app/api/startup",
+      "http_status": 200,
+      "status": "ok",
+      "ready": true
+    },
+    {
+      "url": "https://tkw-nhom10-api.onrender.com/api/health",
+      "http_status": 200,
+      "status": "ok",
+      "ready": true,
+      "account_database": "postgresql"
+    },
+    {
+      "url": "https://tkw-nhom10-api.onrender.com/api/startup",
+      "http_status": 200,
+      "status": "ok",
+      "ready": true
+    }
+  ]
+}

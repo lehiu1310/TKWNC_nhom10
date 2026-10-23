@@ -1,5 +1,5 @@
 {
-  "observed_at_local": "2026-10-23T02:18:54.0423708+07:00",
+  "observed_at_local": "2026-10-23T07:55:55+07:00",
   "frontend_origin": "https://tkwnc-nhom10.vercel.app/",
   "frontend_status": 200,
   "backend_origin": "https://tkw-nhom10-api.onrender.com",
@@ -7,18 +7,36 @@
     "health": {
       "status": 200,
       "ready": true,
-      "account_database": "postgresql"
+      "account_database": "postgresql",
+      "revision": "ec114f731cd1",
+      "models": {
+        "classifier": true,
+        "detector": false,
+        "llm": true,
+        "retrieval": true
+      },
+      "model_states": {
+        "classifier": "ready",
+        "detector": "not_loaded",
+        "llm": "ready",
+        "retrieval": "ready"
+      }
     },
     "startup": {
       "status": 200,
-      "ready": true,
-      "model_states_loaded": 0
+      "ready": true
+    },
+    "anonymous_auth_me": {
+      "status": 200,
+      "user": null,
+      "meaning": "Expected for a request without a login session."
     },
     "species": {
       "status": 200,
       "count": 103
     }
   },
+  "interpretation": "All four AI routes are enabled; models are loaded on demand and may be evicted under Render Free memory limits. At this snapshot the detector was not resident, while /api/startup remained ready. A separate live smoke on the same revision confirmed detect returned HTTP 200.",
   "render": {
     "service": "tkw-nhom10-api",
     "plan": "free",

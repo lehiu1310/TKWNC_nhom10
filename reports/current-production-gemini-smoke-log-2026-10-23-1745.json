@@ -1,0 +1,17 @@
+{
+  "observed_at_local": "2026-10-23T17:45:30.501856+07:00",
+  "observed_at_utc": "2026-10-23T10:45:30.501856Z",
+  "service": "tkw-nhom10-api",
+  "service_id": "srv-dauecmad0e5s73fe5h4g",
+  "revision": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
+  "deploy_id": "dep-dbd5kt6i0phs73es5v1g",
+  "model": "gemini-3.5-flash",
+  "route": "/api/chat/sync",
+  "provider_response": "HTTP/1.1 200 OK",
+  "chat_route_response": "HTTP 200",
+  "chat_latency_ms": 5628.4,
+  "source_count": 3,
+  "billing_enabled": false,
+  "source": "Render application logs retrieved via Render MCP",
+  "scope_note": "Log evidence for the matching live smoke request; API response itself does not expose the provider. No prompt, generated answer, or secrets are included. Billing state is the state recorded during the smoke check, not a guarantee of future pricing or quota."
+}

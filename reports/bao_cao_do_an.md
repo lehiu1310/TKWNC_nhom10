@@ -56,7 +56,7 @@ Local/Compose dùng SQLite; production API tài khoản trên Render dùng Neon 
 
 ### Chạy thử và trình bày
 
-README có lệnh Docker Compose để dựng app bằng một lệnh: `docker compose -f compose.yaml up --build`. Nếu Git LFS chưa tự tải checkpoint sau khi clone, cần chạy `git lfs pull` một lần trước khi build. Ngày 23/10, checkout sạch `46ab88a` đã build và chạy Compose; cả năm route AI (classify, detect, tìm ảnh, tìm mô tả tiếng Việt và RAG chat) trả HTTP 200 với ảnh mẫu. `ENABLE_GEMINI_API=0`; lượt kiểm tra không gọi API trả phí. Đây là smoke test chức năng, không phải benchmark. Cấu hình có `.env.example`, health check và dữ liệu mẫu; tài khoản demo ở phần 4. Kịch bản trình bày 10 phút: bài toán/người dùng; sơ đồ React/Vercel → Express + FastAPI → Neon/model; demo luồng chính và lỗi chưa đăng nhập; trích đoạn code xử lý RAM; metric, bảo mật và hạn chế. Video dự phòng đã quay, thời lượng metadata 4 phút 31 giây, lưu tại `output/video/demo-vuon-hoa-ai.webm`; cần chép lên máy trình bày và mở được khi mất mạng.
+README có lệnh Docker Compose để dựng app bằng một lệnh: `docker compose -f compose.yaml up --build`. Nếu Git LFS chưa tự tải checkpoint sau khi clone, cần chạy `git lfs pull` một lần trước khi build. Ngày 23/10, checkout sạch `46ab88a` đã build và chạy Compose; cả năm route AI (classify, detect, tìm ảnh, tìm mô tả tiếng Việt và RAG chat) trả HTTP 200 với ảnh mẫu. `ENABLE_GEMINI_API=0`; lượt kiểm tra không gọi API trả phí. Đây là smoke test chức năng, không phải benchmark. Cấu hình có `.env.example`, health check và dữ liệu mẫu; tài khoản demo ở phần 4. Kịch bản trình bày 10 phút: bài toán/người dùng; sơ đồ React/Vercel → Express + FastAPI → Neon/model; demo luồng chính và lỗi chưa đăng nhập; trích đoạn code xử lý RAM; metric, bảo mật và hạn chế. Video dự phòng đã quay, thời lượng metadata 4 phút 31 giây, nằm trong cùng bộ hồ sơ với tên `Video-demo-offline.webm`; cần thử mở trên máy trình bày khi ngắt mạng.
 
 ## 3. Dữ liệu, kết quả AI và giới hạn
 
@@ -79,11 +79,11 @@ Không dùng đầu ra AI cho quyết định y tế, ăn/uống, độc tính h
 
 ## 4. Kiểm thử, bảo mật và production
 
-GitHub Actions của main tại commit code `ec114f7` hoàn tất xanh (run 147): backend/API tests, frontend tests + production build và security audit; bằng chứng CI ghi nhận backend **107 passed, 1 skipped** và frontend **24 passed**. Các commit tài liệu/bằng chứng kế tiếp `46ab88a`, `26e06f4` và `fda2780` cũng có CI xanh ở các run **39840566782**, **39915100617** và **39915713239**. Các URL run lần lượt là https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39840566782, https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39915100617 và https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39915713239; cả ba đều xanh ở `pytest`, `web-build-and-tests` và `security-audit`. Các commit sau chỉ cập nhật tài liệu/bằng chứng, không đổi code backend/deploy. CI có PostgreSQL 16 integration, kiểm tra cách ly dữ liệu giữa hai tài khoản, quét secret trong lịch sử Git và audit dependency production; local PostgreSQL test skip khi không có `TEST_DATABASE_URL`. Docker Compose đã được cấu hình cho full stack và `docker compose config` hợp lệ; ngày 23/10, Compose từ checkout sạch trả HTTP 200 ở cả năm route AI, không bật Gemini.
+Bản code backend đang chạy tại `ec114f731cd1` có kết quả CI ghi nhận 107 kiểm thử backend/API đạt, 1 kiểm thử PostgreSQL bị bỏ qua ở lượt không có DSN, 24 kiểm thử frontend đạt, production build và security audit thành công (run 147). Lượt CI mới nhất trên `main`, commit tài liệu/bằng chứng `202769e9a41025dc0182cd25e823b44664475cff`, run **39916363610**, hoàn tất xanh ở cả `pytest`, `web-build-and-tests` và `security-audit`. Commit này chỉ cập nhật tài liệu/bằng chứng, không đổi code backend/deploy. Có thể xem kết quả tại https://github.com/lehiu1310/TKWNC_nhom10/actions/runs/39916363610. CI có PostgreSQL 16 integration, kiểm tra cách ly dữ liệu giữa hai tài khoản, quét secret trong lịch sử Git và audit dependency production; local PostgreSQL test skip khi không có `TEST_DATABASE_URL`. Docker Compose đã được cấu hình cho full stack và `docker compose config` hợp lệ; ngày 23/10, Compose từ checkout sạch trả HTTP 200 ở cả năm route AI, không bật Gemini.
 
 Mật khẩu được băm scrypt với salt; cookie phiên HttpOnly, SameSite=Lax; API từ chối truy cập dữ liệu tài khoản khi chưa đăng nhập. Input có giới hạn schema/kích thước, lỗi validation và lỗi server được chuẩn hóa; secrets chỉ nằm trong biến môi trường. File .env không được theo dõi trong Git, repo có .env.example. Kiểm tra public: đọc dữ liệu garden khi chưa đăng nhập trả **401**; ID loài không tồn tại trả **404**; limit=0 trả **400**. CORS preflight từ origin Vercel được cấu hình giới hạn theo origin.
 
-Production API tài khoản trên Render dùng Neon PostgreSQL cho tài khoản, phiên đăng nhập và dữ liệu vườn/quà. Smoke test ngày 23/10 qua Vercel same-origin xác nhận login, `/api/auth/me`, đọc garden/giftbook, logout và 401 khi chưa đăng nhập. Smoke test xác nhận luồng qua gateway hoạt động nhưng không phân biệt Express dùng kết nối Neon trực tiếp hay proxy fallback tới Render. Adapter PostgreSQL trực tiếp trong gateway cần `DATABASE_URL` riêng tại Vercel; chưa tính đường này là production đã hoàn tất. Tài khoản demo cùng mật khẩu được ghi trong README để giảng viên thử; không dùng tài khoản demo cho dữ liệu riêng. Không ghi connection string hoặc mật khẩu CSDL vào báo cáo.
+Production API tài khoản trên Render dùng Neon PostgreSQL cho tài khoản, phiên đăng nhập và dữ liệu vườn/quà. Smoke test ngày 23/10 qua Vercel same-origin xác nhận login, `/api/auth/me`, đọc garden/giftbook, logout và 401 khi chưa đăng nhập. Smoke test xác nhận luồng qua gateway hoạt động nhưng không phân biệt Express dùng kết nối Neon trực tiếp hay proxy fallback tới Render. Adapter PostgreSQL trực tiếp trong gateway cần `DATABASE_URL` riêng tại Vercel; chưa tính đường này là production đã hoàn tất. Tài khoản demo được cấp riêng qua kênh nộp bài; repo và báo cáo công khai không lưu mật khẩu. Không dùng tài khoản demo cho dữ liệu riêng. Không ghi connection string hoặc mật khẩu CSDL vào báo cáo.
 
 ### Deploy và kiểm tra production
 
@@ -91,24 +91,14 @@ Render MCP xác nhận service `tkw-nhom10-api` đang Live, gói Free, nhánh `f
 
 Smoke test qua origin production ngày 23/10/2026, dùng ảnh mẫu hướng dương trên backend hiện Live `ec114f731cd1`, cho kết quả:
 
-- /api/classify: HTTP 200; top-1 sunflowers; 26,26 giây.
-- /api/detect: HTTP 200; phát hiện 3 vùng sunflowers; 41,75 giây.
-- /api/search/image: HTTP 200; top 5 đều sunflowers; 32,09 giây.
-- /api/search/text: HTTP 200; mô tả tiếng Việt “đóa vàng lớn với tâm nâu tròn, cánh xếp tỏa ra ngoài” trả 5/5 sunflowers; 0,59 giây.
-- /api/chat/sync: HTTP 200; trả câu trả lời có 3 nguồn trong 45,65 giây. API response không nêu provider; Render Logs ghi nhận request tới Gemini Flash trả HTTP 200 đúng thời điểm này.
+- /api/classify: HTTP 200; top-1 sunflowers; 28,94 giây.
+- /api/detect: HTTP 200; phát hiện 3 vùng sunflowers; 32,92 giây.
+- /api/search/image: HTTP 200; top 5 đều sunflowers; 31,96 giây.
+- /api/search/text: HTTP 200; mô tả tiếng Việt “đóa vàng lớn với tâm nâu tròn, cánh xếp tỏa ra ngoài” trả 5/5 sunflowers; 0,25 giây.
+- /api/chat/sync: HTTP 200; trả câu trả lời có 3 nguồn trong 5,82 giây. Render Logs lúc 17:45:30 ghi nhận lời gọi Gemini Flash nhận HTTP 200.
 
-Đây là smoke test một yêu cầu cho mỗi route, không phải benchmark tải hoặc kiểm định độc lập. Thời gian gồm ảnh hưởng cold start/model eviction trên Render Free. Cùng ảnh và truy vấn được dùng để so sánh đường API; không khẳng định độ chính xác tổng quát. Render Logs lúc 10:21:51 ngày 23/10 ghi nhận service gọi Gemini Flash và Google trả HTTP 200 cùng thời điểm route chat trả 200, có 3 nguồn. Google AI Studio khi kiểm tra hiển thị Free tier và chưa cài đặt billing cho project; một lần gọi không đảm bảo quota hoặc khả dụng trong tương lai. Khi provider lỗi/quota, ứng dụng fallback sang RAG offline có trích dẫn. Mô tả tiếng Việt đã kiểm chứng; không dùng smoke test này để khẳng định tìm kiếm câu tiếng Anh chính xác.
-## 5. Phân công, công cụ hỗ trợ và xác nhận
-
-| Thành viên (mã SV) | Phần việc chính | Tỷ lệ tự đánh giá | Xác nhận |
-|---|---|---:|---|
-| Nguyễn Hữu Lê Hiếu (23010895) |  |  |  |
-| Phạm Văn Huấn (23010331) |  |  |  |
-| Đào Duy Đông (24100085) |  |  |  |
-| **Tổng** |  | **(điền tổng 100%)** |  |
-
-Tên và mã sinh viên đã được điền theo thông tin nhóm cung cấp. Nhóm cần bổ sung phần việc thực tế, phân bổ tỷ lệ có tổng 100%, rồi từng thành viên ký xác nhận trước khi nộp. Không thể suy đoán đóng góp hoặc tạo commit giả danh thành viên; tài liệu hiện vẫn là bản nháp.
-
+Đây là smoke test một yêu cầu cho mỗi route lúc 17:45 ngày 23/10, không phải benchmark tải hoặc kiểm định độc lập. Thời gian gồm ảnh hưởng cold start/model eviction trên Render Free. Cùng ảnh và truy vấn được dùng để kiểm tra API; không khẳng định độ chính xác tổng quát. Render Logs lúc 17:45:30 ghi nhận route chat gọi Gemini Flash và Google trả HTTP 200. Lần kiểm tra Google AI Studio lúc 10:21 ngày 23/10 hiển thị Free tier và chưa cài đặt billing cho project; trạng thái này có thể thay đổi, và một lần gọi không bảo đảm quota hoặc khả dụng về sau. Khi provider lỗi/quota, ứng dụng fallback sang RAG offline có trích dẫn. Mô tả tiếng Việt đã kiểm chứng; không dùng smoke test này để khẳng định tìm kiếm câu tiếng Anh chính xác.
+## 5. Công cụ AI và nguồn kiểm chứng
 
 ### Khai báo công cụ AI
 
@@ -116,4 +106,7 @@ Trong quá trình phát triển và chuẩn bị tài liệu, nhóm sử dụng 
 
 ### Nguồn kiểm chứng trong repository
 
-`reports/classifier_evaluation.json`, `reports/detector_evaluation.json`, `reports/classifier_retrieval_precision_at_5.json`, `reports/rag_hit_at_3.json`, `reports/vietnamese_search_offline_precision_at5.json`, `reports/current-production-ai-smoke-live-2026-10-23.json`, `reports/current-production-auth-smoke-2026-10-23.json`, `reports/current-production-health-2026-10-23.json`, `reports/current-render-deploy-2026-10-23.json`, `reports/current-clean-checkout-compose-ai-smoke-2026-10-23.json`, `tests/`, `.github/workflows/`, `README.md`. Bằng chứng riêng cho lượt Gemini HTTP 200 và trạng thái Free tier/no billing setup tại thời điểm kiểm tra: `reports/current-production-gemini-free-tier-2026-10-23.json` trong repository và `Bang-chung-Gemini-free-tier-2026-10-23-1021.json` trong gói nháp.
+- Đánh giá mô hình: `classifier_evaluation.json`, `detector_evaluation.json`, `classifier_retrieval_precision_at_5.json`, `rag_hit_at_3.json` và `vietnamese_search_offline_precision_at5.json` trong `reports/`.
+- Smoke production: các tệp `current-production-*-2026-10-23.json`, `current-render-deploy-2026-10-23.json` và `current-clean-checkout-compose-ai-smoke-2026-10-23.json` trong `reports/`.
+- Kiểm thử và cách chạy: `tests/`, `.github/workflows/` và `README.md`.
+- Bằng chứng riêng cho lượt Gemini HTTP 200 và trạng thái Free tier/no billing tại thời điểm kiểm tra: `current-production-gemini-free-tier-2026-10-23.json` trong `reports/` và `Bang-chung-Gemini-free-tier-2026-10-23-1021.json` trong gói hồ sơ.

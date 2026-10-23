@@ -1,0 +1,37 @@
+{
+  "frontend_origin": "https://tkwnc-nhom10.vercel.app",
+  "api_path": "Vercel same-origin; account route may proxy to Render FastAPI",
+  "observed_at_local": "2026-10-23T08:01:58.2391469+07:00",
+  "repo_main_sha": "46ab88a06837dadf10aaf89a59775e4600f70c29",
+  "demo_credentials_source": "Public repository README on main; values omitted",
+  "backend_live_revision": "ec114f731cd180f49e31d90631f9d1d87fc69b5d",
+  "flow": [
+    {
+      "step": "login",
+      "status": 200
+    },
+    {
+      "status": 200,
+      "step": "auth_me",
+      "demo_identity_matches": true
+    },
+    {
+      "step": "read_garden",
+      "status": 200
+    },
+    {
+      "step": "read_giftbook",
+      "status": 200
+    },
+    {
+      "step": "logout",
+      "status": 200
+    },
+    {
+      "step": "anonymous_garden_after_logout",
+      "status": 401
+    }
+  ],
+  "credentials_or_session_tokens_included": false,
+  "scope_note": "End-to-end production check using credentials exactly as published in README on public main. Confirms login, identity, account reads and access control after logout; does not identify whether Express used direct Neon access or its Render fallback."
+}
