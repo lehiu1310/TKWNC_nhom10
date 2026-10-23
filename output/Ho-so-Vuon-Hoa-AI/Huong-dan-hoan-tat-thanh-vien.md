@@ -15,19 +15,19 @@ Không ký thay thành viên hoặc xem phần phân công đề xuất là xác
 
 Lịch sử đã kiểm tra khi tạo gói này mới cho thấy author `lehiu1310`; vì vậy yêu cầu commit của các thành viên khác vẫn chưa hoàn tất.
 
-## 3. Tạo tag nộp sau khi đã chốt
+## 3. Tag nộp
 
-Sau khi mọi commit và báo cáo cuối được duyệt, cập nhật `main` rồi tạo và đẩy tag `final`:
+Tag `final` hiện đã được đẩy lên GitHub và trỏ tới commit chứa bộ hồ sơ nộp trong `main`. Nếu các thành viên tạo thêm commit sau đó, nhóm cần chốt lại `main` và cập nhật tag để nó trỏ tới commit nộp cuối cùng. Việc này sẽ thay tag hiện tại:
 
 ```powershell
 git switch main
 git pull --ff-only
-git tag -a final -m "Final submission"
-git push origin final
+git tag -fa final HEAD -m "Final submission"
+git push --force origin refs/tags/final
 git ls-remote --tags origin final
 ```
 
-Chỉ tạo tag một lần khi đã chốt đúng commit sẽ nộp. Nếu tag `final` đã tồn tại, dừng và kiểm tra tag đó thay vì ghi đè.
+Chỉ cập nhật tag sau khi nhóm xác nhận commit cuối cùng; không giả danh thành viên hoặc tạo commit rỗng để đủ lịch sử.
 
 ## 4. Kiểm tra và nộp
 
