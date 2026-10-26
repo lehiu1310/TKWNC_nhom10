@@ -1,5 +1,14 @@
 # Vườn Hoa AI
 
+## Mở sản phẩm và tài liệu demo
+
+- **Website:** https://tkwnc-nhom10.vercel.app/
+- **API health:** https://tkw-nhom10-api.onrender.com/api/health
+- **Tài khoản demo và hướng dẫn:** [DEMO.md](DEMO.md)
+- **Video demo dự phòng (4 phút 31 giây):** [Mở video](Video-demo-offline.webm)
+
+---
+
 Ứng dụng React tra cứu 103 loài hoa, có API cho phân loại ảnh, phát hiện hoa, tìm kiếm và hỏi đáp tài liệu. Giao diện React/Vite gọi REST API; backend gồm Express cho gateway/tài khoản và FastAPI cho các chức năng AI.
 
 ## Thành phần chính
