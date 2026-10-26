@@ -18,4 +18,8 @@ https://github.com/lehiu1310/TKWNC_nhom10/blob/main/output/Ho-so-Vuon-Hoa-AI/Ban
 Video demo dự phòng (4 phút 31 giây):
 https://github.com/lehiu1310/TKWNC_nhom10/blob/main/output/Ho-so-Vuon-Hoa-AI/Video-demo-offline.webm
 
-Tài khoản demo được gửi riêng trong file nộp cho giảng viên; không lưu mật khẩu trong repo GitHub công khai.
+Tài khoản demo để giảng viên đăng nhập thử (tài khoản dùng riêng cho demo):
+Email: demo.vuonhoa.short.20261023@example.com
+Mật khẩu: VuonHoa#2026
+
+File này nằm ở thư mục gốc repo để mở nhanh; video demo có thể tải về và phát offline.
