@@ -1,0 +1,21 @@
+VƯỜN HOA AI — LIÊN KẾT NỘP BÀI
+
+Repo GitHub:
+https://github.com/lehiu1310/TKWNC_nhom10
+
+Web deploy:
+https://tkwnc-nhom10.vercel.app/
+
+API deploy:
+https://tkw-nhom10-api.onrender.com/
+
+Báo cáo PDF:
+https://github.com/lehiu1310/TKWNC_nhom10/blob/main/output/Ho-so-Vuon-Hoa-AI/Bao-cao-do-an.pdf
+
+Bảng phân công PDF:
+https://github.com/lehiu1310/TKWNC_nhom10/blob/main/output/Ho-so-Vuon-Hoa-AI/Bang-phan-cong.pdf
+
+Video demo dự phòng (4 phút 31 giây):
+https://github.com/lehiu1310/TKWNC_nhom10/blob/main/output/Ho-so-Vuon-Hoa-AI/Video-demo-offline.webm
+
+Tài khoản demo được gửi riêng trong file nộp cho giảng viên; không lưu mật khẩu trong repo GitHub công khai.
