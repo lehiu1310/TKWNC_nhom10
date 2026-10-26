@@ -8,11 +8,27 @@
 **API:** https://tkw-nhom10-api.onrender.com/  
 **Mã nguồn:** https://github.com/lehiu1310/TKWNC_nhom10
 
-## TÓM TẮT
+## MỞ ĐẦU
 
-Vườn Hoa AI là ứng dụng web tiếng Việt hỗ trợ người dùng tìm hiểu hoa qua một danh mục 103 loài, nhận diện ảnh, phát hiện vùng hoa, tìm ảnh tương tự, tìm ảnh theo mô tả, hỏi đáp có truy xuất tài liệu, quản lý cây và tạo gợi ý quà tặng. Nhóm xây dựng giao diện bằng React function components và Hooks; dịch vụ AI dùng FastAPI; các route tài khoản được tổ chức qua cổng Express trên Vercel; backend AI và dữ liệu tài khoản được triển khai trên Render với PostgreSQL Neon. Các đường dẫn production được ghi riêng trong gói nộp.
+### Tính cấp thiết của đề tài
 
-Báo cáo tập trung giải thích luồng dữ liệu, các quyết định thiết kế, những đoạn code quan trọng, mô hình dữ liệu, kiểm thử và phép đánh giá. Bốn nhóm kỹ thuật AI được phân tích riêng: phân loại ResNet-18, phát hiện YOLO11n, truy xuất ảnh bằng vector đặc trưng và chatbot RAG. Các phép đo được ghi kèm cách tạo tập đánh giá và giới hạn để không diễn giải kết quả smoke test thành độ chính xác phổ quát. Tính năng gợi ý bó hoa là bộ luật dựa trên dữ liệu ý nghĩa hoa; phần sinh lời chúc có thể gọi Gemini khi được cấu hình, có phương án dự phòng khi dịch vụ ngoài không khả dụng.
+Người gặp một bông hoa thường phải chuyển qua nhiều nguồn để tìm tên, xem ảnh đối chiếu, đọc thông tin chăm sóc và tìm ý nghĩa làm quà. Vườn Hoa AI gom các bước tra cứu này vào một ứng dụng web tiếng Việt, cho phép bắt đầu bằng ảnh, từ khóa hoặc danh mục. Đề tài cũng tạo bối cảnh thực tế để áp dụng API, xác thực, cơ sở dữ liệu, kiểm thử tự động và tích hợp mô hình AI trong cùng một sản phẩm.
+
+### Mục tiêu nghiên cứu
+
+Mục tiêu là xây dựng website tra cứu 103 loài hoa, cung cấp bốn nhóm chức năng AI gồm phân loại ảnh, phát hiện vùng hoa, tìm kiếm ảnh theo ảnh hoặc mô tả, và chatbot RAG có trích nguồn. Sản phẩm còn có bách khoa hoa, tài khoản để lưu dữ liệu cá nhân, cây của tôi và luồng gợi ý tặng hoa. Nhóm đánh giá từng luồng bằng kiểm thử phù hợp và ghi rõ giới hạn của số liệu.
+
+### Đối tượng và phạm vi nghiên cứu
+
+Đối tượng sử dụng là người muốn nhận biết hoa, tìm thông tin cơ bản, lưu loài đã xem hoặc ghi nhớ lịch chăm cây. Phạm vi AI giới hạn theo nhãn, dữ liệu và tài liệu hiện có; ứng dụng không nhận diện mọi loài thực vật, không chẩn đoán bệnh cây và không thay thế tư vấn chuyên môn về độc tính hay sử dụng cây.
+
+### Phương pháp thực hiện
+
+Nhóm phân tích yêu cầu, chia sản phẩm thành giao diện React, API, dịch vụ suy luận và kho dữ liệu; sau đó triển khai từng luồng, kiểm thử bằng unit/API/integration test và smoke test production. Với AI, nhóm dùng metric riêng theo tác vụ và báo cáo rõ kích thước mẫu, môi trường, phiên bản cùng những điều phép đo chưa chứng minh.
+
+### Bố cục báo cáo
+
+Báo cáo lần lượt trình bày bối cảnh và yêu cầu, kiến trúc, giao diện React, REST API, bốn chức năng AI, xác thực và PostgreSQL, các chức năng bổ trợ, kiểm thử/CI, triển khai, đánh giá giới hạn, hướng đọc code và các đoạn mã quan trọng. Các đường dẫn production được ghi riêng trong file link ở thư mục gốc repo.
 
 ## DANH MỤC TỪ VIẾT TẮT
 
