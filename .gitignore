@@ -54,3 +54,8 @@ logs/
 runs/
 backend-*.log
 frontend-*.log
+
+# Generated submission and evaluation outputs; keep these outside the source repo.
+/output/
+/outputs/
+/reports/
