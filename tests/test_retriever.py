@@ -193,6 +193,35 @@ def test_gemini_without_api_key_uses_grounded_rag_fallback(tmp_path, monkeypatch
     assert "hoa_cuc.md" not in answer["answer"]
 
 
+def test_multi_flower_meaning_uses_each_species_guide(tmp_path, monkeypatch):
+    (tmp_path / "hoa_hong.md").write_text(
+        "## Ý nghĩa theo màu\n\nTrong cách tặng hoa phổ biến, hồng đỏ thường gợi tình yêu; "
+        "hồng phấn gợi sự dịu dàng hoặc lời cảm ơn. Đây là quy ước văn hoá linh hoạt, "
+        "nên xét màu sắc, mối quan hệ và hoàn cảnh người nhận.", encoding="utf-8"
+    )
+    (tmp_path / "tulip.md").write_text(
+        "## Ý nghĩa\n\nTulip thường được chọn để gửi lời chúc mừng, tình cảm chân thành "
+        "hoặc khởi đầu mới. Ý nghĩa màu sắc là quy ước văn hoá, thay đổi theo người nhận.",
+        encoding="utf-8",
+    )
+    (tmp_path / "y_nghia_tang_hoa.md").write_text(
+        "## Lưu ý\n\nĐây là quy tắc nội bộ chưa được xác minh về phong tục.", encoding="utf-8"
+    )
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    result = RAGChatbot(kb_dir=tmp_path, provider="gemini").answer(
+        "Mình muốn tặng bó hoa hồng và tulip cho người yêu dịp sinh nhật. Ý nghĩa và lưu ý văn hoá nào cần biết?"
+    )
+
+    assert "tình yêu" in result["answer"].casefold()
+    assert "chúc mừng" in result["answer"].casefold()
+    assert "khởi đầu mới" in result["answer"].casefold()
+    assert "không phải quy ước cố định" in result["answer"].casefold()
+    assert "y_nghia_tang_hoa.md" not in result["answer"]
+    assert {item["source"] for item in result["sources"]} == {"hoa_hong.md", "tulip.md"}
+
+
 def test_gemini_client_uses_short_timeout_on_free_hosting(tmp_path, monkeypatch):
     from core import gemini_client
 
