@@ -19,6 +19,8 @@ services:
         value: "1"
       - key: RETRIEVAL_BACKEND
         value: classifier
+      - key: CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE
+        value: "0.6"
       - key: LLM_PROVIDER
         value: gemini
       - key: GEMINI_MODEL

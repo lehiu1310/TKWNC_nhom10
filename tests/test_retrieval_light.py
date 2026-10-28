@@ -79,6 +79,18 @@ def test_uncertain_image_class_keeps_global_feature_ranking(tmp_path):
     assert [item["species_id"] for item in result] == ["daisy"]
 
 
+def test_ambiguous_top_class_does_not_override_image_similarity(tmp_path, monkeypatch):
+    import core.retrieval_light as retrieval_light
+
+    monkeypatch.setattr(retrieval_light, "CLASSIFIER_RETRIEVAL_LABEL_MIN_CONFIDENCE", 0.6)
+    search = _search(tmp_path)
+    search.classifier = _ClassifyingEncoder("roses", 0.577, [0.0, 1.0])
+
+    result = search.search_image(object(), k=1)
+
+    assert [item["species_id"] for item in result] == ["daisy"]
+
+
 def test_vietnamese_name_query_returns_matching_species(tmp_path):
     result = _search(tmp_path).search_text_with_query("hoa hồng đỏ", k=2)
     assert result["translated"] is False
